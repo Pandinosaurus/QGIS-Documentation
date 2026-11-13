@@ -6,7 +6,7 @@ Offline Editing Plugin
 
 For data collection, it is a common situation to work with a laptop or a cell
 phone offline in the field. Upon returning to the network, the changes need to
-be synchronized with the master datasource (e.g., a PostGIS database). If several
+be synchronized with the master datasource (e.g., a PostgreSQL database). If several
 persons are working simultaneously on the same datasets, it is difficult to
 merge the edits by hand, even if people don’t change the same features.
 
@@ -18,7 +18,7 @@ offline edits to the master dataset.
 
 To use the plugin:
 
-#. Open a project with some vector layers (e.g., from an Esri Shapefile, PostGIS
+#. Open a project with some vector layers (e.g., from an Esri Shapefile, PostgreSQL
    or WFS-T datasource).
 #. Assuming you have already enabled the plugin (see :ref:`core_and_external_plugins`)
    go to :menuselection:`Database --> Offline Editing -->` |offlineEditingCopy|
@@ -31,7 +31,7 @@ To use the plugin:
 #. In the :guilabel:`Select remote layers` section, check the layers you'd like to
    save. The content of the layers is saved to database tables.
 
-   note::
+   .. note::
      Since target database formats do not have native list support, the offline
      editing plugin transforms {string, number} list fields into string fields where
      values are separated by commas. This allows reading and edit of the contents
@@ -46,7 +46,7 @@ To use the plugin:
 #. You can check |checkbox| :guilabel:`Only synchronize selected features if a
    selection is present` allowing to only save and work on a
    subset. It can be invaluable in case of large layers.
-  
+
    This is all!
 #. Save your project and bring it on the field.
 #. Edit the layers offline.

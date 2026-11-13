@@ -4,7 +4,9 @@
 Writing Guidelines
 *************************
 
-.. contents::
+.. only:: html
+
+ .. contents::
    :local:
 
 In general, when creating reST documentation for the QGIS project, please follow
@@ -24,6 +26,7 @@ To each webpage of the documentation corresponds a ``.rst`` file.
 Sections used to structure the text are identified through their title which
 is underlined (and overlined for the first level).
 Same level titles must use same character for underline adornment.
+Precede section titles with a blank line.
 In QGIS Documentation, you should use following styles for chapter,
 section, subsection and minisec.
 
@@ -62,13 +65,13 @@ common to all lists:
 Indentation
 -----------
 
-Indentation in ReStructuredText should be aligned with the list or markup *marker*. It is
+Indentation in reStructuredText should be aligned with the list or markup *marker*. It is
 also possible to create block quotes with indentation. See the
 `Specification <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#indentation>`__
 
-.. code-block::
+.. code-block:: rst
 
-   #. In a numbered list, there should be 
+   #. In a numbered list, there should be
       three spaces when you break lines
    #. And next items directly follow
 
@@ -115,7 +118,7 @@ You can use tags to emphasize items.
 
   .. code-block:: rst
 
-     |icon| :sup:`popup_text`
+     |iconView| :sup:`popup_text`
 
   (see `image`_ below).
 
@@ -126,10 +129,10 @@ You can use tags to emphasize items.
      :kbd:`Ctrl+B`
 
   will show :kbd:`Ctrl+B`
-  
+
   When describing keyboard shortcuts, the following conventions
   should be used:
-  
+
   * Letter keys are displayed using uppercase: :kbd:`S`
   * Special keys are displayed with an uppercase first letter: :kbd:`Esc`
   * Key combinations are displayed with a ``+`` sign between keys,
@@ -140,6 +143,17 @@ You can use tags to emphasize items.
   .. code-block:: rst
 
      ``label``
+
+* **Layers, databases, tables or columns names**
+
+  When referring to layers, databases, tables or columns, format as inline code:
+
+  .. code-block:: rst
+
+     ``layer name``
+     ``database_name``
+     ``table_name``
+     ``column_name``
 
 
 .. _my_anchor:
@@ -220,43 +234,40 @@ which returns
 .. figure:: /static/common/logo.png
    :width: 10 em
 
-Replacement
-...........
+Icon substitution
+.................
 
-You can put an image inside text or add an alias to use everywhere. To use an image
-inside a paragraph, first create an alias in the :file:`source/substitutions.txt`
-file:
+You can add an image inside a text paragraph (e.g., as a tool icon).
+To do so, you first need to create an alias (also named substitution),
+which is a reference name used to display the icon.
+To ensure consistency across the documents and help in the use of the icons,
+we maintain a list in the :file:`substitutions.txt` file at the root of this repository.
+Find more details in the :ref:`substitutions` chapter.
 
+Using an icon substitution is usually achieved through these steps:
 
-.. code-block:: rst
+#. Add the icon substitution in the :file:`substitutions.txt` file as below.
+   If a substitution already exists for the icon you want to use, then skip this step.
 
-   .. |nice_logo| image:: /static/common/logo.png
-                  :width: 1 em
+   .. code-block:: rst
 
-and then call it in your paragraph:
+      .. |logo| image:: /static/common/logo.png
+         :width: 1 em
 
-.. code-block:: rst
+#. Call it in your paragraph:
 
-   My paragraph begins here with a nice logo |nice_logo|.
+   .. code-block:: rst
 
-This is how the example will be displayed:
+      My paragraph begins here with |logo|.
 
-.. |nice_logo| image:: /static/common/logo.png
-               :width: 1 em
+#. Add (again) the icon substitution at the end of the file you are modifying.
+   This helps connecting the replacement text with the actual image,
+   and can be done by copy-pasting it from :file:`substitutions.txt`
+   or by executing the :file:`scripts/find_set_subst.py` script.
 
-My paragraph begins here with a nice logo |nice_logo|.
+   This is how the example will be displayed:
 
-To allow preview rendering in GitHub that is as close as possible
-to HTML rendering, you will also need to add the image replacement
-call at the end of the file you changed.
-This can be done by copy-pasting it from
-:file:`substitutions.txt` or by executing the :file:`scripts/find_set_subst.py`
-script.
-
-.. note::
-
-   Currently, to ensure consistency and help in the use of QGIS icons,
-   a list of aliases is built and available in the :ref:`substitutions` chapter.
+     My paragraph begins here with |logo|.
 
 Figure
 ......
@@ -323,9 +334,9 @@ see :ref:`figure_logo`
 
 
 Tables
-......
+------
 
-A simple table can be coded like this
+You can make a simple table like this:
 
 .. code-block:: rst
 
@@ -345,13 +356,39 @@ x        y        z
 4                 5
 =======  =======  =======
 
-Use a ``\`` (backslash) followed by an empty space to leave an empty space.
+Tables should have a caption. You can use an explicit reST `"table" directive <https://docutils.sourceforge.io/docs/ref/rst/directives.html#table>`_
+to add a caption to `simple tables <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#simple-tables>`_
+or `grid tables <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#grid-tables>`_.
+Add the caption on the same line as the directive and indent the table at least
+one space.
 
-You can also make more complicated tables and reference them:
+You can also add a `hyperlink target <https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html#hyperlink-targets>`_
+before a table in order to reference it elsewhere.  To avoid conflicts with
+other references, always begin hyperlink targets with ``_table_`` and use terms
+relevant to the table caption.
+
+Here is an example of a more complicated grid table with a caption and a
+hyperlink target:
 
 .. code-block:: rst
 
-   .. _my_drawn_table:
+   .. _table-grid-caption:
+
+   .. table:: Grid table with caption
+
+      +---------------+--------------------+
+      | Windows       | macOS              |
+      +---------------+--------------------+
+      | |win|         | |osx|              |
+      +---------------+--------------------+
+      | and of course not to forget |nix|  |
+      +------------------------------------+
+
+The result:
+
+.. _table-grid-caption:
+
+.. table:: Grid table with caption
 
    +---------------+--------------------+
    | Windows       | macOS              |
@@ -361,31 +398,18 @@ You can also make more complicated tables and reference them:
    | and of course not to forget |nix|  |
    +------------------------------------+
 
-   My drawn table, mind you this is unfortunately not regarded as a caption
+You may find it easier to use `list tables <https://docutils.sourceforge.io/docs/ref/rst/directives.html#list-table-1>`_
+or `CSV tables <https://docutils.sourceforge.io/docs/ref/rst/directives.html#csv-table-1>`_
+to make complex tables. Add the caption after the ``list-table`` or
+``csv-table`` directive.
 
-   You can reference it like this: my_drawn_table_.
-
-The result:
-
-.. _my_drawn_table:
-
-+---------------+--------------------+
-| Windows       | macOS              |
-+---------------+--------------------+
-| |win|         | |osx|              |
-+---------------+--------------------+
-| and of course not to forget |nix|  |
-+------------------------------------+
-
-My drawn table, mind you this is unfortunately not regarded as a caption
-
-You can reference to it like this my_drawn_table_.
-
-For even more complex tables, it is easier to use ``list-table``:
+Here is an example of a list table with a caption and a hyperlink target:
 
 .. code-block:: rst
 
-   .. list-table::
+   .. _table-list-caption:
+
+   .. list-table:: List table with caption
       :header-rows: 1
       :widths: 20 20 20 40
 
@@ -403,7 +427,9 @@ For even more complex tables, it is easier to use ``list-table``:
 
 The result:
 
-.. list-table::
+.. _table-list-caption:
+
+.. list-table:: List table with caption
    :header-rows: 1
    :widths: 20 20 20 40
 
@@ -418,6 +444,21 @@ The result:
 
        * Point
        * Line
+
+Use ``:numref:`` roles to reference tables like this:
+
+.. code-block:: rst
+
+   see :numref:`table-grid-caption` or :numref:`table-list-caption`
+
+The result:
+
+   see :numref:`table-grid-caption` or :numref:`table-list-caption`
+
+.. note::
+
+   You must add a caption to your table in order to create a cross reference
+   with the ``:numref:`` role.
 
 Index
 -----
@@ -438,12 +479,12 @@ useful (coherent, consistent and really connected to each other):
   in order to reuse the most convenient expression with the right spelling
   and avoid unnecessary duplicates.
 
-Several index tags exist in RST. You can use the inline ``:index:`` tag
+Several index tags exist in reST. You can use the inline ``:index:`` tag
 within normal text:
 
 .. code-block:: rst
 
-   QGIS can load several :index:`Vector formats` supported by GDAL/OGR ...
+   QGIS can load several :index:`Vector formats` supported by GDAL ...
 
 Or you can use the ``.. index::`` block-level markup which links to the
 beginning of the next paragraph. Because of the rules mentioned above, it
@@ -464,7 +505,7 @@ Special Comments
 
 Sometimes, you may want to emphasize some points of the description, either to
 warn, remind or give some hints to the user. In QGIS Documentation, we use reST
-special directives such as ``.. warning::``, ``.. seealso::`, ``.. note::`` and ``.. tip::``.
+special directives such as ``.. warning::``, ``.. seealso::``, ``.. note::`` and ``.. tip::``.
 These directives generate frames that highlight your comments. See `Paragraph Level markup
 <https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#paragraph-level-markup>`_
 for more information.
@@ -491,16 +532,14 @@ More details at
 
 .. note::
 
-   While texts in note, tip and warning frames are translatable, be aware that
-   code block frames do not allow translation. So avoid comments not related to
-   the code and keep comments as short as possible.
+   Text in special comments will be translated, but text in code-block frames
+   will not be translated. So keep comments in code blocks as short as possible
+   and avoid comments unrelated to code.
+
 
 Footnotes
 ---------
 
-Please note: Footnotes are not recognized by any translation software and
-it is also not converted to pdf format properly.
-So, if possible, don't use footnotes within any documentation.
 
 This is for creating a footnote (showing as example [1]_)
 
@@ -512,6 +551,7 @@ Which will point to:
 
 .. [1] Updates of core plugins
 
+.. _managing_screenshots:
 
 Managing Screenshots
 ====================
@@ -523,11 +563,11 @@ Here are some hints to create new, nice looking screenshots.
 The images should be placed in an image (:file:`img/`) folder that
 is located in the same folder as the referencing :file:`.rst` file.
 
-* You can find some prepared QGIS-projects that are used to create screenshots
+* You can find some prepared QGIS projects that are used to create screenshots
   in the :file:`./qgis-projects` folder of this repository.
   This makes it easier to reproduce screenshots for the next version of QGIS.
-  These projects use the QGIS `Sample Data <https://qgis.org/downloads/data/>`_
-  (aka Alaska Dataset), which should be placed in the same folder
+  These projects use the QGIS `Sample Data <https://github.com/qgis/QGIS-Sample-Data/archive/master.zip>`_
+  (aka Alaska Dataset), which should be unzipped and placed in the same folder
   as the QGIS-Documentation Repository.
 * Reduce the window to the minimal space needed to show the feature (taking the
   whole screen for a small modal window > overkill)
@@ -537,9 +577,12 @@ is located in the same folder as the referencing :file:`.rst` file.
   resolution > ugly)
 * Cut the background
 * Make the top corners transparent if the background is not white
-* Set print size resolution to ``135 dpi`` (e.g. in Gimp set the print resolution
-  :menuselection:`Image --> Print size` and save). This way, images will be at
-  original size in html and at a good print resolution in the PDF.
+* Set print size resolution to ``135 dpi`` (e.g., in GIMP scale down the image
+  using :menuselection:`Image --> Scale Image` and setting "X/Y" to ``135 pixels/in``,
+  and export it through :menuselection:`File --> Export...`).
+  This way, images will be at original size in HTML and at a good print
+  resolution in the PDF.
+
   You can also use ImageMagick convert command to do a batch of images:
 
   .. code-block:: bash
@@ -552,9 +595,9 @@ is located in the same folder as the referencing :file:`.rst` file.
 
 .. tip:: If you are on Ubuntu, you can use the following command to remove the
   global menu function and create smaller application screens with menus:
-  
+
   .. code-block:: bash
-  
+
     sudo apt autoremove appmenu-gtk appmenu-gtk3 appmenu-qt
 
 
@@ -565,7 +608,7 @@ Here are some additional hints for those that want to create
 screenshots for a translated user guide:
 
 Translated images should be placed in a :file:`img/<your_language>/`
-folder.  Use the same filename as the english 'original' screenshot.
+folder. Use the same filename as the 'original' English screenshot.
 
 
 Documenting Processing algorithms
@@ -575,7 +618,7 @@ If you want to write documentation for Processing algorithms, consider these
 guidelines:
 
 * Processing algorithm help files are part of QGIS User Guide, so use the same
-  formatting as User Guide and other documentation.
+  formatting as the User Guide and other documentation.
 
 * Each algorithm documentation should be placed in the corresponding **provider**
   folder and **group** file, e.g. the algorithm `Voronoi polygon` belongs to the
@@ -588,7 +631,9 @@ guidelines:
 * It is **extremely** important that each algorithm has an *anchor* that corresponds
   to the provider name + the unique name of the algorithm itself. This allows the
   Help button to open the Help page of the correct section. The anchor should be
-  placed **above** the title, e.g. (see also the :ref:`my_anchor` section)::
+  placed **above** the title, e.g. (see also the :ref:`my_anchor` section):
+
+  .. code-block:: rst
 
     .. _qgisvoronoipolygons:
 
@@ -597,9 +642,24 @@ guidelines:
 
   To find out the algorithm name you can just hover the mouse on the algorithm in
   the Processing toolbox.
+* Mention the QGIS version in which the algorithm was introduced:
+
+  .. code-block:: rst
+
+    ``Added in 3.44``
+
+  Likewise, mention if the algorithm requires a specific optional dependency (and version).
+
+  .. code-block:: rst
+
+    .. attention:: Running this algorithm requires QGIS installed with <library> >= min_value
+     (see :menuselection:`Help --> About` menu).
+
 * Avoid using "This algorithm does this and that..." as the first sentence in the
-  algorithm description. Try to use more general expressions like::
-  
+  algorithm description. Try to use more general expressions like:
+
+  .. code-block:: rst
+
     Takes a point layer and generates a polygon layer containing the...
 
 * Avoid describing what the algorithm does by replicating its name and please
@@ -621,17 +681,21 @@ guidelines:
 * Avoid duplicating detailed description of algorithm options. Add this information
   in the parameter description.
 * Avoid adding information about the vector geometry type in the algorithm or parameter
-  description, as this information is already available
-  in the parameter descriptions.
-* Add the default value of the parameter, e.g.::
+  description, as this information is already available in the parameter descriptions.
+* Add the default value of the parameter, e.g.:
+
+  .. code-block:: rst
 
     * - **Number of points**
       - ``NUMBER_OF_POINTS``
-      - [number]
+      - [numeric: integer]
 
         Default: 1
       - Number of points to create
 
+* When a parameter or a parameter's value is added to an already existing algorithm,
+  indicate the QGIS version in which it is introduced.
+  If it requires a specific library, also indicate its minimal requirements.
 * Describe the *type* of input supported the parameters. There are several types
   available you can pick one from:
 
@@ -641,6 +705,8 @@ guidelines:
   Point vector layer                        ``vector: point``          |pointLayer|
   Line vector layer                         ``vector: line``           |lineLayer|
   Polygon vector layer                      ``vector: polygon``        |polygonLayer|
+  All spatial vector layers                 ``vector: geometry``
+  Geometryless vector layer                 ``vector: table``          |tableLayer|
   Generic vector layer                      ``vector: any``
   Vector field numeric                      ``tablefield: numeric``    |fieldFloat|
   Vector field string                       ``tablefield: string``     |fieldText|
@@ -648,24 +714,24 @@ guidelines:
   Raster layer                              ``raster``                 |rasterLayer|
   Raster band                               ``raster band``
   HTML file                                 ``html``
-  Table layer                               ``table``                  |tableLayer|
   Expression                                ``expression``             |expression|
+  Line geometry                             ``geometry: line``
   Point geometry                            ``coordinates``
   Extent                                    ``extent``
   CRS                                       ``crs``                    |setProjection|
   Enumeration                               ``enumeration``            |selectString|
   List                                      ``list``
-  Number                                    ``number``                 |selectNumber|
+  Integer value                             ``numeric: integer``       |selectNumber|
+  Decimal value                             ``numeric: double``        |selectNumber|
   String                                    ``string``                 |inputText|
   Boolean                                   ``boolean``                |checkbox|
   Folder path                               ``folder``
   File                                      ``file``
   Matrix                                    ``matrix``
   Layer                                     ``layer``
-  Same output type as input type            ``same as input``  
+  Same output type as input type            ``same as input``
   Definition                                ``definition``
-  Point                                     ``point``
-  MultipleLayers                            ``multipleLayers``
+  Map layers                                ``layer`` ``list``
   Range                                     ``range``
   AuthConfig                                ``authconfig``
   Mesh                                      ``mesh``
@@ -673,6 +739,7 @@ guidelines:
   LayoutItem                                ``layoutitem``
   Color                                     ``color``
   Scale                                     ``scale``
+  Map theme                                 ``map theme``
   ========================================  =========================  ====================
 
 
@@ -682,7 +749,9 @@ guidelines:
   to commit your changes and make a Pull Request
 
 Here is an example of an :ref:`existing algorithm <qgiscountpointsinpolygon>`
-to help you with the layout and the description::
+to help you with the layout and the description:
+
+.. code-block:: rst
 
   .. _qgiscountpointsinpolygon:
 
@@ -712,6 +781,7 @@ to help you with the layout and the description::
   .. list-table::
      :header-rows: 1
      :widths: 20 20 20 40
+     :class: longtable
 
      * - Label
        - Name
@@ -758,14 +828,14 @@ to help you with the layout and the description::
        - Specification of the output layer type (temporary, file,
          GeoPackage or PostGIS table).
          Encoding can also be specified.
-  
+
   Outputs
   .......
-  
+
   .. list-table::
      :header-rows: 1
      :widths: 20 20 20 40
-  
+
      * - Label
        - Name
        - Type
@@ -791,8 +861,12 @@ to help you with the layout and the description::
    :width: 1.5em
 .. |fieldText| image:: /static/common/mIconFieldText.png
    :width: 1.5em
+.. |iconView| image:: /static/common/mActionIconView.png
+   :width: 1.5em
 .. |inputText| image:: /static/common/inputtext.png
 .. |lineLayer| image:: /static/common/mIconLineLayer.png
+   :width: 1.5em
+.. |logo| image:: /static/common/logo.png
    :width: 1.5em
 .. |nix| image:: /static/common/nix.png
    :width: 1em

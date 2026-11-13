@@ -1,6 +1,6 @@
 
-.. _qgis_unittesting: 
- 
+.. _qgis_unittesting:
+
 **************
  Unit Testing
 **************
@@ -71,7 +71,7 @@ Creating a unit test
 
 Creating a unit test is easy - typically you will do this by just creating a
 single :file:`.cpp` file (no :file:`.h` file is used) and implement all your
-test methods as public methods that return void. We'll use a simple test class for
+test methods as private methods that return void. We'll use a simple test class for
 ``QgsRasterLayer`` throughout the section that follows to illustrate. By convention
 we will name our test with the same name as the class they are testing but
 prefixed with 'Test'. So our test implementation goes in a file called
@@ -204,9 +204,9 @@ implemented to replicate the conditions of a particular bug. For example:
    (the cell count was 99 instead of 100).
 #. Then we went to fix the bug and reran the unit test and the regression test
    passed. We committed the regression test along with the bug fix. Now if
-   anybody breakes this in the source code again in the future, we can
+   anybody breaks this in the source code again in the future, we can
    immediately identify that the code has regressed.
-   
+
    Better yet, before committing any changes in the future, running our tests
    will ensure our changes don't have unexpected side effects - like breaking
    existing functionality.
@@ -261,7 +261,7 @@ same file lower down. First our init and cleanup functions:
 
   void TestQgsRasterLayer::initTestCase()
   {
-    // init QGIS's paths - true means that all path will be inited from prefix
+    // init QGIS's paths - true means that all paths will be inited from prefix
     QString qgisPath = QCoreApplication::applicationDirPath ();
     QgsApplication::setPrefixPath(qgisPath, TRUE);
   #ifdef Q_OS_LINUX
@@ -305,10 +305,10 @@ Qt also provides some other interesting mechanisms for data driven
 testing, so if you are interested to know more on the topic, consult
 the Qt documentation.
 
-Next lets look at our functional test. The ``isValid()`` test simply checks the
-raster layer was correctly loaded in the initTestCase. QVERIFY is a Qt macro
-that you can use to evaluate a test condition. There are a few other use
-macros Qt provide for use in your tests including:
+Next lets look at our functional test. The ``isValid()`` test simply checks if the
+raster layer was loaded correctly in the initTestCase. QVERIFY is a Qt macro
+that you can use to evaluate a test condition. There are a few other
+macros Qt provides for use in your tests including:
 
 * QCOMPARE ( *actual, expected* )
 * QEXPECT_FAIL ( *dataIndex, comment, mode* )
@@ -386,7 +386,7 @@ individual pixel can differ from the reference image, so a black pixel indicates
 that the pixel in the rendered image must exactly match the same pixel in the
 reference image. A pixel with RGB 2, 2, 2 means that the rendered image can vary
 by up to 2 in its RGB values from the reference image, and a fully white pixel
-(255, 255, 255) means that the pixel is effectively ignored when comparing the 
+(255, 255, 255) means that the pixel is effectively ignored when comparing the
 expected and rendered images.
 
 A utility script to generate mask images is available as
@@ -417,7 +417,7 @@ copy a rendered image url from the cdash results page and pass it to the script.
 Be careful when generating mask images - you should always view the generated
 mask image and review any white areas in the image. Since these pixels are
 ignored, make sure that these white images do not cover any important portions
-of the reference image -- otherwise your unit test will be meaningless! 
+of the reference image -- otherwise your unit test will be meaningless!
 
 Similarly, you can manually "white out" portions of the mask if you deliberately
 want to exclude them from the test. This can be useful e.g. for tests which mix
@@ -495,7 +495,7 @@ not interested, just do the step explained in the above section.
   # which point to directories outside the build tree to the install RPATH
   INSTALL_RPATH_USE_LINK_PATH true)
   IF (APPLE)
-  # For Mac OS X, the executable must be at the root of the bundle's executable folder
+  # For macOS, the executable must be at the root of the bundle's executable folder
   INSTALL(TARGETS qgis_${testname} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})
   ADD_TEST(qgis_${testname} ${CMAKE_INSTALL_PREFIX}/qgis_${testname})
   ELSE (APPLE)
@@ -562,7 +562,7 @@ run directly from inside the source tree.
   # which point to directories outside the build tree to the install RPATH
   INSTALL_RPATH_USE_LINK_PATH true)
   IF (APPLE)
-  # For Mac OS X, the executable must be at the root of the bundle's executable folder
+  # For macOS, the executable must be at the root of the bundle's executable folder
   INSTALL(TARGETS qgis_${testname} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX})
   ADD_TEST(qgis_${testname} ${CMAKE_INSTALL_PREFIX}/qgis_${testname})
   ELSE (APPLE)
@@ -678,7 +678,7 @@ like any executable.
 .. code-block:: bash
 
   $ ./output/bin/qgis_dxfexporttest
-  
+
   ********* Start testing of TestQgsDxfExport *********
   Config: Using QtTest library 5.12.5, Qt 5.12.5 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 9.2.1 20190827 (Red Hat 9.2.1-1))
   PASS   : TestQgsDxfExport::initTestCase()
@@ -689,12 +689,12 @@ like any executable.
   ********* Finished testing of TestQgsDxfExport *********
 
 These tests also take `command line arguments
-<https://doc-snapshots.qt.io/qt5-5.9/qtest-overview.html#qt-test-command-line-arguments>`_.
+<https://doc.qt.io/qt-6/qtest-overview.html#qt-test-command-line-arguments>`_.
 This makes it possible to run a specific subset of tests:
 
 .. code-block:: bash
 
-  $ ./output/bin/qgis_dxfexporttest testPoints   
+  $ ./output/bin/qgis_dxfexporttest testPoints
   ********* Start testing of TestQgsDxfExport *********
   Config: Using QtTest library 5.12.5, Qt 5.12.5 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 9.2.1 20190827 (Red Hat 9.2.1-1))
   PASS   : TestQgsDxfExport::initTestCase()
@@ -702,6 +702,23 @@ This makes it possible to run a specific subset of tests:
   PASS   : TestQgsDxfExport::cleanupTestCase()
   Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 272ms
   ********* Finished testing of TestQgsDxfExport *********
+
+Sandboxing test run
+-------------------
+
+By default all test temporary files are written to the system temp directory (for example ``/tmp/`` on Linux systems or ``C:\temp`` on Windows).
+A lot of files can be created in this directory during the test run.
+
+If you do not want to mix up with the common system temp directory (for example on a multi user server or in case of permission issue),
+you can create your own temp directory and specify it to ``ctest`` by setting the ``TMPDIR`` environment variable with your new directory.
+
+On Linux you could do it with:
+
+.. code-block:: bash
+
+  $ mkdir ~/my_qgis_temp
+  $ TMPDIR=~/my_qgis_temp ctest
+
 
 Debugging unit tests
 --------------------
@@ -731,7 +748,7 @@ Now also change the ``Run Environment`` and add 3 new variables:
 
 +------------------+--------------------------------------------------------------------------------+
 | Variable         | Value                                                                          |
-+------------------+--------------------------------------------------------------------------------+
++==================+================================================================================+
 | PYTHONPATH       | [build]/output/python/:[build]/output/python/plugins:[source]/tests/src/python |
 +------------------+--------------------------------------------------------------------------------+
 | QGIS_PREFIX_PATH | [build]/output                                                                 |
@@ -746,7 +763,7 @@ Have fun
 --------
 
 Well that concludes this section on writing unit tests in QGIS. We hope you
-will get into the habit of writing test to test new functionality and to check
+will get into the habit of writing tests to test new functionality and to check
 for regressions. Some aspects of the test system (in particular the
 :file:`CMakeLists.txt` parts) are still being worked on so that the testing framework
 works in a truly platform independent way.

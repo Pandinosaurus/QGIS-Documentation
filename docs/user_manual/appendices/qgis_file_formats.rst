@@ -16,7 +16,7 @@ QGS/QGZ - The QGIS Project File Format
 The **QGS** format is an XML format for storing QGIS projects.
 The **QGZ** format is a compressed (zip) archive containing a
 QGS file and a QGD file.
-The **QGD** file is the associated sqlite database of the qgis
+The **QGD** file is the associated SQLite database of the qgis
 project that contain auxiliary data for the project.
 If there are no auxiliary data, the QGD file will be empty.
 
@@ -84,7 +84,7 @@ In the future a .qlr file may hold a reference to more than one layer.
 
 .. figure:: img/qlr.png
    :align: center
-   
+
    The top level tags of a QLR file
 
 

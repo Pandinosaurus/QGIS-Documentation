@@ -21,11 +21,9 @@ Aggregates Functions
 
 This group contains functions which aggregate values over layers and fields.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Aggregates.rst
    :start-after: :orphan:
@@ -48,21 +46,45 @@ list data structures). The order of values within the array matters, unlike the
 :ref:`'map' data structure <maps_functions>`, where the order of key-value pairs
 is irrelevant and values are identified by their keys.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Arrays.rst
    :start-after: :orphan:
    :end-before: .. end_array_get_section
 
 .. hint:: You can also use the :ref:`index operator ([])
-  <expression_function_Operators_index>` to get a value from an array. 
+  <expression_function_Operators_index>` to get a value from an array.
 
 .. include:: expression_help/Arrays.rst
-   :start-after: end_array_get_section
+   :start-after: .. end_array_get_section
+   :end-before: .. end_array_replace_section
+
+Further reading: :ref:`expression_function_String_replace`,
+:ref:`expression_function_String_regexp_replace`
+
+.. include:: expression_help/Arrays.rst
+   :start-after: .. end_array_replace_section
+   :end-before: .. end_array_to_string_section
+
+Further reading: :ref:`expression_function_Arrays_string_to_array`
+
+.. include:: expression_help/Arrays.rst
+   :start-after: .. end_array_to_string_section
+   :end-before: .. end_regexp_matches_section
+
+Further reading: :ref:`expression_function_String_substr`,
+:ref:`expression_function_String_regexp_substr`
+
+.. include:: expression_help/Arrays.rst
+   :start-after: .. end_regexp_matches_section
+   :end-before: .. end_string_to_array_section
+
+Further reading: :ref:`expression_function_Arrays_array_to_string`
+
+.. include:: expression_help/Arrays.rst
+   :start-after: .. end_string_to_array_section
 
 
 Color Functions
@@ -70,11 +92,9 @@ Color Functions
 
 This group contains functions for manipulating colors.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Color.rst
    :start-after: :orphan:
@@ -109,11 +129,9 @@ Conditional Functions
 
 This group contains functions to handle conditional checks in expressions.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Conditionals.rst
    :start-after: :orphan:
@@ -127,13 +145,48 @@ Conversions Functions
 This group contains functions to convert one data type to another
 (e.g., string from/to integer, binary from/to string, string to date, ...).
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Conversions.rst
+   :start-after: :orphan:
+   :end-before: .. end_to_date_section
+
+Further reading: :ref:`expression_function_Date_and_Time_format_date`
+
+.. include:: expression_help/Conversions.rst
+   :start-after: .. end_to_date_section
+   :end-before: .. end_to_datetime_section
+
+Further reading: :ref:`expression_function_Date_and_Time_format_date`
+
+.. include:: expression_help/Conversions.rst
+   :start-after: .. end_to_datetime_section
+   :end-before: .. end_to_string_section
+
+Further reading: :ref:`expression_function_String_format_number`
+
+.. include:: expression_help/Conversions.rst
+   :start-after: .. end_to_string_section
+   :end-before: .. end_to_time_section
+
+Further reading: :ref:`expression_function_Date_and_Time_format_date`
+
+.. include:: expression_help/Conversions.rst
+   :start-after: .. end_to_time_section
+
+
+CRS Functions
+-----------------
+
+This group contains functions to operate on coordinate reference system objects.
+
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
+
+.. include:: expression_help/CRS.rst
    :start-after: :orphan:
 
 
@@ -167,14 +220,30 @@ This group shares several functions with the :ref:`conversion_functions`
      one of the date extraction functions (e.g., :ref:`day() <expression_function_Date_and_Time_day>`
      to get the interval expressed in days)
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Date_and_Time.rst
    :start-after: :orphan:
+   :end-before: .. end_to_date_section
+
+Further reading: :ref:`expression_function_Date_and_Time_format_date`
+
+.. include:: expression_help/Date_and_Time.rst
+   :start-after: .. end_to_date_section
+   :end-before: .. end_to_datetime_section
+
+Further reading: :ref:`expression_function_Date_and_Time_format_date`
+
+.. include:: expression_help/Date_and_Time.rst
+   :start-after: .. end_to_datetime_section
+   :end-before: .. end_to_time_section
+
+Further reading: :ref:`expression_function_Date_and_Time_format_date`
+
+.. include:: expression_help/Date_and_Time.rst
+   :start-after: .. end_to_time_section
 
 
 **Some examples:**
@@ -211,7 +280,10 @@ Adding or subtracting an interval to dates, datetimes or times, using the
 Fields and Values
 ------------------
 
-Contains a list of fields from the layer, and special values.
+Contains a list of fields from the active layer, and special values.
+Fields list includes the ones stored in the dataset, :ref:`virtual
+<virtual_field>` and :ref:`auxiliary <vector_auxiliary_storage>` ones
+as well as from :ref:`joins <sec_joins>`.
 
 Double-click a field name to have it added to your expression. You can also
 type the field name (preferably inside double quotes) or its :ref:`alias
@@ -227,11 +299,9 @@ To add a value to the expression you are writing, double-click on it in the list
 If the value is of a string type, it should be simple quoted, otherwise no quote
 is needed.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Fields_and_Values.rst
    :start-after: :orphan:
@@ -242,11 +312,9 @@ Files and Paths Functions
 
 This group contains functions which manipulate file and path names.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Files_and_Paths.rst
    :start-after: :orphan:
@@ -258,11 +326,9 @@ Form Functions
 This group contains functions that operate exclusively under the attribute form
 context. For example, in :ref:`field's widgets <vector_attributes_menu>` settings.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Form.rst
    :start-after: :orphan:
@@ -273,11 +339,9 @@ Fuzzy Matching Functions
 
 This group contains functions for fuzzy comparisons between values.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Fuzzy_Matching.rst
    :start-after: :orphan:
@@ -288,11 +352,9 @@ General Functions
 
 This group contains general assorted functions.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/General.rst
    :start-after: :orphan:
@@ -312,11 +374,9 @@ Geometry Functions
 This group contains functions that operate on geometry objects
 (e.g. buffer, transform, $area).
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: :orphan:
@@ -331,7 +391,7 @@ Further reading: :ref:`qgisboundary` algorithm
 Further reading: :ref:`qgisboundingboxes` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
-   :start-after: end_bounds_section
+   :start-after: .. end_bounds_section
    :end-before: .. end_buffer_section
 
 Further reading: :ref:`qgisbuffer` algorithm
@@ -356,6 +416,13 @@ Further reading: :ref:`qgiscollect` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_collect_geometries_section
+   :end-before: .. end_concave_hull_section
+
+Further reading: :ref:`expression_function_GeometryGroup_convex_hull`,
+:ref:`qgisconcavehull` algorithm
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_concave_hull_section
    :end-before: .. end_contains_section
 
 Further reading: :ref:`expression_function_GeometryGroup_overlay_contains`
@@ -364,7 +431,8 @@ Further reading: :ref:`expression_function_GeometryGroup_overlay_contains`
    :start-after: .. end_contains_section
    :end-before: .. end_convex_hull_section
 
-Further reading: :ref:`qgisconvexhull` algorithm
+Further reading: :ref:`expression_function_GeometryGroup_concave_hull`,
+:ref:`qgisconvexhull` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_convex_hull_section
@@ -400,16 +468,52 @@ Further reading: :ref:`expression_function_GeometryGroup_overlay_disjoint`
    :start-after: .. end_disjoint_section
    :end-before: .. end_end_point_section
 
-Further reading: :ref:`qgisextractspecificvertices` algorithm
+Further reading: :ref:`expression_function_GeometryGroup_start_point`,
+:ref:`qgisextractspecificvertices` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_end_point_section
+   :end-before: .. end_equals_section
+
+Further reading: :ref:`expression_function_GeometryGroup_equals_exact`,
+:ref:`expression_function_GeometryGroup_overlay_equals`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_equals_section
+   :end-before: .. end_equals_exact_section
+
+Further reading: :ref:`expression_function_GeometryGroup_equals`,
+:ref:`expression_function_GeometryGroup_overlay_equals`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_equals_exact_section
+   :end-before: .. end_equals_fuzzy_section
+
+Further reading: :ref:`expression_function_GeometryGroup_overlay_equals_fuzzy`,
+:ref:`expression_function_GeometryGroup_equals_exact`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_equals_fuzzy_section
+   :end-before: .. end_equals_topological_section
+
+Further reading: :ref:`expression_function_GeometryGroup_equals_exact`,
+:ref:`expression_function_GeometryGroup_overlay_equals_topological`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_equals_topological_section
    :end-before: .. end_extend_section
 
 Further reading: :ref:`qgisextendlines` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_extend_section
+   :end-before: .. end_exterior_ring_section
+
+Further reading: :ref:`qgisboundary` algorithm,
+:ref:`expression_function_GeometryGroup_interior_ring_n`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_exterior_ring_section
    :end-before: .. end_flip_coordinates_section
 
 Further reading: :ref:`qgisswapxy` algorithm
@@ -418,14 +522,16 @@ Further reading: :ref:`qgisswapxy` algorithm
    :start-after: .. end_flip_coordinates_section
    :end-before: .. end_force_polygon_ccw_section
 
-Further reading: :ref:`expression_function_GeometryGroup_force_polygon_cw`,
+Further reading: :ref:`qgisforceccw` algorithm,
+:ref:`expression_function_GeometryGroup_force_polygon_cw`,
 :ref:`expression_function_GeometryGroup_force_rhr`
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_force_polygon_ccw_section
    :end-before: .. end_force_polygon_cw_section
 
-Further reading: :ref:`expression_function_GeometryGroup_force_polygon_ccw`,
+Further reading: :ref:`qgisforcecw` algorithm,
+:ref:`expression_function_GeometryGroup_force_polygon_ccw`,
 :ref:`expression_function_GeometryGroup_force_rhr`
 
 .. include:: expression_help/GeometryGroup.rst
@@ -438,8 +544,14 @@ Further reading: :ref:`qgisforcerhr` algorithm,
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_force_rhr_section
+   :end-before: .. end_interior_ring_n_section
+
+Further reading: :ref:`expression_function_GeometryGroup_exterior_ring`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_interior_ring_n_section
    :end-before: .. end_intersection_section
-   
+
 Further reading: :ref:`qgisintersection` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
@@ -450,6 +562,26 @@ Further reading: :ref:`expression_function_GeometryGroup_overlay_intersects`
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_intersects_section
+   :end-before: .. end_is_empty_section
+
+Further reading: :ref:`expression_function_GeometryGroup_is_empty_or_null`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_is_empty_section
+   :end-before: .. end_is_empty_or_null_section
+
+Further reading: :ref:`expression_function_GeometryGroup_is_empty`,
+:ref:`expression_function_Fields_and_Values_NULL`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_is_empty_or_null_section
+   :end-before: .. end_is_valid_section
+
+Further reading: :ref:`expression_function_GeometryGroup_make_valid`,
+:ref:`qgischeckvalidity` algorithm
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_is_valid_section
    :end-before: .. end_length_section
 
 Further reading: :ref:`expression_function_GeometryGroup_straight_distance_2d`
@@ -468,6 +600,13 @@ Further reading: :ref:`qgislinesubstring` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_line_substring_section
+   :end-before: .. end_make_valid_section
+
+Further reading: :ref:`expression_function_GeometryGroup_is_valid`,
+:ref:`qgisfixgeometries` algorithm
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_make_valid_section
    :end-before: .. end_minimal_circle_section
 
 Further reading: :ref:`qgisminimumenclosingcircle` algorithm
@@ -518,11 +657,36 @@ algorithm
    :start-after: .. end_overlay_disjoint_section
    :end-before: .. end_overlay_equals_section
 
-Further reading: :ref:`array manipulation <array_functions>`,
-:ref:`qgisselectbylocation` algorithm
+Further reading: :ref:`expression_function_GeometryGroup_overlay_equals_exact`,
+:ref:`expression_function_GeometryGroup_equals`,
+:ref:`array manipulation <array_functions>`
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_overlay_equals_section
+   :end-before: .. end_overlay_equals_exact_section
+
+Further reading: :ref:`expression_function_GeometryGroup_overlay_equals`,
+:ref:`expression_function_GeometryGroup_equals_exact`,
+:ref:`array manipulation <array_functions>`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_overlay_equals_exact_section
+   :end-before: .. end_overlay_equals_fuzzy_section
+
+Further reading: :ref:`expression_function_GeometryGroup_equals_fuzzy`,
+:ref:`expression_function_GeometryGroup_overlay_equals_exact`,
+:ref:`array manipulation <array_functions>`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_overlay_equals_fuzzy_section
+   :end-before: .. end_overlay_equals_topological_section
+
+Further reading: :ref:`expression_function_GeometryGroup_overlay_equals_exact`,
+:ref:`expression_function_GeometryGroup_equals_topological`,
+:ref:`array manipulation <array_functions>`,
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_overlay_equals_topological_section
    :end-before: .. end_overlay_intersects_section
 
 Further reading: :ref:`expression_function_GeometryGroup_intersects`,
@@ -586,7 +750,7 @@ Further reading: :ref:`qgisreverselinedirection` algorithm
    :start-after: .. end_reverse_section
    :end-before: .. end_roundness_section
 
-.. TODO: Further reading: :ref:`qgisroundness` algorithm
+Further reading: :ref:`qgisroundness` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_roundness_section
@@ -622,7 +786,8 @@ Further reading: :ref:`qgissmoothgeometry` algorithm
    :start-after: .. end_smooth_section
    :end-before: .. end_start_point_section
 
-Further reading: :ref:`qgisextractspecificvertices` algorithm
+Further reading: :ref:`expression_function_GeometryGroup_end_point`,
+:ref:`qgisextractspecificvertices` algorithm
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_start_point_section
@@ -674,18 +839,39 @@ Further reading: :ref:`expression_function_GeometryGroup_overlay_within`
 
 .. include:: expression_help/GeometryGroup.rst
    :start-after: .. end_within_section
+   :end-before: .. end_$x_section
 
+Further reading: :ref:`expression_function_GeometryGroup_x`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_$x_section
+   :end-before: .. end_$x_at_section
+
+Further reading: :ref:`expression_function_GeometryGroup_x_at`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_$x_at_section
+   :end-before: .. end_$y_section
+
+Further reading: :ref:`expression_function_GeometryGroup_y`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_$y_section
+   :end-before: .. end_$y_at_section
+
+Further reading: :ref:`expression_function_GeometryGroup_y_at`
+
+.. include:: expression_help/GeometryGroup.rst
+   :start-after: .. end_$y_at_section
 
 Layout Functions
 ----------------
 
 This group contains functions to manipulate print layout items properties.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Layout.rst
    :start-after: :orphan:
@@ -704,21 +890,37 @@ This function requires the :ref:`Access metadata properties
    :start-after: .. end_map_credits_section
 
 
+Magnetic Models Functions
+--------------------------
+
+This group contains functions that calculate values based on magnetic models.
+
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
+
+.. include:: expression_help/MagneticModels.rst
+   :start-after: :orphan:
+
+
 Map Layers
 ----------
 
-This group contains a list of the available layers in the current project.
-This offers a convenient way to write expressions referring to multiple layers,
+This group contains a list of the available layers in the current project and,
+for each layer, their fields (stored in the dataset, virtual or auxiliary ones
+as well as from joins). The fields can be interacted the same way as mentioned
+in :ref:`fields_values`, except that a double-click will add the name
+as a string (single quoted) to the expression instead of as a field reference
+given that they do not belong to the active layer.
+This offers a convenient way to write expressions referring to different layers,
 such as when performing :ref:`aggregates <aggregates_function>`, :ref:`attribute
 <record_attributes>` or :ref:`spatial <geometry_functions>` queries.
 
 It also provides some convenient functions to manipulate layers.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Map_Layers.rst
    :start-after: :orphan:
@@ -743,18 +945,17 @@ arrays). Unlike the :ref:`list data structure <array_functions>` where values
 order matters, the order of the key-value pairs in the map object is not relevant
 and values are identified by their keys.
 
-.. only:: html
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
-   .. contents::
-      :local:
-      :class: toc_columns
 
 .. include:: expression_help/Maps.rst
    :start-after: :orphan:
    :end-before: .. end_map_get_section
 
 .. hint:: You can also use the :ref:`index operator ([])
-  <expression_function_Operators_index>` to get a value from a map. 
+  <expression_function_Operators_index>` to get a value from a map.
 
 .. include:: expression_help/Maps.rst
    :start-after: .. end_map_get_section
@@ -765,43 +966,39 @@ Mathematical Functions
 
 This group contains math functions (e.g., square root, sin and cos).
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Math.rst
    :start-after: :orphan:
 
+.. _expression_function_meshes:
 
 Meshes Functions
 ----------------
 
 This group contains functions which calculate or return mesh related values.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Meshes.rst
    :start-after: :orphan:
 
+.. _expression_operators:
 
 Operators
-----------
+---------
 
 This group contains operators (e.g., +, -, \*).
 Note that for most of the mathematical functions below,
 if one of the inputs is NULL then the result is NULL.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Operators.rst
    :start-after: :orphan:
@@ -811,27 +1008,39 @@ Further reading: :ref:`expression_function_String_concat`,
 :ref:`expression_function_Operators_concat`
 
 .. include:: expression_help/Operators.rst
-   :start-after: end_+_section
-   :end-before: end_[]_section
+   :start-after: .. end_+_section
+   :end-before: .. end_BETWEEN_section
+
+Further reading: :ref:`expression_function_Operators_NOT_BETWEEN`
+
+.. include:: expression_help/Operators.rst
+   :start-after: .. end_BETWEEN_section
+   :end-before: .. end_NOT_BETWEEN_section
+
+Further reading: :ref:`expression_function_Operators_BETWEEN`
+
+.. include:: expression_help/Operators.rst
+   :start-after: .. end_NOT_BETWEEN_section
+   :end-before: .. end_[]_section
 
 Further reading: :ref:`expression_function_Arrays_array_get`,
 :ref:`expression_function_Maps_map_get`
 
 .. include:: expression_help/Operators.rst
-   :start-after: end_[]_section
-   :end-before: end_||_section
+   :start-after: .. end_[]_section
+   :end-before: .. end_||_section
 
 Further reading: :ref:`expression_function_String_concat`,
 :ref:`expression_function_Operators_plus`
 
 .. include:: expression_help/Operators.rst
-   :start-after: end_||_section
-   :end-before: end_~_section
+   :start-after: .. end_||_section
+   :end-before: .. end_~_section
 
 Further reading: :ref:`expression_function_String_regexp_match`
 
 .. include:: expression_help/Operators.rst
-   :start-after: end_~_section
+   :start-after: .. end_~_section
 
 
 .. _processing_functions:
@@ -841,7 +1050,9 @@ Processing Functions
 
 This group contains functions that operate on processing algorithms.
 
-.. contents:: :local:
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Processing.rst
    :start-after: :orphan:
@@ -854,7 +1065,9 @@ Rasters Functions
 
 This group contains functions to operate on raster layer.
 
-.. contents:: :local:
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Rasters.rst
    :start-after: :orphan:
@@ -867,11 +1080,9 @@ Record and Attributes Functions
 
 This group contains functions that operate on record identifiers.
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/Record_and_Attributes.rst
    :start-after: :orphan:
@@ -881,15 +1092,47 @@ Further reading: :ref:`maps_functions`
 
 .. include:: expression_help/Record_and_Attributes.rst
    :start-after: .. end_attributes_section
+   :end-before: .. end_feature_id_section
+
+Further reading: :ref:`expression_function_Record_and_Attributes_get_feature_by_id`
+
+.. include:: expression_help/Record_and_Attributes.rst
+   :start-after: .. end_feature_id_section
    :end-before: .. end_get_feature_by_id_section
 
-Further reading: :ref:`expression_function_Record_and_Attributes_$id`
+Further reading: :ref:`expression_function_Record_and_Attributes_feature_id`
 
 .. include:: expression_help/Record_and_Attributes.rst
    :start-after: .. end_get_feature_by_id_section
+   :end-before: .. end_$id_section
+
+Further reading: :ref:`expression_function_Record_and_Attributes_feature_id`,
+:ref:`expression_function_Record_and_Attributes_get_feature_by_id`
+
+.. include:: expression_help/Record_and_Attributes.rst
+   :start-after: .. end_$id_section
+   :end-before: .. end_is_attribute_valid_section
+
+Further reading: :ref:`constraints`
+
+.. include:: expression_help/Record_and_Attributes.rst
+   :start-after: .. end_is_attribute_valid_section
+   :end-before: .. end_is_feature_valid_section
+
+Further reading: :ref:`constraints`
+
+.. include:: expression_help/Record_and_Attributes.rst
+   :start-after: .. end_is_feature_valid_section
+   :end-before: .. end_represent_attributes_section
+
+Further reading: :ref:`expression_function_Record_and_Attributes_represent_value`
+
+.. include:: expression_help/Record_and_Attributes.rst
+   :start-after: .. end_represent_attributes_section
    :end-before: .. end_represent_value_section
 
-Further reading: :ref:`widget types <edit_widgets>` 
+Further reading: :ref:`widget types <edit_widgets>`,
+:ref:`expression_function_Record_and_Attributes_represent_attributes`
 
 .. include:: expression_help/Record_and_Attributes.rst
    :start-after: .. end_represent_value_section
@@ -913,6 +1156,21 @@ access to the relation ID for writing an expression (with e.g. the
 :ref:`relation_aggregate <expression_function_Aggregates_relation_aggregate>`
 function) or customizing a form.
 
+.. _sensors_functions:
+
+Sensors Functions
+-----------------
+
+This group contains functions to interact with sensors.
+
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
+
+.. include:: expression_help/Sensors.rst
+   :start-after: :orphan:
+
+
 .. _string_functions:
 
 String Functions
@@ -921,11 +1179,9 @@ String Functions
 This group contains functions that operate on strings
 (e.g., that replace, convert to upper case).
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :class: toc_columns
+.. include:: text_include.rst
+   :start-after: .. functions_group_toc
+   :end-before: .. end_functions_group_toc
 
 .. include:: expression_help/String.rst
    :start-after: :orphan:
@@ -944,18 +1200,130 @@ operators, with some special characteristics:
 
 * When any of the arguments is a NULL value, either ``||`` or ``+`` will
   return a NULL value. To return the other arguments regardless the NULL value,
-  you may want to use the ``concat`` function::
+  you may want to use the ``concat`` or ``array_to_string`` function::
 
-    'My feature id is: ' + NULL ==> NULL 
-    'My feature id is: ' || NULL => NULL 
+    'My feature id is: ' + NULL ==> NULL
+    'My feature id is: ' || NULL => NULL
     concat('My feature id is: ', NULL) => 'My feature id is: '
+    array_to_string( array('My feature id is: ', NULL) ) => 'My feature id is: '
 
-further reading: :ref:`expression_function_Operators_concat`,
-:ref:`expression_function_Operators_plus`
+further reading: :ref:`expression_function_Arrays_array_to_string`,
+:ref:`expression_function_Operators_concat`, :ref:`expression_function_Operators_plus`
 
 .. include:: expression_help/String.rst
    :start-after: .. end_concat_section
+   :end-before: .. end_left_section
 
+Further reading: :ref:`expression_function_String_right`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_left_section
+   :end-before: .. end_lower_section
+
+Further reading: :ref:`expression_function_String_upper`,
+:ref:`expression_function_String_title`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_lower_section
+   :end-before: .. end_lpad_section
+
+Further reading: :ref:`expression_function_String_rpad`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_lpad_section
+   :end-before: .. end_ltrim_section
+
+Further reading: :ref:`expression_function_String_rtrim`,
+:ref:`expression_function_String_trim`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_ltrim_section
+   :end-before: .. end_regexp_match_section
+
+Further reading: :ref:`expression_function_String_strpos`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_regexp_match_section
+   :end-before: .. end_regexp_replace_section
+
+Further reading: :ref:`expression_function_String_replace`,
+:ref:`expression_function_Arrays_array_replace`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_regexp_replace_section
+   :end-before: .. end_regexp_substr_section
+
+Further reading: :ref:`expression_function_String_substr`,
+:ref:`expression_function_Arrays_regexp_matches`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_regexp_substr_section
+   :end-before: .. end_replace_section
+
+Further reading: :ref:`expression_function_String_regexp_replace`,
+:ref:`expression_function_Arrays_array_replace`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_replace_section
+   :end-before: .. end_right_section
+
+Further reading: :ref:`expression_function_String_left`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_right_section
+   :end-before: .. end_rpad_section
+
+Further reading: :ref:`expression_function_String_lpad`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_rpad_section
+   :end-before: .. end_rtrim_section
+
+Further reading: :ref:`expression_function_String_ltrim`,
+:ref:`expression_function_String_trim`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_rtrim_section
+   :end-before: .. end_strpos_section
+
+Further reading: :ref:`expression_function_String_regexp_match`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_strpos_section
+   :end-before: .. end_substr_section
+
+Further reading: :ref:`expression_function_String_regexp_substr`,
+:ref:`expression_function_Arrays_regexp_matches`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_substr_section
+   :end-before: .. end_title_section
+
+Further reading: :ref:`expression_function_String_lower`,
+:ref:`expression_function_String_upper`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_title_section
+   :end-before: .. end_to_string_section
+
+Further reading: :ref:`expression_function_String_format_number`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_to_string_section
+   :end-before: .. end_trim_section
+
+Further reading: :ref:`expression_function_String_ltrim`,
+:ref:`expression_function_String_rtrim`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_trim_section
+   :end-before: .. end_upper_section
+
+Further reading: :ref:`expression_function_String_lower`,
+:ref:`expression_function_String_title`
+
+.. include:: expression_help/String.rst
+   :start-after: .. end_upper_section
 
 User Expressions
 ----------------
@@ -983,7 +1351,8 @@ To use these variables in an expression, they should be preceded by the
 
 .. csv-table::
    :header: "Variable", "Description"
-   :widths: 25, 70
+   :widths: 30, 70
+   :class: longtable
 
    "algorithm_id", "The unique ID of an algorithm"
    "animation_end_time", "End of the animation's overall temporal time range (as a datetime value)"
@@ -998,8 +1367,15 @@ To use these variables in an expression, they should be preceded by the
    "atlas_layername", "The current atlas coverage layer name"
    "atlas_pagename", "The current atlas page name"
    "atlas_totalfeatures", "The total number of features in atlas"
+   "Blue", "Point cloud attribute: Blue"
+   "band", "The number of the band in the raster layer"
+   "band_description", "The description of the band in the raster layer"
+   "band_name", "The name of the band in the raster layer"
+   "Classification", "Point cloud attribute: Classification"
    "canvas_cursor_point", "The last cursor position on the canvas in the
    project's geographical coordinates"
+   "chart_category", "The chart item category, e.g. 'fruit' or 'june'."
+   "chart_value", "The chart item value."
    "cluster_color", "The color of symbols within a cluster, or NULL if
    symbols have mixed colors"
    "cluster_size", "The number of symbols contained within a cluster"
@@ -1011,8 +1387,11 @@ To use these variables in an expression, they should be preceded by the
    edited in the parent form. Only usable in an embedded form context."
    "current_parent_geometry", "represents the geometry of the feature currently being
    edited in the parent form. Only usable in an embedded form context."
+   "EdgeOfFlightLine", "Point cloud attribute: EdgeOfFlightLine"
    "form_mode", "What the form is used for, like AddFeatureMode, SingleEditMode, MultiEditMode,
    SearchMode, AggregateSearchMode or IdentifyMode as string."
+   "feature", "The current feature being evaluated. This can be used with the 'attribute'
+   function to evaluate attribute values from the current feature."
    "frame_duration", "Temporal duration of each animation frame (as an interval value)"
    "frame_number", "Current frame number during animation playback"
    "frame_rate", "Number of frames per second during animation playback"
@@ -1020,6 +1399,9 @@ To use these variables in an expression, they should be preceded by the
    "fullextent_maxy", "Maximum y value from full canvas extent (including all layers)"
    "fullextent_minx", "Minimum x value from full canvas extent (including all layers)"
    "fullextent_miny", "Minimum y value from full canvas extent (including all layers)"
+   "GpsTime", "Point cloud attribute: GpsTime"
+   "Green", "Point cloud attribute: Green"
+   "geometry", "The geometry of the current feature being evaluated"
    "geometry_part_count", "The number of parts in rendered feature's geometry"
    "geometry_part_num", "The current geometry part number for feature being rendered"
    "geometry_point_count", "The number of points in the rendered geometry's part"
@@ -1027,14 +1409,30 @@ To use these variables in an expression, they should be preceded by the
    "geometry_ring_num", "Current geometry ring number for feature being rendered
    (for polygon features only). The exterior ring has a value of 0."
    "grid_axis", "The current grid annotation axis (eg, 'x' for longitude, 'y' for latitude)"
+   "grid_count", "The number of grid lines visible on the current grid axis"
+   "grid_index", "The index of the grid line being drawn, starting at 1, and relative to the current grid axis"
    "grid_number", "The current grid annotation value"
+   "Intensity", "Point cloud attribute: Intensity"
+   "id", "The ID of the current feature being evaluated"
    "item_id", "The layout item user ID (not necessarily unique)"
    "item_uuid", "The layout item unique ID"
+   "KeyPoint", "Point cloud attribute: KeyPoint"
    "layer", "The current layer"
    "layer_crs", "The Coordinate Reference System Authority ID of the current layer"
+   "layer_crs_ellipsoid", "The ellipsoid Authority ID of the current layer CRS"
+   "layer_cursor_point", "Point geometry under the mouse position in map canvas
+   (or the GetFeatureInfo position in context of QGIS Server), in active layer's CRS"
    "layer_id", "The ID of current layer"
    "layer_ids", "The IDs of all the map layers in the current project as a list"
    "layer_name", "The name of current layer"
+   "layer_vertical_crs", "The Identifier for the vertical coordinate reference system
+   of the layer (e.g., 'EPSG:5703')"
+   "layer_vertical_crs_definition", "The full definition of the vertical Coordinate
+   reference system of the layer"
+   "layer_vertical_crs_description", "The name of the vertical Coordinate reference
+   system of the layer"
+   "layer_vertical_crs_wkt", "The WKT definition of the vertical
+   Coordinate reference system of the current layer"
    "layers", "All the map layers in the current project as a list"
    "layout_dpi", "The composition resolution (DPI)"
    "layout_name", "The layout name"
@@ -1085,17 +1483,23 @@ To use these variables in an expression, they should be preceded by the
    "map_start_time", "The start of the map's temporal time range
    (as a datetime value)"
    "map_units", "The units of map measurements"
+   "map_z_range_lower", "Lower elevation of the map's elevation range"
+   "map_z_range_upper", "Upper elevation of the map's elevation range"
    "model_path", "Full path (including file name) of current model
    (or project path if model is embedded in a project)."
    "model_folder", "Folder containing current model (or project folder
    if model is embedded in a project)."
    "model_name", "Name of current model"
    "model_group", "Group for current model"
+   "NumberOfReturns", "Point cloud attribute: NumberOfReturns"
    "notification_message", "Content of the notification message sent by the provider
    (available only for actions triggered by provider notifications)."
+   "Overlap", "Point cloud attribute: Overlap"
+   "PointSourceId", "Point cloud attribute: PointSourceId"
    "parent", "Refers to the current feature in the parent layer, providing access to
-   its attributes and geometry when filtering an :ref:`aggregate <aggregates_function>`
-   function"
+   its attributes and geometry when filtering an :ref:`aggregate <aggregates_function>` function"
+   "plot_axis", "The associated plot axis, e.g. 'x' or 'y'."
+   "plot_axis_value", "The current value for the plot axis grid line."
    "project_abstract", "The project abstract, taken from project metadata"
    "project_area_units", "The area unit for the current project, used when
    calculating areas of geometries"
@@ -1103,7 +1507,7 @@ To use these variables in an expression, they should be preceded by the
    "project_basename", "The basename of current project's filename
    (without path and extension)"
    "project_creation_date", "The project creation date, taken from project metadata"
-   "project_crs", "The Coordinate reference system of the project"
+   "project_crs", "Identifier for the coordinate reference system of the project (e.g., 'EPSG:4326')"
    "project_crs_arconym", "The acronym of the Coordinate reference system of the project"
    "project_crs_definition", "The full definition of the Coordinate reference
    system of the project"
@@ -1124,6 +1528,10 @@ To use these variables in an expression, they should be preceded by the
    "project_path", "The full path (including file name) of the current project"
    "project_title", "The title of current project"
    "project_units", "The units of the project's CRS"
+   "project_vertical_crs", "Identifier for the vertical Coordinate reference system of the project (e.g., 'EPSG:5703')"
+   "project_vertical_crs_definition", "The full definition of the vertical coordinate reference system of the project"
+   "project_vertical_crs_description", "The description of the vertical coordinate reference system of the project"
+   "project_vertical_crs_wkt", "The WKT (well known text) representation of the vertical coordinate reference system of the project"
    "qgis_locale", "The current language of QGIS"
    "qgis_os_name", "The current Operating system name, eg 'windows', 'linux' or 'osx'"
    "qgis_platform", "The QGIS platform, eg 'desktop' or 'server'"
@@ -1131,7 +1539,13 @@ To use these variables in an expression, they should be preceded by the
    "qgis_short_version", "The current QGIS version short string"
    "qgis_version", "The current QGIS version string"
    "qgis_version_no", "The current QGIS version number"
+   "Red", "Point cloud attribute: Red"
+   "ReturnNumber", "Point cloud attribute: ReturnNumber"
    "row_number", "Stores the number of the current row"
+   "ScanAngleRank", "Point cloud attribute: ScanAngleRank"
+   "ScanDirectionFlag", "Point cloud attribute: ScanDirectionFlag"
+   "ScannerChannel", "Point cloud attribute: ScannerChannel"
+   "Synthetic", "Point cloud attribute: Synthetic"
    "snapping_results", "Gives access to snapping results while digitizing a
    feature (only available in add feature)"
    "scale_value", "The current scale bar distance value"
@@ -1140,6 +1554,7 @@ To use these variables in an expression, they should be preceded by the
    (valid for marker symbols only)"
    "symbol_color", "The color of the symbol used to render the feature"
    "symbol_count", "The number of features represented by the symbol (in the layout legend)"
+   "symbol_frame", "The frame number (for animated symbols only)"
    "symbol_id", "The Internal ID of the symbol (in the layout legend)"
    "symbol_label", "The label for the symbol (either a user defined
    label or the default autogenerated label - in the layout legend)"
@@ -1147,13 +1562,22 @@ To use these variables in an expression, they should be preceded by the
    "symbol_layer_index", "Current symbol layer index"
    "symbol_marker_column", "Column number for marker (valid for point pattern fills only)."
    "symbol_marker_row", "Row number for marker (valid for point pattern fills only)."
+   "UserData", "Point cloud attribute: UserData"
    "user_account_name", "The current user's operating system account name"
    "user_full_name", "The current user's operating system user name"
    "value", "The current value"
+   "vector_tile_zoom", "Exact vector tile zoom level of the map that is being rendered
+   (derived from the current map scale). Normally in interval [0, 20]. Unlike @zoom_level,
+   this variable is a floating point value which can be used to interpolate values
+   between two integer zoom levels."
+   "Withheld", "Point cloud attribute: Withheld"
    "with_variable", "Allows setting a variable for usage within an expression
    and avoid recalculating the same value repeatedly"
-   "zoom_level", "Zoom level of the tile that is being rendered (derived from the current
-   map scale). Normally in interval [0, 20]."
+   "X", "Point cloud attribute: X"
+   "Y", "Point cloud attribute: Y"
+   "Z", "Point cloud attribute: Z"
+   "zoom_level", "Vector tile zoom level of the map that is being rendered
+   (derived from the current map scale). Normally in interval [0, 20]."
 
 **Some examples:**
 

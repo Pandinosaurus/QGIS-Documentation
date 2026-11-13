@@ -1,4 +1,4 @@
-|LS| Actions
+Lesson: Actions
 ======================================================================
 
 Now that you have seen a default action in the previous lesson, it is
@@ -11,7 +11,7 @@ Assigning actions can add a whole new dimension to your map!
 
 **The goal for this lesson:** To learn how to add custom actions.
 
-In this lesson you will use the :guilabel:`school_property` layer you
+In this lesson you will use the ``school_property`` layer you
 created previously.
 The sample data include photos of each of the three properties you
 digitized.
@@ -19,7 +19,7 @@ What we are going to do is to associate each property with its image.
 Then we will create an action that will open the image for a property
 when clicking on the property.
 
-|basic| |FA| Add a Field for Images
+:abbr:`★☆☆ (Basic level)` Follow Along: Add a Field for Images
 ----------------------------------------------------------------------
 
 The ``school_property`` layer has no way to associate an image with a
@@ -50,8 +50,8 @@ property yet. First we will create a field for this purpose.
       :align: center
 
 #. Click :guilabel:`OK` in the :guilabel:`Layer Properties` dialog.
-#. Use the :guilabel:`Identify` tool to click on one of the three
-   features in the :guilabel:`school_property` layer.
+#. Use the |identify| :sup:`Identify Features` tool to click on one of the three
+   features in the ``school_property`` layer.
 
    Since you are still in edit mode, the dialog should be active and
    look like this:
@@ -70,12 +70,11 @@ property yet. First we will create a field for this purpose.
 #. Save your edits and exit edit mode.
 
 
-|basic| |FA| Creating an Action
+:abbr:`★☆☆ (Basic level)` Follow Along: Creating an Action
 ----------------------------------------------------------------------
 
-#. Open the :guilabel:`Actions` tab for the
-   :guilabel:`school_property` layer, and click on the
-   |signPlus| :sup:`Add a new action` button.
+#. Open the :guilabel:`Actions` tab for the ``school_property`` layer, and click on the
+   |symbologyAdd| :sup:`Add a new action` button.
 
    .. figure:: img/layer_actions.png
       :align: center
@@ -101,7 +100,7 @@ property yet. First we will create a field for this purpose.
      *ImageMagick*.
      Remember to put a space after the command!
 
-   * MacOS
+   * macOS
 
      #. Click on the :guilabel:`Type` dropdown and choose
         :guilabel:`Mac`.
@@ -130,7 +129,7 @@ property yet. First we will create a field for this purpose.
 
 Now it is time to test the new action:
 
-#. Click on the :guilabel:`school_property` layer in the
+#. Click on the ``school_property`` layer in the
    :guilabel:`Layers` panel so that it is highlighted.
 #. Find the |actionRun| :sup:`Run feature action` button (in the
    :guilabel:`Attributes Toolbar`).
@@ -146,7 +145,7 @@ Now it is time to test the new action:
 
    The image for that property should open.
 
-|moderate| |FA| Searching the Internet
+:abbr:`★★☆ (Moderate level)` Follow Along: Searching the Internet
 ----------------------------------------------------------------------
 
 Let's say we are looking at the map and want to know more about the area that a
@@ -155,7 +154,7 @@ general information about it. Your first impulse, considering that you're using
 a computer right now, would probably be to Google the name of the area. So
 let's tell QGIS to do that automatically for us!
 
-#. Open the attribute table for the :guilabel:`landuse` layer.
+#. Open the attribute table for the ``landuse`` layer.
 
    We will be using the ``name`` field for each of our landuse
    areas to search Google.
@@ -164,7 +163,7 @@ let's tell QGIS to do that automatically for us!
 #. Click on the :guilabel:`Create Default Actions` button to add a
    number of pre-defined actions.
 #. Remove all the actions but the :guilabel:`Open URL` action with
-   the short name :guilabel:`Search Web` using the |signMinus|
+   the short name :guilabel:`Search Web` using the |symbologyRemove|
    :sup:`Remove the selected action` button below.
 #. Double-click on the remaining action to edit it
 #. Change the :guilabel:`Description` to ``Google Search``, and
@@ -187,10 +186,10 @@ let's tell QGIS to do that automatically for us!
      This will tell Ubuntu to open an Internet address in your
      default browser, such as Chrome or Firefox.
 
-   * MacOS
+   * macOS
 
      Under :guilabel:`Action`, write ``open``.
-     This will tell MacOS to open an Internet address in your default
+     This will tell macOS to open an Internet address in your default
      browser, such as Safari.
 
    Now you can continue writing the command
@@ -246,7 +245,7 @@ let's tell QGIS to do that automatically for us!
 
 Now to test the new action.
 
-#. With the :guilabel:`landuse` layer active in the
+#. With the ``landuse`` layer active in the
    :guilabel:`Layers` panel, click on the down arrow to the right of
    the |actionRun| :sup:`Run feature action` button, and select the
    only action (``Google Search``) defined for this layer.
@@ -257,8 +256,8 @@ Now to test the new action.
 .. note:: If your action doesn't work, check that everything was
    entered correctly; typos are common with this kind of work!
 
-|hard| |FA| Open a Webpage Directly in QGIS
-----------------------------------------------------------------------
+:abbr:`★★★ (Advanced level)` Follow Along: Open a Webpage Directly in QGIS
+-----------------------------------------------------------------------------
 
 Above, you've seen how to open a webpage in an external browser. There are some
 shortcomings with this approach in that it adds an unknowable dependency – will
@@ -291,30 +290,26 @@ To create the layer action:
 
    * :guilabel:`Type`: ``Python``
    * :guilabel:`Description`: ``Wikipedia``
-   * :guilabel:`Action Text` (all on one line)::
+   * :guilabel:`Scope`: ``Feature``, ``Canvas``
+   * :guilabel:`Action Text`::
 
-         from qgis.PyQt.QtCore import QUrl; from qgis.PyQt.QtWebKitWidgets import QWebView; myWV = QWebView(None); myWV.load(QUrl('https://wikipedia.org/wiki/[%name%]')); myWV.show()
+         from qgis.PyQt.QtCore import QUrl
+         from qgis.PyQt.QtWebKitWidgets import QWebView
+
+         myWV = QWebView(None)
+         myWV.load(QUrl('https://wikipedia.org/wiki/[%name%]'))
+         myWV.show()
 
    .. figure:: img/python_action_example.png
       :align: center
 
    There are a couple of things going on here:
 
-   * All the python code is in a single line with semi-colons
-     separating commands (instead of newlines, the usual way of
-     separating Python commands).
    * ``[%name%]`` will be replaced by the actual attribute value
      when the action is invoked (as before).
    * The code simply creates a new ``QWebView`` instance, sets its
      URL, and then calls ``show()`` on it to make it visible as a
      window on the user’s desktop.
-
-   Note that this is a somewhat contrived example.
-   Python works with semantically significant indentation, so
-   separating things with semicolons isn't the best way to write it.
-   So, in the real world, you'd be more likely to import your logic
-   from a Python module and then call a function with a field
-   attribute as parameter.
 
    You could also use this approach to display an image without
    requiring that the users have a particular image viewer on their
@@ -323,16 +318,16 @@ To create the layer action:
 #. Try to use the methods described above to load a Wikipedia page
    using the Wikipedia action you just created.
 
-|IC|
+In Conclusion
 ----------------------------------------------------------------------
 
 Actions allow you to give your map extra functionality, useful to the
 end-user who views the same map in QGIS.
-Due to the fact that you can use shell commands for any operating
-system, as well as Python, the sky is the limit in terms of the
-functions you could incorporate!
+Due to the fact that processes called can be shell commands for any
+operating system, as well as Python, the sky is the limit in terms of
+the functions you could incorporate!
 
-|WN|
+What's Next?
 ----------------------------------------------------------------------
 
 Now that you've done all kinds of vector data creation, you will
@@ -346,16 +341,11 @@ That is the topic of the next module.
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?
 .. |actionRun| image:: /static/common/mAction.png
    :width: 1.5em
-.. |basic| image:: /static/common/basic.png
-.. |hard| image:: /static/common/hard.png
-.. |moderate| image:: /static/common/moderate.png
-.. |signMinus| image:: /static/common/symbologyRemove.png
+.. |identify| image:: /static/common/mActionIdentify.png
    :width: 1.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
+   :width: 1.5em
+.. |symbologyRemove| image:: /static/common/symbologyRemove.png
    :width: 1.5em

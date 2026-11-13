@@ -1,5 +1,5 @@
-.. _processing_testing: 
- 
+.. _processing_testing:
+
 *******************************
  Processing Algorithms Testing
 *******************************
@@ -20,9 +20,9 @@ adding tests is required.
 To test algorithms you can add entries into :file:`testdata/qgis_algorithm_tests.yaml`
 or :file:`testdata/gdal_algorithm_tests.yaml` as appropriate.
 
-This file is structured with `yaml syntax <https://yaml.org/start.html>`_.
+This file is structured with `yaml syntax <https://yaml.org/>`_.
 
-A basic test appears under the toplevel key ``tests`` and looks like this:
+A basic test appears under the top level key ``tests`` and looks like this:
 
 .. code-block:: yaml
 
@@ -140,7 +140,7 @@ the 'file' type and the (relative) path to the file in its 'name':
    STR: string
    EXTFILE:
      type: file
-     name: custom/grass7/extfile.txt
+     name: custom/path/to/extfile.txt
    OTHER: another param
 
 
@@ -173,7 +173,7 @@ properties to define how a layer is compared.
 To deal with a certain tolerance for output values you can specify a ``compare``
 property for an output. The compare property can contain sub-properties for
 ``fields``. This contains information about how precisely a certain field is
-compared (``precision``) or a field can even entirely be ``skip``ed. There is a
+compared (``precision``) or a field can even entirely be ignored (``skip``). There is a
 special field name ``__all__`` which will apply a certain tolerance to all fields.
 There is another property ``geometry`` which also accepts a ``precision`` which is
 applied to each vertex.

@@ -1,4 +1,4 @@
-|LS| Feature Topology
+Lesson: Feature Topology
 ======================================================================
 
 Topology is a useful aspect of vector data layers, because it minimizes errors
@@ -11,7 +11,7 @@ shared border and both features will change at the same time.
 
 **The goal for this lesson:** To understand topology using examples.
 
-|moderate| |FA| Snapping
+:abbr:`★★☆ (Moderate level)` Follow Along: Snapping
 ----------------------------------------------------------------------
 
 Snapping makes topological editing easier.
@@ -21,7 +21,9 @@ To set snapping options:
 
 #. Navigate to the menu entry
    :menuselection:`Project --> Snapping Options...`.
-#. Set up your :guilabel:`Snapping options` dialog to activate the
+#. Set up your :guilabel:`Snapping options`: enable snapping using the
+   |snapping| :sup:`Enable Snapping` button, choose the
+   :guilabel:`Advanced Configuration`, activate the
    ``landuse`` layer with :guilabel:`Type` *vertex* and tolerance
    ``12`` pixels:
 
@@ -31,7 +33,7 @@ To set snapping options:
 #. Make sure that the box in the :guilabel:`Avoid overlap` column is
    checked.
 #. Leave the dialog.
-#. Select the :guilabel:`landuse` layer and enter edit mode
+#. Select the ``landuse`` layer and enter edit mode
    (|toggleEditing|)
 #. Check (under :menuselection:`View --> Toolbars`) that the
    :guilabel:`Advanced Digitizing` toolbar is enabled.
@@ -40,7 +42,7 @@ To set snapping options:
    .. figure:: img/zoom_to.png
       :align: center
 
-#. Digitize this new (fictional) area:
+#. Digitize this new (fictional) area shown in red:
 
    .. figure:: img/new_park_area.png
       :align: center
@@ -57,8 +59,8 @@ To set snapping options:
    :guilabel:`Advanced Digitizing` toolbar.
 
 
-|moderate| |FA| Correct Topological Features
-----------------------------------------------------------------------
+:abbr:`★★☆ (Moderate level)` Follow Along: Correct Topological Features
+------------------------------------------------------------------------
 
 Topology features can sometimes need to be updated.
 In our study area, an area has been turned into forest, so the
@@ -104,15 +106,15 @@ going to use the *Vertex Tool* to edit and join existing polygons.
   Don't worry if you have joined more, less or different areas of
   forest.
 
-|moderate| |FA| Tool: Simplify Feature
+:abbr:`★★☆ (Moderate level)` Follow Along: Tool: Simplify Feature
 ----------------------------------------------------------------------
 
-Continuing on the same layer, we will test the |simplifyFeatures|
+Continuing on the same layer, we will test the |simplify|
 :sup:`Simplify Feature` tool:
 
 #. Click on it to activate it.
 #. Click on one of the areas which you joined using either the
-   *Vertex Tool* or *Add Feature* tool.
+   |vertexToolActiveLayer|:sup:`Vertex Tool` or |capturePolygon| :sup:`Add Polygon Feature` tool.
    You will see this dialog:
 
    .. figure:: img/simplify_line_dialog.png
@@ -138,7 +140,7 @@ Before you go on, set the polygon back to its original state by
 undoing the last change.
 
 
-|moderate| |TY| Tool: Add Ring
+:abbr:`★★☆ (Moderate level)` Try Yourself: Tool: Add Ring
 ----------------------------------------------------------------------
 
 The |addRing| :sup:`Add Ring` tool allows you to add an interior ring
@@ -176,7 +178,7 @@ So you are advised to turn off snapping before cutting a hole.
 * Undo your edit before continuing with the exercise for the next tool.
 
 
-|moderate| |TY| Tool: Add Part
+:abbr:`★★☆ (Moderate level)` Try Yourself: Tool: Add Part
 ----------------------------------------------------------------------
 
 The |addPart| :sup:`Add Part` tool allows you to add a new part to a
@@ -188,7 +190,7 @@ would use this tool to create them.
 #. Select the polygon to which you wish to add the part by using the
    |selectRectangle| :sup:`Select Features by area or single click`
    tool.
-#. Use the :guilabel:`Add Part` tool to add an outlying area.
+#. Use the |addPart| :sup:`Add Part` tool to add an outlying area.
 #. Delete the part you just created using the |deletePart|
    :sup:`Delete Part` tool.
 
@@ -210,7 +212,7 @@ would use this tool to create them.
    #. Undo your edit before continuing with the exercise for the next tool.
 
 
-|moderate| |FA| Tool: Reshape Features
+:abbr:`★★☆ (Moderate level)` Follow Along: Tool: Reshape Features
 ----------------------------------------------------------------------
 
 The |reshape| :sup:`Reshape Features` tool is used to extend a polygon
@@ -251,7 +253,7 @@ Cut away a part:
       :align: center
 
 
-|moderate| |TY| Tool: Split Features
+:abbr:`★★☆ (Moderate level)` Try Yourself: Tool: Split Features
 ----------------------------------------------------------------------
 
 The |splitFeatures| :sup:`Split Features` tool is similar to the
@@ -287,14 +289,14 @@ We will use the tool to split a corner from a polygon.
 
 .. _backlink-create-vector-topology-4:
 
-|hard| |TY| Tool: Merge Features
+:abbr:`★★★ (Advanced level)` Try Yourself: Tool: Merge Features
 ----------------------------------------------------------------------
 
 Now we will re-join the feature you just split out to the remaining
 part of the polygon:
 
 #. Experiment with  the |mergeFeatures|:sup:`Merge Selected Features`
-   and |mergeFeatAttributes|
+   and |mergeFeatureAttributes|
    :sup:`Merge Attributes of Selected Features` tools.
 #. Note the differences.
 
@@ -302,7 +304,7 @@ part of the polygon:
 .. admonition:: Answer
    :class: dropdown
 
-   * Use the :guilabel:`Merge Selected Features` tool, making sure to first select
+   * Use the |mergeFeatures|:sup:`Merge Selected Features` tool, making sure to first select
      both of the polygons you wish to merge.
    * Use the feature with the :guilabel:`OGC_FID` of ``1`` as the source of your
      attributes (click on its entry in the dialog, then click the :guilabel:`Take
@@ -315,10 +317,11 @@ part of the polygon:
    .. figure:: img/merge_feature_dialog.png
       :align: center
 
-   Using the :guilabel:`Merge Attributes of Selected Features` tool will keep the
+   Using the |mergeFeatureAttributes|
+   :sup:`Merge Attributes of Selected Features` tool will keep the
    geometries distinct, but give them the same attributes.
 
-|IC|
+In Conclusion
 ----------------------------------------------------------------------
 
 Topology editing is a powerful tool that allows you to create and modify
@@ -326,7 +329,7 @@ objects quickly and easily, while ensuring that they remain topologically
 correct.
 
 
-|WN|
+What's Next?
 ----------------------------------------------------------------------
 
 Now you know how to digitize the shape of the objects easily, but
@@ -341,11 +344,6 @@ simpler and more effective.
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |TY| replace:: Try Yourself
-.. |WN| replace:: What's Next?
 .. |addPart| image:: /static/common/mActionAddPart.png
    :width: 1.5em
 .. |addRing| image:: /static/common/mActionAddRing.png
@@ -356,20 +354,18 @@ simpler and more effective.
    :width: 2em
 .. |deleteRing| image:: /static/common/mActionDeleteRing.png
    :width: 2em
-.. |hard| image:: /static/common/hard.png
 .. |largeLandUseArea| replace:: Bontebok National Park
-.. |mergeFeatAttributes| image:: /static/common/mActionMergeFeatureAttributes.png
+.. |mergeFeatureAttributes| image:: /static/common/mActionMergeFeatureAttributes.png
    :width: 1.5em
 .. |mergeFeatures| image:: /static/common/mActionMergeFeatures.png
    :width: 1.5em
-.. |moderate| image:: /static/common/moderate.png
 .. |redo| image:: /static/common/mActionRedo.png
    :width: 1.5em
 .. |reshape| image:: /static/common/mActionReshape.png
    :width: 1.5em
 .. |selectRectangle| image:: /static/common/mActionSelectRectangle.png
    :width: 1.5em
-.. |simplifyFeatures| image:: /static/common/mActionSimplify.png
+.. |simplify| image:: /static/common/mActionSimplify.png
    :width: 1.5em
 .. |snapping| image:: /static/common/mIconSnapping.png
    :width: 1.5em

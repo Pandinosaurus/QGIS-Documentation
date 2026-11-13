@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Processing_parameter:
 
 parameter
@@ -25,4 +26,3 @@ Returns the value of a processing algorithm input parameter.
 
 
 .. end_parameter_section
-

@@ -6,6 +6,7 @@ Vector general
    .. contents::
       :local:
       :depth: 1
+      :class: toc-columns
 
 
 .. _qgisassignprojection:
@@ -32,6 +33,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -39,12 +41,12 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer with wrong or missing CRS
    * - **Assigned CRS**
      - ``CRS``
      - [crs]
-       
+
        Default: ``EPSG:4326 - WGS84``
      - Select the new CRS to assign to the vector layer
    * - **Assigned CRS**
@@ -54,13 +56,12 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output layer containing only the duplicates.
-       One of:
+     - Specify the output vector layer.
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
-
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
 
 Outputs
 ..........
@@ -68,6 +69,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -98,6 +100,10 @@ layer string field.
 The output layer will have a point geometry reflecting the geocoded location
 as well as a number of attributes associated to the geocoded location.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point features
+
 .. note:: This algorithm is compliant with the `usage policy
  <https://operations.osmfoundation.org/policies/nominatim/>`_ of the
  Nominatim geocoding service provided by the OpenStreetMap Foundation.
@@ -108,6 +114,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -127,15 +134,11 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output layer containing only the geocoded addresses.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
-       * Create Temporary Layer (``TEMPORARY_OUTPUT``)
-       * Save to File...
-       * Save to Geopackage...
-       * Save to Database Table...
-       * Append to Layer...
-
-       The file encoding can also be changed here.
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
 
 Outputs
 ..........
@@ -143,6 +146,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -176,23 +180,24 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: line, polygon]
      - The input vector layer
    * - **Bookmark destination**
      - ``DESTINATION``
      - [enumeration]
-       
+
        Default: 0
      - Select the destination for the bookmarks.
        One of:
-       
+
        * 0 --- Project bookmarks
        * 1 --- User bookmarks
    * - **Name field**
@@ -212,6 +217,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -219,8 +225,8 @@ Outputs
      - Description
    * - **Count of bookmarks added**
      - ``COUNT``
-     - [number]
-     - 
+     - [numeric: integer]
+     -
 
 Python code
 ...........
@@ -247,6 +253,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -255,17 +262,17 @@ Parameters
    * - **Bookmark source**
      - ``SOURCE``
      - [enumeration] [list]
-       
+
        Default: [0,1]
      - Select the source(s) of the bookmarks.
        One or more of:
-       
+
        * 0 --- Project bookmarks
        * 1 --- User bookmarks
    * - **Output CRS**
      - ``CRS``
      - [crs]
-       
+
        Default: ``EPSG:4326 - WGS 84``
      - The CRS of the output layer
    * - **Output**
@@ -273,12 +280,11 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output layer. One of:
+     - Specify the output layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
           :end-before: **end_layer_output_types**
-
 
 Outputs
 ..........
@@ -286,6 +292,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -323,12 +330,13 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Select the vector layer you want to create an attribute index
@@ -344,6 +352,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -384,14 +393,15 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
 
 Outputs
@@ -400,6 +410,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -422,12 +433,9 @@ Python code
 
 .. _qgisdefinecurrentprojection:
 
-Define Shapefile projection
----------------------------
-Sets the CRS (projection) of an existing Shapefile format dataset to
-the provided CRS.
-It is very useful when a Shapefile format dataset is missing the
-``prj`` file and you know the correct projection.
+Define projection
+-----------------
+Sets an existing layer's projection to the provided CRS without reprojecting features.
 
 Contrary to the :ref:`qgisassignprojection` algorithm, it modifies the
 current layer and will not output a new layer.
@@ -446,6 +454,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -453,7 +462,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer with missing projection information
    * - **CRS**
      - ``CRS``
@@ -466,12 +475,13 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - 
+   * -
      - ``INPUT``
      - [same as input]
      - The input vector layer with the defined projection
@@ -479,7 +489,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:definecurrentprojection``
+**Algorithm ID**: ``native:definecurrentprojection``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -496,6 +506,11 @@ Attributes are not checked, so in case two features have identical
 geometries but different attributes, only one of them will be added to
 the result layer.
 
+Optionally, these duplicate records can be saved to a separate output for analysis.
+
+.. note::
+ This algorithm does not require valid geometries as input.
+
 .. seealso:: :ref:`qgisdropgeometries`,
    :ref:`qgisremovenullgeometries`,
    :ref:`qgisremoveduplicatesbyattribute`
@@ -506,6 +521,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -513,18 +529,34 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The layer with duplicate geometries you want to clean
    * - **Cleaned**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output layer. One of:
+     - Specify the output layer containing the unique features.
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
           :end-before: **end_layer_output_types**
+   * - **Duplicates**
+
+       Optional
+
+       ``Added in 4.0``
+     - ``DUPLICATES``
+     - [same as input]
+
+       Default: ``[Skip output]``
+     - Specify the output layer containing only the discarded duplicates.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
 Outputs
 ..........
@@ -532,14 +564,19 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
+   * - **Duplicates**
+     - ``DUPLICATES``
+     - [same as input]
+     - Vector layer containing the duplicate features.
    * - **Count of discarded duplicate records**
      - ``DUPLICATE_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of discarded duplicate records
    * - **Cleaned**
      - ``OUTPUT``
@@ -547,7 +584,7 @@ Outputs
      - The output layer without any duplicated geometries
    * - **Count of retained records**
      - ``RETAINED_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of unique records
 
 Python code
@@ -564,10 +601,8 @@ Python code
 
 Delete duplicates by attribute
 -----------------------------------
-Deletes duplicate rows by only considering the specified field
-/ fields.
-The first matching row will be retained, and duplicates will be
-discarded.
+Deletes duplicate rows by only considering the specified field(s).
+The first matching row will be retained, and duplicates will be discarded.
 
 Optionally, these duplicate records can be saved to a separate
 output for analysis.
@@ -590,7 +625,7 @@ Parameters
      - ``INPUT``
      - [vector: any]
      - The input layer
-   * - **Fields to match duplicates by**
+   * - **Field to match duplicates by**
      - ``FIELDS``
      - [tablefield: any] [list]
      - Fields defining duplicates.
@@ -602,7 +637,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output layer containing the unique features.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -616,7 +651,7 @@ Parameters
 
        Default: ``[Skip output]``
      - Specify the output layer containing only the duplicates.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -635,18 +670,12 @@ Outputs
      - Type
      - Description
    * - **Filtered (duplicates)**
-
-       Optional
      - ``DUPLICATES``
      - [same as input]
-     
-       Default: ``[Skip output]``
-     - Vector layer containing the removed features.
-       Will not be produced if not specified (left as
-       ``[Skip output]``).
+     - Vector layer containing the duplicate features.
    * - **Count of discarded duplicate records**
      - ``DUPLICATE_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of discarded duplicate records
    * - **Filtered (no duplicates)**
      - ``OUTPUT``
@@ -654,7 +683,7 @@ Outputs
      - Vector layer containing the unique features.
    * - **Count of retained records**
      - ``RETAINED_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of unique records
 
 Python code
@@ -696,25 +725,25 @@ Parameters
      - Description
    * - **Original layer**
      - ``ORIGINAL``
-     - [vector: any]
+     - [vector: geometry]
      - The vector layer considered as the original version
    * - **Revised layer**
      - ``REVISED``
-     - [vector: any]
+     - [vector: geometry]
      - The revised or modified vector layer
    * - **Attributes to consider for match**
-   
+
        Optional
      - ``COMPARE_ATTRIBUTES``
      - [tablefield: any] [list]
      - Attributes to consider for match. By default, all attributes
-       are compared.  
+       are compared.
    * - **Geometry comparison behavior**
-   
+
        Optional
      - ``MATCH_TYPE``
      - [enumeration]
-       
+
        Default: 1
      - Defines the criteria for comparison. Options:
 
@@ -724,34 +753,40 @@ Parameters
          considered equal
 
    * - **Unchanged features**
+
+       Optional
      - ``UNCHANGED``
      - [vector: same as Original layer]
      - Specify the output vector layer containing the unchanged
-       features. One of:
+       features. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
    * - **Added features**
+
+       Optional
      - ``ADDED``
      - [vector: same as Original layer]
      - Specify the output vector layer containing the added features.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
    * - **Deleted features**
+
+       Optional
      - ``DELETED``
      - [vector: same as Original layer]
      - Specify the output vector layer containing the deleted
-       features. One of:
+       features. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
 Outputs
 ..........
@@ -768,7 +803,7 @@ Outputs
    * - **Unchanged features**
      - ``UNCHANGED``
      - [vector: same as Original layer]
-     - Vector layer containing the unchanged features. 
+     - Vector layer containing the unchanged features.
    * - **Added features**
      - ``ADDED``
      - [vector: same as Original layer]
@@ -779,15 +814,15 @@ Outputs
      - Vector layer containing the deleted features.
    * - **Count of unchanged features**
      - ``UNCHANGED_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of unchanged features.
    * - **Count of features added in revised layer**
      - ``ADDED_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of features added in revised layer.
    * - **Count of features deleted from original layer**
      - ``DELETED_COUNT``
-     - [number]
+     - [numeric: integer]
      - Count of features deleted from original layer.
 
 Python code
@@ -812,6 +847,7 @@ If the file is saved in a local folder, you can choose between many
 file formats.
 
 |checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
 .. seealso:: :ref:`qgisdeleteduplicategeometries`,
    :ref:`qgisremovenullgeometries`
@@ -822,6 +858,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -829,16 +866,16 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer
    * - **Dropped geometries**
      - ``OUTPUT``
-     - [table]
-     - Specify the output geometryless layer. One of:
+     - [vector: table]
+     - Specify the output geometryless layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
 
 Outputs
 ..........
@@ -846,6 +883,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -853,7 +891,7 @@ Outputs
      - Description
    * - **Dropped geometries**
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
      - The output geometryless layer.
        A copy of the original attribute table.
 
@@ -871,16 +909,16 @@ Python code
 
 Execute SQL
 -----------
-Runs a simple or complex query with ``SQL`` syntax on the source
-layer.
+Runs a simple or complex query based only on SELECT with ``SQL`` syntax
+on the source layer.
 
 Input datasources are identified with ``input1``, ``input2``... ``inputN`` and
 a simple query will look like ``SELECT * FROM input1``.
 
-Beside a simple query, you can add expressions or variables within the 
-``SQL query`` parameter itself. This is particulary useful if this algorithm is
+Beside a simple query, you can add expressions or variables within the
+``SQL query`` parameter itself. This is particularly useful if this algorithm is
 executed within a Processing model and you want to use a model input as a
-parameter of the query. An example of a query will then be ``SELECT * FROM 
+parameter of the query. An example of a query will then be ``SELECT * FROM
 [% @table %]`` where ``@table`` is the variable that identifies the model input.
 
 The result of the query will be added as a new layer.
@@ -952,10 +990,10 @@ Parameters
      - The CRS to assign to the output layer
    * - **SQL Output**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
 
        Default: ``[Create temporary layer]``
-     - Specify the output layer created by the query. One of:
+     - Specify the output layer created by the query. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -967,6 +1005,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -974,7 +1013,7 @@ Outputs
      - Description
    * - **SQL Output**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer created by the query
 
 Python code
@@ -1003,6 +1042,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1010,25 +1050,51 @@ Parameters
      - Description
    * - **Input layers**
      - ``LAYERS``
-     - [vector: any][list]
-     - Input vector layers to export
+     - [vector: geometry] [list]
+     - List of input vector layers with options associated (filled as a
+       :class:`QgsProcessingParameterDxfLayers
+       <qgis.core.QgsProcessingParameterDxfLayers>` item ---
+       done in GUI by pressing :guilabel:`Configure Layer...` button
+       for each selected layer):
+
+       **Layer** [string] (``layer``)
+         Full path of the input layer to export
+
+       **Output layer attribute** [tablefield: any] (``attributeIndex``)
+         Attribute index to split the input layer using unique values
+
+       **Output layer name** [string] (``overriddenLayerName``)
+         Overridden layer name to be used in the exported DXF file (the
+         original project layer remains untouched)
+
+       **Allow data defined symbol blocks** [boolean] (``buildDataDefinedBlocks``)
+
+       **Maximum number of symbol blocks** [numeric: integer] (``dataDefinedBlocksMaximumNumberOfClasses``)
+         ``-1`` means no limitation.
+
    * - **Symbology mode**
      - ``SYMBOLOGY_MODE``
      - [enumeration]
 
        Default: 0
      - Type of symbology to apply to output layers. You can choose between:
-       
+
        * 0 --- No Symbology
        * 1 --- Feature Symbology
        * 2 --- Symbol Layer Symbology
-       
+
    * - **Symbology scale**
      - ``SYMBOLOGY_SCALE``
      - [scale]
 
        Default: 1:1 000 000
      - Default scale of data export.
+   * - **Map theme**
+
+       Optional
+     - ``MAP_THEME``
+     - [map theme]
+     - Match layer styling to the provided map theme.
    * - **Encoding**
      - ``ENCODING``
      - [enumeration]
@@ -1037,13 +1103,20 @@ Parameters
      - ``CRS``
      - [crs]
      - Choose the CRS for the output layer.
+   * - **Extent**
+
+       Optional
+     - ``EXTENT``
+     - [extent]
+     - Limit exported features to those with geometries intersecting the
+       provided extent.
    * - **Use layer title as name**
      - ``USE_LAYER_TITLE``
      - [boolean]
 
        Default: False
-     - Name the output layer with the layer title (as set in QGIS) instead
-       of the layer name.
+     - Name the output layer with the layer title (as set in layer metadata
+       or QGIS Server properties) instead of the layer name.
    * - **Force 2D**
      - ``FORCE_2D``
      - [boolean]
@@ -1054,15 +1127,21 @@ Parameters
      - ``MTEXT``
      - [boolean]
 
-       Default: False
+       Default: True
      - Exports labels as MTEXT or TEXT elements
+   * - **Use only selected features**
+     - ``SELECTED_FEATURES_ONLY``
+     - [boolean]
+
+       Default: False
+     - Exports only the selected features.
    * - **DXF**
      - ``OUTPUT``
      - [file]
 
        Default: ``[Save to temporary file]``
      - Specification of the output DXF file.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1074,6 +1153,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1100,8 +1180,8 @@ Extract selected features
 -------------------------
 Saves the selected features as a new layer.
 
-.. note:: If the selected layer has no selected features, the newly
-   created layer will be empty.
+If the selected layer has no selected features,
+the newly created layer will be empty.
 
 Parameters
 ..........
@@ -1109,12 +1189,13 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Layer to save the selection from
@@ -1124,7 +1205,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the vector layer for the selected features.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1136,6 +1217,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1178,9 +1260,9 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - ESRI Shapefile (:file:`.SHP`) Layer to extract the encoding information.
 
 Outputs
@@ -1189,6 +1271,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1248,9 +1331,9 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Layer with unknown projection
    * - **Target area for layer (xmin, xmax, ymin, ymax)**
      - ``TARGET_AREA``
@@ -1263,11 +1346,11 @@ Parameters
 
    * - **CRS candidates**
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
 
        Default: ``[Create temporary layer]``
      - Specify the table (geometryless layer) for the CRS
-       suggestions (EPSG codes). One of:
+       suggestions (EPSG codes). :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1279,6 +1362,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1286,14 +1370,14 @@ Outputs
      - Description
    * - **CRS candidates**
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
      - A table with all the
        CRS (EPSG codes) of the matching criteria.
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:findprojection``
+**Algorithm ID**: ``native:findprojection``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1306,8 +1390,8 @@ Flatten relationship
 --------------------
 
 Flattens a :ref:`relationship <vector_relations>` for a vector layer,
-exporting a single layer containing one parent feature per 
-related child feature. This master feature contains all the 
+exporting a single layer containing one parent feature per
+related child feature. This master feature contains all the
 attributes for the related features.
 This allows to have the relation as a plain table that can be e.g. exported to CSV.
 
@@ -1316,6 +1400,9 @@ This allows to have the relation as a plain table that can be e.g. exported to C
   :width: 100%
 
   Form of a region with related children (left) - A duplicate region feature for each related child, with joined attributes (right)
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
 
 Parameters
 ..........
@@ -1329,7 +1416,7 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Layer with the relationship that should be de-normalized
@@ -1340,7 +1427,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output (flattened) layer. One of:
+     - Specify the output (flattened) layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1352,6 +1439,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1360,7 +1448,7 @@ Outputs
    * - **Flattened layer**
      - ``OUTPUT``
      - [same as input]
-     - A layer containing master features 
+     - A layer containing master features
        with all the attributes for the related features
 
 Python code
@@ -1371,7 +1459,7 @@ Python code
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
-  
+
 
 .. _qgisjoinattributestable:
 
@@ -1385,8 +1473,10 @@ The additional attributes and their values are taken from a second
 vector layer.
 An attribute is selected in each of them to define the join criteria.
 
-.. seealso:: :ref:`qgisjoinbynearest`,
-   :ref:`qgisjoinattributesbylocation`
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+.. seealso:: :ref:`qgisjoinbynearest`, :ref:`qgisjoinattributesbylocation`
 
 Parameters
 ..........
@@ -1400,7 +1490,7 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Input vector layer. The output layer will consist of
@@ -1434,16 +1524,14 @@ Parameters
        Default: 1
      - The type of the final joined layer. One of:
 
-       * 0 --- Create separate feature for each matching feature
-	 (one-to-many)
-       * 1 --- Take attributes of the first matching feature only
-	 (one-to-one)
+       * 0 --- Create separate feature for each matching feature (one-to-many)
+       * 1 --- Take attributes of the first matching feature only (one-to-one)
 
    * - **Discard records which could not be joined**
      - ``DISCARD_NONMATCHING``
      - [boolean]
 
-       Default: True
+       Default: False
      - Check if you don't want to keep the features that could not be
        joined
    * - **Joined field prefix**
@@ -1454,25 +1542,29 @@ Parameters
      - Add a prefix to joined fields in order to easily identify
        them and avoid field name collision
    * - **Joined layer**
+
+       Optional
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer for the join.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
    * - **Unjoinable features from first layer**
+
+       Optional
      - ``NON_MATCHING``
      - [same as input]
 
        Default: ``[Skip output]``
      - Specify the output vector layer for unjoinable
        features from first layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -1484,6 +1576,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1491,8 +1584,8 @@ Outputs
      - Description
    * - **Number of joined features from input table**
      - ``JOINED_COUNT``
-     - [number]
-     - 
+     - [numeric: integer]
+     -
    * - **Unjoinable features from first layer**
 
        Optional
@@ -1500,6 +1593,8 @@ Outputs
      - [same as input]
      - Vector layer with the non-matched features
    * - **Joined layer**
+
+       Optional
      - ``OUTPUT``
      - [same as input]
      - Output vector layer with added attributes from the join
@@ -1507,8 +1602,8 @@ Outputs
 
        Optional
      - ``UNJOINABLE_COUNT``
-     - [number]
-     - 
+     - [numeric: integer]
+     -
 
 Python code
 ...........
@@ -1535,6 +1630,9 @@ layer that are added to each feature from the first layer.
 
 **Default menu**: :menuselection:`Vector --> Data Management Tools`
 
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 .. seealso:: :ref:`qgisjoinbynearest`,
    :ref:`qgisjoinattributestable`, :ref:`qgisjoinbylocationsummary`
 
@@ -1559,7 +1657,7 @@ Parameters
      - Description
    * - **Join to features in**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer. The output layer will consist of
        the features of this layer with attributes from
        matching features in the second layer.
@@ -1584,7 +1682,7 @@ Parameters
        to be extracted.
    * - **By comparing to**
      - ``JOIN``
-     - [vector: any]
+     - [vector: geometry]
      - The join layer. Features of this vector layer will **add** their attributes
        to the source layer attribute table if they satisfy the spatial relationship.
    * - **Fields to add (leave empty to use all fields)**
@@ -1599,17 +1697,14 @@ Parameters
      - [enumeration]
      - The type of the final joined layer. One of:
 
-       * 0 --- Create separate feature for each matching feature
-	 (one-to-many)
-       * 1 --- Take attributes of the first matching feature only
-	 (one-to-one)
-       * 2 --- Take attributes of the feature with largest overlap
-	 only (one-to-one)
+       * 0 --- Create separate feature for each matching feature (one-to-many)
+       * 1 --- Take attributes of the first matching feature only (one-to-one)
+       * 2 --- Take attributes of the feature with largest overlap only (one-to-one)
 
    * - **Discard records which could not be joined**
      - ``DISCARD_NONMATCHING``
      - [boolean]
-     
+
        Default: False
      - Remove from the output the input layer's features which could not
        be joined
@@ -1621,25 +1716,29 @@ Parameters
      - Add a prefix to joined fields in order to easily identify
        them and avoid field name collision
    * - **Joined layer**
+
+       Optional
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer for the join.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
    * - **Unjoinable features from first layer**
+
+       Optional
      - ``NON_MATCHING``
      - [same as input]
 
        Default: ``[Skip output]``
      - Specify the output vector layer for unjoinable
        features from first layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -1651,6 +1750,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1658,8 +1758,8 @@ Outputs
      - Description
    * - **Number of joined features from input table**
      - ``JOINED_COUNT``
-     - [number]
-     - 
+     - [numeric: integer]
+     -
    * - **Unjoinable features from first layer**
 
        Optional
@@ -1721,7 +1821,7 @@ Parameters
      - Description
    * - **Join to features in**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer. The output layer will consist of
        the features of this layer with attributes from
        matching features in the second layer.
@@ -1746,7 +1846,7 @@ Parameters
        to be extracted.
    * - **By comparing to**
      - ``JOIN``
-     - [vector: any]
+     - [vector: geometry]
      - The join layer. Features of this vector layer will **add** summaries
        of their attributes to the source layer attribute table if
        they satisfy the spatial relationship.
@@ -1790,7 +1890,7 @@ Parameters
    * - **Discard records which could not be joined**
      - ``DISCARD_NONMATCHING``
      - [boolean]
-     
+
        Default: False
      - Remove from the output the input layer's features which could not be joined
    * - **Joined layer**
@@ -1799,7 +1899,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer for the join.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1811,6 +1911,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1824,7 +1925,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:joinbylocationsummary``
+**Algorithm ID**: ``native:joinbylocationsummary``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1847,6 +1948,9 @@ join to the k-nearest neighboring features.
 If a maximum distance is specified, only features which are closer
 than this distance will be matched.
 
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 .. seealso:: :ref:`qgisnearestneighbouranalysis`,
    :ref:`qgisjoinattributestable`,
    :ref:`qgisjoinattributesbylocation`, :ref:`qgisdistancematrix`
@@ -1865,21 +1969,21 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input layer.
    * - **Input layer 2**
      - ``INPUT_2``
-     - [vector: any]
+     - [vector: geometry]
      - The join layer.
    * - **Layer 2 fields to copy (leave empty to copy all fields)**
      - ``FIELDS_TO_COPY``
-     - [fields]
+     - [tablefield: any] [list]
      - Join layer fields to copy (if empty, all fields will be
        copied).
    * - **Discard records which could not be joined**
      - ``DISCARD_NONMATCHING``
      - [boolean]
-     
+
        Default: False
      - Remove from the output the input layer records which could not
        be joined
@@ -1889,25 +1993,27 @@ Parameters
      - Joined field prefix
    * - **Maximum nearest neighbors**
      - ``NEIGHBORS``
-     - [number]
-     
+     - [numeric: integer]
+
        Default: 1
      - Maximum number of nearest neighbors
    * - **Maximum distance**
      - ``MAX_DISTANCE``
-     - [number]
+     - [numeric: double]
      - Maximum search distance
    * - **Joined layer**
+
+       Optional
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
      - Specify the vector layer containing the joined features.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
 
    * - **Unjoinable features from first layer**
      - ``NON_MATCHING``
@@ -1915,7 +2021,7 @@ Parameters
 
        Default: ``[Skip output]``
      - Specify the vector layer containing the features that could
-       not be joined. One of:
+       not be joined. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -1944,14 +2050,12 @@ Outputs
        could not be joined to any features in the join layer.
    * - **Number of joined features from input table**
      - ``JOINED_COUNT``
-     - [number]
-     - Number of features from the input table that have been
-       joined.
+     - [numeric: integer]
+     - Number of features from the input table that have been joined.
    * - **Number of unjoinable features from input table**
      - ``UNJOINABLE_COUNT``
-     - [number]
-     - Number of features from the input table that could not
-       be joined.
+     - [numeric: integer]
+     - Number of features from the input table that could not be joined.
 
 Python code
 ...........
@@ -1967,28 +2071,29 @@ Python code
 
 Merge vector layers
 -------------------
-Combines multiple vector layers of the **same geometry** type into a
-single one.
+Combines multiple vector layers of the **same geometry** type into a single one.
 
-The attribute table of the resulting layer will contain the fields from all
-input layers. If fields with the same name but different types are found then
+The attribute table of the resulting layer will contain the fields from all input layers.
+If fields with the same name but different types are found then
 the exported field will be automatically converted into a string type field.
-New fields storing the original layer name and source are also added.
+Optionally, new fields storing the original layer name and source can be added.
 
-If any input layers contain Z or M values, then the output layer will
-also contain these values.
-Similarly, if any of the input layers are multi-part, the output layer
-will also be a multi-part layer.
+If any input layers contain Z or M values,
+then the output layer will also contain these values.
+Similarly, if any of the input layers are multi-part,
+the output layer will also be a multi-part layer.
 
-Optionally, the destination coordinate reference system (CRS) for the
-merged layer can be set. If it is not set, the CRS will be taken from
-the first input layer.
+Optionally, the destination coordinate reference system (CRS) for the merged layer can be set.
+If it is not set, the CRS will be taken from the first input layer.
 All layers will be reprojected to match this CRS.
 
 .. figure:: img/merge_vector_layers.png
    :align: center
 
 **Default menu**: :menuselection:`Vector --> Data Management Tools`
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
 
 .. seealso:: :ref:`qgissplitvectorlayer`
 
@@ -1998,16 +2103,16 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layers**
+   * - **Input layers**
      - ``LAYERS``
      - [vector: any] [list]
-     - The layers that are to be merged into a
-       single layer.
+     - The layers that are to be merged into a single layer.
        Layers should be of the same geometry type.
    * - **Destination CRS**
 
@@ -2017,12 +2122,20 @@ Parameters
      - Choose the CRS for the output layer.
        If not specified, the CRS of the first input
        layer is used.
+   * - **Add source layer information (layer name and path)**
+
+       ``Added in 3.42``
+     - ``ADD_SOURCE_FIELDS``
+     - [boolean]
+
+       Default: True
+     - Add fields storing the original layer name and path
    * - **Merged**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -2034,6 +2147,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2065,18 +2179,22 @@ index according to an expression.
 Be careful, it might not work as expected with some providers, the
 order might not be kept every time.
 
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 Parameters
 ..........
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Input vector layer to sort
@@ -2087,14 +2205,14 @@ Parameters
    * - **Sort ascending**
      - ``ASCENDING``
      - [boolean]
-       
+
        Default: True
      - If checked the vector layer will be sorted from
        small to large values.
    * - **Sort nulls first**
      - ``NULLS_FIRST``
      - [boolean]
-       
+
        Default: False
      - If checked, Null values are placed first
    * - **Ordered**
@@ -2102,7 +2220,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -2114,6 +2232,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2147,6 +2266,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2164,6 +2284,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2171,7 +2292,7 @@ Outputs
      - Description
    * - **Repaired layer**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer with the SHX file repaired
 
 Python code
@@ -2192,6 +2313,7 @@ Reprojects a vector layer in a different CRS. The reprojected layer
 will have the same features and attributes of the input layer.
 
 |checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
 .. seealso:: :ref:`qgisassignprojection`,
    :ref:`qgisdefinecurrentprojection`, :ref:`qgisfindprojection`
@@ -2199,9 +2321,13 @@ will have the same features and attributes of the input layer.
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2209,7 +2335,7 @@ Parameters
      - Description
    * - **Input Layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer to reproject
    * - **Target CRS**
      - ``TARGET_CRS``
@@ -2217,6 +2343,48 @@ Parameters
 
        Default: ``EPSG:4326 - WGS 84``
      - Destination coordinate reference system
+   * - **Convert curved geometries to straight segments**
+
+       ``Added in 3.32``
+     - ``CONVERT_CURVED_GEOMETRIES``
+     - [boolean]
+
+       Default: False
+     - If checked, curved geometries will be converted to straight segments in the process,
+       avoiding potential distortion issues.
+   * - **Also transform Z coordinates**
+     - ``TRANSFORM_Z``
+     - [boolean]
+
+       Default: False
+     - If checked, the Z coordinates will also be transformed according to a vertical datum transformation.
+       This requires that the Z coordinates in the geometries represent height relative to the vertical datum
+       of the source CRS and are expressed in its vertical units.
+       If Z coordinates do not match these requirements, either transformation of Z coordinates
+       or all X, Y and Z coordinates may be incorrect.
+   * - **Reprojected**
+     - ``OUTPUT``
+     - [same as input]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
    * - **Coordinate Operation**
 
        Optional
@@ -2228,16 +2396,6 @@ Parameters
        transformation pipeline is required. Requires proj version >= 6.
 
        Read more at :ref:`datum_transformation`.
-   * - **Reprojected**
-     - ``OUTPUT``
-     - [same as input]
-
-       Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
-
-       .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
 
 Outputs
 ..........
@@ -2245,6 +2403,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2275,7 +2434,7 @@ Saves vector features to a specified file dataset.
 For dataset formats supporting layers, an optional layer name parameter
 can be used to specify a custom string. Optional GDAL-defined dataset and
 layer options can be specified. For more information on this, read the online
-`GDAL documentation <https://gdal.org/drivers/vector/index.html>`_ on the format.
+`GDAL documentation <https://gdal.org/en/latest/drivers/vector/index.html>`_ on the format.
 
 Parameters
 ..........
@@ -2286,6 +2445,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2300,7 +2460,7 @@ Basic parameters
      - [same as input]
 
        Default: ``[Save to temporary file]``
-     - Specify the file to save the features to. One of:
+     - Specify the file to save the features to. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2312,6 +2472,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2322,7 +2483,7 @@ Advanced parameters
        Optional
      - ``LAYER_NAME``
      - [string]
-     - Name to use for the output layer 
+     - Name to use for the output layer
    * - **GDAL dataset options**
 
        Optional
@@ -2337,6 +2498,18 @@ Advanced parameters
      - [string]
      - GDAL layer creation options of the output format.
        Separate individual options with semicolons.
+   * - **Action to take on pre-existing file**
+
+     - ``ACTION_ON_EXISTING_FILE``
+     - [enumeration]
+
+       Default: 0
+     - How to manage existing features. Valid methods are:
+
+       * 0 --- Create or overwrite file
+       * 1 --- Create or overwrite layer
+       * 2 --- Append features to existing layer, but do not create new fields
+       * 3 --- Append features to existing layer, and create new fields if needed
 
 Outputs
 .......
@@ -2344,6 +2517,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2389,14 +2563,15 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Saved features**
+   * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer to set the encoding.
    * - **Encoding**
      - ``ENCODING``
@@ -2409,6 +2584,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2443,6 +2619,13 @@ Geometries and other attributes remain unchanged in the output.
 Optionally, the separator string can be a regular expression
 for added flexibility.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 Parameters
 ..........
 
@@ -2470,19 +2653,19 @@ Parameters
    * - **Use regular expression separator**
      - ``REGEX``
      - [boolean]
-       
+
        Default: False
-     - 
+     -
    * - **Split**
      - ``OUTPUT``
      - [same as input]
-       
+
        Default: ``Create temporary layer``
-     - Specify output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
 
 Outputs
 ..........
@@ -2490,6 +2673,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2537,12 +2721,13 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Input vector layer
@@ -2553,10 +2738,10 @@ Basic parameters
    * - **Output directory**
      - ``OUTPUT``
      - [folder]
-       
+
        Default: ``[Save to temporary folder]``
      - Specify the directory for the output layers.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **directory_output_types**
@@ -2568,15 +2753,23 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
    * - **Output file type**
+
+       Optional
      - ``FILE_TYPE``
      - [enumeration]
-     - Select the extension of the output files
+
+       Default: ``gpkg`` in the dialog window
+     - Select the extension of the output files.
+       If not specified or invalid, the output files format will
+       be the one set in the "Default output vector layer extension"
+       Processing setting.
 
 Outputs
 ..........
@@ -2584,6 +2777,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2623,12 +2817,13 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: any]
      - Input vector layer
@@ -2639,6 +2834,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2647,7 +2843,7 @@ Outputs
    * - **Truncated layer**
      - ``OUTPUT``
      - [folder]
-     - The truncated (empty) layer
+     - The input layer, all features deleted
 
 Python code
 ...........

@@ -73,7 +73,7 @@ Manager**, which can be accessed in the :guilabel:`Authentication` tab in QGIS
 
 .. _figure_auth_pki_certif:
 
-.. figure:: img/auth-open-Certificate-manager.png
+.. figure:: img/options_authentication.png
    :align: center
 
    Opening the Certificate Manager
@@ -90,6 +90,8 @@ accustomed to the workflow.
    authentication database, there is no need to click the :guilabel:`Options`
    dialog :guilabel:`OK` button for any changes to be saved. This is unlike other
    settings in the Options dialog.
+
+.. _authentication_authorities:
 
 Authorities
 ...........
@@ -135,27 +137,12 @@ certificate will not be saved to the database unless the |fileSave|
 *per* selected certification. Closing the dialog will **not** apply the
 policy changes.
 
-.. _figure_auth_pki_policy:
-
-.. figure:: img/auth-authority-edit-trust_save-not-close.png
-   :align: center
-
-   Saving the trust policy changes
-
 You can review the filtered CAs, both intermediate and root certificates, that
 will be trusted for secure connections or change the default trust policy by
 clicking the |transformSettings| **Options** button.
 
 .. warning::
-   Changing the default trust policy may result in problems with secure
-   connections.
-
-.. _figure_auth_pki_options:
-
-.. figure:: img/auth-editor-authorities_utilities-menu.png
-   :align: center
-
-   Authorities options menu
+   Changing the default trust policy may result in problems with secure connections.
 
 You can import CAs or save a file system path from a file that contains multiple
 CAs, or import individual CAs. The standard PEM format for files that contain
@@ -179,6 +166,8 @@ editor.
 .. note::
    If you are pasting certificate information into the :guilabel:`PEM text`
    field, note that encrypted certificates are not supported.
+
+.. _authentication_identities:
 
 Identities
 ..........
@@ -219,19 +208,13 @@ prior to import. Likewise, if the client certificate in the bundle is invalid
 (for example, its effective date has not yet started or has elapsed) the bundle
 can not be imported.
 
-.. _figure_auth_pki_identities_import:
+.. _figure_auth_identities_import:
 
-.. figure:: img/auth-identity-import_paths.png
+.. figure:: img/auth-identity-imports.png
    :align: center
 
-   PEM/DER identity import
+   PEM/DER and PKCS#12 identities import
 
-.. _figure_auth_pki_identities_import_2:
-
-.. figure:: img/auth-identity-import_bundle-valid.png
-   :align: center
-
-   PKCS#12 identity import
 
 Handling bad layers
 -------------------
@@ -351,7 +334,7 @@ allow you to override SSL errors, but with more granular control.
    not necessarily fix an issue with the validation of your client identity, and
    only your client identity's issuer or server administrator can fix the issue.
 
-You can pre-configure an SSL server configuration by clicking the |signPlus|
+You can pre-configure an SSL server configuration by clicking the |symbologyAdd|
 button. Alternatively, you can add a configuration when an SSL error occurs
 during a connection and you are presented with an **SSL Error** dialog (where
 the error can be ignored temporarily or saved to the database and ignored):
@@ -416,7 +399,7 @@ save the configuration to the database.
    :width: 1.5em
 .. |selectString| image:: /static/common/selectstring.png
    :width: 2.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
    :width: 1.5em
 .. |transformSettings| image:: /static/common/mActionTransformSettings.png
    :width: 1.5em

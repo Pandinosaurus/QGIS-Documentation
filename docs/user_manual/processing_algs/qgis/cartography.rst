@@ -6,6 +6,7 @@ Cartography
    .. contents::
       :local:
       :depth: 1
+      :class: toc_columns
 
 .. _qgisangletonearest:
 
@@ -26,6 +27,7 @@ to avoid aligning isolated points to distant features.
  point symbols to follow the nearest road direction.
 
 |checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of point features
 
 Parameters
 ..........
@@ -33,6 +35,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -44,13 +47,13 @@ Parameters
      - Point features to calculate the rotation for
    * - **Reference layer**
      - ``REFERENCE_LAYER``
-     - [vector: any]
+     - [vector: geometry]
      - Layer to find the closest feature from for rotation calculation
    * - **Maximum distance to consider**
 
        Optional
      - ``MAX_DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: Not set
      - If no reference feature is found within this distance, no rotation
@@ -70,9 +73,9 @@ Parameters
    * - **Aligned layer**
      - ``OUTPUT``
      - [vector: point]
-       
+
        Default: ``[Save to temporary file]``
-     - Specify the rotated output vector layer. One of:
+     - Specify the rotated output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -84,6 +87,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -122,6 +126,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -145,10 +150,10 @@ Parameters
    * - **Output style database**
      - ``OUTPUT``
      - [file]
-       
+
        Default: ``[Save to temporary file]``
      - Output :file:`.XML` file combining the selected style items.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -160,6 +165,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -167,24 +173,24 @@ Outputs
      - Description
    * - **Color ramp count**
      - ``COLORRAMPS``
-     - [number]
-     - 
+     - [numeric: integer]
+     - Number of color ramps
    * - **Label settings count**
      - ``LABELSETTINGS``
-     - [number]
-     - 
+     - [numeric: integer]
+     - Number of label settings
    * - **Output style database**
      - ``OUTPUT``
      - [file]
      - Output :file:`.XML` file combining the selected style items
    * - **Symbol count**
      - ``SYMBOLS``
-     - [number]
-     - 
+     - [numeric: integer]
+     - Number of symbols
    * - **Text format count**
      - ``TEXTFORMATS``
-     - [number]
-     - 
+     - [numeric: integer]
+     - Number of text formats
 
 Python code
 ...........
@@ -260,11 +266,11 @@ Parameters
 
        Optional
      - ``NON_MATCHING_CATEGORIES``
-     - [table]
+     - [vector: table]
 
        Default: ``[Skip output]``
      - Output table for categories which do not match any symbol in
-       the database. One of:
+       the database. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -274,11 +280,11 @@ Parameters
 
        Optional
      - ``NON_MATCHING_SYMBOLS``
-     - [table]
+     - [vector: table]
 
        Default: ``[Skip output]``
      - Output table for symbols from the provided style database which
-       do not match any category. One of:
+       do not match any category. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -290,6 +296,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -297,12 +304,12 @@ Outputs
      - Description
    * - **Non-matching categories**
      - ``NON_MATCHING_CATEGORIES``
-     - [table]
+     - [vector: table]
      - Lists categories which could not be matched to any symbol in
        the provided style database
    * - **Non-matching symbol names**
      - ``NON_MATCHING_SYMBOLS``
-     - [table]
+     - [vector: table]
      - Lists symbols from the provided style database which could
        not match any category
    * - **Categorized layer**
@@ -340,6 +347,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -368,7 +376,7 @@ Parameters
 
        Default: ``[Save to temporary file]``
      - Specify the output :file:`.XML` file for the selected style items.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -380,6 +388,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -387,11 +396,11 @@ Outputs
      - Description
    * - **Color ramp count**
      - ``COLORRAMPS``
-     - [number]
+     - [numeric: integer]
      - Number of color ramps
    * - **Label settings count**
      - ``LABELSETTINGS``
-     - [number]
+     - [numeric: integer]
      - Number of label settings
    * - **Output style database**
      - ``OUTPUT``
@@ -399,11 +408,11 @@ Outputs
      - Output :file:`.XML` file for the selected style items
    * - **Symbol count**
      - ``SYMBOLS``
-     - [number]
+     - [numeric: integer]
      - Number of symbols
    * - **Text format count**
      - ``TEXTFORMATS``
-     - [number]
+     - [numeric: integer]
      - Number of text formats
 
 Python code
@@ -435,6 +444,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -448,7 +458,7 @@ Basic parameters
 
        Optional
      - ``COVERAGE_LAYER``
-     - [vector: any]
+     - [vector: geometry]
      - Layer to use to generate the atlas
    * - **Filter expression**
      - ``FILTER_EXPRESSION``
@@ -461,10 +471,10 @@ Basic parameters
      - [expression]
      - Expression to use to sort the atlas features
    * - **Reverse sort order**
-
-       Optional
      - ``SORTBY_REVERSE``
      - [boolean]
+
+       Default: False
      - Determines if sorting should be inverted.
        Used when a sort expression is provided.
    * - **Output filename expression**
@@ -484,6 +494,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -497,7 +508,7 @@ Advanced parameters
      - Layers to display in the map item(s) whose contents are not locked
    * - **Image format**
      - ``EXTENSION``
-     - [list]
+     - [enumeration]
 
        Default: png
      - File format of the generated output(s).
@@ -508,7 +519,7 @@ Advanced parameters
      - ``DPI``
 
        Default: Not set
-     - [number]
+     - [numeric: double]
      - DPI of the output file(s). If not set, the value in the print layout settings will be used.
    * - **Generate world file**
      - ``GEOREFERENCE``
@@ -535,6 +546,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -555,11 +567,12 @@ Python code
   :end-before: **end_algorithm_code_section**
 
 
-.. _qgisatlaslayouttopdf:
+.. _qgisatlaslayouttomultiplepdf:
 
-Export atlas layout as PDF
---------------------------
-Exports the atlas of a print layout as a PDF file(s).
+Export atlas layout as PDF (multiple files)
+-------------------------------------------
+
+Exports the atlas of a print layout to multiple PDF files.
 
 If a coverage layer is set, the selected layout's atlas settings exposed
 in this algorithm will be overwritten. In this case, an empty filter or
@@ -574,6 +587,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -587,7 +601,7 @@ Basic parameters
 
        Optional
      - ``COVERAGE_LAYER``
-     - [vector: any]
+     - [vector: geometry]
      - Layer to use to generate the atlas
    * - **Filter expression**
      - ``FILTER_EXPRESSION``
@@ -600,12 +614,22 @@ Basic parameters
      - [expression]
      - Expression to use to sort the atlas features
    * - **Reverse sort order**
-
-       Optional
      - ``SORTBY_REVERSE``
      - [boolean]
+
+       Default: False
      - Determines if sorting should be inverted.
        Used when a sort expression is provided.
+   * - **Output filename**
+
+       Optional
+     - ``OUTPUT_FILENAME``
+     - [expression]
+     - Name pattern of the PDF output files.
+   * - **Output folder**
+     - ``OUTPUT_FOLDER``
+     - [folder]
+     - Destination folder for the output PDF files.
 
 Advanced parameters
 ^^^^^^^^^^^^^^^^^^^
@@ -613,6 +637,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -630,7 +655,7 @@ Advanced parameters
      - ``DPI``
 
        Default: Not set
-     - [number]
+     - [numeric: double]
      - DPI of the output file(s). If not set, the value in the print layout settings will be used.
    * - **Always export as vectors**
      - ``FORCE_VECTOR``
@@ -638,6 +663,13 @@ Advanced parameters
 
        Default: False
      - Determines if vectorial data should be left as vectors
+   * - **Always export as raster**
+     - ``FORCE_RASTER``
+     - [boolean]
+
+       Default: False
+     - Forces all the items in the map to be rasterized.
+       This parameter takes precedence over the ``FORCE_VECTOR`` parameter.
    * - **Append georeference information**
      - ``GEOREFERENCE``
      - [boolean]
@@ -664,25 +696,26 @@ Advanced parameters
      - Determines if geometries should be simplified to reduce output file size
    * - **Text export**
      - ``TEXT_FORMAT``
-     - [list]
+     - [enumeration]
 
        Default: 0
      - Determines if text should be exported as path or text objects.
-       Possible options are:
+       :ref:`Possible options <render_labels_text>` are:
 
        * 0 - Always export text as paths (recommended)
        * 1 - Always export texts as text objects
+       * 2 - Prefer exporting texts as text objects --- ``Added in 3.40``
+   * - **Image compression**
+     - ``IMAGE_COMPRESSION``
+     - [enumeration]
 
-   * - **PDF file**
-     - ``OUTPUT``
-     - [file]
+       Default: 0
+     - Determines compression level of the image and how suitable the file could be
+       for printing outputs or post-production in external applications.
+       Possible options are:
 
-       Default: [Save to temporary file]
-     - Name (including path) of the output file. One of:
-
-       .. include:: ../algs_include.rst
-          :start-after: **file_output_types**
-          :end-before: **end_file_output_types**
+       * 0 - Lossy (JPEG)
+       * 1 - Lossless
 
 Outputs
 .......
@@ -690,6 +723,183 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **PDF file**
+     - ``OUTPUT``
+     - [file]
+     - PDF file corresponding to the exported atlas layout
+
+Python code
+...........
+
+**Algorithm ID**: ``native:atlaslayouttomultiplepdf``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisatlaslayouttopdf:
+
+Export atlas layout as PDF (single file)
+----------------------------------------
+Exports the atlas of a print layout as a single PDF file.
+
+If a coverage layer is set, the selected layout's atlas settings exposed
+in this algorithm will be overwritten. In this case, an empty filter or
+sort by expression will turn those settings off.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Atlas layout**
+     - ``LAYOUT``
+     - [layout]
+     - Layout to export
+   * - **Coverage layer**
+
+       Optional
+     - ``COVERAGE_LAYER``
+     - [vector: geometry]
+     - Layer to use to generate the atlas
+   * - **Filter expression**
+     - ``FILTER_EXPRESSION``
+     - [expression]
+     - Expression to use to filter out atlas features
+   * - **Sort expression**
+
+       Optional
+     - ``SORTBY_EXPRESSION``
+     - [expression]
+     - Expression to use to sort the atlas features
+   * - **Reverse sort order**
+     - ``SORTBY_REVERSE``
+     - [boolean]
+
+       Default: False
+     - Determines if sorting should be inverted.
+       Used when a sort expression is provided.
+   * - **PDF file**
+     - ``OUTPUT``
+     - [file]
+
+       Default: [Save to temporary file]
+     - Name (including path) of the output file. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Map layers to assign to unlocked map item(s)**
+
+       Optional
+     - ``LAYERS``
+     - [enumeration] [layer]
+     - Layers to display in the map item(s) whose contents are not locked
+   * - **DPI**
+
+       Optional
+     - ``DPI``
+
+       Default: Not set
+     - [numeric: double]
+     - DPI of the output file(s). If not set, the value in the print layout settings will be used.
+   * - **Always export as vectors**
+     - ``FORCE_VECTOR``
+     - [boolean]
+
+       Default: False
+     - Determines if vectorial data should be left as vectors
+   * - **Always export as raster**
+     - ``FORCE_RASTER``
+     - [boolean]
+
+       Default: False
+     - Forces all the items in the map to be rasterized.
+       This parameter takes precedence over the ``FORCE_VECTOR`` parameter.
+   * - **Append georeference information**
+     - ``GEOREFERENCE``
+     - [boolean]
+
+       Default: True
+     - Determines if a world file should be generated
+   * - **Export RDF metadata**
+     - ``INCLUDE_METADATA``
+     - [boolean]
+
+       Default: True
+     - Determines if RDF metadata (title, author, ...) should be generated
+   * - **Disable tiled raster layer exports**
+     - ``DISABLE_TILED``
+     - [boolean]
+
+       Default: False
+     - Determines if raster should be tiled
+   * - **Simplify geometries to reduce output file size**
+     - ``SIMPLIFY``
+     - [boolean]
+
+       Default: True
+     - Determines if geometries should be simplified to reduce output file size
+   * - **Text export**
+     - ``TEXT_FORMAT``
+     - [enumeration]
+
+       Default: 0
+     - Determines if text should be exported as path or text objects.
+       :ref:`Possible options <render_labels_text>` are:
+
+       * 0 - Always export text as paths (recommended)
+       * 1 - Always export texts as text objects
+       * 2 - Prefer exporting texts as text objects --- ``Added in 3.40``
+   * - **Image compression**
+     - ``IMAGE_COMPRESSION``
+     - [enumeration]
+
+       Default: 0
+     - Determines compression level of the image and how suitable the file could be
+       for printing outputs or post-production in external applications.
+       Possible options are:
+
+       * 0 - Lossy (JPEG)
+       * 1 - Lossless
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -725,6 +935,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -739,7 +950,7 @@ Basic parameters
      - [file]
 
        Default: [Save to temporary file]
-     - Name (including path) of the output file. One of:
+     - Name (including path) of the output file. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -751,6 +962,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -768,7 +980,7 @@ Advanced parameters
      - ``DPI``
 
        Default: Not set
-     - [number]
+     - [numeric: double]
      - DPI of the output file(s). If not set, the value in the print layout settings will be used.
    * - **Generate world file**
      - ``GEOREFERENCE``
@@ -795,6 +1007,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -817,7 +1030,7 @@ Python code
 
 .. _qgisprintlayouttopdf:
 
-Export print layout as pdf
+Export print layout as PDF
 --------------------------
 Exports a print layout as a PDF file.
 
@@ -830,12 +1043,13 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Print Layout**
+   * - **Print layout**
      - ``LAYOUT``
      - [layout]
      - Layout to export
@@ -844,7 +1058,7 @@ Basic parameters
      - [file]
 
        Default: [Save to temporary file]
-     - Name (including path) of the output file. One of:
+     - Name (including path) of the output file. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -856,6 +1070,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -873,7 +1088,7 @@ Advanced parameters
      - ``DPI``
 
        Default: Not set
-     - [number]
+     - [numeric: double]
      - DPI of the output file(s). If not set, the value in the print layout settings will be used.
    * - **Always export as vectors**
      - ``FORCE_VECTOR``
@@ -881,6 +1096,13 @@ Advanced parameters
 
        Default: False
      - Determines if vectorial data should be left as vectors
+   * - **Always export as raster**
+     - ``FORCE_RASTER``
+     - [boolean]
+
+       Default: False
+     - Forces all the items in the map to be rasterized.
+       This parameter takes precedence over the ``FORCE_VECTOR`` parameter.
    * - **Append georeference information**
      - ``GEOREFERENCE``
      - [boolean]
@@ -907,15 +1129,26 @@ Advanced parameters
      - Determines if geometries should be simplified to reduce output file size
    * - **Text export**
      - ``TEXT_FORMAT``
-     - [list]
+     - [enumeration]
 
        Default: 0
      - Determines if text should be exported as path or text objects.
-       Possible options are:
+       :ref:`Possible options <render_labels_text>` are:
 
        * 0 - Always export text as paths (recommended)
        * 1 - Always export texts as text objects
+       * 2 - Prefer exporting texts as text objects --- ``Added in 3.40``
+   * - **Image compression**
+     - ``IMAGE_COMPRESSION``
+     - [enumeration]
 
+       Default: 0
+     - Determines compression level of the image and how suitable the file could be
+       for printing outputs or post-production in external applications.
+       Possible options are:
+
+       * 0 - Lossy (JPEG)
+       * 1 - Lossless
    * - **Export layers as separate PDF files**
      - ``SEPARATE_LAYERS``
      - [boolean]
@@ -931,6 +1164,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -945,6 +1179,131 @@ Python code
 ...........
 
 **Algorithm ID**: ``native:printlayouttopdf``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisextractlabels:
+
+Extract labels
+--------------
+
+Extracts label information from a rendered map at a given extent and scale.
+
+If a map theme is provided, the rendered map will match the visibility and
+symbology of that theme. If left blank, all visible layers from the project
+will be used.
+Extracted label information include: position (served as point geometries),
+the associated layer name and feature ID, label text, rotation (in degree,
+clockwise), multiline alignment, and font details.
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Map extent**
+     - ``EXTENT``
+     - [extent]
+     - Extent of the map to extract the labels from
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+
+   * - **Map scale**
+     - ``SCALE``
+     - [scale]
+     - Extracted labels will be rendered using their properties set at this scale.
+   * - **Map theme**
+
+       Optional
+     - ``MAP_THEME``
+     - [maptheme]
+     - A map theme displaying the layers to extract the labels from.
+       If unset, labels of the currently visible layers are extracted.
+   * - **Include unplaced labels**
+     - ``INCLUDE_UNPLACED``
+     - [boolean]
+
+       Default: True
+     - Specify whether all overlapping labels should be extracted,
+       including the conflicting (thus unplaced) ones.
+   * - **Extracted labels**
+     - ``OUTPUT``
+     - [vector: point]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer for the extent(s). :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types**
+          :end-before: **end_layer_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Map resolution (in DPI)**
+
+       Optional
+     - ``DPI``
+
+       Default: 96.0
+     - [numeric: double]
+     -
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Extracted labels**
+     - ``OUTPUT``
+     - [vector: point]
+     - Point vector layer representing the fetched labels.
+       Each feature has attributes identifying its source (layer, feature ID)
+       and the assigned labeling properties (text, font, size, rotation, ...).
+       A default style with labeling and null symbol is also applied to the layer.
+
+       .. warning:: Because some of the generated fields have name with more than
+         10 characters, using the ESRI shapefile format (:file:`.SHP`) to store
+         the output may lead to unexpected rendering while loading the layer in QGIS.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:extractlabels``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -975,6 +1334,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1000,7 +1360,7 @@ Basic parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer for the extent(s). One of:
+     - Specify the output vector layer for the extent(s). :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1012,12 +1372,13 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Overrride CRS**
+   * - **Override CRS**
 
        Optional
      - ``CRS``
@@ -1033,6 +1394,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1040,8 +1402,8 @@ Outputs
      - Description
    * - **Map height**
      - ``HEIGHT``
-     - [number]
-     - 
+     - [numeric: double]
+     -
    * - **Extent**
      - ``OUTPUT``
      - [vector: polygon]
@@ -1049,16 +1411,16 @@ Outputs
        the input layout map item(s)
    * - **Map rotation**
      - ``ROTATION``
-     - [number]
-     - 
+     - [numeric: double]
+     -
    * - **Map scale**
      - ``SCALE``
-     - [number]
-     - 
+     - [numeric: double]
+     -
    * - **Map width**
      - ``WIDTH``
-     - [number]
-     - 
+     - [numeric: double]
+     -
 
 Python code
 ...........
@@ -1086,6 +1448,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1106,6 +1469,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1164,14 +1528,14 @@ Parameters
      - The input polygon layer
    * - **Minimum number of colors**
      - ``MIN_COLORS``
-     - [number]
+     - [numeric: integer]
 
        Default: 4
      - The minimum number of colors to assign.
        Minimum 1, maximum 1000.
    * - **Minimum distance between features**
      - ``MIN_DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Prevent nearby (but non-touching) features from
@@ -1185,21 +1549,21 @@ Parameters
      - Options are:
 
        * 0 --- By feature count
-         
+
          Attempts to assign colors so that the count of
          features assigned to each individual color index
          is balanced.
-         
+
        * 1 --- By assigned area
-         
+
          Assigns colors so that the total area of features
          assigned to each color is balanced.
          This mode can be useful to help avoid large
          features resulting in one of the colors appearing
          more dominant on a colored map.
-         
+
        * 2 --- By distance between colors
-         
+
          Assigns colors in order to maximize the distance
          between features of the same color.
          This mode helps to create a more uniform
@@ -1210,7 +1574,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output layer. One of:
+     - Specify the output layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1222,6 +1586,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1236,6 +1601,60 @@ Python code
 ...........
 
 **Algorithm ID**: ``qgis:topologicalcoloring``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgistransferannotationsfrommain:
+
+Transfer annotations from main layer
+------------------------------------
+
+Transfers all :ref:`annotations <annotation_layer>` from the main annotation layer in a project to a new annotation layer.
+Items placement can then be adjusted within the layer stack.
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **New layer name**
+     - ``LAYER_NAME``
+     - [string]
+
+       Default: 'Annotations'
+     - Name of the annotations layer to create
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **New layer name**
+     - ``OUTPUT``
+     - [layer]
+     - A layer with items from the main annotation layer
+
+Python code
+...........
+
+**Algorithm ID**: ``native:transferannotationsfrommain``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**

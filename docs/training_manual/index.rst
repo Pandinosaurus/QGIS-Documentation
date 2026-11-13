@@ -7,7 +7,7 @@ QGIS Training Manual
 
 .. toctree::
    :maxdepth: 2
-   :numbered:
+   :numbered: 3
 
    foreword/index
    basic_map/index
@@ -25,7 +25,7 @@ QGIS Training Manual
    forestry/index
    database_concepts/index
    spatial_databases/index
-   processing/index
    databases/index
+   processing/index
    appendix/contribute
    appendix/preparing_data

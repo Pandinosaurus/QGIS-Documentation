@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_GeometryGroup_affine_transform:
 
 affine_transform
@@ -17,7 +18,7 @@ Returns the geometry after an affine transformation. Calculations are in the Spa
    :widths: 15 85
 
    * - Syntax
-     - affine_transform(geometry, delta_x, delta_y, rotation_z, scale_x, scale_y, [delta_z=0], [delta_m=0], [scale_z=1], [scale_m=1])
+     - affine_transform(geometry, delta_x, delta_y, rotation_z, scale_x, scale_y, [delta_z:=0], [delta_m:=0], [scale_z:=1], [scale_m:=1])
 
        [] marks optional arguments
    * - Arguments
@@ -36,6 +37,11 @@ Returns the geometry after an affine transformation. Calculations are in the Spa
        * ``geom_to_wkt(affine_transform(geom_from_wkt('POLYGON((0 0, 0 3, 2 2, 0 0))'), 0, 0, -90, 1, 2))`` → 'Polygon ((0 0, 6 0, 4 -2, 0 0))'
        * ``geom_to_wkt(affine_transform(geom_from_wkt('POINT(3 1)'), 0, 0, 0, 1, 1, 5, 0))`` → 'PointZ (3 1 5)'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/affinetransform.png
+   :align: center
+
+   Vector point layer (green dots) before (left), and after (right) an affine transformation (translation).
 
 .. end_affine_transform_section
 
@@ -71,7 +77,7 @@ Applies a dash pattern to a geometry, returning a MultiLineString geometry which
    :widths: 15 85
 
    * - Syntax
-     - apply_dash_pattern(geometry, pattern, [start_rule=no_rule], [end_rule=no_rule], [adjustment=both], [pattern_offset=0])
+     - apply_dash_pattern(geometry, pattern, [start_rule:='no_rule'], [end_rule:='no_rule'], [adjustment:='both'], [pattern_offset:=0])
 
        [] marks optional arguments
    * - Arguments
@@ -121,7 +127,8 @@ Returns the area of a geometry polygon object. Calculations are always planimetr
    * - Arguments
      - * **geometry** - polygon geometry object
    * - Examples
-     - * ``area(geom_from_wkt('POLYGON((0 0, 4 0, 4 2, 0 2, 0 0))'))`` → 8.0
+     - * ``area(@geometry)`` → area of the current feature's geometry
+       * ``area(geom_from_wkt('POLYGON((0 0, 4 0, 4 2, 0 2, 0 0))'))`` → 8.0
 
 
 .. end_area_section
@@ -131,22 +138,48 @@ Returns the area of a geometry polygon object. Calculations are always planimetr
 azimuth
 .......
 
-Returns the north-based azimuth as the angle in radians measured clockwise from the vertical on point_a to point_b.
+Returns the north-based azimuth as the angle in radians measured clockwise from the vertical on point1 to point2.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - azimuth(point_a, point_b)
+     - azimuth(point1, point2)
    * - Arguments
-     - * **point_a** - point geometry
-       * **point_b** - point geometry
+     - * **point1** - point geometry
+       * **point2** - point geometry
    * - Examples
      - * ``degrees( azimuth( make_point(25, 45), make_point(75, 100) ) )`` → 42.273689
        * ``degrees( azimuth( make_point(75, 100), make_point(25,45) ) )`` → 222.273689
 
 
 .. end_azimuth_section
+
+.. _expression_function_GeometryGroup_bearing:
+
+bearing
+.......
+
+Returns the north-based bearing as the angle in radians measured clockwise on the ellipsoid from the vertical on point1 to point2.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - bearing(point1, point2, [source_crs], [ellipsoid])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **point1** - point geometry
+       * **point2** - point geometry
+       * **source_crs** - an optional string or CRS object representing the source CRS of the points. By default the current layer's CRS is used.
+       * **ellipsoid** - an optional string representing the acronym or the authority ID (e.g., 'EPSG:7030') of the ellipsoid on which the bearing should be measured. By default the current project's ellipsoid setting is used.
+   * - Examples
+     - * ``degrees( bearing( make_point(16198544, -4534850), make_point(18736872, -1877769), 'EPSG:3857', 'EPSG:7030') )`` → 49.980071
+       * ``degrees( bearing( make_point(18736872, -1877769), make_point(16198544, -4534850), 'EPSG:3857', 'WGS84') )`` → 219.282386
+
+
+.. end_bearing_section
 
 .. _expression_function_GeometryGroup_boundary:
 
@@ -163,9 +196,15 @@ Returns the closure of the combinatorial boundary of the geometry (ie the topolo
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``geom_to_wkt(boundary(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))')))`` → 'LineString(1 1,0 0,-1 1,1 1)'
+     - * ``boundary(@geometry)`` → boundary of the current feature's geometry
+       * ``geom_to_wkt(boundary(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))')))`` → 'LineString(1 1,0 0,-1 1,1 1)'
        * ``geom_to_wkt(boundary(geom_from_wkt('LineString(1 1,0 0,-1 1)')))`` → 'MultiPoint ((1 1),(-1 1))'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/boundary_polygon.png
+   :align: center
+
+   Boundary (black dashed line) of the source polygon layer
 
 .. end_boundary_section
 
@@ -184,9 +223,14 @@ Returns a geometry which represents the bounding box of an input geometry. Calcu
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``bounds($geometry)`` → bounding box of the current feature's geometry
+     - * ``bounds(@geometry)`` → bounding box of the current feature's geometry
        * ``geom_to_wkt(bounds(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))')))`` → 'Polygon ((-1 0, 1 0, 1 1, -1 1, -1 0))'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/bounding_box.png
+   :align: center
+
+   Black lines represent the bounding boxes of each polygon feature
 
 .. end_bounds_section
 
@@ -205,7 +249,7 @@ Returns the height of the bounding box of a geometry. Calculations are in the Sp
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``bounds_height($geometry)`` → height of bounding box of the current feature's geometry
+     - * ``bounds_height(@geometry)`` → height of bounding box of the current feature's geometry
        * ``bounds_height(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))'))`` → 1
 
 
@@ -226,7 +270,7 @@ Returns the width of the bounding box of a geometry. Calculations are in the Spa
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``bounds_width($geometry)`` → width of bounding box of the current feature's geometry
+     - * ``bounds_width(@geometry)`` → width of bounding box of the current feature's geometry
        * ``bounds_width(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))'))`` → 2
 
 
@@ -243,7 +287,7 @@ Returns a geometry that represents all points whose distance from this geometry 
    :widths: 15 85
 
    * - Syntax
-     - buffer(geometry, distance, [segments=8], [cap=8], [join='round'], [miter_limit=2])
+     - buffer(geometry, distance, [segments:=8], [cap:='round'], [join:='round'], [miter_limit:=2])
 
        [] marks optional arguments
    * - Arguments
@@ -254,8 +298,13 @@ Returns a geometry that represents all points whose distance from this geometry 
        * **join** - join style for buffer. Valid values are 'round', 'bevel' or 'miter'.
        * **miter_limit** - miter distance limit, for use when the join style is set to 'miter'
    * - Examples
-     - * ``buffer($geometry, 10.5)`` → polygon of the current feature's geometry buffered by 10.5 units
+     - * ``buffer(@geometry, 10.5)`` → polygon of the current feature's geometry buffered by 10.5 units
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/buffer.png
+   :align: center
+
+   Buffer (in yellow) of points, line, polygon with positive buffer, and polygon with negative buffer
 
 .. end_buffer_section
 
@@ -270,7 +319,7 @@ Creates a buffer along a line geometry where the buffer diameter varies accordin
    :widths: 15 85
 
    * - Syntax
-     - buffer_by_m(geometry, [segments=8])
+     - buffer_by_m(geometry, [segments:=8])
 
        [] marks optional arguments
    * - Arguments
@@ -279,6 +328,11 @@ Creates a buffer along a line geometry where the buffer diameter varies accordin
    * - Examples
      - * ``buffer_by_m(geometry:=geom_from_wkt('LINESTRINGM(1 2 0.5, 4 2 0.2)'),segments:=8)`` → A variable width buffer starting with a diameter of 0.5 and ending with a diameter of 0.2 along the linestring geometry.
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/variable_buffer_m.png
+   :align: center
+
+   Buffering line features using the m value on the vertices
 
 .. end_buffer_by_m_section
 
@@ -297,8 +351,13 @@ Returns the geometric center of a geometry.
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``centroid($geometry)`` → a point geometry
+     - * ``centroid(@geometry)`` → a point geometry
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/centroids.png
+   :align: center
+
+   The red stars represent the centroids of the features of the input layer.
 
 .. end_centroid_section
 
@@ -341,6 +400,11 @@ Returns the point on geometry1 that is closest to geometry2.
    * - Examples
      - * ``geom_to_wkt(closest_point(geom_from_wkt('LINESTRING (20 80, 98 190, 110 180, 50 75 )'),geom_from_wkt('POINT(100 100)')))`` → 'Point(73.0769 115.384)'
 
+
+.. figure:: expression_help/img/closest_point.*
+   :align: center
+
+   The red point is the point on the blue line closest to the orange reference point; the gray dashed line highlights the shortest distance.
 
 .. end_closest_point_section
 
@@ -405,12 +469,41 @@ Returns the combination of two geometries.
 
 .. end_combine_section
 
+.. _expression_function_GeometryGroup_concave_hull:
+
+concave_hull
+............
+
+Returns a possibly concave polygon that contains all the points in the geometry
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - concave_hull(geometry, target_percent, [allow_holes:=false])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry** - a geometry
+       * **target_percent** - the percentage of area of the convex hull the solution tries to approach. A target_percent of 1 gives the same result as the convex hull. A target_percent between 0 and 0.99 produces a result that should have a smaller area than the convex hull.
+       * **allow_holes** - optional argument specifying whether to allow holes within the output geometry. Defaults to FALSE, set to TRUE to allow including holes in the output geometry.
+   * - Examples
+     - * ``geom_to_wkt(concave_hull(geom_from_wkt('MULTILINESTRING((106 164,30 112,74 70,82 112,130 94,130 62,122 40,156 32,162 76,172 88),(132 178,134 148,128 136,96 128,132 108,150 130,170 142,174 110,156 96,158 90,158 88),(22 64,66 28,94 38,94 68,114 76,112 30,132 10,168 18,178 34,186 52,184 74,190 100,190 122,182 148,178 170,176 184,156 164,146 178,132 186,92 182,56 158,36 150,62 150,76 128,88 118))'), 0.99))`` → 'Polygon ((30 112, 36 150, 92 182, 132 186, 176 184, 190 122, 190 100, 186 52, 178 34, 168 18, 132 10, 112 30, 66 28, 22 64, 30 112))'
+
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/concave_hull_threshold.png
+   :align: center
+
+   Concave hulls with increasing target_percent parameter
+
+.. end_concave_hull_section
+
 .. _expression_function_GeometryGroup_contains:
 
 contains
 ........
 
-Tests whether a geometry contains another. Returns true if and only if no points of geometry2 lie in the exterior of geometry1, and at least one point of the interior of geometry2 lies in the interior of geometry1.
+Tests whether a geometry contains another. Returns TRUE if and only if no points of geometry2 lie in the exterior of geometry1, and at least one point of the interior of geometry2 lies in the interior of geometry1.
 
 .. list-table::
    :widths: 15 85
@@ -421,8 +514,8 @@ Tests whether a geometry contains another. Returns true if and only if no points
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``contains( geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))' ), geom_from_wkt( 'POINT(0.5 0.5 )' ) )`` → true
-       * ``contains( geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → false
+     - * ``contains( geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))' ), geom_from_wkt( 'POINT(0.5 0.5 )' ) )`` → TRUE
+       * ``contains( geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → FALSE
 
 
 .. end_contains_section
@@ -442,8 +535,14 @@ Returns the convex hull of a geometry. It represents the minimum convex geometry
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``geom_to_wkt( convex_hull( geom_from_wkt( 'LINESTRING(3 3, 4 4, 4 10)' ) ) )`` → 'POLYGON((3 3, 4 10, 4 4, 3 3))'
+     - * ``convex_hull(@geometry)`` → convex hull of the current feature's geometry
+       * ``geom_to_wkt( convex_hull( geom_from_wkt( 'LINESTRING(3 3, 4 4, 4 10)' ) ) )`` → 'POLYGON((3 3, 4 10, 4 4, 3 3))'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/convex_hull.png
+   :align: center
+
+   Black lines identify the convex hull for each feature
 
 .. end_convex_hull_section
 
@@ -452,7 +551,7 @@ Returns the convex hull of a geometry. It represents the minimum convex geometry
 crosses
 .......
 
-Tests whether a geometry crosses another. Returns true if the supplied geometries have some, but not all, interior points in common.
+Tests whether a geometry crosses another. Returns TRUE if the supplied geometries have some, but not all, interior points in common.
 
 .. list-table::
    :widths: 15 85
@@ -463,8 +562,8 @@ Tests whether a geometry crosses another. Returns true if the supplied geometrie
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``crosses( geom_from_wkt( 'LINESTRING(3 5, 4 4, 5 3)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → true
-       * ``crosses( geom_from_wkt( 'POINT(4 5)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → false
+     - * ``crosses( geom_from_wkt( 'LINESTRING(3 5, 4 4, 5 3)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → TRUE
+       * ``crosses( geom_from_wkt( 'POINT(4 5)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → FALSE
 
 
 .. end_crosses_section
@@ -488,6 +587,11 @@ Takes a polygon or line layer geometry and generates a new one in which the geom
      - * ``geom_to_wkt(densify_by_count(geom_from_wkt('LINESTRING(1 1, 10 1)'), 3))`` → LineString (1 1, 3.25 1, 5.5 1, 7.75 1, 10 1)
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/densify_geometry.png
+   :align: center
+
+   Red points show the vertices before and after the densify
+
 .. end_densify_by_count_section
 
 .. _expression_function_GeometryGroup_densify_by_distance:
@@ -508,6 +612,11 @@ Takes a polygon or line layer geometry and generates a new one in which the geom
    * - Examples
      - * ``geom_to_wkt(densify_by_distance(geom_from_wkt('LINESTRING(1 1, 10 1)'), 4))`` → LineString (1 1, 4 1, 7 1, 10 1)
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/densify_geometry_interval.png
+   :align: center
+
+   Densify geometry at a given interval
 
 .. end_densify_by_distance_section
 
@@ -530,6 +639,11 @@ Returns a geometry that represents that part of geometry1 that does not intersec
      - * ``geom_to_wkt( difference( geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4)' ) ) )`` → 'LINESTRING(4 4, 5 5)'
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/difference.png
+   :align: center
+
+   Difference operation between a two-features input layer ‘a’ and a single feature overlay layer ‘b’ (left) - resulting in a new layer with the modified ‘a’ features (right)
+
 .. end_difference_section
 
 .. _expression_function_GeometryGroup_disjoint:
@@ -537,7 +651,7 @@ Returns a geometry that represents that part of geometry1 that does not intersec
 disjoint
 ........
 
-Tests whether geometries do not spatially intersect. Returns true if the geometries do not share any space together.
+Tests whether geometries do not spatially intersect. Returns TRUE if the geometries do not share any space together.
 
 .. list-table::
    :widths: 15 85
@@ -548,8 +662,8 @@ Tests whether geometries do not spatially intersect. Returns true if the geometr
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``disjoint( geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0 ))' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → true
-       * ``disjoint( geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ), geom_from_wkt( 'POINT(4 4)' ))`` → false
+     - * ``disjoint( geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0 ))' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → TRUE
+       * ``disjoint( geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ), geom_from_wkt( 'POINT(4 4)' ))`` → FALSE
 
 
 .. end_disjoint_section
@@ -559,7 +673,7 @@ Tests whether geometries do not spatially intersect. Returns true if the geometr
 distance
 ........
 
-Returns the minimum distance (based on spatial ref) between two geometries in projected units.
+Returns the minimum distance (based on spatial reference) between two geometries in projected units.
 
 .. list-table::
    :widths: 15 85
@@ -611,10 +725,174 @@ Returns the last node from a geometry.
    * - Arguments
      - * **geometry** - geometry object
    * - Examples
-     - * ``geom_to_wkt(end_point(geom_from_wkt('LINESTRING(4 0, 4 2, 0 2)')))`` → 'Point (0 2)'
+     - * ``end_point(@geometry)`` → end point of the current feature's geometry
+       * ``geom_to_wkt(end_point(geom_from_wkt('LINESTRING(4 0, 4 2, 0 2)')))`` → 'Point (0 2)'
 
+
+.. figure:: expression_help/img/end_point.*
+   :align: center
+
+   End point of a line feature
 
 .. end_end_point_section
+
+.. _expression_function_GeometryGroup_equals:
+
+equals
+......
+
+Alias for 'equals_exact' function with default geometry backend QGIS. Tests whether two geometries are point-by-point exactly equal. Note that the order of their vertices matters. Returns TRUE if geometry1 is exactly equal to geometry2.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - equals(geometry1, geometry2)
+   * - Arguments
+     - * **geometry1** - a geometry
+       * **geometry2** - a geometry
+   * - Examples
+     - * ``equals( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( 0 0 )' ) )`` → TRUE
+       * ``equals( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'MULTIPOINT( ( 0 0 ) )' ) )`` → FALSE
+       * ``equals( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ) )`` → TRUE
+       * ``equals( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 1 1, 0 0 )' ) )`` → FALSE
+       * ``equals( geom_from_wkt( 'POLYGON(( 0 0, 0 1, 1 1, 0 0 ))' ), geom_from_wkt( 'POLYGON(( 0 0, 1 1, 0 1, 0 0 ))' ) )`` → FALSE
+
+
+.. end_equals_section
+
+.. _expression_function_GeometryGroup_equals_exact:
+
+equals_exact
+............
+
+Tests whether two geometries are point-by-point exactly equal. Note that the order of their vertices matters. Returns TRUE if geometry1 is exactly equal to geometry2.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - equals_exact(geometry1, geometry2, [backend:='QGIS'])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry1** - a geometry
+       * **geometry2** - a geometry
+       * **backend** - Geometry backend implementation: 'QGIS' or 'GEOS'. Both internal implementation uses fuzzy comparison with very low (1e-8) tolerance.
+
+         * 'QGIS' works on 2D, 3D and 4D
+         * 'GEOS' works only on 2D components (Z or M components are ignored).
+
+
+   * - Examples
+     - * ``equals_exact( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( 0 0 )' ), 'GEOS' )`` → TRUE
+
+         Example with 'GEOS' backend, same behavior than 'QGIS' backend.
+       * ``equals_exact( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'MULTIPOINT( ( 0 0 ) )' ) )`` → FALSE
+
+         Uses 'QGIS' as default backend, same behavior than 'GEOS' backend, not the same type, so it fails.
+       * ``equals_exact( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ) )`` → TRUE
+       * ``equals_exact( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 1 1, 0 0 )' ) )`` → FALSE
+       * ``equals_exact( geom_from_wkt( 'POLYGON(( 0 0, 0 1, 1 1, 0 0 ))' ), geom_from_wkt( 'POLYGON(( 0 0, 1 1, 0 1, 0 0 ))' ) )`` → FALSE
+       * ``equals_exact( geom_from_wkt( 'LINESTRINGZ( 0 0 0, 1 1 1 )' ), geom_from_wkt( 'LINESTRINGZ( 0 0 0, 1 1 555)' ), 'GEOS' )`` → TRUE
+
+         Using 'GEOS' backend, Z coordinates are ignored, so it passes
+       * ``equals_exact( geom_from_wkt( 'LINESTRINGZ( 0 0 0, 1 1 1 )' ), geom_from_wkt( 'LINESTRINGZ( 0 0 0, 1 1 555)' ), 'QGIS' )`` → FALSE
+
+         Using 'QGIS' backend, Z coordinates differ, so it fails
+
+
+.. end_equals_exact_section
+
+.. _expression_function_GeometryGroup_equals_fuzzy:
+
+equals_fuzzy
+............
+
+Tests whether two geometries are point-by-point equal in respect of a tolerance. Note that the order of their vertices matters. Returns TRUE if geometry1 is fuzzy equal to geometry2.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - equals_fuzzy(geometry1, geometry2, [backend:='QGIS'], [epsilon:=1e-8])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry1** - a geometry
+       * **geometry2** - a geometry
+       * **backend** - Geometry backend implementation: 'QGIS' or 'GEOS'.
+
+         * 'QGIS' works on 2D, 3D and 4D geometries and applies component per component comparison
+         * 'GEOS' works only on 2D components (Z or M components are ignored) and compares coordinates by using 2D Euclidean distance.
+
+
+       * **epsilon** - maximum difference for coordinates between the vertices
+   * - Examples
+     - * ``equals_fuzzy( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( 0 0 )' ) )`` → TRUE
+       * ``equals_fuzzy( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( 0.5 0.5 )' ), epsilon:=1 )`` → TRUE
+       * ``equals_fuzzy( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( 0.5 0.5 )' ), epsilon:=0.1 )`` → FALSE
+
+         Tolerance (epsilon) is too low, so it fails
+       * ``equals_fuzzy( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'MULTIPOINT( ( 0 0 ) )' ), 'QGIS' )`` → FALSE
+
+         Not the same type, so it fails
+       * ``equals_fuzzy( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'MULTIPOINT( ( 0 0 ) )' ), 'GEOS' )`` → FALSE
+
+         Not the same type, so it fails
+       * ``equals_fuzzy( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 0.5 0.5, 1.5 1.5 )' ), 'GEOS', 0.71 )`` → TRUE
+
+         2D Euclidean distance is 0.7071 < tolerance (epsilon), so it passes
+       * ``equals_fuzzy( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 0.5 0.5, 1.5 1.5 )' ), 'QGIS', 0.50 )`` → TRUE
+
+         Component per component diff <= tolerance (epsilon), so it passes (for example, p1.x-p2.x <= 0.50)
+       * ``equals_fuzzy( geom_from_wkt( 'LINESTRINGZ( 0 0 0, 1 1 1 )' ), geom_from_wkt( 'LINESTRINGZ( 0.5 0.5 0.5, 1.5 1.5 555)' ), 'GEOS', 0.71 )`` → TRUE
+
+         2D Euclidean distance is 0.7071 < tolerance (epsilon) and Z coordinates are ignored, so it passes
+       * ``equals_fuzzy( geom_from_wkt( 'LINESTRINGZ( 0 0 0, 1 1 1 )' ), geom_from_wkt( 'LINESTRINGZ( 0.5 0.5 0.5, 1.5 1.5 555)' ), 'QGIS', 0.50 )`` → FALSE
+
+         Component per component diff <= tolerance (epsilon) except for Z, so it fails
+
+
+.. end_equals_fuzzy_section
+
+.. _expression_function_GeometryGroup_equals_topological:
+
+equals_topological
+..................
+
+Tests whether two geometries are topologically equal. Returns TRUE if geometry1 is topologically equal to geometry2, i.e. opposite data direction and duplicated data are valid.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - equals_topological(geometry1, geometry2, [backend:='GEOS'])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry1** - a geometry
+       * **geometry2** - a geometry
+       * **backend** - Available geometry backend implementations: 'GEOS'. 'GEOS' works only on 2D components, Z or M components are ignored.
+   * - Examples
+     - * ``equals_topological( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( 0 0 )' ) )`` → TRUE
+       * ``equals_topological( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'POINT( ( 1 0 ) )' ) )`` → FALSE
+       * ``equals_topological( geom_from_wkt( 'POINTZ( 0 0 -10 )' ), geom_from_wkt( 'POINTZ( 0 0 5 )' ) )`` → TRUE
+
+         Z coordinates are ignored, so it passes
+       * ``equals_topological( geom_from_wkt( 'POINT( 0 0 )' ), geom_from_wkt( 'MULTIPOINT( ( 0 0 ) )' ), 'GEOS' )`` → TRUE
+       * ``equals_topological( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'LINESTRING( 1 1, 0 0 )' ) )`` → TRUE
+
+         Opposite direction are valid
+       * ``equals_topological( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'MULTILINESTRING(( 0 0, 1 1 ), ( 0 0, 1 1 ))' ) )`` → TRUE
+
+         Duplicated data are valid
+       * ``equals_topological( geom_from_wkt( 'LINESTRING( 0 0, 1 1 )' ), geom_from_wkt( 'MULTILINESTRING(( 0 0, 1 1 ), ( 1 1, 0 0 ))' ) )`` → TRUE
+
+         Duplicated data and opposite direction are valid
+
+
+.. end_equals_topological_section
 
 .. _expression_function_GeometryGroup_exif_geotag:
 
@@ -629,7 +907,7 @@ Creates a point geometry from the exif geotags of an image file.
    * - Syntax
      - exif_geotag(path)
    * - Arguments
-     - * **path** - An image file path.
+     - * **path** - An image file path or a map layer value. If a map layer value is specified then the file source of the layer will be used.
    * - Examples
      - * ``geom_to_wkt(exif_geotag('/my/photo.jpg'))`` → 'Point (2 4)'
 
@@ -647,15 +925,25 @@ Extends the start and end of a linestring geometry by a specified amount. Lines 
    :widths: 15 85
 
    * - Syntax
-     - extend(geometry, start_distance, end_distance)
+     - extend(geometry, start_distance, end_distance, [start_deflection:=0], [end_deflection:=0])
+
+       [] marks optional arguments
    * - Arguments
      - * **geometry** - a (multi)linestring geometry
        * **start_distance** - distance to extend the start of the line
        * **end_distance** - distance to extend the end of the line.
+       * **start_deflection** - angle in degrees clockwise to deflect the extension from the start of the line
+       * **end_deflection** - angle in degrees clockwise to deflect the extension from the end of the line
    * - Examples
      - * ``geom_to_wkt(extend(geom_from_wkt('LineString(0 0, 1 0, 1 1)'),1,2))`` → 'LineString (-1 0, 1 0, 1 3)'
        * ``geom_to_wkt(extend(geom_from_wkt('MultiLineString((0 0, 1 0, 1 1), (2 2, 0 2, 0 5))'),1,2))`` → 'MultiLineString ((-1 0, 1 0, 1 3),(3 2, 0 2, 0 7))'
+       * ``geom_to_wkt(extend(geom_from_wkt('LineString(0 0, 1 0, 1 1)'),1,2, start_deflection:=45, end_deflection:=-90))`` → 'LineString (-0.70710678 0.70710678, 0 0, 1 0, 1 1, -1 1)'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/extend_lines.png
+   :align: center
+
+   The red dashes represent the initial and final extension of the original layer
 
 .. end_extend_section
 
@@ -676,6 +964,11 @@ Returns a line string representing the exterior ring of a polygon geometry. If t
    * - Examples
      - * ``geom_to_wkt(exterior_ring(geom_from_wkt('POLYGON((-1 -1, 4 0, 4 2, 0 2, -1 -1),( 0.1 0.1, 0.1 0.2, 0.2 0.2, 0.2, 0.1, 0.1 0.1))')))`` → 'LineString (-1 -1, 4 0, 4 2, 0 2, -1 -1)'
 
+
+.. figure:: expression_help/img/exterior_ring.*
+   :align: center
+
+   The dashed line represents the exterior ring of the polygon
 
 .. end_exterior_ring_section
 
@@ -700,6 +993,11 @@ Returns an extruded version of the input (Multi-)Curve or (Multi-)Linestring geo
        * ``geom_to_wkt(extrude(geom_from_wkt('MultiLineString((1 2, 3 2), (4 3, 8 3))'), 1, 2))`` → 'MultiPolygon (((1 2, 3 2, 4 4, 2 4, 1 2)),((4 3, 8 3, 9 5, 5 5, 4 3)))'
 
 
+.. figure:: expression_help/img/extrude.*
+   :align: center
+
+   Generating a polygon by extruding a line with offset in x and y directions
+
 .. end_extrude_section
 
 .. _expression_function_GeometryGroup_flip_coordinates:
@@ -718,6 +1016,7 @@ Returns a copy of the geometry with the x and y coordinates swapped. Useful for 
      - * **geometry** - a geometry
    * - Examples
      - * ``geom_to_wkt(flip_coordinates(make_point(1, 2)))`` → 'Point (2 1)'
+       * ``geom_to_wkt(flip_coordinates(geom_from_wkt('LineString(0 2, 1 0, 1 6)')))`` → 'LineString (2 0, 0 1, 6 1)'
 
 
 .. end_flip_coordinates_section
@@ -737,7 +1036,7 @@ Forces a geometry to respect the convention where exterior rings are counter-clo
    * - Arguments
      - * **geometry** - a geometry. Any non-polygon geometries are returned unchanged.
    * - Examples
-     - * ``geom_to_wkt(force_polygon_ccw(geometry:=geom_from_wkt('Polygon ((-1 -1, 0 2, 4 2, 4 0, -1 -1)))')))`` → 'Polygon ((-1 -1, 4 0, 4 2, 0 2, -1 -1))'
+     - * ``geom_to_wkt(force_polygon_ccw(geometry:=geom_from_wkt('Polygon ((-1 -1, 0 2, 4 2, 4 0, -1 -1))')))`` → 'Polygon ((-1 -1, 4 0, 4 2, 0 2, -1 -1))'
 
 
 .. end_force_polygon_ccw_section
@@ -857,7 +1156,7 @@ Returns the Well-Known Binary (WKB) representation of a geometry
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``geom_to_wkb( $geometry )`` → binary blob containing a geometry object
+     - * ``geom_to_wkb( @geometry )`` → binary blob of the current feature's geometry
 
 
 .. end_geom_to_wkb_section
@@ -873,14 +1172,15 @@ Returns the Well-Known Text (WKT) representation of the geometry without SRID me
    :widths: 15 85
 
    * - Syntax
-     - geom_to_wkt(geometry, [precision=8])
+     - geom_to_wkt(geometry, [precision:=8])
 
        [] marks optional arguments
    * - Arguments
      - * **geometry** - a geometry
        * **precision** - numeric precision
    * - Examples
-     - * ``geom_to_wkt( make_point(6, 50) )`` → 'POINT(6 50)'
+     - * ``geom_to_wkt(@geometry)`` → well-known text representation of the current feature's geometry
+       * ``geom_to_wkt( make_point(6, 50) )`` → 'POINT(6 50)'
        * ``geom_to_wkt(centroid(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))')))`` → 'POINT(0 0.66666667)'
        * ``geom_to_wkt(centroid(geom_from_wkt('Polygon((1 1, 0 0, -1 1, 1 1))')), 2)`` → 'POINT(0 0.67)'
 
@@ -892,7 +1192,7 @@ Returns the Well-Known Text (WKT) representation of the geometry without SRID me
 $geometry
 .........
 
-Returns the geometry of the current feature. Can be used for processing with other functions.
+Returns the geometry of the current feature. Can be used for processing with other functions. **WARNING: This function is deprecated. It is recommended to use the replacement @geometry variable instead.**
 
 .. list-table::
    :widths: 15 85
@@ -920,9 +1220,9 @@ Returns a feature's geometry.
    * - Arguments
      - * **feature** - a feature object
    * - Examples
-     - * `` geometry( $currentfeature )`` → the geometry of the current feature. Prefer using $geometry.
+     - * ``geometry( @feature )`` → the geometry of the current feature. Prefer using @geometry.
        * ``geom_to_wkt( geometry( get_feature_by_id( 'streets', 1 ) ) )`` → the geometry in WKT of the feature with the id 1 on the layer "streets", e.g. 'POINT(6 50)'
-       * ``intersects( $geometry, geometry( get_feature( 'streets', 'name', 'Main St.' ) ) )`` → true if the current feature spatially intersects the 'Main St.' named feature in the "streets" layer
+       * ``intersects( @geometry, geometry( get_feature( 'streets', 'name', 'Main St.' ) ) )`` → TRUE if the current feature spatially intersects the 'Main St.' named feature in the "streets" layer
 
 
 .. end_geometry_section
@@ -932,7 +1232,7 @@ Returns a feature's geometry.
 geometry_n
 ..........
 
-Returns a specific geometry from a geometry collection, or NULL if the input geometry is not a collection.
+Returns a specific geometry from a geometry collection, or NULL if the input geometry is not a collection. Also returns a part from a multipart geometry.
 
 .. list-table::
    :widths: 15 85
@@ -948,6 +1248,29 @@ Returns a specific geometry from a geometry collection, or NULL if the input geo
 
 .. end_geometry_n_section
 
+.. _expression_function_GeometryGroup_geometry_type:
+
+geometry_type
+.............
+
+Returns a string value describing the type of a geometry (Point, Line or Polygon)
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - geometry_type(geometry)
+   * - Arguments
+     - * **geometry** - a geometry
+   * - Examples
+     - * ``geometry_type( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 'Line'
+       * ``geometry_type( geom_from_wkt( 'MULTILINESTRING((2 5, 3 6, 4 8), (1 1, 0 0))') )`` → 'Line'
+       * ``geometry_type( geom_from_wkt( 'POINT(2 5)') )`` → 'Point'
+       * ``geometry_type( geom_from_wkt( 'POLYGON((-1 -1, 4 0, 4 2, 0 2, -1 -1))') )`` → 'Polygon'
+
+
+.. end_geometry_type_section
+
 .. _expression_function_GeometryGroup_hausdorff_distance:
 
 hausdorff_distance
@@ -957,13 +1280,8 @@ Returns the Hausdorff distance between two geometries. This is basically a measu
 
 The function can be executed with an optional densify fraction argument. If not specified, an approximation to the standard Hausdorff distance is used. This approximation is exact or close enough for a large subset of useful cases. Examples of these are:
 
-
-
 * computing distance between Linestrings that are roughly parallel to each other, and roughly equal in length. This occurs in matching linear networks.
 * Testing similarity of geometries.
-
-
-
 
 If the default approximate provided by this method is insufficient, specify the optional densify fraction argument. Specifying this argument performs a segment densification before computing the discrete Hausdorff distance. The parameter sets the fraction by which to densify each segment. Each segment will be split into a number of equal-length subsegments, whose fraction of the total length is closest to the given fraction. Decreasing the densify fraction parameter will make the distance returned approach the true Hausdorff distance for the geometries.
 
@@ -971,7 +1289,7 @@ If the default approximate provided by this method is insufficient, specify the 
    :widths: 15 85
 
    * - Syntax
-     - hausdorff_distance(geometry1, geometry2, [densify_fraction])
+     - hausdorff_distance(geometry1, geometry2, [densify_fraction:=1])
 
        [] marks optional arguments
    * - Arguments
@@ -979,7 +1297,7 @@ If the default approximate provided by this method is insufficient, specify the 
        * **geometry2** - a geometry
        * **densify_fraction** - densify fraction amount
    * - Examples
-     - * ``hausdorff_distance( geometry1:= geom_from_wkt('LINESTRING (0 0, 2 1)'),geometry2:=geom_from_wkt('LINESTRING (0 0, 2 0)'))`` → 2
+     - * ``hausdorff_distance( geometry1:= geom_from_wkt('LINESTRING (0 0, 2 1)'),geometry2:=geom_from_wkt('LINESTRING (0 0, 2 0)'))`` → 1
        * ``hausdorff_distance( geom_from_wkt('LINESTRING (130 0, 0 0, 0 150)'),geom_from_wkt('LINESTRING (10 10, 10 150, 130 10)'))`` → 14.142135623
        * ``hausdorff_distance( geom_from_wkt('LINESTRING (130 0, 0 0, 0 150)'),geom_from_wkt('LINESTRING (10 10, 10 150, 130 10)'),0.5)`` → 70.0
 
@@ -991,16 +1309,16 @@ If the default approximate provided by this method is insufficient, specify the 
 inclination
 ...........
 
-Returns the inclination measured from the zenith (0) to the nadir (180) on point_a to point_b.
+Returns the inclination measured from the zenith (0) to the nadir (180) on point1 to point2.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - inclination(point_a, point_b)
+     - inclination(point1, point2)
    * - Arguments
-     - * **point_a** - point geometry
-       * **point_b** - point geometry
+     - * **point1** - point geometry
+       * **point2** - point geometry
    * - Examples
      - * ``inclination( make_point( 5, 10, 0 ), make_point( 5, 10, 5 ) )`` → 0.0
        * ``inclination( make_point( 5, 10, 0 ), make_point( 5, 10, 0 ) )`` → 90.0
@@ -1028,6 +1346,11 @@ Returns a specific interior ring from a polygon geometry, or NULL if the geometr
    * - Examples
      - * ``geom_to_wkt(interior_ring_n(geom_from_wkt('POLYGON((-1 -1, 4 0, 4 2, 0 2, -1 -1),(-0.1 -0.1, 0.4 0, 0.4 0.2, 0 0.2, -0.1 -0.1),(-1 -1, 4 0, 4 2, 0 2, -1 -1))'),1))`` → 'LineString (-0.1 -0.1, 0.4 0, 0.4 0.2, 0 0.2, -0.1 -0.1))'
 
+
+.. figure:: expression_help/img/interior_ring_n.*
+   :align: center
+
+   The dashed line represents a specific interior ring of the polygon
 
 .. end_interior_ring_n_section
 
@@ -1058,7 +1381,7 @@ Returns a geometry that represents the shared portion of two geometries.
 intersects
 ..........
 
-Tests whether a geometry intersects another. Returns true if the geometries spatially intersect (share any portion of space) and false if they do not.
+Tests whether a geometry intersects another. Returns TRUE if the geometries spatially intersect (share any portion of space) and false if they do not.
 
 .. list-table::
    :widths: 15 85
@@ -1069,8 +1392,8 @@ Tests whether a geometry intersects another. Returns true if the geometries spat
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``intersects( geom_from_wkt( 'POINT(4 4)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → true
-       * ``intersects( geom_from_wkt( 'POINT(4 5)' ), geom_from_wkt( 'POINT(5 5)' ) )`` → false
+     - * ``intersects( geom_from_wkt( 'POINT(4 4)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → TRUE
+       * ``intersects( geom_from_wkt( 'POINT(4 5)' ), geom_from_wkt( 'POINT(5 5)' ) )`` → FALSE
 
 
 .. end_intersects_section
@@ -1080,7 +1403,7 @@ Tests whether a geometry intersects another. Returns true if the geometries spat
 intersects_bbox
 ...............
 
-Tests whether a geometry's bounding box overlaps another geometry's bounding box. Returns true if the geometries spatially intersect the bounding box defined and false if they do not.
+Tests whether a geometry's bounding box overlaps another geometry's bounding box. Returns TRUE if the geometries spatially intersect the bounding box defined and false if they do not.
 
 .. list-table::
    :widths: 15 85
@@ -1091,8 +1414,8 @@ Tests whether a geometry's bounding box overlaps another geometry's bounding box
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``intersects_bbox( geom_from_wkt( 'POINT(4 5)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → true
-       * ``intersects_bbox( geom_from_wkt( 'POINT(6 5)' ), geom_from_wkt( 'POLYGON((3 3, 4 4, 5 5, 3 3))' ) )`` → false
+     - * ``intersects_bbox( geom_from_wkt( 'POINT(4 5)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → TRUE
+       * ``intersects_bbox( geom_from_wkt( 'POINT(6 5)' ), geom_from_wkt( 'POLYGON((3 3, 4 4, 5 5, 3 3))' ) )`` → FALSE
 
 
 .. end_intersects_bbox_section
@@ -1102,7 +1425,7 @@ Tests whether a geometry's bounding box overlaps another geometry's bounding box
 is_closed
 .........
 
-Returns true if a line string is closed (start and end points are coincident), or false if a line string is not closed. If the geometry is not a line string then the result will be NULL.
+Returns TRUE if a line string is closed (start and end points are coincident), or false if a line string is not closed. If the geometry is not a line string then the result will be NULL.
 
 .. list-table::
    :widths: 15 85
@@ -1112,8 +1435,8 @@ Returns true if a line string is closed (start and end points are coincident), o
    * - Arguments
      - * **geometry** - a line string geometry
    * - Examples
-     - * ``is_closed(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)'))`` → false
-       * ``is_closed(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2, 0 0)'))`` → true
+     - * ``is_closed(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)'))`` → FALSE
+       * ``is_closed(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2, 0 0)'))`` → TRUE
 
 
 .. end_is_closed_section
@@ -1123,7 +1446,7 @@ Returns true if a line string is closed (start and end points are coincident), o
 is_empty
 ........
 
-Returns true if a geometry is empty (without coordinates), false if the geometry is not empty and NULL if there is no geometry. See also is_empty_or_null.
+Returns TRUE if a geometry is empty (without coordinates), false if the geometry is not empty and NULL if there is no geometry. See also is_empty_or_null.
 
 .. list-table::
    :widths: 15 85
@@ -1133,10 +1456,10 @@ Returns true if a geometry is empty (without coordinates), false if the geometry
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``is_empty(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)'))`` → false
-       * ``is_empty(geom_from_wkt('LINESTRING EMPTY'))`` → true
-       * ``is_empty(geom_from_wkt('POINT(7 4)'))`` → false
-       * ``is_empty(geom_from_wkt('POINT EMPTY'))`` → true
+     - * ``is_empty(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)'))`` → FALSE
+       * ``is_empty(geom_from_wkt('LINESTRING EMPTY'))`` → TRUE
+       * ``is_empty(geom_from_wkt('POINT(7 4)'))`` → FALSE
+       * ``is_empty(geom_from_wkt('POINT EMPTY'))`` → TRUE
 
 
 .. end_is_empty_section
@@ -1146,7 +1469,7 @@ Returns true if a geometry is empty (without coordinates), false if the geometry
 is_empty_or_null
 ................
 
-Returns true if a geometry is NULL or empty (without coordinates) or false otherwise. This function is like the expression '$geometry IS NULL or is_empty($geometry)'
+Returns TRUE if a geometry is NULL or empty (without coordinates) or false otherwise. This function is like the expression '@geometry IS NULL or is_empty(@geometry)'
 
 .. list-table::
    :widths: 15 85
@@ -1156,11 +1479,11 @@ Returns true if a geometry is NULL or empty (without coordinates) or false other
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``is_empty_or_null(NULL)`` → true
-       * ``is_empty_or_null(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)'))`` → false
-       * ``is_empty_or_null(geom_from_wkt('LINESTRING EMPTY'))`` → true
-       * ``is_empty_or_null(geom_from_wkt('POINT(7 4)'))`` → false
-       * ``is_empty_or_null(geom_from_wkt('POINT EMPTY'))`` → true
+     - * ``is_empty_or_null(NULL)`` → TRUE
+       * ``is_empty_or_null(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)'))`` → FALSE
+       * ``is_empty_or_null(geom_from_wkt('LINESTRING EMPTY'))`` → TRUE
+       * ``is_empty_or_null(geom_from_wkt('POINT(7 4)'))`` → FALSE
+       * ``is_empty_or_null(geom_from_wkt('POINT EMPTY'))`` → TRUE
 
 
 .. end_is_empty_or_null_section
@@ -1170,7 +1493,7 @@ Returns true if a geometry is NULL or empty (without coordinates) or false other
 is_multipart
 ............
 
-Returns true if the geometry is of Multi type.
+Returns TRUE if the geometry is of Multi type.
 
 .. list-table::
    :widths: 15 85
@@ -1180,8 +1503,9 @@ Returns true if the geometry is of Multi type.
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``is_multipart(geom_from_wkt('MULTIPOINT ((0 0),(1 1),(2 2))'))`` → true
-       * ``is_multipart(geom_from_wkt('POINT (0 0)'))`` → false
+     - * ``is_multipart(@geometry)`` → checks if the current feature's geometry is multipart
+       * ``is_multipart(geom_from_wkt('MULTIPOINT ((0 0),(1 1),(2 2))'))`` → TRUE
+       * ``is_multipart(geom_from_wkt('POINT (0 0)'))`` → FALSE
 
 
 .. end_is_multipart_section
@@ -1191,7 +1515,7 @@ Returns true if the geometry is of Multi type.
 is_valid
 ........
 
-Returns true if a geometry is valid; if it is well-formed in 2D according to the OGC rules.
+Returns TRUE if a geometry is valid; if it is well-formed in 2D according to the OGC rules.
 
 .. list-table::
    :widths: 15 85
@@ -1201,8 +1525,9 @@ Returns true if a geometry is valid; if it is well-formed in 2D according to the
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``is_valid(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2, 0 0)'))`` → true
-       * ``is_valid(geom_from_wkt('LINESTRING(0 0)'))`` → false
+     - * ``is_valid(@geometry)`` → checks if the current feature's geometry is valid
+       * ``is_valid(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2, 0 0)'))`` → TRUE
+       * ``is_valid(geom_from_wkt('LINESTRING(0 0)'))`` → FALSE
 
 
 .. end_is_valid_section
@@ -1259,7 +1584,8 @@ Calculate the length of a geometry line object. Calculations are always planimet
    * - Arguments
      - * **geometry** - line geometry object
    * - Examples
-     - * ``length(geom_from_wkt('LINESTRING(0 0, 4 0)'))`` → 4.0
+     - * ``length(@geometry)`` → length of the current feature's geometry
+       * ``length(geom_from_wkt('LINESTRING(0 0, 4 0)'))`` → 4.0
 
 
 .. end_length_section
@@ -1279,7 +1605,8 @@ Calculates the 3D length of a geometry line object. If the geometry is not a 3D 
    * - Arguments
      - * **geometry** - line geometry object
    * - Examples
-     - * ``length3D(geom_from_wkt('LINESTRINGZ(0 0 0, 3 0 4)'))`` → 5.0
+     - * ``length3D(@geometry)`` → 3D length of the current feature's geometry
+       * ``length3D(geom_from_wkt('LINESTRINGZ(0 0 0, 3 0 4)'))`` → 5.0
 
 
 .. end_length3D_section
@@ -1321,10 +1648,65 @@ Returns the point interpolated by a specified distance along a linestring geomet
      - * **geometry** - a linestring geometry
        * **distance** - distance along line to interpolate
    * - Examples
-     - * ``geom_to_wkt(line_interpolate_point(geometry:=geom_from_wkt('LineString(0 0, 10 0)'),distance:=5))`` → 'Point (5 0)'
+     - * ``geom_to_wkt(line_interpolate_point(geometry:=geom_from_wkt('LineString(0 0, 8 0)'), distance:=5))`` → 'Point (5 0)'
+       * ``geom_to_wkt(line_interpolate_point(geometry:=geom_from_wkt('LineString(0 0, 1 1, 2 0)'), distance:=2.1))`` → 'Point (1.48492424 0.51507576)'
+       * ``geom_to_wkt(line_interpolate_point(geometry:=geom_from_wkt('LineString(0 0, 1 0)'), distance:=2))`` → NULL
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/interpolated_point.png
+   :align: center
+
+   Interpolated point at 500m of the beginning of the line
 
 .. end_line_interpolate_point_section
+
+.. _expression_function_GeometryGroup_line_interpolate_point_by_m:
+
+line_interpolate_point_by_m
+...........................
+
+Returns the point interpolated by a matching M value along a linestring geometry.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - line_interpolate_point_by_m(geometry, m, [use_3d_distance:=false])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry** - a linestring geometry
+       * **m** - an M value
+       * **use_3d_distance** - controls whether 2D or 3D distances between vertices should be used during interpolation (this option is only considered for lines with z values)
+   * - Examples
+     - * ``geom_to_wkt(line_interpolate_point_by_m(geom_from_wkt('LineStringM(0 0 0, 10 10 10)'), m:=5))`` → 'Point (5 5)'
+
+
+.. end_line_interpolate_point_by_m_section
+
+.. _expression_function_GeometryGroup_line_locate_m:
+
+line_locate_m
+.............
+
+Returns the distance along a linestring corresponding to the first matching interpolated M value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - line_locate_m(geometry, m, [use_3d_distance:=false])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry** - a linestring geometry
+       * **m** - an M value
+       * **use_3d_distance** - controls whether 2D or 3D distances between vertices should be used during interpolation (this option is only considered for lines with z values)
+   * - Examples
+     - * ``line_locate_m(geometry:=geom_from_wkt('LineStringM(0 0 0, 10 10 10)'),m:=5)`` → 7.07106
+
+
+.. end_line_locate_m_section
 
 .. _expression_function_GeometryGroup_line_locate_point:
 
@@ -1388,6 +1770,11 @@ Returns the portion of a line (or curve) geometry which falls between the specif
      - * ``geom_to_wkt(line_substring(geometry:=geom_from_wkt('LineString(0 0, 10 0)'),start_distance:=2,end_distance:=6))`` → 'LineString (2 0,6 0)'
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/substring.png
+   :align: center
+
+   Substring line with starting distance set at 0 meters and the ending distance at 250 meters.
+
 .. end_line_substring_section
 
 .. _expression_function_GeometryGroup_m:
@@ -1395,7 +1782,7 @@ Returns the portion of a line (or curve) geometry which falls between the specif
 m
 .
 
-Returns the m value of a point geometry.
+Returns the m (measure) value of a point geometry.
 
 .. list-table::
    :widths: 15 85
@@ -1409,6 +1796,27 @@ Returns the m value of a point geometry.
 
 
 .. end_m_section
+
+.. _expression_function_GeometryGroup_m_at:
+
+m_at
+....
+
+Retrieves a m coordinate of the geometry, or NULL if the geometry has no m value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - m_at(geometry, vertex)
+   * - Arguments
+     - * **geometry** - geometry object
+       * **vertex** - index of the vertex of the geometry (indices start at 0; negative values apply from the last index, starting at -1)
+   * - Examples
+     - * ``m_at(geom_from_wkt('LineStringZM(0 0 0 0, 10 10 0 5, 10 10 0 0)'), 1)`` → 5
+
+
+.. end_m_at_section
 
 .. _expression_function_GeometryGroup_m_max:
 
@@ -1483,7 +1891,7 @@ Creates a circular polygon.
    :widths: 15 85
 
    * - Syntax
-     - make_circle(center, radius, [segments=36])
+     - make_circle(center, radius, [segments:=36])
 
        [] marks optional arguments
    * - Arguments
@@ -1509,7 +1917,7 @@ Creates an elliptical polygon.
    :widths: 15 85
 
    * - Syntax
-     - make_ellipse(center, semi_major_axis, semi_minor_axis, azimuth, [segments=36])
+     - make_ellipse(center, semi_major_axis, semi_minor_axis, azimuth, [segments:=36])
 
        [] marks optional arguments
    * - Arguments
@@ -1644,23 +2052,28 @@ Creates a polygon geometry from an outer ring and optional series of inner ring 
 make_rectangle_3points
 ......................
 
-Creates a rectangle from 3 points.
+Creates a rectangle from 3 points, the first two of which define its first side.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - make_rectangle_3points(point1, point2, point3, [option=0])
+     - make_rectangle_3points(point1, point2, point3, [option:=0])
 
        [] marks optional arguments
    * - Arguments
      - * **point1** - First point.
        * **point2** - Second point.
        * **point3** - Third point.
-       * **option** - An optional argument to construct the rectangle. By default this value is 0. Value can be 0 (distance) or 1 (projected). Option distance: Second distance is equal to the distance between 2nd and 3rd point. Option projected: Second distance is equal to the distance of the perpendicular projection of the 3rd point on the segment or its extension.
+       * **option** - An optional argument to construct the second side of the rectangle. By default this value is 0. Value can be:
+
+         * 0 (distance): The length of the second size is equal to the distance between the 2nd and 3rd points.
+         * 1 (projected): The length of the second size is equal to the distance of the perpendicular projection of the 3rd point on the first segment or its extension.
+
+         The second segment is always drawn on the side covering the third point.
    * - Examples
-     - * ``geom_to_wkt(make_rectangle_3points(make_point(0, 0), make_point(0,5), make_point(5, 5), 0)))`` → 'Polygon ((0 0, 0 5, 5 5, 5 0, 0 0))'
-       * ``geom_to_wkt(make_rectangle_3points(make_point(0, 0), make_point(0,5), make_point(5, 3), 1)))`` → 'Polygon ((0 0, 0 5, 5 5, 5 0, 0 0))'
+     - * ``geom_to_wkt(make_rectangle_3points(make_point(0, 0), make_point(0,5), make_point(3, 3), 0))`` → 'Polygon ((0 0, 0 5, 3.60555128 5, 3.60555128 0, 0 0))'
+       * ``geom_to_wkt(make_rectangle_3points(make_point(0, 0), make_point(0,5), make_point(3, 3), 1))`` → 'Polygon ((0 0, 0 5, 3 5, 3 0, 0 0))'
 
 
 .. end_make_rectangle_3points_section
@@ -1676,14 +2089,14 @@ Creates a regular polygon.
    :widths: 15 85
 
    * - Syntax
-     - make_regular_polygon(center, radius, number_sides, [circle=0])
+     - make_regular_polygon(center, radius, number_sides, [circle:=0])
 
        [] marks optional arguments
    * - Arguments
      - * **center** - center of the regular polygon
        * **radius** - second point. The first if the regular polygon is inscribed. The midpoint of the first side if the regular polygon is circumscribed.
        * **number_sides** - Number of sides/edges of the regular polygon
-       * **circle** - Optional argument to construct the regular polygon. By default this value is 0. Value can be 0 (inscribed) or 1 (circumscribed)
+       * **circle** - Optional argument to construct the regular polygon. By default this value is 0. Value can be 0 (inscribed) or 1 (circumscribed).
    * - Examples
      - * ``geom_to_wkt(make_regular_polygon(make_point(0,0), make_point(0,5), 5))`` → 'Polygon ((0 5, 4.76 1.55, 2.94 -4.05, -2.94 -4.05, -4.76 1.55, 0 5))'
        * ``geom_to_wkt(make_regular_polygon(make_point(0,0), project(make_point(0,0), 4.0451, radians(36)), 5))`` → 'Polygon ((0 5, 4.76 1.55, 2.94 -4.05, -2.94 -4.05, -4.76 1.55, 0 5))'
@@ -1736,6 +2149,33 @@ Creates a triangle polygon.
 
 .. end_make_triangle_section
 
+.. _expression_function_GeometryGroup_make_valid:
+
+make_valid
+..........
+
+Returns a valid geometry or an empty geometry if the geometry could not be made valid.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - make_valid(geometry, [method:='structure'], [keep_collapsed:=false])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **geometry** - a geometry
+       * **method** - repair algorithm. May be either 'structure' or 'linework'. The 'linework' option combines all rings into a set of noded lines and then extracts valid polygons from that linework. The 'structure' method first makes all rings valid and then merges shells and subtracts holes from shells to generate valid result. Assumes that holes and shells are correctly categorized.
+       * **keep_collapsed** - if set to true, then components that have collapsed into a lower dimensionality will be kept. For example, a ring collapsing to a line, or a line collapsing to a point.
+   * - Examples
+     - * ``geom_to_wkt(make_valid(geom_from_wkt('POLYGON((3 2, 4 1, 5 8, 3 2, 4 2))')))`` → 'Polygon ((3 2, 5 8, 4 1, 3 2))'
+       * ``geom_to_wkt(make_valid(geom_from_wkt('POLYGON((3 2, 4 1, 5 8, 3 2, 4 2))'), 'linework'))`` → 'GeometryCollection (Polygon ((5 8, 4 1, 3 2, 5 8)),LineString (3 2, 4 2))'
+       * ``geom_to_wkt(make_valid(geom_from_wkt('POLYGON((3 2, 4 1, 5 8))'), method:='linework'))`` → 'Polygon ((3 2, 4 1, 5 8, 3 2))'
+       * ``make_valid(geom_from_wkt('LINESTRING(0 0)'))`` → An empty geometry
+
+
+.. end_make_valid_section
+
 .. _expression_function_GeometryGroup_minimal_circle:
 
 minimal_circle
@@ -1747,7 +2187,7 @@ Returns the minimal enclosing circle of a geometry. It represents the minimum ci
    :widths: 15 85
 
    * - Syntax
-     - minimal_circle(geometry, [segments=36])
+     - minimal_circle(geometry, [segments:=36])
 
        [] marks optional arguments
    * - Arguments
@@ -1757,6 +2197,11 @@ Returns the minimal enclosing circle of a geometry. It represents the minimum ci
      - * ``geom_to_wkt( minimal_circle( geom_from_wkt( 'LINESTRING(0 5, 0 -5, 2 1)' ), 4 ) )`` → 'Polygon ((0 5, 5 -0, -0 -5, -5 0, 0 5))'
        * ``geom_to_wkt( minimal_circle( geom_from_wkt( 'MULTIPOINT(1 2, 3 4, 3 2)' ), 4 ) )`` → 'Polygon ((3 4, 3 2, 1 2, 1 4, 3 4))'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/minimum_enclosing_circles.png
+   :align: center
+
+   Minimal enclosing circle of each feature
 
 .. end_minimal_circle_section
 
@@ -1771,7 +2216,7 @@ Returns a multipoint geometry consisting of every node in the input geometry.
    :widths: 15 85
 
    * - Syntax
-     - nodes_to_points(geometry, [ignore_closing_nodes=false])
+     - nodes_to_points(geometry, [ignore_closing_nodes:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -1782,6 +2227,11 @@ Returns a multipoint geometry consisting of every node in the input geometry.
        * ``geom_to_wkt(nodes_to_points(geom_from_wkt('POLYGON((-1 -1, 4 0, 4 2, 0 2, -1 -1))'),true))`` → 'MultiPoint ((-1 -1),(4 0),(4 2),(0 2))'
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/extract_nodes.png
+   :align: center
+
+   Multi-point feature extracted from vertices
+
 .. end_nodes_to_points_section
 
 .. _expression_function_GeometryGroup_num_geometries:
@@ -1789,7 +2239,7 @@ Returns a multipoint geometry consisting of every node in the input geometry.
 num_geometries
 ..............
 
-Returns the number of geometries in a geometry collection, or NULL if the input geometry is not a collection.
+Returns the number of geometries in a geometry collection, or the number of parts in a multi-part geometry. The function returns NULL if the input geometry is not a collection.
 
 .. list-table::
    :widths: 15 85
@@ -1797,9 +2247,11 @@ Returns the number of geometries in a geometry collection, or NULL if the input 
    * - Syntax
      - num_geometries(geometry)
    * - Arguments
-     - * **geometry** - geometry collection
+     - * **geometry** - geometry collection or multi-part geometry
    * - Examples
-     - * ``num_geometries(geom_from_wkt('GEOMETRYCOLLECTION(POINT(0 1), POINT(0 0), POINT(1 0), POINT(1 1))'))`` → 4
+     - * ``num_geometries(@geometry)`` → number of geometries or number of parts of the current feature's geometry
+       * ``num_geometries(geom_from_wkt('GEOMETRYCOLLECTION(POINT(0 1), POINT(0 0), POINT(1 0), POINT(1 1))'))`` → 4
+       * ``num_geometries(geom_from_wkt('MULTIPOINT((0 1), (0 0), (1 0))'))`` → 3
 
 
 .. end_num_geometries_section
@@ -1839,7 +2291,7 @@ Returns the number of vertices in a geometry.
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``num_points($geometry)`` → number of vertices in the current feature's geometry
+     - * ``num_points(@geometry)`` → number of vertices in the current feature's geometry
 
 
 .. end_num_points_section
@@ -1875,7 +2327,7 @@ Returns a geometry formed by offsetting a linestring geometry to the side. Dista
    :widths: 15 85
 
    * - Syntax
-     - offset_curve(geometry, distance, [segments=8], [join=1], [miter_limit=2.0])
+     - offset_curve(geometry, distance, [segments:=8], [join:=1], [miter_limit:=2.0])
 
        [] marks optional arguments
    * - Arguments
@@ -1885,11 +2337,16 @@ Returns a geometry formed by offsetting a linestring geometry to the side. Dista
        * **join** - join style for corners, where 1 = round, 2 = miter and 3 = bevel
        * **miter_limit** - limit on the miter ratio used for very sharp corners (when using miter joins only)
    * - Examples
-     - * ``offset_curve($geometry, 10.5)`` → line offset to the left by 10.5 units
-       * ``offset_curve($geometry, -10.5)`` → line offset to the right by 10.5 units
-       * ``offset_curve($geometry, 10.5, segments:=16, join:=1)`` → line offset to the left by 10.5 units, using more segments to result in a smoother curve
-       * ``offset_curve($geometry, 10.5, join:=3)`` → line offset to the left by 10.5 units, using a beveled join
+     - * ``offset_curve(@geometry, 10.5)`` → line offset to the left by 10.5 units
+       * ``offset_curve(@geometry, -10.5)`` → line offset to the right by 10.5 units
+       * ``offset_curve(@geometry, 10.5, segments:=16, join:=1)`` → line offset to the left by 10.5 units, using more segments to result in a smoother curve
+       * ``offset_curve(@geometry, 10.5, join:=3)`` → line offset to the left by 10.5 units, using a beveled join
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/offset_lines.png
+   :align: center
+
+   In blue the source layer, in red the offset one
 
 .. end_offset_curve_section
 
@@ -1904,7 +2361,7 @@ Orders the parts of a MultiGeometry by a given criteria
    :widths: 15 85
 
    * - Syntax
-     - order_parts(geometry, orderby, [ascending=true])
+     - order_parts(geometry, orderby, [ascending:=true])
 
        [] marks optional arguments
    * - Arguments
@@ -1912,7 +2369,7 @@ Orders the parts of a MultiGeometry by a given criteria
        * **orderby** - an expression string defining the order criteria
        * **ascending** - boolean, True for ascending, False for descending
    * - Examples
-     - * ``geom_to_wkt(order_parts(geom_from_wkt('MultiPolygon (((1 1, 5 1, 5 5, 1 5, 1 1)),((1 1, 9 1, 9 9, 1 9, 1 1)))'), 'area($geometry)', False))`` → 'MultiPolygon (((1 1, 9 1, 9 9, 1 9, 1 1)),((1 1, 5 1, 5 5, 1 5, 1 1)))'
+     - * ``geom_to_wkt(order_parts(geom_from_wkt('MultiPolygon (((1 1, 5 1, 5 5, 1 5, 1 1)),((1 1, 9 1, 9 9, 1 9, 1 1)))'), 'area(@geometry)', False))`` → 'MultiPolygon (((1 1, 9 1, 9 9, 1 9, 1 1)),((1 1, 5 1, 5 5, 1 5, 1 1)))'
        * ``geom_to_wkt(order_parts(geom_from_wkt('LineString(1 2, 3 2, 4 3)'), '1', True))`` → 'LineString(1 2, 3 2, 4 3)'
 
 
@@ -1936,6 +2393,11 @@ Returns a geometry which represents the minimal oriented bounding box of an inpu
      - * ``geom_to_wkt( oriented_bbox( geom_from_wkt( 'MULTIPOINT(1 2, 3 4, 3 2)' ) ) )`` → 'Polygon ((3 2, 3 4, 1 4, 1 2, 3 2))'
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/oriented_minimum_bounding_box.png
+   :align: center
+
+   Oriented minimum bounding box
+
 .. end_oriented_bbox_section
 
 .. _expression_function_GeometryGroup_overlaps:
@@ -1943,7 +2405,7 @@ Returns a geometry which represents the minimal oriented bounding box of an inpu
 overlaps
 ........
 
-Tests whether a geometry overlaps another. Returns true if the geometries share space, are of the same dimension, but are not completely contained by each other.
+Tests whether a geometry overlaps another. Returns TRUE if the geometries share space, are of the same dimension, but are not completely contained by each other.
 
 .. list-table::
    :widths: 15 85
@@ -1954,8 +2416,8 @@ Tests whether a geometry overlaps another. Returns true if the geometries share 
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``overlaps( geom_from_wkt( 'LINESTRING(3 5, 4 4, 5 5, 5 3)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → true
-       * ``overlaps( geom_from_wkt( 'LINESTRING(0 0, 1 1)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → false
+     - * ``overlaps( geom_from_wkt( 'LINESTRING(3 5, 4 4, 5 5, 5 3)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → TRUE
+       * ``overlaps( geom_from_wkt( 'LINESTRING(0 0, 1 1)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → FALSE
 
 
 .. end_overlaps_section
@@ -1965,7 +2427,7 @@ Tests whether a geometry overlaps another. Returns true if the geometries share 
 overlay_contains
 ................
 
-Returns whether the current feature spatially contains at least one feature from a target layer, or an array of expression-based results for the features in the target layer contained in the current feature.
+Returns whether the current feature spatially contains at least one feature from a target layer, or returns an array of expression-based results for the features in the target layer contained in the current feature.
 
 
 
@@ -1975,7 +2437,7 @@ Read more on the underlying GEOS "Contains" predicate, as described in PostGIS `
    :widths: 15 85
 
    * - Syntax
-     - overlay_contains(layer, [expression], [filter], [limit], [cache=false])
+     - overlay_contains(layer, [expression], [filter], [limit], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -1985,12 +2447,12 @@ Read more on the underlying GEOS "Contains" predicate, as described in PostGIS `
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_contains('regions')`` → true if the current feature spatially contains a region
-       * ``overlay_contains('regions', filter:= population > 10000)`` → true if the current feature spatially contains a region with a population greater than 10000
+     - * ``overlay_contains('regions')`` → TRUE if the current feature spatially contains a region
+       * ``overlay_contains('regions', filter:= population > 10000)`` → TRUE if the current feature spatially contains a region with a population greater than 10000
        * ``overlay_contains('regions', name)`` → an array of names, for the regions contained in the current feature
        * ``array_to_string(overlay_contains('regions', name))`` → a string as a comma separated list of names, for the regions contained in the current feature
        * ``array_sort(overlay_contains(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions contained in the current feature and with a population greater than 10000
-       * ``overlay_contains(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions contained in the current feature
+       * ``overlay_contains(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions contained in the current feature
 
 
 .. end_overlay_contains_section
@@ -2000,7 +2462,7 @@ Read more on the underlying GEOS "Contains" predicate, as described in PostGIS `
 overlay_crosses
 ...............
 
-Returns whether the current feature spatially crosses at least one feature from a target layer, or an array of expression-based results for the features in the target layer crossed by the current feature.
+Returns whether the current feature spatially crosses at least one feature from a target layer, or returns an array of expression-based results for the features in the target layer crossed by the current feature.
 
 
 
@@ -2010,7 +2472,7 @@ Read more on the underlying GEOS "Crosses" predicate, as described in PostGIS `S
    :widths: 15 85
 
    * - Syntax
-     - overlay_crosses(layer, [expression], [filter], [limit], [cache=false])
+     - overlay_crosses(layer, [expression], [filter], [limit], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2020,12 +2482,12 @@ Read more on the underlying GEOS "Crosses" predicate, as described in PostGIS `S
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_crosses('regions')`` → true if the current feature spatially crosses a region
-       * ``overlay_crosses('regions', filter:= population > 10000)`` → true if the current feature spatially crosses a region with a population greater than 10000
+     - * ``overlay_crosses('regions')`` → TRUE if the current feature spatially crosses a region
+       * ``overlay_crosses('regions', filter:= population > 10000)`` → TRUE if the current feature spatially crosses a region with a population greater than 10000
        * ``overlay_crosses('regions', name)`` → an array of names, for the regions crossed by the current feature
        * ``array_to_string(overlay_crosses('regions', name))`` → a string as a comma separated list of names, for the regions crossed by the current feature
        * ``array_sort(overlay_crosses(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions crossed by the current feature and with a population greater than 10000
-       * ``overlay_crosses(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions crossed by the current feature
+       * ``overlay_crosses(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions crossed by the current feature
 
 
 .. end_overlay_crosses_section
@@ -2035,7 +2497,7 @@ Read more on the underlying GEOS "Crosses" predicate, as described in PostGIS `S
 overlay_disjoint
 ................
 
-Returns whether the current feature is spatially disjoint from all the features of a target layer, or an array of expression-based results for the features in the target layer that are disjoint from the current feature.
+Returns whether the current feature is spatially disjoint from all the features of a target layer, or returns an array of expression-based results for the features in the target layer that are disjoint from the current feature.
 
 
 
@@ -2045,7 +2507,7 @@ Read more on the underlying GEOS "Disjoint" predicate, as described in PostGIS `
    :widths: 15 85
 
    * - Syntax
-     - overlay_disjoint(layer, [expression], [filter], [limit], [cache=false])
+     - overlay_disjoint(layer, [expression], [filter], [limit], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2055,12 +2517,12 @@ Read more on the underlying GEOS "Disjoint" predicate, as described in PostGIS `
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_disjoint('regions')`` → true if the current feature is spatially disjoint from all the regions
-       * ``overlay_disjoint('regions', filter:= population > 10000)`` → true if the current feature is spatially disjoint from all the regions with a population greater than 10000
+     - * ``overlay_disjoint('regions')`` → TRUE if the current feature is spatially disjoint from all the regions
+       * ``overlay_disjoint('regions', filter:= population > 10000)`` → TRUE if the current feature is spatially disjoint from all the regions with a population greater than 10000
        * ``overlay_disjoint('regions', name)`` → an array of names, for the regions spatially disjoint from the current feature
        * ``array_to_string(overlay_disjoint('regions', name))`` → a string as a comma separated list of names, for the regions spatially disjoint from the current feature
        * ``array_sort(overlay_disjoint(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions spatially disjoint from the current feature and with a population greater than 10000
-       * ``overlay_disjoint(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions spatially disjoint from the current feature
+       * ``overlay_disjoint(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions spatially disjoint from the current feature
 
 
 .. end_overlay_disjoint_section
@@ -2070,17 +2532,13 @@ Read more on the underlying GEOS "Disjoint" predicate, as described in PostGIS `
 overlay_equals
 ..............
 
-Returns whether the current feature spatially equals to at least one feature from a target layer, or an array of expression-based results for the features in the target layer that are spatially equal to the current feature.
-
-
-
-Read more on the underlying GEOS "Equals" predicate, as described in PostGIS `ST_Equals <https://postgis.net/docs/ST_Equals.html>`_ function.
+Alias for 'overlay_equals_exact' function with default geometry backend QGIS. Returns whether the current feature's geometry is exactly equal to at least one feature's geometry from a target layer, or returns an array of expression-based results for the features in the target layer whose geometry is exactly equal to the current feature's geometry. Note that the order of vertices matters.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - overlay_equals(layer, [expression], [filter], [limit], [cache=false])
+     - overlay_equals(layer, [expression], [filter], [limit], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2090,22 +2548,139 @@ Read more on the underlying GEOS "Equals" predicate, as described in PostGIS `ST
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_equals('regions')`` → true if the current feature is spatially equal to a region
-       * ``overlay_equals('regions', filter:= population > 10000)`` → true if the current feature is spatially equal to a region with a population greater than 10000
-       * ``overlay_equals('regions', name)`` → an array of names, for the regions spatially equal to the current feature
-       * ``array_to_string(overlay_equals('regions', name))`` → a string as a comma separated list of names, for the regions spatially equal to the current feature
-       * ``array_sort(overlay_equals(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions spatially equal to the current feature and with a population greater than 10000
-       * ``overlay_equals(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions spatially equal to the current feature
+     - * ``overlay_equals('regions')`` → TRUE if the current feature's geometry is exactly the same as the geometry of a region
+       * ``overlay_equals('regions', filter:= population > 10000)`` → TRUE if the current feature's geometry is exactly the same as the geometry of a region whose population is greater than 10000
+       * ``overlay_equals('regions', name)`` → an array of names, for the regions exactly equal to the current feature
+       * ``array_to_string(overlay_equals('regions', name))`` → a string as a comma separated list of names, for the regions exactly equal to the current feature
+       * ``array_sort(overlay_equals(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions exactly equal to the current feature and with a population greater than 10000
+       * ``overlay_equals(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions exactly equal to the current feature
+
+.. note:: This function requires exact equality of geometries, meaning that the geometries 'LINESTRING( 0 0, 1 1 )' and 'LINESTRING( 1 1, 0 0 )' are different.
 
 
 .. end_overlay_equals_section
+
+.. _expression_function_GeometryGroup_overlay_equals_exact:
+
+overlay_equals_exact
+....................
+
+Returns whether the current feature's geometry is point-by-point exactly equal to at least one feature's geometry from a target layer, or returns an array of expression-based results for the features in the target layer whose geometry is exactly equal to the current feature's geometry. Note that the order of vertices matters.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - overlay_equals_exact(layer, [expression], [filter], [limit], [cache:=false], [backend:='QGIS'])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **layer** - the layer whose overlay is checked
+       * **expression** - an optional expression to evaluate on the features from the target layer. If not set, the function will just return a boolean indicating whether there is at least one match.
+       * **filter** - an optional expression to filter the target features to check. If not set, all the features will be checked.
+       * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
+       * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
+       * **backend** - Geometry backend implementation: 'QGIS' or 'GEOS'. Both internal implementation uses fuzzy comparison with very low (1e-8) tolerance.
+
+         * 'QGIS' works on 2D, 3D and 4D
+         * 'GEOS' works only on 2D components (Z or M components are ignored).
+
+
+   * - Examples
+     - * ``overlay_equals_exact('regions')`` → TRUE if the current feature's geometry is exactly the same as the geometry of a region
+       * ``overlay_equals_exact('regions', filter:= population > 10000)`` → TRUE if the current feature's geometry is exactly the same as the geometry of a region whose population is greater than 10000
+       * ``overlay_equals_exact('regions', name, backend:='GEOS')`` → an array of names, for the regions exactly equal to the current feature (example with 'GEOS' backend)
+       * ``array_to_string(overlay_equals_exact('regions', name))`` → a string as a comma separated list of names, for the regions exactly equal to the current feature
+       * ``array_sort(overlay_equals_exact(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions exactly equal to the current feature and with a population greater than 10000
+       * ``overlay_equals_exact(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions exactly equal to the current feature
+
+.. note:: This function requires exact equality of geometries, meaning that the geometries 'LINESTRING( 0 0, 1 1 )' and 'LINESTRING( 1 1, 0 0 )' are different.
+
+
+.. end_overlay_equals_exact_section
+
+.. _expression_function_GeometryGroup_overlay_equals_fuzzy:
+
+overlay_equals_fuzzy
+....................
+
+Returns whether the current feature's geometry is point-by-point equal in respect of a tolerance to at least one feature's geometry from a target layer, or returns an array of expression-based results for the features in the target layer whose geometry is fuzzy equal to the current feature's geometry. Note that the order of vertices matters.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - overlay_equals_fuzzy(layer, [expression], [filter], [limit], [cache:=false], [backend:='QGIS'], [epsilon:=1e-8])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **layer** - the layer whose overlay is checked
+       * **expression** - an optional expression to evaluate on the features from the target layer. If not set, the function will just return a boolean indicating whether there is at least one match.
+       * **filter** - an optional expression to filter the target features to check. If not set, all the features will be checked.
+       * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
+       * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
+       * **backend** - Geometry backend implementation: 'QGIS' or 'GEOS'.
+
+         * 'QGIS' works on 2D, 3D and 4D geometries and applies component per component comparison
+         * 'GEOS' works only on 2D components (Z or M components are ignored) and compares coordinates by using 2D Euclidean distance.
+
+
+       * **epsilon** - maximum difference for coordinates between the vertices.
+   * - Examples
+     - * ``overlay_equals_fuzzy('regions')`` → TRUE if the current feature's geometry is fuzzy the same as the geometry of a region
+       * ``overlay_equals_fuzzy('regions', filter:= population > 10000)`` → TRUE if the current feature's geometry is fuzzy the same as the geometry of a region whose population is greater than 10000
+       * ``overlay_equals_fuzzy('regions', name)`` → an array of names, for the regions fuzzy equal to the current feature
+       * ``overlay_equals_fuzzy('regions', name, backend:='QGIS')`` → an array of names, for the regions fuzzy equal to the current feature
+       * ``array_to_string(overlay_equals_fuzzy('regions', name, epsilon:=0.5))`` → a string as a comma separated list of names, for the regions fuzzy equal to the current feature
+       * ``array_sort(overlay_equals_fuzzy(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions fuzzy equal to the current feature and with a population greater than 10000
+       * ``overlay_equals_fuzzy(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions fuzzy equal to the current feature
+
+.. note:: This function uses fuzzy equality of geometries, see also 'equals_fuzzy' function examples.
+
+
+.. end_overlay_equals_fuzzy_section
+
+.. _expression_function_GeometryGroup_overlay_equals_topological:
+
+overlay_equals_topological
+..........................
+
+Returns whether the current feature's geometry is topologically equal to at least one feature's geometry from a target layer, or returns an array of expression-based results for the features in the target layer whose geometry is topologically equal to the current feature's geometry. See also 'equals_topological' function.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - overlay_equals_topological(layer, [expression], [filter], [limit], [cache:=false], [backend:='GEOS'])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **layer** - the layer whose overlay is checked
+       * **expression** - an optional expression to evaluate on the features from the target layer. If not set, the function will just return a boolean indicating whether there is at least one match.
+       * **filter** - an optional expression to filter the target features to check. If not set, all the features will be checked.
+       * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
+       * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
+       * **backend** - Available geometry backend implementations: 'GEOS'. 'GEOS' works only on 2D components, Z or M components are ignored.
+   * - Examples
+     - * ``overlay_equals_topological('regions')`` → TRUE if the current feature's geometry is topologically the same as the geometry of a region
+       * ``overlay_equals_topological('regions', filter:= population > 10000)`` → TRUE if the current feature's geometry is topologically the same as the geometry of a region whose population is greater than 10000
+       * ``overlay_equals_topological('regions', name)`` → an array of names, for the regions topologically equal to the current feature
+       * ``overlay_equals_topological('regions', name, backend:='GEOS')`` → an array of names, for the regions topologically equal to the current feature
+       * ``array_to_string(overlay_equals_topological('regions', name))`` → a string as a comma separated list of names, for the regions topologically equal to the current feature
+       * ``array_sort(overlay_equals_topological(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions topologically equal to the current feature and with a population greater than 10000
+       * ``overlay_equals_topological(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions topologically equal to the current feature
+
+.. note:: This function uses topological equality of geometries, see also 'equals_topological' function examples.
+
+
+.. end_overlay_equals_topological_section
 
 .. _expression_function_GeometryGroup_overlay_intersects:
 
 overlay_intersects
 ..................
 
-Returns whether the current feature spatially intersects at least one feature from a target layer, or an array of expression-based results for the features in the target layer intersected by the current feature.
+Returns whether the current feature spatially intersects at least one feature from a target layer, or returns an array of expression-based results for the features in the target layer intersected by the current feature.
 
 
 
@@ -2115,7 +2690,7 @@ Read more on the underlying GEOS "Intersects" predicate, as described in PostGIS
    :widths: 15 85
 
    * - Syntax
-     - overlay_intersects(layer, [expression], [filter], [limit], [cache=false], [min_overlap], [min_inscribed_circle_radius])
+     - overlay_intersects(layer, [expression], [filter], [limit], [cache:=false], [min_overlap], [min_inscribed_circle_radius], [return_details], [sort_by_intersection_size])
 
        [] marks optional arguments
    * - Arguments
@@ -2124,21 +2699,28 @@ Read more on the underlying GEOS "Intersects" predicate, as described in PostGIS
        * **filter** - an optional expression to filter the target features to check. If not set, all the features will be checked.
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
-       * **min_overlap** - defines an optional exclusion filter: for polygons a minimum area in current feature squared units for the intersection (if the intersection results in multiple polygons the intersection will be returned if at least one of the polygons has an area greater or equal to the value), for lines a minimum length in current feature units (if the intersection results in multiple lines the intersection will be returned if at least one of the lines has a length greater or equal to the value).
-       * **min_inscribed_circle_radius** - defines an optional exclusion filter (for polygons only): minimum radius in current feature units for the maximum inscribed circle of the intersection (if the intersection results in multiple polygons the intersection will be returned if at least one of the polygons has a radius for the maximum inscribed circle greater or equal to the value).
+       * **min_overlap** - defines an optional exclusion filter:
+
+         * for polygons, a minimum area in current feature squared units for the intersection. If the intersection results in multiple polygons the intersection will be returned if at least one of the polygons has an area greater or equal to the value
+         * for lines, a minimum length in current feature units. If the intersection results in multiple lines the intersection will be returned if at least one of the lines has a length greater or equal to the value.
+
+
+       * **min_inscribed_circle_radius** - defines an optional exclusion filter (for polygons only): minimum radius in current feature units for the maximum inscribed circle of the intersection. If the intersection results in multiple polygons the intersection will be returned if at least one of the polygons has a radius for the maximum inscribed circle greater or equal to the value.
 
          Read more on the underlying GEOS predicate, as described in PostGIS `ST_MaximumInscribedCircle <https://postgis.net/docs/ST_MaximumInscribedCircle.html>`_ function.
-
-         This argument requires GEOS >= 3.9.
+       * **return_details** - Set this to true to return a list of maps containing (key names in quotes) the feature 'id', the expression 'result' and the 'overlap' value (of the largest element in case of multipart). The 'radius' of the maximum inscribed circle is also returned when the target layer is a polygon. Only valid when used with the expression parameter
+       * **sort_by_intersection_size** - only valid when used with an expression, set this to 'des' to return the results ordered by the overlap value in descending order or set this to 'asc' for ascending order.
    * - Examples
-     - * ``overlay_intersects('regions')`` → true if the current feature spatially intersects a region
-       * ``overlay_intersects('regions', filter:= population > 10000)`` → true if the current feature spatially intersects a region with a population greater than 10000
+     - * ``overlay_intersects('regions')`` → TRUE if the current feature spatially intersects a region
+       * ``overlay_intersects('regions', filter:= population > 10000)`` → TRUE if the current feature spatially intersects a region with a population greater than 10000
        * ``overlay_intersects('regions', name)`` → an array of names, for the regions intersected by the current feature
        * ``array_to_string(overlay_intersects('regions', name))`` → a string as a comma separated list of names, for the regions intersected by the current feature
        * ``array_sort(overlay_intersects(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions intersected by the current feature and with a population greater than 10000
-       * ``overlay_intersects(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions intersected by the current feature
-       * ``overlay_intersects(layer:='regions', min_overlap:=0.54)`` → true if the current feature spatially intersects a region and the intersection area (of at least one of the parts in case of multipolygons) is greater or equal to 0.54
-       * ``overlay_intersects(layer:='regions', min_inscribed_circle_radius:=0.54)`` → true if the current feature spatially intersects a region and the intersection area maximum inscribed circle's radius (of at least one of the parts in case of multipart) is greater or equal to the 0.54
+       * ``overlay_intersects(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions intersected by the current feature
+       * ``overlay_intersects(layer:='regions', min_overlap:=0.54)`` → TRUE if the current feature spatially intersects a region and the intersection area (of at least one of the parts in case of multipolygons) is greater or equal to 0.54
+       * ``overlay_intersects(layer:='regions', min_inscribed_circle_radius:=0.54)`` → TRUE if the current feature spatially intersects a region and the intersection area maximum inscribed circle's radius (of at least one of the parts in case of multipart) is greater or equal to 0.54
+       * ``overlay_intersects(layer:='regions', expression:= geom_to_wkt(@geometry), return_details:=true)`` → an array of maps containing 'id', 'result', 'overlap' and 'radius'
+       * ``overlay_intersects(layer:='regions', expression:= geom_to_wkt(@geometry), sort_by_intersection_size:='des')`` → an array of geometries (in WKT) ordered by the overlap value in descending order
 
 
 .. end_overlay_intersects_section
@@ -2148,7 +2730,7 @@ Read more on the underlying GEOS "Intersects" predicate, as described in PostGIS
 overlay_nearest
 ...............
 
-Returns whether the current feature has feature(s) from a target layer within a given distance, or an array of expression-based results for the features in the target layer within a distance from the current feature.
+Returns whether the current feature has feature(s) from a target layer within a given distance, or returns an array of expression-based results for the features in the target layer within a distance from the current feature.
 
 
 
@@ -2158,7 +2740,7 @@ Note: This function can be slow and consume a lot of memory for large layers.
    :widths: 15 85
 
    * - Syntax
-     - overlay_nearest(layer, [expression], [filter], [limit=1], [max_distance], [cache=false])
+     - overlay_nearest(layer, [expression], [filter], [limit:=1], [max_distance], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2169,8 +2751,8 @@ Note: This function can be slow and consume a lot of memory for large layers.
        * **max_distance** - an optional distance to limit the search of matching features. If not set, all the features in the target layer will be used.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_nearest('airports')`` → true if the "airports" layer has at least one feature
-       * ``overlay_nearest('airports', max_distance:= 5000)`` → true if there is an airport within a distance of 5000 map units from the current feature
+     - * ``overlay_nearest('airports')`` → TRUE if the "airports" layer has at least one feature
+       * ``overlay_nearest('airports', max_distance:= 5000)`` → TRUE if there is an airport within a distance of 5000 map units from the current feature
        * ``overlay_nearest('airports', name)`` → the name of the closest airport to the current feature, as an array
        * ``array_to_string(overlay_nearest('airports', name))`` → the name of the closest airport to the current feature, as a string
        * ``overlay_nearest(layer:='airports', expression:= name, max_distance:= 5000)`` → the name of the closest airport within a distance of 5000 map units from the current feature, as an array
@@ -2185,7 +2767,7 @@ Note: This function can be slow and consume a lot of memory for large layers.
 overlay_touches
 ...............
 
-Returns whether the current feature spatially touches at least one feature from a target layer, or an array of expression-based results for the features in the target layer touched by the current feature.
+Returns whether the current feature spatially touches at least one feature from a target layer, or returns an array of expression-based results for the features in the target layer touched by the current feature.
 
 
 
@@ -2195,7 +2777,7 @@ Read more on the underlying GEOS "Touches" predicate, as described in PostGIS `S
    :widths: 15 85
 
    * - Syntax
-     - overlay_touches(layer, [expression], [filter], [limit], [cache=false])
+     - overlay_touches(layer, [expression], [filter], [limit], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2205,12 +2787,12 @@ Read more on the underlying GEOS "Touches" predicate, as described in PostGIS `S
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_touches('regions')`` → true if the current feature spatially touches a region
-       * ``overlay_touches('regions', filter:= population > 10000)`` → true if the current feature spatially touches a region with a population greater than 10000
+     - * ``overlay_touches('regions')`` → TRUE if the current feature spatially touches a region
+       * ``overlay_touches('regions', filter:= population > 10000)`` → TRUE if the current feature spatially touches a region with a population greater than 10000
        * ``overlay_touches('regions', name)`` → an array of names, for the regions touched by the current feature
-       * ``string_to_array(overlay_touches('regions', name))`` → a string as a comma separated list of names, for the regions touched by the current feature
+       * ``array_to_string(overlay_touches('regions', name))`` → a string as a comma separated list of names, for the regions touched by the current feature
        * ``array_sort(overlay_touches(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions touched by the current feature and with a population greater than 10000
-       * ``overlay_touches(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions touched by the current feature
+       * ``overlay_touches(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions touched by the current feature
 
 
 .. end_overlay_touches_section
@@ -2230,7 +2812,7 @@ Read more on the underlying GEOS "Within" predicate, as described in PostGIS `ST
    :widths: 15 85
 
    * - Syntax
-     - overlay_within(layer, [expression], [filter], [limit], [cache=false])
+     - overlay_within(layer, [expression], [filter], [limit], [cache:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2240,12 +2822,12 @@ Read more on the underlying GEOS "Within" predicate, as described in PostGIS `ST
        * **limit** - an optional integer to limit the number of matching features. If not set, all the matching features will be returned.
        * **cache** - set this to true to build a local spatial index (most of the time, this is unwanted, unless you are working with a particularly slow data provider)
    * - Examples
-     - * ``overlay_within('regions')`` → true if the current feature is spatially within a region
-       * ``overlay_within('regions', filter:= population > 10000)`` → true if the current feature is spatially within a region with a population greater than 10000
+     - * ``overlay_within('regions')`` → TRUE if the current feature is spatially within a region
+       * ``overlay_within('regions', filter:= population > 10000)`` → TRUE if the current feature is spatially within a region with a population greater than 10000
        * ``overlay_within('regions', name)`` → an array of names, for the regions containing the current feature
        * ``array_to_string(overlay_within('regions', name))`` → a string as a comma separated list of names, for the regions containing the current feature
        * ``array_sort(overlay_within(layer:='regions', expression:="name", filter:= population > 10000))`` → an ordered array of names, for the regions containing the current feature and with a population greater than 10000
-       * ``overlay_within(layer:='regions', expression:= geom_to_wkt($geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions containing the current feature
+       * ``overlay_within(layer:='regions', expression:= geom_to_wkt(@geometry), limit:=2)`` → an array of geometries (in WKT), for up to two regions containing the current feature
 
 
 .. end_overlay_within_section
@@ -2283,7 +2865,8 @@ Returns the perimeter of a geometry polygon object. Calculations are always plan
    * - Arguments
      - * **geometry** - polygon geometry object
    * - Examples
-     - * ``perimeter(geom_from_wkt('POLYGON((0 0, 4 0, 4 2, 0 2, 0 0))'))`` → 12.0
+     - * ``perimeter(@geometry)`` → perimeter of the current feature's geometry
+       * ``perimeter(geom_from_wkt('POLYGON((0 0, 4 0, 4 2, 0 2, 0 0))'))`` → 12.0
 
 
 .. end_perimeter_section
@@ -2324,7 +2907,7 @@ Returns a point guaranteed to lie on the surface of a geometry.
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``point_on_surface($geometry)`` → a point geometry
+     - * ``point_on_surface(@geometry)`` → a point geometry
 
 
 .. end_point_on_surface_section
@@ -2345,8 +2928,13 @@ Calculates the approximate pole of inaccessibility for a surface, which is the m
      - * **geometry** - a geometry
        * **tolerance** - maximum distance between the returned point and the true pole location
    * - Examples
-     - * ``geom_to_wkt(pole_of_inaccessibility( geom_from_wkt('POLYGON((0 1, 0 9, 3 10, 3 3, 10 3, 10 1, 0 1))'), 0.1))'`` → 'Point(1.546875 2.546875)'
+     - * ``geom_to_wkt(pole_of_inaccessibility( geom_from_wkt('POLYGON((0 1, 0 9, 3 10, 3 3, 10 3, 10 1, 0 1))'), 0.1))`` → 'Point(1.546875 2.546875)'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/pole_inaccessibility.png
+   :align: center
+
+   Pole of inaccessibility
 
 .. end_pole_of_inaccessibility_section
 
@@ -2390,10 +2978,10 @@ Returns the Dimensional Extended 9 Intersection Model (DE-9IM) representation of
    :widths: 15 85
 
    * - Syntax
-     - relate(geometry, geometry)
+     - relate(geometry1, geometry2)
    * - Arguments
-     - * **geometry** - a geometry
-       * **geometry** - a geometry
+     - * **geometry1** - a geometry
+       * **geometry2** - a geometry
    * - Examples
      - * ``relate( geom_from_wkt( 'LINESTRING(40 40,120 120)' ), geom_from_wkt( 'LINESTRING(40 40,60 120)' ) )`` → 'FF1F00102'
 
@@ -2406,13 +2994,13 @@ Tests whether the DE-9IM relationship between two geometries matches a specified
    :widths: 15 85
 
    * - Syntax
-     - relate(geometry, geometry, pattern)
+     - relate(geometry1, geometry2, pattern)
    * - Arguments
-     - * **geometry** - a geometry
-       * **geometry** - a geometry
+     - * **geometry1** - a geometry
+       * **geometry2** - a geometry
        * **pattern** - DE-9IM pattern to match
    * - Examples
-     - * ``relate( geom_from_wkt( 'LINESTRING(40 40,120 120)' ), geom_from_wkt( 'LINESTRING(40 40,60 120)' ), '**1F001**' )`` → True
+     - * ``relate( geom_from_wkt( 'LINESTRING(40 40,120 120)' ), geom_from_wkt( 'LINESTRING(40 40,60 120)' ), '**1F001**' )`` → TRUE
 
 
 .. end_relate_section
@@ -2421,6 +3009,25 @@ Tests whether the DE-9IM relationship between two geometries matches a specified
 
 reverse
 .......
+
+Reverses the direction of a line string or reverses a string of text.
+
+**String variant**
+
+Reverses the order of characters in a string.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - reverse(string)
+   * - Arguments
+     - * **string** - string to reverse
+   * - Examples
+     - * ``reverse('hello')`` → 'olleh'
+
+
+**Geometry variant**
 
 Reverses the direction of a line string by reversing the order of its vertices.
 
@@ -2435,6 +3042,11 @@ Reverses the direction of a line string by reversing the order of its vertices.
      - * ``geom_to_wkt(reverse(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)')))`` → 'LINESTRING(2 2, 1 1, 0 0)'
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/reverse_line.png
+   :align: center
+
+   Reversing line direction
+
 .. end_reverse_section
 
 .. _expression_function_GeometryGroup_rotate:
@@ -2448,7 +3060,7 @@ Returns a rotated version of a geometry. Calculations are in the Spatial Referen
    :widths: 15 85
 
    * - Syntax
-     - rotate(geometry, rotation, [center=NULL], [per_part=false])
+     - rotate(geometry, rotation, [center:=NULL], [per_part:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2457,9 +3069,14 @@ Returns a rotated version of a geometry. Calculations are in the Spatial Referen
        * **center** - rotation center point. If not specified, the center of the geometry's bounding box is used.
        * **per_part** - apply rotation per part. If true, then rotation will apply around the center of each part's bounding box when the input geometry is multipart and an explicit rotation center point is not specified.
    * - Examples
-     - * ``rotate($geometry, 45, make_point(4, 5))`` → geometry rotated 45 degrees clockwise around the (4, 5) point
-       * ``rotate($geometry, 45)`` → geometry rotated 45 degrees clockwise around the center of its bounding box
+     - * ``rotate(@geometry, 45, make_point(4, 5))`` → geometry rotated 45 degrees clockwise around the (4, 5) point
+       * ``rotate(@geometry, 45)`` → geometry rotated 45 degrees clockwise around the center of its bounding box
 
+
+.. figure:: expression_help/img/rotate.*
+   :align: center
+
+   Rotating features
 
 .. end_rotate_section
 
@@ -2495,7 +3112,7 @@ Returns a scaled version of a geometry. Calculations are in the Spatial Referenc
    :widths: 15 85
 
    * - Syntax
-     - scale(geometry, x_scale, y_scale, [center])
+     - scale(geometry, x_scale, y_scale, [center:=NULL])
 
        [] marks optional arguments
    * - Arguments
@@ -2504,8 +3121,8 @@ Returns a scaled version of a geometry. Calculations are in the Spatial Referenc
        * **y_scale** - y-axis scaling factor
        * **center** - scaling center point. If not specified, the center of the geometry's bounding box is used.
    * - Examples
-     - * ``scale($geometry, 2, 0.5, make_point(4, 5))`` → geometry scaled twice horizontally and halved vertically, around the (4, 5) point
-       * ``scale($geometry, 2, 0.5)`` → geometry twice horizontally and halved vertically, around the center of its bounding box
+     - * ``scale(@geometry, 2, 0.5, make_point(4, 5))`` → geometry scaled twice horizontally and halved vertically, around the (4, 5) point
+       * ``scale(@geometry, 2, 0.5)`` → geometry twice horizontally and halved vertically, around the center of its bounding box
 
 
 .. end_scale_section
@@ -2529,6 +3146,28 @@ Returns a multi line geometry consisting of a line for every segment in the inpu
 
 
 .. end_segments_to_lines_section
+
+.. _expression_function_GeometryGroup_shared_paths:
+
+shared_paths
+............
+
+Returns a collection containing paths shared by the two input geometries. Those going in the same direction are in the first element of the collection, those going in the opposite direction are in the second element. The paths themselves are given in the direction of the first geometry.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - shared_paths(geometry1, geometry2)
+   * - Arguments
+     - * **geometry1** - a LineString/MultiLineString geometry
+       * **geometry2** - a LineString/MultiLineString geometry
+   * - Examples
+     - * ``geom_to_wkt(shared_paths(geom_from_wkt('MULTILINESTRING((26 125,26 200,126 200,126 125,26 125),(51 150,101 150,76 175,51 150)))'),geom_from_wkt('LINESTRING(151 100,126 156.25,126 125,90 161, 76 175)')))`` → 'GeometryCollection (MultiLineString ((126 156.25, 126 125),(101 150, 90 161),(90 161, 76 175)),MultiLineString EMPTY)'
+       * ``geom_to_wkt(shared_paths(geom_from_wkt('LINESTRING(76 175,90 161,126 125,126 156.25,151 100)'),geom_from_wkt('MULTILINESTRING((26 125,26 200,126 200,126 125,26 125),(51 150,101 150,76 175,51 150))')))`` → 'GeometryCollection (MultiLineString EMPTY,MultiLineString ((76 175, 90 161),(90 161, 101 150),(126 125, 126 156.25)))'
+
+
+.. end_shared_paths_section
 
 .. _expression_function_GeometryGroup_shortest_line:
 
@@ -2570,6 +3209,11 @@ Simplifies a geometry by removing nodes using a distance based threshold (ie, th
      - * ``geom_to_wkt(simplify(geometry:=geom_from_wkt('LineString(0 0, 5 0.1, 10 0)'),tolerance:=5))`` → 'LineString(0 0, 10 0)'
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/simplify_geometries.png
+   :align: center
+
+   From left to right, source layer and increasing simplification tolerances
+
 .. end_simplify_section
 
 .. _expression_function_GeometryGroup_simplify_vw:
@@ -2604,7 +3248,7 @@ Returns a geometry formed by buffering out just one side of a linestring geometr
    :widths: 15 85
 
    * - Syntax
-     - single_sided_buffer(geometry, distance, [segments=8], [join=1], [miter_limit=2.0])
+     - single_sided_buffer(geometry, distance, [segments:=8], [join:=1], [miter_limit:=2.0])
 
        [] marks optional arguments
    * - Arguments
@@ -2614,11 +3258,16 @@ Returns a geometry formed by buffering out just one side of a linestring geometr
        * **join** - join style for corners, where 1 = round, 2 = miter and 3 = bevel
        * **miter_limit** - limit on the miter ratio used for very sharp corners (when using miter joins only)
    * - Examples
-     - * ``single_sided_buffer($geometry, 10.5)`` → line buffered to the left by 10.5 units
-       * ``single_sided_buffer($geometry, -10.5)`` → line buffered to the right by 10.5 units
-       * ``single_sided_buffer($geometry, 10.5, segments:=16, join:=1)`` → line buffered to the left by 10.5 units, using more segments to result in a smoother buffer
-       * ``single_sided_buffer($geometry, 10.5, join:=3)`` → line buffered to the left by 10.5 units, using a beveled join
+     - * ``single_sided_buffer(@geometry, 10.5)`` → line buffered to the left by 10.5 units
+       * ``single_sided_buffer(@geometry, -10.5)`` → line buffered to the right by 10.5 units
+       * ``single_sided_buffer(@geometry, 10.5, segments:=16, join:=1)`` → line buffered to the left by 10.5 units, using more segments to result in a smoother buffer
+       * ``single_sided_buffer(@geometry, 10.5, join:=3)`` → line buffered to the left by 10.5 units, using a beveled join
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/single_side_buffer.png
+   :align: center
+
+   Left versus right side buffer on the same vector line layer
 
 .. end_single_sided_buffer_section
 
@@ -2654,7 +3303,7 @@ Smooths a geometry by adding extra nodes which round off corners in the geometry
    :widths: 15 85
 
    * - Syntax
-     - smooth(geometry, [iterations=1], [offset=0.25], [min_length=-1], [max_angle=180])
+     - smooth(geometry, [iterations:=1], [offset:=0.25], [min_length:=-1], [max_angle:=180])
 
        [] marks optional arguments
    * - Arguments
@@ -2666,6 +3315,11 @@ Smooths a geometry by adding extra nodes which round off corners in the geometry
    * - Examples
      - * ``geom_to_wkt(smooth(geometry:=geom_from_wkt('LineString(0 0, 5 0, 5 5)'),iterations:=1,offset:=0.2,min_length:=-1,max_angle:=180))`` → 'LineString (0 0, 4 0, 5 1, 5 5)'
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/smooth_geometry_1.png
+   :align: center
+
+   Increasing number of iterations causes smoother geometries
 
 .. end_smooth_section
 
@@ -2680,7 +3334,7 @@ Constructs square/rectangular waves along the boundary of a geometry.
    :widths: 15 85
 
    * - Syntax
-     - square_wave(geometry, wavelength, amplitude, [strict=False])
+     - square_wave(geometry, wavelength, amplitude, [strict:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2690,7 +3344,14 @@ Constructs square/rectangular waves along the boundary of a geometry.
        * **strict** - By default the wavelength argument is treated as a "maximum wavelength", where the actual wavelength will be dynamically adjusted so that an exact number of square waves are created along the boundaries of the geometry. If the strict argument is set to true then the wavelength will be used exactly and an incomplete pattern may be used for the final waveform.
    * - Examples
      - * ``square_wave(geom_from_wkt('LineString(0 0, 10 0)'), 3, 1)`` → Square waves with wavelength 3 and amplitude 1 along the linestring
+       * ``geom_to_wkt(square_wave(geom_from_wkt('LineString(0 0, 5 0)'), 3, 1, false))`` → 'LineString (0 0, 0 1, 1.25 1, 1.25 -1, 2.5 -1, 2.5 1, 3.75 1, 3.75 -1, 5 -1, 5 0)'
+       * ``geom_to_wkt(square_wave(geom_from_wkt('LineString(0 0, 5 0)'), 3, 1, true))`` → 'LineString (0 0, 0 1, 1.5 1, 1.5 -1, 3 -1, 3 1, 4.5 1, 5 0)'
 
+
+.. figure:: expression_help/img/square_wave.*
+   :align: center
+
+   Symbolizing features with square waves
 
 .. end_square_wave_section
 
@@ -2705,7 +3366,7 @@ Constructs randomized square/rectangular waves along the boundary of a geometry.
    :widths: 15 85
 
    * - Syntax
-     - square_wave_randomized(geometry, min_wavelength, max_wavelength, min_amplitude, max_amplitude, [seed=0])
+     - square_wave_randomized(geometry, min_wavelength, max_wavelength, min_amplitude, max_amplitude, [seed:=0])
 
        [] marks optional arguments
    * - Arguments
@@ -2718,6 +3379,11 @@ Constructs randomized square/rectangular waves along the boundary of a geometry.
    * - Examples
      - * ``square_wave_randomized(geom_from_wkt('LineString(0 0, 10 0)'), 2, 3, 0.1, 0.2)`` → Randomly sized square waves with wavelengths between 2 and 3 and amplitudes between 0.1 and 0.2 along the linestring
 
+
+.. figure:: expression_help/img/square_wave_randomized.*
+   :align: center
+
+   Symbolizing features with square randomized waves
 
 .. end_square_wave_randomized_section
 
@@ -2738,6 +3404,11 @@ Returns the first node from a geometry.
    * - Examples
      - * ``geom_to_wkt(start_point(geom_from_wkt('LINESTRING(4 0, 4 2, 0 2)')))`` → 'Point (4 0)'
 
+
+.. figure:: expression_help/img/start_point.*
+   :align: center
+
+   Starting point of a line feature
 
 .. end_start_point_section
 
@@ -2794,7 +3465,7 @@ Creates a buffer along a line geometry where the buffer diameter varies evenly o
    :widths: 15 85
 
    * - Syntax
-     - tapered_buffer(geometry, start_width, end_width, [segments=8])
+     - tapered_buffer(geometry, start_width, end_width, [segments:=8])
 
        [] marks optional arguments
    * - Arguments
@@ -2806,6 +3477,11 @@ Creates a buffer along a line geometry where the buffer diameter varies evenly o
      - * ``tapered_buffer(geometry:=geom_from_wkt('LINESTRING(1 2, 4 2)'),start_width:=1,end_width:=2,segments:=8)`` → A tapered buffer starting with a diameter of 1 and ending with a diameter of 2 along the linestring geometry.
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/tapered_buffer.png
+   :align: center
+
+   Tapered buffer on line features
+
 .. end_tapered_buffer_section
 
 .. _expression_function_GeometryGroup_touches:
@@ -2813,7 +3489,7 @@ Creates a buffer along a line geometry where the buffer diameter varies evenly o
 touches
 .......
 
-Tests whether a geometry touches another. Returns true if the geometries have at least one point in common, but their interiors do not intersect.
+Tests whether a geometry touches another. Returns TRUE if the geometries have at least one point in common, but their interiors do not intersect.
 
 .. list-table::
    :widths: 15 85
@@ -2824,8 +3500,8 @@ Tests whether a geometry touches another. Returns true if the geometries have at
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``touches( geom_from_wkt( 'LINESTRING(5 3, 4 4)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → true
-       * ``touches( geom_from_wkt( 'POINT(4 4)' ), geom_from_wkt( 'POINT(5 5)' ) )`` → false
+     - * ``touches( geom_from_wkt( 'LINESTRING(5 3, 4 4)' ), geom_from_wkt( 'LINESTRING(3 3, 4 4, 5 5)' ) )`` → TRUE
+       * ``touches( geom_from_wkt( 'POINT(4 4)' ), geom_from_wkt( 'POINT(5 5)' ) )`` → FALSE
 
 
 .. end_touches_section
@@ -2844,8 +3520,8 @@ Returns the geometry transformed from a source CRS to a destination CRS.
      - transform(geometry, source_auth_id, dest_auth_id)
    * - Arguments
      - * **geometry** - a geometry
-       * **source_auth_id** - the source auth CRS ID
-       * **dest_auth_id** - the destination auth CRS ID
+       * **source_auth_id** - the source CRS definition or CRS object
+       * **dest_auth_id** - the destination CRS definition or CRS object
    * - Examples
      - * ``geom_to_wkt( transform( make_point(488995.53240249, 7104473.38600835), 'EPSG:2154', 'EPSG:4326' ) )`` → 'POINT(0 51)'
 
@@ -2869,8 +3545,13 @@ Returns a translated version of a geometry. Calculations are in the Spatial Refe
        * **dx** - delta x
        * **dy** - delta y
    * - Examples
-     - * ``translate($geometry, 5, 10)`` → a geometry of the same type like the original one
+     - * ``translate(@geometry, 5, 10)`` → a geometry of the same type like the original one
 
+
+.. figure:: /docs/user_manual/processing_algs/qgis/img/translate_geometry.png
+   :align: center
+
+   Translating features
 
 .. end_translate_section
 
@@ -2885,7 +3566,7 @@ Constructs triangular waves along the boundary of a geometry.
    :widths: 15 85
 
    * - Syntax
-     - triangular_wave(geometry, wavelength, amplitude, [strict=False])
+     - triangular_wave(geometry, wavelength, amplitude, [strict:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2895,7 +3576,14 @@ Constructs triangular waves along the boundary of a geometry.
        * **strict** - By default the wavelength argument is treated as a "maximum wavelength", where the actual wavelength will be dynamically adjusted so that an exact number of triangular waves are created along the boundaries of the geometry. If the strict argument is set to true then the wavelength will be used exactly and an incomplete pattern may be used for the final waveform.
    * - Examples
      - * ``triangular_wave(geom_from_wkt('LineString(0 0, 10 0)'), 3, 1)`` → Triangular waves with wavelength 3 and amplitude 1 along the linestring
+       * ``geom_to_wkt(triangular_wave(geom_from_wkt('LineString(0 0, 5 0)'), 3, 1, false))`` → 'LineString (0 0, 0.625 1, 1.875 -1, 3.125 1, 4.375 -1, 5 0)'
+       * ``geom_to_wkt(triangular_wave(geom_from_wkt('LineString(0 0, 5 0)'), 3, 1, true))`` → 'LineString (0 0, 0.75 1, 2.25 -1, 3.75 1, 5 0)'
 
+
+.. figure:: expression_help/img/triangular_wave.*
+   :align: center
+
+   Symbolizing features with triangular waves
 
 .. end_triangular_wave_section
 
@@ -2910,7 +3598,7 @@ Constructs randomized triangular waves along the boundary of a geometry.
    :widths: 15 85
 
    * - Syntax
-     - triangular_wave_randomized(geometry, min_wavelength, max_wavelength, min_amplitude, max_amplitude, [seed=0])
+     - triangular_wave_randomized(geometry, min_wavelength, max_wavelength, min_amplitude, max_amplitude, [seed:=0])
 
        [] marks optional arguments
    * - Arguments
@@ -2923,6 +3611,11 @@ Constructs randomized triangular waves along the boundary of a geometry.
    * - Examples
      - * ``triangular_wave_randomized(geom_from_wkt('LineString(0 0, 10 0)'), 2, 3, 0.1, 0.2)`` → Randomly sized triangular waves with wavelengths between 2 and 3 and amplitudes between 0.1 and 0.2 along the linestring
 
+
+.. figure:: expression_help/img/triangular_wave_randomized.*
+   :align: center
+
+   Symbolizing features with triangular randomized waves
 
 .. end_triangular_wave_randomized_section
 
@@ -2958,7 +3651,7 @@ Constructs rounded (sine-like) waves along the boundary of a geometry.
    :widths: 15 85
 
    * - Syntax
-     - wave(geometry, wavelength, amplitude, [strict=False])
+     - wave(geometry, wavelength, amplitude, [strict:=false])
 
        [] marks optional arguments
    * - Arguments
@@ -2969,6 +3662,11 @@ Constructs rounded (sine-like) waves along the boundary of a geometry.
    * - Examples
      - * ``wave(geom_from_wkt('LineString(0 0, 10 0)'), 3, 1)`` → Sine-like waves with wavelength 3 and amplitude 1 along the linestring
 
+
+.. figure:: expression_help/img/wave.*
+   :align: center
+
+   Symbolizing features with waves
 
 .. end_wave_section
 
@@ -2983,7 +3681,7 @@ Constructs randomized curved (sine-like) waves along the boundary of a geometry.
    :widths: 15 85
 
    * - Syntax
-     - wave_randomized(geometry, min_wavelength, max_wavelength, min_amplitude, max_amplitude, [seed=0])
+     - wave_randomized(geometry, min_wavelength, max_wavelength, min_amplitude, max_amplitude, [seed:=0])
 
        [] marks optional arguments
    * - Arguments
@@ -2996,6 +3694,11 @@ Constructs randomized curved (sine-like) waves along the boundary of a geometry.
    * - Examples
      - * ``wave_randomized(geom_from_wkt('LineString(0 0, 10 0)'), 2, 3, 0.1, 0.2)`` → Randomly sized curved waves with wavelengths between 2 and 3 and amplitudes between 0.1 and 0.2 along the linestring
 
+
+.. figure:: expression_help/img/wave_randomized.*
+   :align: center
+
+   Symbolizing features with randomized waves
 
 .. end_wave_randomized_section
 
@@ -3010,7 +3713,7 @@ Returns a wedge shaped buffer originating from a point geometry.
    :widths: 15 85
 
    * - Syntax
-     - wedge_buffer(center, azimuth, width, outer_radius, [inner_radius=0.0])
+     - wedge_buffer(center, azimuth, width, outer_radius, [inner_radius:=0.0])
 
        [] marks optional arguments
    * - Arguments
@@ -3023,6 +3726,11 @@ Returns a wedge shaped buffer originating from a point geometry.
      - * ``wedge_buffer(center:=geom_from_wkt('POINT(1 2)'),azimuth:=90,width:=180,outer_radius:=1)`` → A wedge shaped buffer centered on the point (1,2), facing to the East, with a width of 180 degrees and outer radius of 1.
 
 
+.. figure:: /docs/user_manual/processing_algs/qgis/img/wedge_buffers.png
+   :align: center
+
+   Wedge buffering features
+
 .. end_wedge_buffer_section
 
 .. _expression_function_GeometryGroup_within:
@@ -3030,7 +3738,7 @@ Returns a wedge shaped buffer originating from a point geometry.
 within
 ......
 
-Tests whether a geometry is within another. Returns true if the geometry1 is completely within geometry2.
+Tests whether a geometry is within another. Returns TRUE if the geometry1 is completely within geometry2.
 
 .. list-table::
    :widths: 15 85
@@ -3041,8 +3749,8 @@ Tests whether a geometry is within another. Returns true if the geometry1 is com
      - * **geometry1** - a geometry
        * **geometry2** - a geometry
    * - Examples
-     - * ``within( geom_from_wkt( 'POINT( 0.5 0.5)' ), geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))' ) )`` → true
-       * ``within( geom_from_wkt( 'POINT( 5 5 )' ), geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0 ))' ) )`` → false
+     - * ``within( geom_from_wkt( 'POINT( 0.5 0.5)' ), geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))' ) )`` → TRUE
+       * ``within( geom_from_wkt( 'POINT( 5 5 )' ), geom_from_wkt( 'POLYGON((0 0, 0 1, 1 1, 1 0, 0 0 ))' ) )`` → FALSE
 
 
 .. end_within_section
@@ -3052,7 +3760,7 @@ Tests whether a geometry is within another. Returns true if the geometry1 is com
 $x
 ..
 
-Returns the x coordinate of the current point feature. If the feature is a multipoint feature, then the x-coordinate of the first point will be returned.
+Returns the x coordinate of the current point feature. If the feature is a multipoint feature, then the x-coordinate of the first point will be returned. **WARNING: This function is deprecated. It is recommended to use the replacement x() function with @geometry variable instead.**
 
 .. list-table::
    :widths: 15 85
@@ -3081,7 +3789,7 @@ Returns the x coordinate of a point geometry, or the x coordinate of the centroi
      - * **geometry** - a geometry
    * - Examples
      - * ``x( geom_from_wkt( 'POINT(2 5)' ) )`` → 2
-       * ``x( $geometry )`` → x coordinate of the current feature's centroid
+       * ``x( @geometry )`` → x coordinate of the current feature's centroid
 
 
 .. end_x_section
@@ -3091,20 +3799,41 @@ Returns the x coordinate of a point geometry, or the x coordinate of the centroi
 $x_at
 .....
 
-Retrieves a x coordinate of the current feature's geometry.
+Retrieves a x coordinate of the current feature's geometry. **WARNING: This function is deprecated. It is recommended to use the replacement x_at function with @geometry variable instead.**
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - $x_at(i)
+     - $x_at(vertex)
    * - Arguments
-     - * **i** - index of point of a line (indices start at 0; negative values apply from the last index, starting at -1)
+     - * **vertex** - index of the vertex of the current geometry (indices start at 0; negative values apply from the last index, starting at -1)
    * - Examples
      - * ``$x_at(1)`` → 5
 
 
 .. end_$x_at_section
+
+.. _expression_function_GeometryGroup_x_at:
+
+x_at
+....
+
+Retrieves a x coordinate of the geometry.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - x_at(geometry, vertex)
+   * - Arguments
+     - * **geometry** - geometry object
+       * **vertex** - index of the vertex of the geometry (indices start at 0; negative values apply from the last index, starting at -1)
+   * - Examples
+     - * ``x_at( geom_from_wkt( 'POINT(4 5)' ), 0 )`` → 4
+
+
+.. end_x_at_section
 
 .. _expression_function_GeometryGroup_x_max:
 
@@ -3121,7 +3850,8 @@ Returns the maximum x coordinate of a geometry. Calculations are in the spatial 
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``x_max( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 4
+     - * ``x_max(@geometry)`` → the maximum x coordinate of the current feature's geometry
+       * ``x_max( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 4
 
 
 .. end_x_max_section
@@ -3141,7 +3871,8 @@ Returns the minimum x coordinate of a geometry. Calculations are in the spatial 
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``x_min( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 2
+     - * ``x_min(@geometry)`` → the minimum x coordinate of the current feature's geometry
+       * ``x_min( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 2
 
 
 .. end_x_min_section
@@ -3151,7 +3882,7 @@ Returns the minimum x coordinate of a geometry. Calculations are in the spatial 
 $y
 ..
 
-Returns the y coordinate of the current point feature. If the feature is a multipoint feature, then the y-coordinate of the first point will be returned.
+Returns the y coordinate of the current point feature. If the feature is a multipoint feature, then the y-coordinate of the first point will be returned. **WARNING: This function is deprecated. It is recommended to use the replacement y() function with @geometry variable instead.**
 
 .. list-table::
    :widths: 15 85
@@ -3180,7 +3911,7 @@ Returns the y coordinate of a point geometry, or the y coordinate of the centroi
      - * **geometry** - a geometry
    * - Examples
      - * ``y( geom_from_wkt( 'POINT(2 5)' ) )`` → 5
-       * ``y( $geometry )`` → y coordinate of the current feature's centroid
+       * ``y( @geometry )`` → y coordinate of the current feature's centroid
 
 
 .. end_y_section
@@ -3190,20 +3921,41 @@ Returns the y coordinate of a point geometry, or the y coordinate of the centroi
 $y_at
 .....
 
-Retrieves a y coordinate of the current feature's geometry.
+Retrieves a y coordinate of the current feature's geometry. **WARNING: This function is deprecated. It is recommended to use the replacement y_at function with @geometry variable instead.**
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - $y_at(i)
+     - $y_at(vertex)
    * - Arguments
-     - * **i** - index of point of a line (indices start at 0; negative values apply from the last index, starting at -1)
+     - * **vertex** - index of the vertex of the current geometry (indices start at 0; negative values apply from the last index, starting at -1)
    * - Examples
      - * ``$y_at(1)`` → 2
 
 
 .. end_$y_at_section
+
+.. _expression_function_GeometryGroup_y_at:
+
+y_at
+....
+
+Retrieves a y coordinate of the geometry.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - y_at(geometry, vertex)
+   * - Arguments
+     - * **geometry** - geometry object
+       * **vertex** - index of the vertex of the geometry (indices start at 0; negative values apply from the last index, starting at -1)
+   * - Examples
+     - * ``y_at( geom_from_wkt( 'POINT(4 5)' ), 0 )`` → 5
+
+
+.. end_y_at_section
 
 .. _expression_function_GeometryGroup_y_max:
 
@@ -3220,7 +3972,8 @@ Returns the maximum y coordinate of a geometry. Calculations are in the spatial 
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``y_max( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 8
+     - * ``y_max(@geometry)`` → the maximum y coordinate of the current feature's geometry
+       * ``y_max( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 8
 
 
 .. end_y_max_section
@@ -3240,7 +3993,8 @@ Returns the minimum y coordinate of a geometry. Calculations are in the spatial 
    * - Arguments
      - * **geometry** - a geometry
    * - Examples
-     - * ``y_min( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 5
+     - * ``y_min(@geometry)`` → the minimum y coordinate of the current feature's geometry
+       * ``y_min( geom_from_wkt( 'LINESTRING(2 5, 3 6, 4 8)') )`` → 5
 
 
 .. end_y_min_section
@@ -3250,7 +4004,7 @@ Returns the minimum y coordinate of a geometry. Calculations are in the spatial 
 $z
 ..
 
-Returns the z value of the current point feature if it is 3D. If the feature is a multipoint feature, then the z value of the first point will be returned.
+Returns the z value of the current point feature if it is 3D. If the feature is a multipoint feature, then the z value of the first point will be returned. **WARNING: This function is deprecated. It is recommended to use the replacement z() function with @geometry variable instead.**
 
 .. list-table::
    :widths: 15 85
@@ -3282,6 +4036,27 @@ Returns the z coordinate of a point geometry, or NULL if the geometry has no z v
 
 
 .. end_z_section
+
+.. _expression_function_GeometryGroup_z_at:
+
+z_at
+....
+
+Retrieves a z coordinate of the geometry, or NULL if the geometry has no z value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - z_at(geometry, vertex)
+   * - Arguments
+     - * **geometry** - geometry object
+       * **vertex** - index of the vertex of the geometry (indices start at 0; negative values apply from the last index, starting at -1)
+   * - Examples
+     - * ``z_at(geom_from_wkt('LineStringZ(0 0 0, 10 10 5, 10 10 0)'), 1)`` → 5
+
+
+.. end_z_at_section
 
 .. _expression_function_GeometryGroup_z_max:
 
@@ -3330,4 +4105,3 @@ Returns the minimum z coordinate of a geometry, or NULL if the geometry has no z
 
 
 .. end_z_min_section
-

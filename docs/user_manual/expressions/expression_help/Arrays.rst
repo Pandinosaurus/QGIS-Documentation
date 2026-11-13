@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Arrays_array:
 
 array
@@ -32,19 +33,19 @@ Returns an array containing all the values passed as parameter.
 array_all
 .........
 
-Returns true if an array contains all the values of a given array.
+Returns TRUE if an array contains all the values of a second array.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - array_all(array_a, array_b)
+     - array_all(array1, array2)
    * - Arguments
-     - * **array_a** - an array
-       * **array_b** - the array of values to search
+     - * **array1** - an array
+       * **array2** - the array of values to search
    * - Examples
-     - * ``array_all(array(1,2,3),array(2,3))`` → true
-       * ``array_all(array(1,2,3),array(1,2,4))`` → false
+     - * ``array_all(array(1,2,3),array(2,3))`` → TRUE
+       * ``array_all(array(1,2,3),array(1,2,4))`` → FALSE
 
 
 .. end_array_all_section
@@ -95,7 +96,7 @@ Returns an array containing all the given arrays concatenated.
 array_contains
 ..............
 
-Returns true if an array contains the given value.
+Returns TRUE if an array contains the given value.
 
 .. list-table::
    :widths: 15 85
@@ -106,7 +107,7 @@ Returns true if an array contains the given value.
      - * **array** - an array
        * **value** - the value to search
    * - Examples
-     - * ``array_contains(array(1,2,3),2)`` → true
+     - * ``array_contains(array(1,2,3),2)`` → TRUE
 
 
 .. end_array_contains_section
@@ -163,7 +164,7 @@ Returns an array with only the items for which the expression evaluates to true.
    :widths: 15 85
 
    * - Syntax
-     - array_filter(array, expression, [limit=0])
+     - array_filter(array, expression, [limit:=0])
 
        [] marks optional arguments
    * - Arguments
@@ -233,10 +234,11 @@ Returns an array with the given expression evaluated on each item.
      - array_foreach(array, expression)
    * - Arguments
      - * **array** - an array
-       * **expression** - an expression to evaluate on each item. The variable `@element` will be replaced by the current value.
+       * **expression** - an expression to evaluate on each item. The variable `@element` will be replaced by the current value and the variable `@counter` by the current index (starting with 0).
    * - Examples
      - * ``array_foreach(array('a','b','c'),upper(@element))`` → [ 'A', 'B', 'C' ]
        * ``array_foreach(array(1,2,3),@element + 10)`` → [ 11, 12, 13 ]
+       * ``array_foreach(array(1,2,3),@element + @counter)`` → [ 1, 3, 5 ]
 
 
 .. end_array_foreach_section
@@ -252,10 +254,10 @@ Returns the Nth value (0 for the first one) or the last -Nth value (-1 for the l
    :widths: 15 85
 
    * - Syntax
-     - array_get(array, index)
+     - array_get(array, pos)
    * - Arguments
      - * **array** - an array
-       * **index** - the index to get (0 based)
+       * **pos** - the index to get (0 based)
    * - Examples
      - * ``array_get(array('a','b','c'),1)`` → 'b'
        * ``array_get(array('a','b','c'),-1)`` → 'c'
@@ -290,7 +292,7 @@ Returns an array with the given value added at the given position.
 array_intersect
 ...............
 
-Returns true if at least one element of array1 exists in array2.
+Returns TRUE if at least one element of array1 exists in array2.
 
 .. list-table::
    :widths: 15 85
@@ -301,7 +303,7 @@ Returns true if at least one element of array1 exists in array2.
      - * **array1** - an array
        * **array2** - another array
    * - Examples
-     - * ``array_intersect(array(1,2,3,4),array(4,0,2,5))`` → true
+     - * ``array_intersect(array(1,2,3,4),array(4,0,2,5))`` → TRUE
 
 
 .. end_array_intersect_section
@@ -357,20 +359,18 @@ Returns the most common values in an array.
    :widths: 15 85
 
    * - Syntax
-     - array_majority(array, [option='all'])
+     - array_majority(array, [option:='all'])
 
        [] marks optional arguments
    * - Arguments
      - * **array** - an array
-       * **option='all'** - a string specifying the return values handling. Valid options are:
-
-         
+       * **option** - a string specifying the return values handling. Valid options are:
 
          * all: Default, all most common values are returned in an array.
          * any: Returns one of the most common values.
          * median: Returns the median of the most common values. Non arithmetic values are ignored.
          * real_majority: Returns the value which occurs more than half the size of the array.
-         
+
 
    * - Examples
      - * ``array_majority(array(0,1,42,42,43), 'all')`` → [ 42 ]
@@ -477,20 +477,18 @@ Returns the less common values in an array.
    :widths: 15 85
 
    * - Syntax
-     - array_minority(array, [option='all'])
+     - array_minority(array, [option:='all'])
 
        [] marks optional arguments
    * - Arguments
      - * **array** - an array
-       * **option='all'** - a string specifying the return values handling. Valid options are:
-
-         
+       * **option** - a string specifying the return values handling. Valid options are:
 
          * all: Default, all less common values are returned in an array.
          * any: Returns one of the less common values.
          * median: Returns the median of the less common values. Non arithmetic values are ignored.
          * real_minority: Returns values which occur less than half the size of the array.
-         
+
 
    * - Examples
      - * ``array_minority(array(0,42,42), 'all')`` → [ 0 ]
@@ -536,10 +534,10 @@ Returns an array sorted using the ordering specified in another array. Values wh
    :widths: 15 85
 
    * - Syntax
-     - array_prioritize(array, array_prioritize)
+     - array_prioritize(array, priority)
    * - Arguments
      - * **array** - an array
-       * **array_prioritize** - an array with values ordered by priority
+       * **priority** - an array with values ordered by priority
    * - Examples
      - * ``array_prioritize(array(1, 8, 2, 5), array(5, 4, 2, 1, 3, 8))`` → [ 5, 2, 1, 8 ]
        * ``array_prioritize(array(5, 4, 2, 1, 3, 8), array(1, 8, 6, 5))`` → [ 1, 8, 5, 4, 2, 3 ]
@@ -573,7 +571,7 @@ Returns an array with all the entries of the given value removed.
 array_remove_at
 ...............
 
-Returns an array with the given index removed.
+Returns an array with the item at the given index removed. Supports positive (0 for the first element) and negative (the last -Nth value, -1 for the last element) index.
 
 .. list-table::
    :widths: 15 85
@@ -584,7 +582,8 @@ Returns an array with the given index removed.
      - * **array** - an array
        * **pos** - the position to remove (0 based)
    * - Examples
-     - * ``array_remove_at(array(1,2,3),1)`` → [ 1, 3 ]
+     - * ``array_remove_at(array(1, 2, 3), 1)`` → [1, 3 ]
+       * ``array_remove_at(array(1, 2, 3), -1)`` → [1, 2 ]
 
 
 .. end_array_remove_at_section
@@ -693,7 +692,7 @@ Returns the provided array with its elements sorted.
    :widths: 15 85
 
    * - Syntax
-     - array_sort(array, [ascending=true])
+     - array_sort(array, [ascending:=true])
 
        [] marks optional arguments
    * - Arguments
@@ -736,13 +735,13 @@ Concatenates array elements into a string separated by a delimiter and using opt
    :widths: 15 85
 
    * - Syntax
-     - array_to_string(array, [delimiter=','], [empty_value=''])
+     - array_to_string(array, [delimiter:=','], [emptyvalue:=''])
 
        [] marks optional arguments
    * - Arguments
      - * **array** - the input array
        * **delimiter** - the string delimiter used to separate concatenated array elements
-       * **empty_value** - the optional string to use as replacement for empty (zero length) matches
+       * **emptyvalue** - the optional string to use as replacement for empty (zero length) matches
    * - Examples
      - * ``array_to_string(array('1','2','3'))`` → '1,2,3'
        * ``array_to_string(array(1,2,3),'-')`` → '1-2-3'
@@ -762,7 +761,7 @@ Creates an array containing a sequence of numbers.
    :widths: 15 85
 
    * - Syntax
-     - generate_series(start, stop, [step=1])
+     - generate_series(start, stop, [step:=1])
 
        [] marks optional arguments
    * - Arguments
@@ -776,6 +775,29 @@ Creates an array containing a sequence of numbers.
 
 .. end_generate_series_section
 
+.. _expression_function_Arrays_geometries_to_array:
+
+geometries_to_array
+...................
+
+Splits a geometry into simpler geometries in an array.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - geometries_to_array(geometry)
+   * - Arguments
+     - * **geometry** - the input geometry
+   * - Examples
+     - * ``geometries_to_array(geom_from_wkt('MultiPoint (1 2, 5 21)'))`` → An array containing 'Point (1 2)' and 'Point (5 21)'
+       * ``geometries_to_array(geom_from_wkt('GeometryCollection (Polygon ((5 8, 4 1, 3 2, 5 8)),LineString (3 2, 4 2))'))`` → an array of a polygon and a line geometries
+       * ``geom_to_wkt(geometries_to_array(geom_from_wkt('GeometryCollection (Polygon ((5 8, 4 1, 3 2, 5 8)),LineString (3 2, 4 2))'))[0])`` → 'Polygon ((5 8, 4 1, 3 2, 5 8))'
+       * ``geometries_to_array(geom_from_wkt('MULTIPOLYGON(((5 5,0 0,0 10,5 5)),((5 5,10 10,10 0,5 5))'))`` → an array of two polygon geometries
+
+
+.. end_geometries_to_array_section
+
 .. _expression_function_Arrays_regexp_matches:
 
 regexp_matches
@@ -787,13 +809,13 @@ Returns an array of all strings captured by capturing groups, in the order the g
    :widths: 15 85
 
    * - Syntax
-     - regexp_matches(string, regex, [empty_value=''])
+     - regexp_matches(string, regex, [emptyvalue:=''])
 
        [] marks optional arguments
    * - Arguments
      - * **string** - the string to capture groups from against the regular expression
        * **regex** - the regular expression used to capture groups
-       * **empty_value** - the optional string to use as replacement for empty (zero length) matches
+       * **emptyvalue** - the optional string to use as replacement for empty (zero length) matches
    * - Examples
      - * ``regexp_matches('QGIS=>rocks','(.*)=>(.*)')`` → [ 'QGIS', 'rocks' ]
        * ``regexp_matches('key=>','(.*)=>(.*)','empty value')`` → [ 'key', 'empty value' ]
@@ -812,17 +834,16 @@ Splits string into an array using supplied delimiter and optional string for emp
    :widths: 15 85
 
    * - Syntax
-     - string_to_array(string, [delimiter=','], [empty_value=''])
+     - string_to_array(string, [delimiter:=','], [emptyvalue:=''])
 
        [] marks optional arguments
    * - Arguments
      - * **string** - the input string
        * **delimiter** - the string delimiter used to split the input string
-       * **empty_value** - the optional string to use as replacement for empty (zero length) matches
+       * **emptyvalue** - the optional string to use as replacement for empty (zero length) matches
    * - Examples
      - * ``string_to_array('1,2,3',',')`` → [ '1', '2', '3' ]
        * ``string_to_array('1,,3',',','0')`` → [ '1', '0', '3' ]
 
 
 .. end_string_to_array_section
-

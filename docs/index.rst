@@ -7,13 +7,18 @@
 
   .. attention::  You are reading the testing version of QGIS documentation,
     an ongoing work which targets the latest changes in the software and may
-    document features not available or compatible with QGIS |CURRENT| Long
-    Term Release.
+    document features not available or compatible with released versions.
 
-.. only:: not testing
+.. only:: ltr
 
   .. hint:: Looking for documentation of versions newer than the
     |version| Long Term Release? Have a look at the
+    `testing docs <https://docs.qgis.org/testing/en/>`_.
+
+.. only:: not (ltr or testing or outdated)
+
+  .. hint:: Looking for documentation of versions newer than
+    |version|, the next Long Term Release? Have a look at the
     `testing docs <https://docs.qgis.org/testing/en/>`_.
 
 .. note:: QGIS documentation is available in various languages and versions.
@@ -23,7 +28,7 @@
 .. only:: i18n
 
   .. note:: This documentation is translated from the original English version
-    by community members on `Transifex <https://transifex.com/qgis/qgis-documentation>`_.
+    by community members on `Transifex <https://explore.transifex.com/qgis/qgis-documentation>`_.
 
     Depending on the translation effort's :ref:`completion level <translation_stats>`,
     you may find paragraphs or whole pages which are still in English.
@@ -31,20 +36,20 @@
     existing ones on Transifex.
 
     For the time being, localized translations are only available for
-    the Long Term releases branch, but should be suitable to learn
-    how to use QGIS nevertheless.
+    the Long Term releases branch, but should nevertheless be suitable to learn how to
+    use QGIS.
 
 Welcome to the official documentation of `QGIS <https://qgis.org>`_,
 the free and open source community-driven GIS software!
 If you are new to this documentation, the table of contents below
-and in the sidebar should let you easily access the documentation
+and in the sidebar should help you easily access the documentation
 for your topic of interest. You can also use the search function
 in the top left corner.
 
 .. todo: Actually, it could be nice to refactor the first chapters of the docs
  (preamble, foreword, features, conventions) to minimize repetition and have
  an introductory chapter for the whole documentation, not within User manual.
- Also we can consider adding an overview of how the docs is structured and what
+ Also we can consider adding an overview of how the docs are structured and what
  people should expect to find in each document (inspired by
  https://docs.godotengine.org/en/stable/about/introduction.html#doc-about-intro).
 
@@ -59,21 +64,32 @@ you can download for offline reading. They are accessible from the
 
 .. note:: QGIS is an open source project developed by a community of contributors.
     The documentation team can always use your feedback and help to improve
-    the tutorials and features description. If you don't understand something,
+    the tutorials and feature descriptions. If you don't understand something,
     or cannot find what you are looking for in the docs, help us make the
     documentation better by letting us know:
 
     * Submit an issue or pull request on the `GitHub repository
       <https://github.com/qgis/QGIS-Documentation/>`_,
-    * Help us `translate the documentation
-      <https://qgis.org/en/site/getinvolved/translate.html>`_ into your language
+    * Help us :ref:`translate the documentation <translation_guidelines>` into your language
     * Or talk to us on either the `qgis-community-team
       <https://lists.osgeo.org/mailman/listinfo/qgis-community-team>`_ mailing-list,
-      the `#qgis <http://webchat.freenode.net/?channels=#qgis>`_ channel on IRC
-      or the `#qgis:matrix.org <http://matrix.to/#/#qgis:matrix.org>`_ room!
+      the `#qgis <https://web.libera.chat/?channels=#qgis>`_ channel on IRC
+      or the `#qgis:matrix.org <https://matrix.to/#/#qgis:osgeo.org>`_ room!
 
 
-Please have a look into one of the documents below.
+Please have a look at one of the documents below.
+
+.. toctree::
+   :maxdepth: 1
+   :caption: About QGIS
+
+   about/preamble
+   about/foreword
+   about/conventions
+   about/features
+   about/help_and_support
+   about/contributors
+   about/license/index
 
 .. toctree::
    :maxdepth: 2
@@ -98,12 +114,3 @@ Please have a look into one of the documents below.
    Developers Guide <developers_guide/index>
 
 * :ref:`genindex`
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |CURRENT| replace:: 3.16

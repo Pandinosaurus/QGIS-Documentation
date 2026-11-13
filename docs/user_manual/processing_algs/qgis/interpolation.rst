@@ -38,7 +38,7 @@ Parameters
      - Point vector layer to use for the heatmap
    * - **Radius**
      - ``RADIUS``
-     - [number]
+     - [numeric: double]
 
        Default: 100.0
      - Heatmap search radius (or kernel bandwidth) in map units.
@@ -48,11 +48,11 @@ Parameters
        may show finer details and variation in point density.
    * - **Output raster size**
      - ``PIXEL_SIZE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.1
      - Pixel size of the output raster layer in layer units.
-       
+
        In the GUI, the size can be specified by the number of rows
        (``Number of rows``) / columns (``Number of columns``) **or**
        the pixel size( ``Pixel Size X`` / ``Pixel Size Y``).
@@ -91,7 +91,7 @@ Parameters
        the point then the Epanechnikov kernel does.
        Consequently, triweight results in “sharper” hotspots and
        Epanechnikov results in “smoother” hotspots.
-       
+
        There are many shapes available (please see the
        `Wikipedia page <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_
        for further information):
@@ -106,7 +106,7 @@ Parameters
 
        Optional
      - ``DECAY``
-     - [number]
+     - [numeric: double]
 
        Default: *0.0*
      - Can be used with Triangular kernels to further control
@@ -130,7 +130,7 @@ Parameters
      - ``OUTPUT_VALUE``
      - [enumeration]
 
-       Default: *Raw*
+       Default: *0*
      - Allow to change the values of the output heatmap raster.
        One of:
 
@@ -140,10 +140,10 @@ Parameters
    * - **Heatmap**
      - ``OUTPUT``
      - [raster]
-       
+
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with kernel density values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -241,7 +241,7 @@ The final result is shown in :numref:`Figure_Heatmap_styled_processing`.
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:heatmapkerneldensityestimation``
+**Algorithm ID**: ``native:heatmapkerneldensityestimation``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -252,22 +252,26 @@ Python code
 
 IDW Interpolation
 -----------------
-Generates an Inverse Distance Weighted (IDW) interpolation of a point
-vector layer.
+Generates an Inverse Distance Weighted (IDW) interpolation surface raster
+from one or more vector layers.
 
-Sample points are weighted during interpolation such that the
-influence of one point relative to another declines with distance from
-the unknown point you want to create.
+The IDW interpolation calculates cell values using a linearly weighted combination of sample points.
+The weighting is an inverse function of distance,
+meaning closer sample points exert greater influence on the target cell value than more distant points.
+Input layers can supply sample values from feature attributes or feature Z coordinates.
+Features can be specified as discrete points, structure lines, or breaklines.
 
-The IDW interpolation method also has some disadvantages: the quality
-of the interpolation result can decrease, if the distribution of
-sample data points is uneven.
-
+The IDW interpolation method also has some disadvantages:
+the quality of the interpolation result can decrease,
+if the distribution of sample data points is uneven.
 Furthermore, maximum and minimum values in the interpolated surface
 can only occur at sample data points.
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -282,11 +286,7 @@ Parameters
    * - **Input layer(s)**
      - ``INTERPOLATION_DATA``
      - [string]
-     - Vector layer(s) and field(s) to use for the interpolation,
-       coded
-       in a string (see the ``ParameterInterpolationData`` class in
-       :source:`InterpolationWidgets <python/plugins/processing/algs/qgis/ui/InterpolationWidgets.py>`
-       for more details).
+     - Vector layer(s) and field(s) to use for the interpolation, coded in a string.
 
        The following GUI elements are provided to compose the
        interpolation data string:
@@ -297,23 +297,30 @@ Parameters
        * **Use Z-coordinate for interpolation** [boolean]:
          Uses the layer's stored Z values (Default: False)
 
-       For each of the added layer-field combinations, a type can
-       be chosen:
+       For each of the added layer-field combinations,
+       a type defining how features of the vector layer are used should be indicated:
 
-       * :guilabel:`Points`
-       * :guilabel:`Structured lines`
-       * :guilabel:`Break lines`
+       * :guilabel:`Points`: Elevation sample locations containing the values to be interpolated
+         (e.g., terrain height, Z).
+         These points are the primary input for calculating the output surface.
 
-       In the string, the layer-field elements are separated by
-       ``'::|::'``.
-       The sub-elements of the layer-field elements are separated by
-       ``'::~::'``.
+       * :guilabel:`Structured lines`: Lines representing known continuous surface features
+         that guide the terrain shape or structure (e.g., ridges, road centerlines, levees).
+         They describe terrain direction while assuming continuity along the line.
+
+       * :guilabel:`Break lines`: Lines representing known surface discontinuities or hard boundaries
+         (e.g., cliffs, river banks, excavation edges, lake/pond outlines).
+         They mark where the surface may change sharply.
+         It is required if there are significant changes in elevation along the line.
+
+       In the string, the layer-field elements are separated by ``'::|::'``.
+       The sub-elements of the layer-field elements are separated by ``'::~::'``.
    * - **Distance coefficient P**
      - ``DISTANCE_COEFFICIENT``
-     - [number]
+     - [numeric: double]
 
        Default: 2.0
-     - Sets the distance coefficient for the interpolation.
+     - Determines how influence decreases with distance.
        Minimum: 0.0, maximum: 100.0.
    * - **Extent (xmin, xmax, ymin, ymax)**
      - ``EXTENT``
@@ -326,33 +333,69 @@ Parameters
 
    * - **Output raster size**
      - ``PIXEL_SIZE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.1
      - Pixel size of the output raster layer in layer units.
-       
+
        In the GUI, the size can be specified by the number of rows
-       (``Number of rows``) / columns (``Number of columns``) **or**
-       the pixel size( ``Pixel Size X`` / ``Pixel Size Y``).
+       (``Rows``) and columns (``Columns``) **OR**
+       the pixel size (``Pixel Size X`` / ``Pixel Size Y``).
        Increasing the number of rows or columns will decrease the cell
        size and increase the file size of the output raster.
        The values in ``Rows``, ``Columns``, ``Pixel Size X`` and
        ``Pixel Size Y`` will be updated simultaneously - doubling the
        number of rows will double the number of columns, and the cell
        size will be halved.
-       The extent of the output raster will remain the same
-       (approximately).
+       The extent of the output raster will remain the same (approximately).
    * - **Interpolated**
      - ``OUTPUT``
      - [raster]
-       
+
        Default: ``[Save to temporary file]``
      - Raster layer of interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output NoData value**
+
+       ``Added in 4.4``
+     - ``NODATA``
+     - [numeric: double]
+
+       Default: -9999.0
+     - Value to use for NoData cells in the output layer.
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 4.4``
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the raster
+       to be created (colors, block size, file compression...).
+       For convenience, you can rely on predefined profiles
+       (see :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options
+       with a pipe character (``|``).
 
 Outputs
 .......
@@ -374,7 +417,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:idwinterpolation``
+**Algorithm ID**: ``native:idwinterpolation``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -389,18 +432,24 @@ Line Density
 Calculates for each raster cell, the density measure of linear
 features within a circular neighbourhood. This measure is obtained by
 summing all the line segments intersecting the circular neighbourhood
-and dividing this sum by the area of such neighbourhood. 
-A weighting factor can be applied to the line segments. 
+and dividing this sum by the area of such neighbourhood.
+A weighting factor can be applied to the line segments.
 
 .. figure:: img/linedensity.png
   :align: center
-  
+
   Line density example. Input layer source: Roads Overijssel - The
   Netherlands (OSM).
+
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
 
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -413,25 +462,25 @@ Parameters
      - Description
    * - **Input line layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: line]
      - Input vector layer containing line features
    * - **Weight field**
      - ``WEIGHT``
-     - [number]
-     - Field of the layer containing the weight factor to use during
-       the calculation
-   * - **Search Radius**
+     - [tablefield: numeric]
+     - Field of the layer containing the weight factor to use
+       during the calculation
+   * - **Search radius**
      - ``RADIUS``
-     - [number]
+     - [numeric: double]
 
-       Default: 10
+       Default: 10.0
      - Radius of the circular neighbourhood. Units can be specified
        here.
    * - **Pixel size**
      - ``PIXEL_SIZE``
-     - [number]
+     - [numeric: double]
 
-       Default: 10
+       Default: 10.0
      - Pixel size of the output raster layer in layer units.
        The raster has square pixels.
    * - **Line density raster**
@@ -439,11 +488,41 @@ Parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - The output as a raster layer. One of:
+     - The output as a raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -472,25 +551,338 @@ Python code
   :end-before: **end_algorithm_code_section**
 
 
+.. _qgisglobaltpsinterpolation:
+
+Thin Plate Spline interpolation (global)
+-------------------------------------------
+``Added in 4.4``
+
+Calculates a single global Thin Plate Spline surface passing through all input points simultaneously.
+
+Thin Plate Splines minimize the integral of the squared second derivatives,
+creating a smooth surface resembling a bent thin metal plate.
+Regularisation allows softening the exact fitting constraint to smooth out noise.
+A global Thin Plate Spline interpolation constructs and solves a single linear system
+across all control points up front.
+It guarantees a continuous surface without spatial windowing boundaries,
+but requires high memory and computation time for datasets with large point counts.
+
+.. attention:: This algorithm requires a QGIS build with GSL support enabled.
+
+.. seealso:: This algorithm is a port of the SAGA `Thin Plate Spline`_ tool.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Point layer**
+     - ``INPUT``
+     - [vector: point]
+     - Vector point layer containing scattered control points with 3D coordinate or attribute values.
+   * - **Z Field**
+     - ``FIELD``
+     - [tablefield: numeric]
+     - Numeric attribute field containing the values (elevation/Z) to interpolate.
+   * - **Regularization**
+     - ``REGULARIZATION``
+     - [numeric: double]
+
+       Default: 0.0001
+     - Regularization parameter (lambda), where a value of 0 produces an exact spline interpolation
+       passing precisely through all control points.
+       Values greater than 0 introduce smoothing/tension to reduce noise and flatten high-frequency variations.
+   * - **Extent**
+     - ``EXTENT``
+     - [extent]
+     - Bounding box defining the extent of the output raster grid.
+   * - **Output raster size**
+     - ``PIXEL_SIZE``
+     - [numeric: double]
+
+       Default: 0.1
+     - Pixel size of the output raster layer in layer units.
+
+       In the GUI, the size can be specified by the number of rows
+       (``Rows``) / columns (``Columns``) **OR**
+       the pixel size (``Pixel size X`` / ``Pixel size Y``).
+       Increasing the number of rows or columns will decrease the cell size
+       and increase the file size of the output raster.
+       The values in ``Rows``, ``Columns``, ``Pixel size X`` and
+       ``Pixel size Y`` will be updated simultaneously - doubling the
+       number of rows will double the number of columns, and the cell
+       size will be halved.
+       The extent of the output raster will remain the same (approximately).
+   * - **Interpolated**
+     - ``OUTPUT``
+     - [raster]
+
+       Default: ``[Save to temporary file]``
+     - Specify the output interpolated raster layer.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output NoData value**
+     - ``NODATA``
+     - [numeric: double]
+
+       Default: -9999.0
+     - Value to use for NoData cells in the output raster.
+   * - **Creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the raster
+       to be created (colors, block size, file compression...).
+       For convenience, you can rely on predefined profiles
+       (see :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options
+       with a pipe character (``|``).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Interpolated**
+     - ``OUTPUT``
+     - [raster]
+     - The output interpolated raster layer
+
+Python code
+...........
+
+**Algorithm ID**: ``native:globaltpsinterpolation``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgislocaltpsinterpolation:
+
+Thin Plate Spline interpolation (local)
+-------------------------------------------
+``Added in 4.4``
+
+Creates a 'Thin Plate Spline' (TPS) surface for each grid point
+based on scattered data points within a specified local search distance.
+The number of points evaluated per cell can be constrained
+to a maximum number of closest neighbors.
+
+Thin Plate Splines minimize the integral of the squared second derivatives,
+creating a smooth surface resembling a bent thin metal plate.
+Regularisation allows softening the exact fitting constraint to smooth out noise.
+
+.. attention:: This algorithm requires a QGIS build with GSL support enabled.
+
+.. seealso:: This algorithm is a port of the SAGA `Thin Plate Spline`_ tool.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Point layer**
+     - ``INPUT``
+     - [vector: point]
+     - Vector point layer containing scattered control points with 3D coordinate or attribute values.
+   * - **Z Field**
+     - ``FIELD``
+     - [tablefield: numeric]
+     - Numeric attribute field containing the values (elevation/Z) to interpolate.
+   * - **Regularization**
+     - ``REGULARIZATION``
+     - [numeric: double]
+
+       Default: 0.0001
+     - Regularization parameter (lambda), where a value of 0 produces an exact spline interpolation
+       passing precisely through all control points.
+       Values greater than 0 introduce smoothing/tension to reduce noise and flatten high-frequency variations.
+   * - **Maximum Search Distance**
+     - ``SEARCH_RADIUS``
+     - [numeric: double]
+
+       Default: 1000.0
+     - Local maximum search radius. Points farther than this distance from a grid cell center are ignored.
+   * - **Maximum number of nearest points**
+     - ``SEARCH_POINTS_MAX``
+     - [numeric: integer]
+
+       Default: 20
+     - Maximum number of nearest points within the search distance to evaluate per grid cell.
+   * - **Minimum number of points**
+     - ``SEARCH_POINTS_MIN``
+     - [numeric: integer]
+
+       Default: 16
+     - Minimum required points within search distance.
+       At least 3 points are mandatory to solve a 2D spline; cells with fewer points are assigned NoData.
+   * - **Extent**
+     - ``EXTENT``
+     - [extent]
+     - Bounding box defining the extent of the output raster grid.
+   * - **Output raster size**
+     - ``PIXEL_SIZE``
+     - [numeric: double]
+
+       Default: 0.1
+     - Pixel size of the output raster layer in layer units.
+
+       In the GUI, the size can be specified by the number of rows
+       (``Rows``) / columns (``Columns``) **OR**
+       the pixel size (``Pixel size X`` / ``Pixel size Y``).
+       Increasing the number of rows or columns will decrease the cell size
+       and increase the file size of the output raster.
+       The values in ``Rows``, ``Columns``, ``Pixel size X`` and
+       ``Pixel size Y`` will be updated simultaneously - doubling the
+       number of rows will double the number of columns, and the cell
+       size will be halved.
+       The extent of the output raster will remain the same (approximately).
+   * - **Interpolated**
+     - ``OUTPUT``
+     - [raster]
+
+       Default: ``[Save to temporary file]``
+     - Specify the output interpolated raster layer.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output NoData value**
+     - ``NODATA``
+     - [numeric: double]
+
+       Default: -9999.0
+     - Value to use for NoData cells in the output raster.
+   * - **Creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the raster
+       to be created (colors, block size, file compression...).
+       For convenience, you can rely on predefined profiles
+       (see :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options
+       with a pipe character (``|``).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Interpolated**
+     - ``OUTPUT``
+     - [raster]
+     - The output interpolated raster layer
+
+Python code
+...........
+
+**Algorithm ID**: ``native:localtpsinterpolation``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
 .. _qgistininterpolation:
 
 TIN Interpolation
 -----------------
-Generates a Triangulated Irregular Network (TIN) interpolation of a
-point vector layer.
+Generates a Triangulated Irregular Network (TIN) interpolation surface raster
+from one or more vector layers.
 
-With the TIN method you can create a surface formed by triangles of
-nearest neighbor points.
+The TIN method constructs a Delaunay triangulation network from sample features.
+Surfaces within the constructed triangles are interpolated
+using either Linear or Clough-Tocher (cubic) methods.
 To do this, circumcircles around selected sample points are created
 and their intersections are connected to a network of non overlapping
 and as compact as possible triangles.
 The resulting surfaces are not smooth.
 
-The algorithm creates both the raster layer of the interpolated values
-and the vector line layer with the triangulation boundaries.
+Input layers can supply sample values from feature attributes or feature Z coordinates.
+Features can be specified as discrete points, structure lines, or breaklines.
+
+The algorithm creates the raster layer of the interpolated values
+and optionally the vector line layer with the triangulation boundaries.
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -505,11 +897,7 @@ Parameters
    * - **Input layer(s)**
      - ``INTERPOLATION_DATA``
      - [string]
-     - Vector layer(s) and field(s) to use for the interpolation,
-       coded in a string (see the ``ParameterInterpolationData``
-       class in
-       :source:`InterpolationWidgets <python/plugins/processing/algs/qgis/ui/InterpolationWidgets.py>`
-       for more details).
+     - Vector layer(s) and field(s) to use for the interpolation, coded in a string.
 
        The following GUI elements are provided to compose the
        interpolation data string:
@@ -520,27 +908,35 @@ Parameters
        * **Use Z-coordinate for interpolation** [boolean]:
          Uses the layer's stored Z values (Default: False)
 
-       For each of the added layer-field combinations, a type can
-       be chosen:
+       For each of the added layer-field combinations,
+       a type defining how features of the vector layer are used should be indicated:
 
-       * :guilabel:`Points`
-       * :guilabel:`Structured lines`
-       * :guilabel:`Break lines`
+       * :guilabel:`Points`: Elevation sample locations containing the values to be interpolated
+         (e.g., terrain height, Z).
+         These points are the primary input for calculating the output surface.
 
-       In the string, the layer-field elements are separated by
-       ``'::|::'``.
-       The sub-elements of the layer-field elements are separated by
-       ``'::~::'``.
+       * :guilabel:`Structured lines`: Lines representing known continuous surface features
+         that guide the terrain shape or structure (e.g., ridges, road centerlines, levees).
+         They describe terrain direction while assuming continuity along the line.
+
+       * :guilabel:`Break lines`: Lines representing known surface discontinuities or hard boundaries
+         (e.g., cliffs, river banks, excavation edges, lake/pond outlines).
+         They mark where the surface may change sharply.
+         It is required if there are significant changes in elevation along the line.
+
+       In the string, the layer-field elements are separated by ``'::|::'``.
+       The sub-elements of the layer-field elements are separated by ``'::~::'``.
    * - **Interpolation method**
      - ``METHOD``
      - [enumeration]
 
        Default: 0
-     - Set the interpolation method to be used. One of:
-       
+     - Set the method used to interpolate values within constructed triangles.
+       One of:
+
        * :guilabel:`Linear`
        * :guilabel:`Clough-Toucher (cubic)`
-     
+
    * - **Extent (xmin, xmax, ymin, ymax)**
      - ``EXTENT``
      - [extent]
@@ -552,28 +948,27 @@ Parameters
 
    * - **Output raster size**
      - ``PIXEL_SIZE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.1
      - Pixel size of the output raster layer in layer units.
-       
+
        In the GUI, the size can be specified by the number of rows
-       (``Number of rows``) / columns (``Number of columns``) **or**
-       the pixel size( ``Pixel Size X`` / ``Pixel Size Y``).
+       (``Rows``) and columns (``Columns``) **OR**
+       the pixel size (``Pixel Size X`` / ``Pixel Size Y``).
        Increasing the number of rows or columns will decrease the cell
        size and increase the file size of the output raster.
        The values in ``Rows``, ``Columns``, ``Pixel Size X`` and
        ``Pixel Size Y`` will be updated simultaneously - doubling the
        number of rows will double the number of columns, and the cell
        size will be halved.
-       The extent of the output raster will remain the same
-       (approximately).       
+       The extent of the output raster will remain the same (approximately).
    * - **Interpolated**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - The output TIN interpolation as a raster layer. One of:
+     - The output TIN interpolation as a raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -584,11 +979,48 @@ Parameters
      - [vector: line]
 
        Default: ``[Skip output]``
-     - The output TIN as a vector layer. One of:
+     - The output TIN as a vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
           :end-before: **end_layer_output_types_skip**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output NoData value**
+
+       ``Added in 4.4``
+     - ``NODATA``
+     - [numeric: double]
+
+       Default: -9999.0
+     - Value to use for NoData cells in the output layer.
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 4.4``
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the raster
+       to be created (colors, block size, file compression...).
+       For convenience, you can rely on predefined profiles
+       (see :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options
+       with a pipe character (``|``).
 
 Outputs
 .......
@@ -614,11 +1046,14 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:tininterpolation``
+**Algorithm ID**: ``native:tininterpolation``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
+
+
+.. _`Thin Plate Spline`: https://saga-gis.sourceforge.io/saga_tool_doc/9.13.0/grid_spline_1.html
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE

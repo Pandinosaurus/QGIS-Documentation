@@ -17,7 +17,7 @@ be created. Overviews are lower resolution copies of the data which
 QGIS uses depending of the level of zoom.
 
 This algorithm is derived from the
-`GDAL addo utility <https://gdal.org/programs/gdaladdo.html>`_.
+`GDAL addo utility <https://gdal.org/en/latest/programs/gdaladdo.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Miscellaneous`
 
@@ -54,6 +54,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -80,9 +81,9 @@ Advanced parameters
        * 0 -- Nearest Neighbour (``nearest``)
        * 1 -- Average (``average``)
        * 2 -- Gaussian (``gauss``)
-       * 3 -- Cubic Convolution (``cubic``)
-       * 4 -- B-Spline Convolution (``cubicspline``)
-       * 5 -- Lanczos Windowed Sinc (``lanczos``)
+       * 3 -- Cubic (4x4 kernel) (``cubic``)
+       * 4 -- Cubic B-Spline (4x4 kernel) (``cubicspline``)
+       * 5 -- Lanczos (6x6 kernel) (``lanczos``)
        * 6 -- Average MP (``average_mp``)
        * 7 -- Average in Mag/Phase Space (``average_magphase``)
        * 8 -- Mode (``mode``)
@@ -107,7 +108,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -116,6 +117,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -145,7 +147,7 @@ GDAL-supported rasters.
 With a mosaic you can merge several raster files.
 
 This algorithm is derived from the
-`GDAL buildvrt utility <https://gdal.org/programs/gdalbuildvrt.html>`_.
+`GDAL buildvrt utility <https://gdal.org/en/latest/programs/gdalbuildvrt.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Miscellaneous`
 
@@ -202,7 +204,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -214,6 +216,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -232,7 +235,7 @@ Advanced parameters
      - ``ASSIGN_CRS``
      - [crs]
 
-       Default: None
+       Default: Not set
      - Overrides the projection for the output file.
        No reprojection is done.
    * - **Resampling algorithm**
@@ -240,29 +243,29 @@ Advanced parameters
      - [enumeration]
 
        Default: 0
-     - The resampling algorithm to be used
+     - The `resampling algorithm <https://gdal.org/en/latest/programs/gdalwarp.html#cmdoption-gdalwarp-r>`_ to use.
        Options:
 
        * 0 --- Nearest Neighbour (``nearest``)
-       * 1 --- Bilinear (``bilinear``)
-       * 2 --- Cubic Convolution (``cubic``)
-       * 3 --- B-Spline Convolution (``cubicspline``)
-       * 4 --- Lanczos Windowed Sinc (``lanczos``)
+       * 1 --- Bilinear (2x2 kernel) (``bilinear``)
+       * 2 --- Cubic (4x4 kernel) (``cubic``)
+       * 3 --- Cubic B-Spline (4x4 kernel) (``cubicspline``)
+       * 4 --- Lanczos (6x6 kernel) (``lanczos``)
        * 5 --- Average (``average``)
        * 6 --- Mode (``mode``)
-   * - **Nodata value(s) for input bands (space separated)**
+   * - **NoData value(s) for input bands (space separated)**
 
        Optional
      - ``SRC_NODATA``
      - [string]
 
-       Default: None
-     - Space separated Nodata value(s) for input band(s)
+       Default: Not set
+     - Space separated NoData value(s) for input band(s)
    * - **Additional command-line parameters**
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -271,6 +274,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -301,7 +305,7 @@ Generates a directory with small tiles and metadata, following the
 `OSGeo Tile Map Service Specification <https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification>`_.
 See also the
 `OpenGIS Web Map Tile Service Implementation Standard
-<https://www.opengeospatial.org/standards/wmts>`_.
+<https://www.ogc.org/standards/wmts>`_.
 Simple web pages with viewers based on Google Maps, OpenLayers and
 Leaflet are generated as well.
 To explore your maps on-line in the web browser, you only need to
@@ -316,7 +320,7 @@ generation, but you can publish a picture without proper
 georeferencing too.
 
 This algorithm is derived from the
-`GDAL gdal2tiles utility <https://gdal.org/programs/gdal2tiles.html>`_.
+`GDAL gdal2tiles utility <https://gdal.org/en/latest/programs/gdal2tiles.html>`_.
 
 Parameters
 ..........
@@ -358,7 +362,7 @@ Basic parameters
      -
    * - **Web viewer to generate**
      - ``VIEWER``
-     - [enumerate]
+     - [enumeration]
 
        Default: 0
      - One of:
@@ -388,8 +392,12 @@ Basic parameters
      - ``OUTPUT``
      - [folder]
 
-       Default: ``[Save to temporary file]``
-     - Specify the output folder for the tiles.
+       Default: ``[Save to temporary folder]``
+     - Specify the output folder for the tiles. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **directory_output_types**
+          :end-before: **end_directory_output_types**
 
 Advanced parameters
 ^^^^^^^^^^^^^^^^^^^
@@ -397,6 +405,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -407,15 +416,15 @@ Advanced parameters
      - [enumeration]
 
        Default: 0
-     - The resampling algorithm to be used
+     - The resampling algorithm to use.
        Options:
 
        * 0 --- Average (``average``)
-       * 1 --- Nearest neighbour (``near``)
-       * 2 --- Bilinear (``bilinear``)
-       * 3 --- Cubic (``cubic``)
-       * 4 --- Cubic spline (``cubicspline``)
-       * 5 --- Lanczos Windowed sinc (``lanczos``)
+       * 1 --- Nearest Neighbour (``near``)
+       * 2 --- Bilinear (2x2 kernel) (``bilinear``)
+       * 3 --- Cubic (4x4 kernel) (``cubic``)
+       * 4 --- Cubic B-Spline (4x4 kernel) (``cubicspline``)
+       * 5 --- Lanczos (6x6 kernel) (``lanczos``)
        * 6 --- Antialias (``antialias``)
 
    * - **The spatial reference system used for the source input data**
@@ -424,13 +433,13 @@ Advanced parameters
      - ``SOURCE_CRS``
      - [crs]
 
-       Default: None
+       Default: Not set
      -
    * - **Transparency value to assign to the input data**
 
        Optional
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      -
@@ -483,6 +492,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -512,7 +522,7 @@ table from an input raster and define the output raster type. All
 the images must be in the same coordinate system.
 
 This algorithm is derived from the
-`GDAL merge utility <https://gdal.org/programs/gdal_merge.html>`_.
+`GDAL merge utility <https://gdal.org/en/latest/programs/gdal_merge.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Miscellaneous`
 
@@ -556,17 +566,9 @@ Basic parameters
      - Defines the format of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
    * - **Merged**
      - ``OUTPUT``
@@ -574,7 +576,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -586,31 +588,32 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input pixel value to treat as "nodata"**
+   * - **Input pixel value to treat as "NoData"**
 
        Optional
      - ``NODATA_INPUT``
-     - [number]
+     - [numeric: double]
 
-       Default: None
+       Default: Not set
      - Ignores pixels from files being merged in with this pixel value
-   * - **Assign specified "nodata" value to output**
+   * - **Assign specified "NoData" value to output**
 
        Optional
      - ``NODATA_OUTPUT``
-     - [number]
+     - [numeric: double]
 
-       Default: None
-     - Assigns the specified nodata value to output bands.
+       Default: Not set
+     - Assigns the specified NoData value to output bands.
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -620,13 +623,13 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -635,6 +638,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -663,7 +667,7 @@ Performs a pan-sharpening operation.
 It can create a "classic" output dataset (such as GeoTIFF),
 or a VRT dataset describing the pan-sharpening operation.
 
-See `GDAL Pansharpen <https://gdal.org/programs/gdal_pansharpen.html>`_.
+See `GDAL Pansharpen <https://gdal.org/en/latest/programs/gdal_pansharpen.html>`_.
 
 Parameters
 ..........
@@ -693,7 +697,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output (sharpened) raster layer. One of:
+     - Specify the output (sharpened) raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -705,6 +709,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -715,20 +720,20 @@ Advanced parameters
      - [enumeration]
 
        Default: 2
-     - The resampling algorithm to be used
+     - The `resampling algorithm <https://gdal.org/en/latest/programs/gdalwarp.html#cmdoption-gdalwarp-r>`_ to use.
        Options:
 
        * 0 --- Nearest Neighbour (``nearest``)
-       * 1 --- Bilinear (``bilinear``)
-       * 2 --- Cubic (``cubic``)
-       * 3 --- Cubic Spline (``cubicspline``)
-       * 4 --- Lanczos Windowed Sinc (``lanczos``)
+       * 1 --- Bilinear (2x2 kernel) (``bilinear``)
+       * 2 --- Cubic (4x4 kernel) (``cubic``)
+       * 3 --- Cubic B-Spline (4x4 kernel) (``cubicspline``)
+       * 4 --- Lanczos (6x6 kernel) (``lanczos``)
        * 5 --- Average (``average``)
 
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -738,7 +743,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -746,7 +751,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -755,6 +760,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -787,9 +793,9 @@ Note that all input rasters must have the same
 dimensions, but no projection checking is performed.
 
 See the
-`GDAL Raster Calculator utility docs <https://gdal.org/programs/gdal_calc.html>`_.
+`GDAL Raster Calculator utility docs <https://gdal.org/en/latest/programs/gdal_calc.html>`_.
 
-.. seealso:: :ref:`qgisrastercalculator`
+.. seealso:: :ref:`qgisrastercalc`, :ref:`qgisvirtualrastercalc`
 
 Parameters
 ..........
@@ -820,7 +826,7 @@ Basic parameters
      - ``INPUT_B``
      - [raster]
 
-       Default: None
+       Default: Not set
      - Second input raster layer
    * - **Number of raster band for B**
 
@@ -834,7 +840,7 @@ Basic parameters
      - ``INPUT_C``
      - [raster]
 
-       Default: None
+       Default: Not set
      - Third input raster layer
    * - **Number of raster band for C**
 
@@ -848,7 +854,7 @@ Basic parameters
      - ``INPUT_D``
      - [raster]
 
-       Default: None
+       Default: Not set
      - Fourth input raster layer
    * - **Number of raster band for D**
 
@@ -862,7 +868,7 @@ Basic parameters
      - ``INPUT_E``
      - [raster]
 
-       Default: None
+       Default: Not set
      - Fifth input raster layer
    * - **Number of raster band for E**
 
@@ -882,7 +888,7 @@ Basic parameters
      - ``BAND_F``
      - [raster band]
 
-       Default: None
+       Default: Not set
      - Band for input layer F
    * - **Calculation in gdalnumeric syntax using +-/\* or any numpy array functions (i.e. logical_and())**
      - ``FORMULA``
@@ -904,36 +910,64 @@ Basic parameters
        * ``sqrt(A*A+B*B)`` --- Outputs the square root of the sum of
          the value of A squared and the value of B squared.
 
-   * - **Set output nodata value**
+   * - **Set output NoData value**
 
        Optional
      - ``NO_DATA``
-     - [number]
+     - [numeric: double]
 
-       Default: None
-     - Value to use for nodata
+       Default: Not set
+     - Value to use for NoData
+   * - **Handling of extent differences**
+
+       ``Added in 3.34``
+     - ``EXTENT_OPT``
+     - [enumeration]
+
+       Default: 0
+     - Determines how to handle rasters with different extents.
+       `Supported options <https://gdal.org/en/stable/programs/gdal_calc.html#cmdoption-extent>`_ are:
+
+       * 0 --- Ignore
+       * 1 --- Fail
+       * 2 --- Union
+       * 3 --- Intersect
+
+       .. attention:: Using this parameter requires QGIS installed with GDAL_ >= 3.3
+          (see :menuselection:`Help --> About` menu).
+
+   * - **Output extent**
+
+       Optional
+     - ``INPUT``
+     - [extent]
+     - Custom extent of the output raster.
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+
+       .. attention:: Using this parameter requires QGIS installed with GDAL_ >= 3.3
+          (see :menuselection:`Help --> About` menu).
+
    * - **Output raster type**
      - ``RTYPE``
      - [enumeration]
 
        Default: 5
-     - Defines the format of the output raster file.
+     - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
    * - **Calculated**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output (calculated) raster layer. One of:
+     - Specify the output (calculated) raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -954,7 +988,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -964,7 +998,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -982,6 +1016,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1010,7 +1045,7 @@ The gdalinfo program lists various information about a GDAL supported
 raster dataset.
 
 This algorithm is derived from the
-`GDAL info utility <https://gdal.org/programs/gdalinfo.html>`_.
+`GDAL info utility <https://gdal.org/en/latest/programs/gdalinfo.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Miscellaneous`
 
@@ -1068,7 +1103,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specify the HTML file for output.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1092,7 +1127,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -1101,6 +1136,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1132,7 +1168,7 @@ coordinate system and have a matching number of bands.
 Optionally pyramid levels are generated.
 
 This algorithm is derived from the
-`GDAL Retile utility <https://gdal.org/programs/gdal_retile.html>`_.
+`GDAL Retile utility <https://gdal.org/en/latest/programs/gdal_retile.html>`_.
 
 Parameters
 ..........
@@ -1155,25 +1191,25 @@ Basic parameters
      - The input raster files
    * - **Tile width**
      - ``TILE_SIZE_X``
-     - [number]
+     - [numeric: integer]
 
        Default: 256
      - Width of the tiles in pixels (minimum 0)
    * - **Tile height**
      - ``TILE_SIZE_Y``
-     - [number]
+     - [numeric: integer]
 
        Default: 256
      - Height of the tiles in pixels (minimum 0)
    * - **Overlap in pixels between consecutive tiles**
      - ``OVERLAP``
-     - [number]
+     - [numeric: integer]
 
        Default: 0
      -
    * - **Number of pyramid levels to build**
      - ``LEVELS``
-     - [number]
+     - [numeric: integer]
 
        Default: 1
      - Minimum: 0
@@ -1183,7 +1219,7 @@ Basic parameters
 
        Default: ``[Save to temporary folder]``
      - Specify the output folder for the tiles.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **directory_output_types**
@@ -1194,7 +1230,7 @@ Basic parameters
      - [file]
 
        Default: ``[Skip output]``
-     - Specify the output file for the tiles. One of:
+     - Specify the output file for the tiles. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types_skip**
@@ -1218,21 +1254,21 @@ Advanced parameters
      - ``SOURCE_CRS``
      - [crs]
 
-       Default: None
+       Default: Not set
      -
    * - **Resampling method**
      - ``RESAMPLING``
      - [enumeration]
 
        Default: 0
-     - The resampling algorithm to be used
+     - The `resampling algorithm <https://gdal.org/en/latest/programs/gdalwarp.html#cmdoption-gdalwarp-r>`_ to use.
        Options:
 
        * 0 --- Nearest Neighbour (``nearest``)
-       * 1 --- Bilinear (``bilinear``)
-       * 2 --- Cubic (``cubic``)
-       * 3 --- Cubic Spline (``cubicspline``)
-       * 4 --- Lanczos Windowed Sinc (``lanczos``)
+       * 1 --- Bilinear (2x2 kernel) (``bilinear``)
+       * 2 --- Cubic (4x4 kernel) (``cubic``)
+       * 3 --- Cubic B-Spline (4x4 kernel) (``cubicspline``)
+       * 4 --- Lanczos (6x6 kernel) (``lanczos``)
 
    * - **Column delimiter used in the CSV file**
 
@@ -1246,7 +1282,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1256,7 +1292,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1274,17 +1310,9 @@ Advanced parameters
      - Defines the format of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
    * - **Build only the pyramids**
      - ``ONLY_PYRAMIDS``
@@ -1306,6 +1334,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1340,7 +1369,7 @@ the raster.
 This output is suitable for use with MapServer as a raster tileindex.
 
 This algorithm is derived from the
-`GDAL Tile Index utility <https://gdal.org/programs/gdaltindex.html>`_.
+`GDAL Tile Index utility <https://gdal.org/en/latest/programs/gdaltindex.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Miscellaneous`
 
@@ -1364,8 +1393,9 @@ Basic parameters
      - [raster] [list]
      - The input raster files. Can be multiple files.
    * - **Field name to hold the file path to the indexed rasters**
-     - ``PATH_FIELD_NAME``
+
        Optional
+     - ``PATH_FIELD_NAME``
      - [string]
 
        Default: 'location'
@@ -1394,7 +1424,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specify the polygon vector layer to write the index to.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1445,6 +1475,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1471,7 +1502,7 @@ Viewshed
 --------
 
 Calculates a viewshed raster from an input raster DEM using method defined in
-`Wang2000 <https://gdal.org/programs/gdal_viewshed.html#wang2000>`_ for a user
+`Wang2000 <https://gdal.org/en/latest/programs/gdal_viewshed.html#wang2000>`_ for a user
 defined point.
 
 Parameters
@@ -1501,23 +1532,23 @@ Basic parameters
      - The number of the band to use as elevation
    * - **Observer location**
      - ``OBSERVER``
-     - [point]
+     - [coordinates]
      - The location of the observer
    * - **Observer height**
      - ``OBSERVER_HEIGHT``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - The altitude of the observer, in the DEM units
    * - **Target height**
      - ``TARGET_HEIGHT``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - The altitude of the target element, in the DEM units
    * - **Maximum distance from observer to compute visibility**
      - ``MAX_DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 100.0
      - Maximum distance from observer to compute visibility,
@@ -1527,7 +1558,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Output raster layer. One of:
+     - Output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1548,7 +1579,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1558,13 +1589,13 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -1573,6 +1604,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1592,3 +1624,5 @@ Python code
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
+
+.. _GDAL: https://gdal.org/en/stable/index.html

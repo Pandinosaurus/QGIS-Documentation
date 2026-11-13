@@ -3,7 +3,7 @@
 Preparing Exercise Data
 =======================
 
-.. note:: This process is intended for course conveners, or more experienced
+.. important:: This process is intended for course conveners, or more experienced
   QGIS users who wish to create localised sample data sets for their course.
   Default data sets are provided with the Training Manual, but you may follow
   these instructions if you wish to replace the default data sets.
@@ -21,7 +21,7 @@ more complex data sources which may or may not be available for your region.
 .. note:: These instructions assume you have a good knowledge of QGIS and are
   not intended to be used as teaching material.
 
-|hard| |TY|  Create OSM based vector Files
+Create OSM based vector files
 --------------------------------------------------------------------------------
 
 If you wish to replace the default data set with localised data for your course,
@@ -59,8 +59,7 @@ tools.
    .. figure:: img/quickosm_plugin_download.png
       :align: center
 
-#. Execute the new plugin from :menuselection:`Vector --> QuickOSM -->
-   QuickOSM...` menu
+#. Execute the new plugin from :menuselection:`Vector --> QuickOSM --> QuickOSM...` menu
 #. In the :guilabel:`Quick query` tab, select ``building`` in the :guilabel:`Key`
    drop-down menu
 #. Leave the :guilabel:`Value` field empty, meaning that you are querying all
@@ -99,9 +98,9 @@ We now need to save the resulting data to use during your
 course. We'll be using ESRI Shapefile, GeoPackage and SpatiaLite formats
 depending on the data.
 
-To convert the :guilabel:`place` temporary layer to another format:
+To convert the ``place`` temporary layer to another format:
 
-#. Click the |indicatorMemory| icon next to the :guilabel:`place` layer
+#. Click the |indicatorMemory| icon next to the ``place`` layer
    to open the :guilabel:`Save Scratch Layer` dialog.
 
    .. note:: If you need to change any of the temporary layer's properties (CRS, extent,
@@ -118,8 +117,8 @@ To convert the :guilabel:`place` temporary layer to another format:
 
 #. Press :guilabel:`OK`
 
-   In the :guilabel:`Layers` panel, the temporary :guilabel:`place` layer is
-   replaced with the saved :guilabel:`places` shapefile layer and
+   In the :guilabel:`Layers` panel, the temporary ``place`` layer is
+   replaced with the saved ``places`` shapefile layer and
    the temporary icon next to it removed.
 #. Double-click the layer to open its :menuselection:`Layer Properties -->
    Source` tab and update the :guilabel:`Layer name` property to match the file
@@ -134,10 +133,10 @@ To convert the :guilabel:`place` temporary layer to another format:
    Each resulting data set should be saved in the :file:`exercise_data/shapefile/`
    directory.
 
-The next step is to create a GeoPackage file from the :guilabel:`building` layer
+The next step is to create a GeoPackage file from the ``building`` layer
 to use during the course:
 
-#. Click the |indicatorMemory| icon next to the :guilabel:`building` layer
+#. Click the |indicatorMemory| icon next to the ``building`` layer
 #. Select the :guilabel:`GeoPackage` format
 #. Save the file as :file:`training_data.gpkg` under the :file:`exercise_data/`
    folder
@@ -149,12 +148,12 @@ to use during the course:
 
 #. Press :guilabel:`OK`
 #. Rename the layer in its properties dialog
-#. Repeat the process with the :guilabel:`highway` layer, saving it as ``roads`` in
+#. Repeat the process with the ``highway`` layer, saving it as ``roads`` in
    the same GeoPackage database.
 
 The last step is to save the remaining temporary file as a SpatiaLite file.
 
-#. Click the |indicatorMemory| icon next to the :guilabel:`landuse` layer
+#. Click the |indicatorMemory| icon next to the ``landuse`` layer
 #. Select the :guilabel:`SpatiaLite` format
 #. Save the file as :file:`landuse.sqlite` under the :file:`exercise_data/`
    folder. By default, the :guilabel:`Layer name` is filled as the file name.
@@ -175,7 +174,7 @@ are added to the map):
 The important thing is that you have 7 vector layers matching those
 shown above and that all those layers have some data.
 
-|hard| |TY| Create SRTM DEM tiff Files
+Create SRTM DEM tiff files
 --------------------------------------------------------------------------------
 
 For modules :ref:`tm_create_vector_data` and :ref:`tm_rasters`, you'll also need
@@ -195,7 +194,7 @@ Keep the :file:`GeoTiff` format. Once the form is filled, click on the
 Once you have downloaded the required file(s), they should be saved in the
 :file:`exercise_data` directory, under :file:`raster/SRTM` subfolders.
 
-|hard| |TY| Create imagery tiff Files
+Create imagery tiff files
 --------------------------------------------------------------------------------
 
 
@@ -212,12 +211,12 @@ For reference, the image in the example data is:
    :align: center
 
 
-|basic| |TY| Replace Tokens
+Replace tokens
 --------------------------------------------------------------------------------
 
-Having created your localised dataset, the final step is to replace the tokens
+Having created your localized dataset, the final step is to replace the tokens
 in the :file:`substitutions.txt` file so that the appropriate names will appear
-in your localised version of the Training Manual.
+in your localized version of the Training Manual.
 
 The tokens you need to replace are as follows:
 
@@ -239,11 +238,8 @@ The tokens you need to replace are as follows:
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |TY| replace:: Try Yourself
-.. |basic| image:: /static/common/basic.png
 .. |extents| image:: /static/common/extents.png
    :width: 1.5em
-.. |hard| image:: /static/common/hard.png
 .. |indicatorMemory| image:: /static/common/mIndicatorMemory.png
    :width: 1.5em
 .. |majorUrbanName| replace:: Swellendam

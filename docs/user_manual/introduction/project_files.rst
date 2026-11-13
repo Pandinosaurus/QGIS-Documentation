@@ -1,4 +1,4 @@
-.. Purpose: This chapter aims to describe the general interaction one can have with a 
+.. Purpose: This chapter aims to describe the general interaction one can have with a
  project file that does not belong to another particular section.
 
 .. index:: Projects
@@ -21,7 +21,7 @@ Introducing QGIS projects
 =========================
 The state of your QGIS session is called a project.
 QGIS works on one project at a time.
-A settings can be project-specific or an application-wide default
+A setting can be project-specific or an application-wide default
 for new projects (see section :ref:`gui_options`).
 QGIS can save the state of your workspace into a
 :ref:`QGIS project file <qgisprojectfile>` using the menu options
@@ -31,26 +31,35 @@ or
 
 .. note::
 
-  If the project has been modified the ``*`` symbol will appear in the title bar 
+  If the project has been modified the ``*`` symbol will appear in the title bar
   and QGIS will, by default, ask you if you would like to save the changes.
   This behavior is controlled by the |checkbox|
   :guilabel:`Prompt to save project and data source changes when required`
   setting under :menuselection:`Settings --> Options --> General`.
 
-You can load existing projects into QGIS from the Browser panel or
-by through
-:menuselection:`Project -->` |fileOpen| :menuselection:`Open...`,
-:menuselection:`Project --> New from template` or
-:menuselection:`Project --> Open Recent -->`.
+You can load existing projects through :menuselection:`Project -->` |fileOpen| :menuselection:`Open...`,
+:menuselection:`Project --> New from template` or :menuselection:`Project --> Open Recent -->`.
+
+From the :guilabel:`Browser panel` you can :guilabel:`Open Project`, :guilabel:`Extract Symbols...`
+– opens the style manager to export symbols to XML,
+add them to the default style, or export as PNG/SVG.
+You can also access the :guilabel:`File Properties...` dialog.
+The project file can be expanded to see its layers. The context menu of a layer offers the same actions as elsewhere in the browser.
 
 At startup, a list of :guilabel:`Project Templates` and
 :guilabel:`Recent Projects` are displayed, including screenshots,
 names and file paths (for up to ten projects).
 The :guilabel:`Recent Projects` list is handy to access recently used
 projects.
-Double-click an entry to open the project or project template. Right-click
-an entry to :guilabel:`Pin to List`, :guilabel:`Open Directory...` or
-:guilabel:`Remove from List`.
+Double-click an entry to open the project or project template.
+Right-click an entry to :guilabel:`Pin to List`, :guilabel:`Open Directory...`
+or :guilabel:`Remove from List`. If you see your project on the
+:guilabel:`Recent Projects` list but can't find it in your file manager use
+the :guilabel:`Open Directory...` option to help you locate projects that may
+be missing, moved or renamed. You can also go to :guilabel:`Clear List` if
+you want to remove all projects from the :guilabel:`Recent Projects` list.
+If you have pinned projects, the :guilabel:`Clear List` action will be followed
+by message box asking whether the pinned projects should also be removed.
 You can also add a layer to create a new project automatically.
 The lists will then disappear, giving way to the map canvas.
 
@@ -66,8 +75,8 @@ save it.
 
 .. figure:: img/new_project.png
    :align: center
- 
-   Starting a new project in QGIS 
+
+   Starting a new project in QGIS
 
 The information saved in a project file includes:
 
@@ -75,8 +84,9 @@ The information saved in a project file includes:
 * Which layers can be queried
 * Layer properties, including symbolization and styles
 * Layer notes
-* Projection for the map view
-* Last viewed extent
+* 2D and 3D map views
+* Projection for each map view
+* Last viewed extent for each map
 * Print layouts
 * Print layout elements with settings
 * Print layout atlas settings
@@ -86,7 +96,7 @@ The information saved in a project file includes:
 * Project default styles
 * Plugins settings
 * QGIS Server settings from the OWS settings tab in the Project properties
-* Queries stored in the DB Manager
+* SQL Queries stored in the project
 
 The project file is saved in XML format (see :ref:`qgisprojectfile`).
 This means that it is possible to edit the file outside of QGIS if you
@@ -110,7 +120,7 @@ The extension for QGIS projects is ``.qgs`` but when saving from QGIS,
 the default is to save using a compressed format with the ``.qgz``
 extension.
 The ``.qgs`` file is embedded in the ``.qgz`` file (a zip archive),
-together with its associated sqlite database (``.qgd``) for
+together with its associated SQLite database (``.qgd``) for
 :ref:`auxiliary data <vector_auxiliary_storage>`.
 You can get to these files by unzipping the ``.qgz`` file.
 
@@ -121,21 +131,49 @@ You can get to these files by unzipping the ``.qgz`` file.
 
 .. _`saveprojecttodb`:
 
-Projects can also be saved/loaded to/from a PostgreSQL database using the
-following Project menu items:
+Projects can also be saved to and loaded from a PostgreSQL, GeoPackage, or
+Oracle database using the following :guilabel:`Project` menu items:
 
 * :menuselection:`Project --> Open from`
 * :menuselection:`Project --> Save to`
 
-Both menu items have a sub-menu with a list of extra project storage
-implementations (PostgreSQL and GeoPackage).
-Clicking the action will open a dialog to pick a GeoPackage connection
-and project or a PostgreSQL connection, schema and project.
+Both menu items provide sub-menus listing the available project storage
+backends (PostgreSQL, GeoPackage, and Oracle). Selecting one of these
+options opens a dialog where you can choose:
 
-Projects stored in Geopackage or PostgreSQL can also be loaded
-through the QGIS browser panel, either by double-clicking them or by
-dragging them to the map canvas.
+* a GeoPackage connection and project
+* a PostgreSQL connection, schema, and project
+* an Oracle connection, owner, and project
 
+Projects stored in GeoPackage, PostgreSQL, or Oracle databases can also be
+loaded from the :ref:`Browser <database_entries>` panel, either by double-clicking the
+project entry or by dragging it onto the map canvas.
+
+Managing QGIS Project Files from PostgreSQL Databases
+-----------------------------------------------------
+
+QGIS allows you to store and manage project files directly inside a
+PostgreSQL database.
+When a PostgreSQL connection is added in the :guilabel:`Browser` panel,
+right-clicking on the database schema provides access to the project menu
+options:
+
+* :menuselection:`Project --> Save Current Project`: saves the current
+  project into the selected PostgreSQL database.
+* :menuselection:`Project --> Import Projects…`: imports one or more projects
+  from a folder into the selected PostgreSQL database.
+
+When importing projects, a dialog opens allowing you to
+|add| :sup:`Add selected project or projects from the folder`.
+After adding projects, you can remove an imported project by selecting
+its row in the list and clicking |remove| :sup:`Remove selected row`.
+
+.. _figure_importproject_dialog:
+
+.. figure:: img/import_project_dialog.png
+   :align: center
+
+   Import Project dialog
 
 .. _handle_broken_paths:
 
@@ -154,6 +192,7 @@ You can:
   and click :guilabel:`Apply changes`;
 * Press :guilabel:`Auto-Find` to browse the folders and try to automatically fix
   all or selected broken path(s). Be aware that the browsing may take some time.
+  Then click :guilabel:`Apply changes`.
 * Ignore the message and open your project with the broken path(s) by clicking
   :guilabel:`Keep Unavailable Layers`. Your layer is then displayed in the
   :guilabel:`Layers` panel, but without any data until you fix the path using
@@ -166,6 +205,8 @@ You can:
   to auto-fix those that have the same broken file path.
 * |deleteSelected| :guilabel:`Remove Unavailable Layers` from the project.
 
+Launching QGIS from command line using the :ref:`skipbadlayers` option can
+help you skip the :guilabel:`Handle Unavailable Layers` dialog at startup.
 
 .. _`sec_output`:
 
@@ -184,8 +225,9 @@ Other ways to produce output files are:
   :menuselection:`Project --> Import/Export -->` |saveMapAsImage|
   :menuselection:`Export Map to Image...` outputs the map canvas
   rendering to an image format (PNG, JPG, TIFF...) at custom scale,
-  resolution, size, ...
-  Georeferencing the image is possible.
+  resolution and size. Including georeference information in the
+  exported image is possible, simply enable
+  |checkbox| :guilabel:`Append georeference information (embedded or via world file)`.
   See :ref:`exportingmapcanvas` for more details.
 * Exporting to PDF files:
   :menuselection:`Project --> Import/Export --> Export Map to PDF...`
@@ -206,13 +248,14 @@ Other ways to produce output files are:
   :ref:`label_printlayout`).
 
 
-
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
    This will be automatically updated by the find_set_subst.py script.
    If you need to create a new substitution manually,
    please add it also to the substitutions.txt file in the
    source folder.
 
+.. |add| image:: /static/common/mActionAdd.png
+   :width: 1.5em
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
 .. |deleteSelected| image:: /static/common/mActionDeleteSelected.png
@@ -228,6 +271,8 @@ Other ways to produce output files are:
 .. |indicatorBadLayer| image:: /static/common/mIndicatorBadLayer.png
    :width: 1.5em
 .. |newLayout| image:: /static/common/mActionNewLayout.png
+   :width: 1.5em
+.. |remove| image:: /static/common/mActionRemove.png
    :width: 1.5em
 .. |saveMapAsImage| image:: /static/common/mActionSaveMapAsImage.png
    :width: 1.5em

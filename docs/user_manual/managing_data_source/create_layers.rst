@@ -45,6 +45,8 @@ To create a new GeoPackage layer, press the |newGeoPackageLayer|
 :menuselection:`New GeoPackage Layer...` button in the
 :menuselection:`Layer --> Create Layer -->` menu or from the
 :guilabel:`Data Source Manager` toolbar.
+You can also create a new GeoPackage layer through the :guilabel:`Browser Panel`
+by selecting the :guilabel:`Create Database and Layer...`.
 The :guilabel:`New GeoPackage Layer` dialog will be displayed as shown in
 :numref:`figure_create_geopackage`.
 
@@ -77,24 +79,26 @@ To add fields to the layer you are creating:
    of values.
 #. Click on the |newAttribute| :guilabel:`Add to Fields List` button
 #. Reproduce the steps above for each field you need to add
+#. You can later change the fields order using the |arrowUp| :sup:`Move Up`
+   and |arrowDown| :sup:`Move Down` buttons
 #. Once you are happy with the attributes, click :guilabel:`OK`.
    QGIS will add the new layer to the legend, and you can edit it
    as described in section :ref:`sec_edit_existing_layer`.
 
-By default, when creating a GeoPackage layer, QGIS generates a 
+By default, when creating a GeoPackage layer, QGIS generates a
 :guilabel:`Feature id column` called ``fid`` which acts as the
 primary key of the layer. The name can be changed.
-The geometry field, if availabe, is named ``geometry``, and you can
+The geometry field, if available, is named ``geometry``, and you can
 choose to :guilabel:`Create a spatial index` on it.
 These options can be found under the :guilabel:`Advanced Options`
 together with the :guilabel:`Layer identifier` (short human readable
 name of the layer) and the :guilabel:`Layer description`.
 
-Further management of GeoPackage layers can be done with the
-:ref:`DB Manager <dbmanager>`.
+Further management of GeoPackage layers can be done with :ref:`Browser panel <label_browserpanel>`.
 
 
 .. _vector_create_shapefile:
+
 
 Creating a new Shapefile layer
 ------------------------------
@@ -127,12 +131,14 @@ To add fields to the layer you are creating:
 
 #. Enter the :guilabel:`Name` of the field
 #. Select the data :guilabel:`Type`. Only :guilabel:`Decimal number`,
-   :guilabel:`Whole number`, :guilabel:`Text data` and :guilabel:`Date`
-   attributes are supported.
+   :guilabel:`Whole number`, :guilabel:`Text data`, :guilabel:`Date`, and
+   :guilabel:`Boolean` data types attributes are supported.
 #. Depending on the selected data format, enter the :guilabel:`Length` and
    :guilabel:`Precision`.
 #. Click on the |newAttribute| :guilabel:`Add to Fields List` button
 #. Reproduce the steps above for each field you need to add
+#. You can later change the fields order using the |arrowUp| :sup:`Move Up`
+   and |arrowDown| :sup:`Move Down` buttons
 #. Once you are happy with the attributes, click :guilabel:`OK`.
    QGIS will add the new layer to the legend, and you can edit it
    as described in section :ref:`sec_edit_existing_layer`.
@@ -156,6 +162,7 @@ The :guilabel:`New SpatiaLite Layer` dialog will be displayed as shown in
 
 .. figure:: img/editNewSpatialite.png
    :align: center
+   :width: 70%
 
    Creating a New SpatiaLite layer dialog
 
@@ -178,16 +185,17 @@ To add fields to the layer you are creating:
    :guilabel:`Date time`.
 #. Click on the |newAttribute| :guilabel:`Add to Fields List` button
 #. Reproduce the steps above for each field you need to add
+#. You can later change the fields order using the |arrowUp| :sup:`Move Up`
+   and |arrowDown| :sup:`Move Down` buttons
 #. Once you are happy with the attributes, click :guilabel:`OK`.
    QGIS will add the new layer to the legend, and you can edit it
    as described in section :ref:`sec_edit_existing_layer`.
 
 If desired, you can select |checkbox| :guilabel:`Create an autoincrementing
-primary key` under the guilabel:`Advanced Options` section. You can also rename
+primary key` under the :guilabel:`Advanced Options` section. You can also rename
 the :guilabel:`Geometry column` (``geometry`` by default).
 
-Further management of SpatiaLite layers can be done with :ref:`DB Manager
-<dbmanager>`.
+Further management of SpatiaLite layers can be done with :ref:`Browser panel <label_browserpanel>`.
 
 
 .. index:: New Mesh layer
@@ -228,7 +236,7 @@ The :guilabel:`New Mesh Layer` dialog will be displayed as shown in
 
    #. Check |checkbox| :guilabel:`Initialize Mesh using`
    #. and select either a :guilabel:`Mesh from the current project`
-      or :guilabel:`Mesh from a file`. Informations on the selected mesh file
+      or :guilabel:`Mesh from a file`. Information on the selected mesh file
       are displayed for checkup.
 
    Note that only the frame of the mesh layer is transferred to the new layer;
@@ -243,7 +251,7 @@ Creating a new GPX layer
 
 To create a new GPX file:
 
-#. Select :menuselection:`Create Layer -->` |createGPX|
+#. Select :menuselection:`Create Layer -->` |newGpx|
    :menuselection:`New GPX Layer...` from the :menuselection:`Layer` menu.
 #. In the dialog, choose where to save the new file, name it and press :guilabel:`Save`.
 #. Three new layers are added to the :guilabel:`Layers Panel`:
@@ -279,10 +287,13 @@ The :guilabel:`New Temporary Scratch Layer` dialog will be displayed as shown in
 #. Provide the :guilabel:`Layer name`
 #. Select the :guilabel:`Geometry type`. Here you can create a:
 
-   * ``No geometry`` type layer, served as simple table,
+   * ``No Geometry`` type layer, served as simple table,
    * ``Point`` or ``MultiPoint`` layer,
-   * ``LineString/CompoundCurve`` or ``MultiLineString/MultiCurve`` layer,
-   * ``Polygon/CurvePolygon`` or ``MultiPolygon/MultiSurface`` layer.
+   * ``LineString`` or ``MultiLine`` layer,
+   * ``CompoundCurve``, ``MultiCurve`` or ``NurbsCurve`` layer,
+   * ``Polygon`` or ``MultiPolygon`` layer,
+   * ``CurvePolygon`` or ``MultiSurface`` layer,
+   * ``Triangle``, ``PolyhedralSurface`` or ``TIN`` layer.
 #. For geometric types, specify the dimensions of the dataset: check whether
    it should :guilabel:`Include Z dimension` and/or :guilabel:`Include M values`
 #. Specify the coordinate reference system using the |setProjection| button.
@@ -298,6 +309,8 @@ The :guilabel:`New Temporary Scratch Layer` dialog will be displayed as shown in
       :guilabel:`Precision`
    #. Click on the |newAttribute| :guilabel:`Add to Fields List` button
    #. Repeat the steps above for each field you need to add
+   #. You can later change the fields order using the |arrowUp| :sup:`Move Up`
+      and |arrowDown| :sup:`Move Down` buttons
 #. Once you are happy with the settings, click :guilabel:`OK`.
    QGIS will add the new layer to the :guilabel:`Layers` panel, and you can edit
    it as described in section :ref:`sec_edit_existing_layer`.
@@ -307,6 +320,7 @@ The :guilabel:`New Temporary Scratch Layer` dialog will be displayed as shown in
 
 .. figure:: img/editNewTemporaryLayer.png
    :align: center
+   :width: 70%
 
    Creating a new Temporary Scratch layer dialog
 
@@ -328,6 +342,9 @@ algorithm <processing_algs>`.
   Each of these commands opens the :guilabel:`Save Vector Layer as` dialog
   described in the :ref:`general_saveas` section and the saved file
   replaces the temporary one in the :guilabel:`Layers` panel.
+  If the saved file name is different from the original one in the :guilabel:`Layers` panel,
+  a message bar will pop up, and you can click the :guilabel:`Rename layer in layers panel` button
+  to homogenize the naming.
 
 .. index:: Save layer
 .. _general_saveas:
@@ -335,17 +352,17 @@ algorithm <processing_algs>`.
 Creating new layers from an existing layer
 ==========================================
 
-Both raster and vector layers can be saved in a different format and/or
+Layers (raster, vector and point cloud) can be saved in a different format and/or
 reprojected to a different coordinate reference system (CRS) using the
 :menuselection:`Layer --> Save As...` menu or right-clicking on the
 layer in the :guilabel:`Layers panel` and selecting:
 
-* :menuselection:`Export --> Save As...` for raster layers
+* :menuselection:`Export --> Save As...` for raster and point cloud layers
 * :menuselection:`Export --> Save Features As...` or
   :menuselection:`Export --> Save Selected Features As...` for vector
   layers.
-* Drag and drop the layer from the layer tree to the PostGIS entry in the
-  :guilabel:`Browser Panel`. Note that you must have a PostGIS
+* Drag and drop the layer from the layer tree to the PostgreSQL entry in the
+  :guilabel:`Browser Panel`. Note that you must have a PostgreSQL
   connection in the :guilabel:`Browser Panel`.
 
 Common parameters
@@ -360,11 +377,11 @@ Among the common parameters for raster and vector are:
   example database-like formats such as GeoPackage, SpatiaLite or Open Document
   Spreadsheets).
 * :guilabel:`CRS`: can be changed to reproject the data
-* :guilabel:`Extent` of the output layer using the :ref:`extent_selector
-  <extent_selector>` widget
+* :guilabel:`Extent`: restricts the extent of the input that is to be exported
+  using the :ref:`extent_selector <extent_selector>` widget
 * :guilabel:`Add saved file to map`: to add the new layer to the canvas
 
-However, some parameters are specific to raster and vector formats:
+However, some parameters are specific to certain formats:
 
 Raster specific parameters
 --------------------------
@@ -403,11 +420,24 @@ Depending on the format of export, some of these options may be available:
   container-like format, this entry represents the output layer.
 * :guilabel:`Encoding`
 * :guilabel:`Save only selected features`
-* :guilabel:`Select fields to export and their export options`. In case you set
-  your fields behavior with some :ref:`Edit widgets <configure_field>`, e.g.
-  ``value map``, you can keep the displayed values in the layer by checking
-  |checkbox| :guilabel:`Replace all selected raw fields values by displayed
-  values`.
+* :guilabel:`Select fields to export and their export options`: provides means
+  to export fields with custom names and :ref:`form widget <configure_field>`
+  settings:
+
+  * Check rows under the :guilabel:`Name` column to choose fields to keep
+    in the output layer, or press :guilabel:`Select All` or
+    :guilabel:`Deselect All` buttons
+  * Toggle the :guilabel:`Use aliases for exported name` checkbox to populate
+    the :guilabel:`Export name` column with corresponding field aliases or
+    reset to the original field name.
+    Double-clicking a cell will also edit the name.
+  * Depending on whether attribute form custom widgets are in use, you can
+    :guilabel:`Replace all selected raw field values by displayed values`.
+    E.g. if a ``value map`` widget is applied to a field, the output layer
+    will contain the description values instead of the original values.
+    The replacement can also be done on a field by field basis, in the
+    :guilabel:`Replace with displayed values` column.
+
 * :guilabel:`Persist layer metadata`: ensures that any layer :ref:`metadata
   <vectormetadatamenu>` present in the source layer will be copied and stored:
 
@@ -432,7 +462,7 @@ Depending on the format of export, some of these options may be available:
      the data as a hidden attribute. Only some formats can handle this kind of
      information. KML, DXF and TAB file formats are such formats. For advanced
      details, you can read the `OGR Feature Styles specification
-     <https://gdal.org/user/ogr_feature_style.html>`_ document.
+     <https://gdal.org/en/latest/user/ogr_feature_style.html>`_ document.
 
 * :guilabel:`Geometry`: you can configure the geometry capabilities of the
   output layer
@@ -455,10 +485,10 @@ Depending on the format of export, some of these options may be available:
 * :guilabel:`Datasource Options`, :guilabel:`Layer Options` or
   :guilabel:`Custom Options` which allow you to configure advanced parameters
   depending on the output format. Some are described in :ref:`supported_format`
-  but for full details, see the `GDAL <https://gdal.org>`_ driver documentation.
+  but for full details, see the `GDAL <https://gdal.org/en/latest>`_ driver documentation.
   Each file format has its own custom parameters, e.g. for the ``GeoJSON`` format
   have a look at the
-  `GDAL GeoJSON <https://gdal.org/drivers/vector/geojson.html#layer-creation-options>`_
+  `GDAL GeoJSON <https://gdal.org/en/latest/drivers/vector/geojson.html#layer-creation-options>`_
   documentation.
 
 .. _figure_save_vector:
@@ -481,6 +511,26 @@ decide whether to:
 
 For formats like ESRI Shapefile, MapInfo .tab, feature append is also available.
 
+Point Cloud specific parameters
+-------------------------------
+
+Similar to raster and vector layers, point cloud layers can be saved in a different
+format and/or reprojected to a different coordinate reference system (CRS).
+This allows you to export a point cloud layer to vector or point cloud formats.
+Current supported formats are: Temporary scratch (memory layer), GeoPackage, ESRI Shapefile,
+DXF and LAS/LAZ point cloud.
+In addition to the common parameters listed above, exporting point cloud layers includes the following options:
+
+* :guilabel:`Filter by Polygon Layer`: Allows you to filter the point cloud data based on a polygon layer.
+* :guilabel:`Elevation Range`: Enables filtering of the point cloud data based on a specified Z range.
+* :guilabel:`Limit number of points`: Provides an option to limit the number of points exported from the point cloud layer.
+
+.. _figure_saveas_pointcloud:
+
+.. figure:: img/saveas_pointcloud.png
+   :align: center
+
+   Saving a point cloud layer as a new layer
 
 .. index:: DXF Export
 .. _create_dxf_files:
@@ -493,6 +543,13 @@ single layer to another format, including :file:`*.DXF`, QGIS provides another
 tool to export multiple layers as a single DXF layer. It's accessible in the
 :menuselection:`Project --> Import/Export --> Export Project to DXF...` menu.
 
+.. _figure_create_dxf:
+
+.. figure:: img/export_dxf.png
+   :align: center
+
+   Exporting a project to DXF dialog
+
 In the :guilabel:`DXF Export` dialog:
 
 #. Provide the destination file.
@@ -502,29 +559,53 @@ In the :guilabel:`DXF Export` dialog:
 #. Select the :guilabel:`CRS` to apply: the selected layers will be reprojected
    to the given CRS.
 #. Select the layers to include in the DXF files either by checking them in the
-   table widget or automatically picking them from an existing :ref:`map theme
-   <map_themes>`.
+   table widget or automatically picking them from an existing :ref:`map theme <map_themes>`.
    The :guilabel:`Select All` and :guilabel:`Deselect All` buttons
    can help to quickly set the data to export.
 
-   For each layer, you can choose whether to export all the features in a
-   single DXF layer or rely on a field whose values are used to split the
-   features into layers in the DXF output.
-  
+   For each layer, you can:
+
+   * Override the output layer name without altering the original project layer.
+     For this, click on the :guilabel:`Layer` name in the dialog and
+     write the output name to use.
+
+   * :guilabel:`Output layer attribute`: Choose whether to export all the features
+     in a single DXF layer or rely on a field whose values are used
+     to split the features into layers in the DXF output.
+     In the latter case, each layer will take its name from the corresponding field value.
+   * :guilabel:`Allow data defined symbol blocks`:
+   * :guilabel:`Maximum number of symbol blocks`: creates symbol blocks up to the specified limit,
+     starting with the ones containing the highest number of references.
+     The other symbols are written as they are. ``-1`` means no limitation.
+
 Optionally, you can also choose to:
 
-* |checkbox| :guilabel:`Use the layer title as name if set` instead of the
-  layer name itself;
-* |checkbox| :guilabel:`Export features intersecting the current map extent`;
+* |unchecked| :guilabel:`Use the layer title as name if set` instead of the
+  layer name itself: the title is taken from the :ref:`metadata <vectormetadatamenu>`
+  or :ref:`server <vectorservermenu>` properties of the layer;
+* |unchecked| :guilabel:`Export features intersecting the current map extent`;
 * |unchecked| :guilabel:`Force 2d output (eg. to support polyline width)`;
-* |checkbox| :guilabel:`Export label as MTEXT elements` or TEXT elements.
+* |checkbox| :guilabel:`Export label as MTEXT elements` or TEXT elements;
+* |unchecked| :guilabel:`Use only selected features`;
+* |unchecked| :guilabel:`Export lines with zero width`: all the lines are exported
+  with minimal width ``0`` (hairline) if enabled.
+  This helps keep the lines minimal in the file regardless of the zoom level,
+  and can be handy for doing further CAD-editing with the exported dxf,
+  especially if there are many features next to each other on the map.
 
-.. _figure_create_dxf:
+.. note::
 
-.. figure:: img/export_dxf.png
-   :align: center
+   The precedence for defining the output layer name is as follows:
 
-   Exporting a project to DXF dialog
+   1. The field value from :guilabel:`Output layer attribute`
+   2. The overridden name in :guilabel:`Layer` column
+   3. The :guilabel:`Use the layer title as name if set` option
+   4. The layer name
+
+Current settings defined in the :guilabel:`DXF Export` dialog may be stored in
+an XML file for reusing them in other sessions. For this, the
+:guilabel:`Settings` combo box has two options: :guilabel:`Load Settings from
+File...` and :guilabel:`Save Settings to File...`.
 
 
 .. _paste_into_layer:
@@ -550,6 +631,166 @@ created (and added to map canvas).
    text (WKT).
 
 
+.. _execute_sql:
+
+Creating SQL Query Layers
+==========================
+
+Beside loading an entire layer in a project or creating new layers from scratch
+or pasted features, you can also load layers generated on the fly from other layer(s).
+They are the result of a more or less advanced filter using SQL language,
+applied to stored layers regardless of their data provider
+or their availability in the active project.
+This means that temporary layers are not compatible with this feature.
+Depending on the provider, one or more layers can be used to write the query.
+The generated layer remains dependent on the layer(s) involved in the query
+and is loaded with the |indicatorFilter| :sup:`Filter` icon next to it.
+
+This feature is accessible:
+
+* From the :guilabel:`Browser` panel, right-click on a supported data
+  (plain layer, database connection, schema or table)
+  and select `Execute SQL...` entry in the contextual menu.
+* From the :guilabel:`Layers` panel, select a loaded layer, right-click
+  and select `Execute SQL...` entry in the contextual menu.
+
+This opens a window with a central text box widget where you can write SQL queries.
+
+.. _figure_execute_sql_queries:
+
+.. figure:: img/executesqlwindow.png
+   :align: center
+
+   Executing SQL queries in the Execute SQL window
+
+.. _execute_sql_toolbar:
+
+At the top of the dialog, a toolbar provides a set of tools
+to create, store and manipulate your queries:
+
+* |fileOpen| :sup:`Open Queries...`: fills the text editor widget
+  with contents from an existing :file:`.sql` file
+* |fileSave| :sup:`Save Queries...` and |fileSaveAs| :sup:`Save Queries as...`
+  help you store the written query to a :file:`.sql` file
+* Statements of the query can be adjusted using the |editCut| :sup:`Cut`,
+  |editCopy| :sup:`Copy` and |editPaste| :sup:`Paste` buttons.
+  Likewise, you can |undo| :sup:`Undo` or |redo| :sup:`Redo` your changes.
+* The |search| :sup:`Find & Replace` enables, at the bottom of the dialog,
+  a widget allowing to look for a particular string in your SQL code.
+  The search can be case sensitive, affect partial or whole word,
+  rely on a regular expression.
+  It is then possible to navigate through the found strings, replacing them
+  one by one or all in a row.
+* Use |clearConsole| :sup:`Clear SQL Editor` to wipe the text editor.
+* The |queryHistory| :sup:`History` button opens a dialog storing previously
+  run queries. More at :ref:`sql_history`.
+* As previously mentioned, queries can be saved as an :file:`.sql` file stored on disk.
+  Using the |storedqueries| :sup:`Store Current Query` button, they can also be stored:
+
+  * In the active :guilabel:`User Profile`, in the associated :file:`QGIS4.ini` file,
+    thus accessible in subsequent projects
+  * or as part of the :guilabel:`Current Project`.
+
+  Clicking an entry from the stored queries drop-down menu inserts that query
+  in the expression being written.
+  The stored entry can also be deleted, from the drop-down menu.
+
+Running and loading queries as layer
+------------------------------------
+
+In the central part of the :guilabel:`Execute SQL` dialog, you build your query
+using the SQL syntax supported by the underlying provider (e.g., OGR_, GeoPackage_, PostgreSQL_).
+
+By default, if opened from a layer entry, a sample SQL query is provided.
+Editing tools to select, cut, copy, paste, undo and redo are available as well
+from the contextual menu.
+
+.. todo: Provide some examples of commands, on various providers,
+  single layer, joins, ... ?
+
+.. tip:: **Finding the right SQL syntax for your dataset**
+
+ To find the appropriate SQL dialect for your dataset,
+ press the :guilabel:`...` button next to the :guilabel:`Subset filter` option
+ in the bottom part of the dialog.
+
+When ready, pressing the :guilabel:`Execute` button below the text area
+will run the query.
+It is possible to highlight a portion of the SQL to only execute that portion
+when pressing :kbd:`Ctrl+R` or clicking the :guilabel:`Execute selection` button.
+Use the :guilabel:`Stop` button to abort the execution.
+
+A successful query execution will display a table at the bottom of the dialog
+with returned features.
+You can select specific cells in the result set.
+Use the :kbd:`Ctrl+C` shortcut to copy the selected cells to the clipboard.
+The copied data is available as a formatted table.
+This allows you to paste the data into other applications,
+such as spreadsheet where it will show up as a table.
+
+The returned table can be loaded in QGIS expanding the :guilabel:`Load as new layer` group
+and configuring parameters (their availability depends on the layer provider):
+
+* :guilabel:`Column(s) with unique values` to indicate primary key of the data,
+* :guilabel:`Geometry column`: check the box to load the layer as a spatial one,
+  and indicate the geometry field name
+* :guilabel:`Subset filter`: allows to filter the results using a ``WHERE`` clause.
+  It can be written in the text box, or built using the :ref:`Query builder <vector_query_builder>`
+  after you pressed :guilabel:`...`.
+  Make sure to use fields that are available in the SQL layer.
+* :guilabel:`Avoid selecting by feature ID`
+* :guilabel:`Layer name` in the project
+
+At any time, in the :guilabel:`Layers panel`, you can adjust the output layer
+by right-clicking and selecting :guilabel:`Update SQL expression...`.
+The :guilabel:`Update SQL` dialog opens, prefilled with the applied query
+that you can edit as you wish.
+Once ready, press :guilabel:`Update layer` and the layer will be modified in-place.
+
+.. _sql_history:
+
+Query History
+-------------
+
+The :guilabel:`Query History` dialog displays all the previously run queries,
+sorted by date and data provider type.
+It is accessible from the :menuselection:`Database -->` |queryHistory| :guilabel:`Query History…` menu,
+or pressing the |queryHistory| :sup:`History` button from the :guilabel:`Execute SQL` dialog.
+
+.. _figure_history_sql_queries:
+
+.. figure:: img/executesql_history.png
+    :align: center
+
+    History of the executed SQL queries
+
+
+At the top of the dialog, a search box can be used to filter out the queries.
+The search is done through every strings displayed in the query history.
+If the dialog is opened from within the :guilabel:`Execute SQL` dialog,
+the search box is preceded by the :ref:`Execute SQL toolbar <execute_sql_toolbar>`.
+
+Below, collapsible and sorted date entries list their related queries.
+Each query is identifiable by its SQL command, and when expanded, reveals:
+
+* The :guilabel:`Connection`: the source of the data the query is based on
+* The :guilabel:`Row count`: number of returned features
+* The :guilabel:`Execution time`
+
+Hover over an entry and a tooltip displays the full query.
+Likewise, selecting an entry also displayed it in the bottom part of the dialog.
+You can interact with the text, copying all or part of it.
+
+Double-click the SQL command entry and the :guilabel:`Execute SQL` dialog opens,
+filled with the clicked query. Any query being written is overwritten.
+Right-click the SQL command entry and you can either:
+
+* :guilabel:`Load SQL Command…`, loads the target command
+  into the :guilabel:`Execute SQL` dialog, replacing any existing query.
+  It is the same as double clicking the entry.
+* :guilabel:`Copy SQL Command` and paste it wherever you want.
+
+
 .. index:: Virtual layers
 .. _vector_virtual_layers:
 
@@ -568,7 +809,6 @@ To create a virtual layer, open the virtual layer creation dialog by:
   in the :menuselection:`Layer --> Add Layer -->` menu;
 * enabling the |addVirtualLayer| :guilabel:`Add Virtual Layer` tab in the
   :guilabel:`Data Source Manager` dialog;
-* or using the :guilabel:`DB Manager` dialog tree.
 
 The dialog allows you to specify a :guilabel:`Layer name` and an SQL
 :guilabel:`Query`. The query can use the name (or id) of loaded vector
@@ -602,10 +842,6 @@ and country information:
    JOIN country
    ON airports.country = country.name
 
-.. note::
-
-   It's also possible to create virtual layers using the SQL window of
-   :ref:`dbmanager`.
 
 Embedding layers for use in queries
 -----------------------------------
@@ -639,7 +875,7 @@ layer out of an attribute-only layer can be done with a query similar to:
    SELECT id, MakePoint(x, y, 4326) as geometry
    FROM coordinates
 
-:ref:`Functions of QGIS expressions<functions_list>` can also be used in a
+:ref:`Functions of QGIS expressions <functions_list>` can also be used in a
 virtual layer query.
 
 To refer the geometry column of a layer, use the name ``geometry``.
@@ -734,6 +970,10 @@ box. Example:
 Spatial binary predicates like ``ST_Intersects`` are sped up significantly
 when used in conjunction with this spatial index syntax.
 
+.. _GeoPackage: https://gdal.org/en/stable/user/sql_sqlite_dialect.html
+.. _OGR: https://gdal.org/en/stable/user/ogr_sql_dialect.html
+.. _PostgreSQL: https://postgresql.org/docs/current/sql-expressions.html
+
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
    This will be automatically updated by the find_set_subst.py script.
@@ -745,11 +985,29 @@ when used in conjunction with this spatial index syntax.
    :width: 1.5em
 .. |addVirtualLayer| image:: /static/common/mActionAddVirtualLayer.png
    :width: 1.5em
+.. |arrowDown| image:: /static/common/mActionArrowDown.png
+   :width: 1.5em
+.. |arrowUp| image:: /static/common/mActionArrowUp.png
+   :width: 1.5em
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
-.. |createGPX| image:: /static/common/create_gpx.png
+.. |clearConsole| image:: /static/common/iconClearConsole.png
    :width: 1.5em
 .. |createMemory| image:: /static/common/mActionCreateMemory.png
+   :width: 1.5em
+.. |editCopy| image:: /static/common/mActionEditCopy.png
+   :width: 1.5em
+.. |editCut| image:: /static/common/mActionEditCut.png
+   :width: 1.5em
+.. |editPaste| image:: /static/common/mActionEditPaste.png
+   :width: 1.5em
+.. |fileOpen| image:: /static/common/mActionFileOpen.png
+   :width: 1.5em
+.. |fileSave| image:: /static/common/mActionFileSave.png
+   :width: 1.5em
+.. |fileSaveAs| image:: /static/common/mActionFileSaveAs.png
+   :width: 1.5em
+.. |indicatorFilter| image:: /static/common/mIndicatorFilter.png
    :width: 1.5em
 .. |indicatorMemory| image:: /static/common/mIndicatorMemory.png
    :width: 1.5em
@@ -757,13 +1015,25 @@ when used in conjunction with this spatial index syntax.
    :width: 1.5em
 .. |newGeoPackageLayer| image:: /static/common/mActionNewGeoPackageLayer.png
    :width: 1.5em
+.. |newGpx| image:: /static/common/mActionNewGpx.png
+   :width: 1.5em
 .. |newMeshLayer| image:: /static/common/mActionNewMeshLayer.png
    :width: 1.5em
 .. |newSpatiaLiteLayer| image:: /static/common/mActionNewSpatiaLiteLayer.png
    :width: 1.5em
 .. |newVectorLayer| image:: /static/common/mActionNewVectorLayer.png
    :width: 1.5em
+.. |queryHistory| image:: /static/common/mIconQueryHistory.png
+   :width: 1.5em
+.. |redo| image:: /static/common/mActionRedo.png
+   :width: 1.5em
+.. |search| image:: /static/common/search.png
+   :width: 1.5em
 .. |setProjection| image:: /static/common/mActionSetProjection.png
    :width: 1.5em
-.. |unchecked| image:: /static/common/checkbox_unchecked.png
+.. |storedqueries| image:: /static/common/mIconStoredQueries.png
+   :width: 1.5em
+.. |unchecked| image:: /static/common/unchecked.png
    :width: 1.3em
+.. |undo| image:: /static/common/mActionUndo.png
+   :width: 1.5em

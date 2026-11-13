@@ -1,4 +1,4 @@
-|LS| Forestry Module Presentation
+Lesson: Forestry Module Presentation
 ===============================================================================
 
 Following this module about a forestry application requires the knowledge you
@@ -20,13 +20,13 @@ Forestry Sample Data
  data set and is available in the :file:`exercise_data\\forestry\\` folder.
 
 The forestry related sample data (forestry map, forest data), has been provided
-by the `EVO-HAMK forestry school <https://www.hamk.fi/campuses-and-maps/evo/?lang=en>`_.
+by the `EVO-HAMK forestry school <https://www.hamk.fi/en/campus/evo/>`_.
 The datasets have been modified to adapt to the lessons needs.
 
 The general sample data (aerial images, LiDAR data, basic maps) has been
 obtained from the National Land Survey of Finland open data service, and adapted
 for the purposes of the exercises. The open data file download service can be
-accessed in English `here <https://tiedostopalvelu.maanmittauslaitos.fi/tp/kartta?lang=en>`_.
+accessed in English `here <https://asiointi.maanmittauslaitos.fi/karttapaikka/tiedostopalvelu?lang=en>`_.
 
 
 .. warning::
@@ -35,12 +35,3 @@ accessed in English `here <https://tiedostopalvelu.maanmittauslaitos.fi/tp/kartt
    deleting and altering GIS datasets. We have provided training datasets for this purpose.
    Before using the techniques described here on your own data, always ensure you have
    proper backups!
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |LS| replace:: Lesson:

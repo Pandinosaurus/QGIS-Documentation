@@ -9,6 +9,7 @@ desktop.ini
 *.*~
 *~
 build/*
+_build/*
 output
 build.log
 QGISUserGuide.log
@@ -24,3 +25,14 @@ venv
 .venv
 user.mk
 .vscode
+shell.nix
+vscode.sh
+clean.sh
+.envrc
+.vscode-extensions
+.vscode
+core
+.env
+environment.txt
+history.mp4
+.direnv

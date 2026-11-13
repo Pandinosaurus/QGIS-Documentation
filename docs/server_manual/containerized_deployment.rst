@@ -20,9 +20,9 @@ simple (simple Docker images) to sophisticated (Kubernetes and so on).
    which can be retrieved as sources (Dockerfile and resources) to
    build or already built from registries (private or public).
 
-.. note:: QGIS Debian-Ubuntu package downloads need a valid gpg authentication key.  
-   Please refer to the `installation pages <https://www.qgis.org/fr/site/forusers/alldownloads.html#debian-ubuntu>`_ 
-   to update the following Dockerfile with the latest key and its fingerprint value
+.. note:: QGIS Debian-Ubuntu package downloads need a valid gpg authentication key.
+   Please refer to the `installation pages <https://www.qgis.org/resources/installation-guide/#debian--ubuntu>`_
+   to update the following Dockerfile.
 
 .. _simple-docker-images:
 
@@ -36,11 +36,11 @@ it. To do so create a directory :file:`qgis-server` and within its directory:
 
 .. code-block:: dockerfile
 
-  FROM debian:buster-slim
-  
+  FROM debian:bookworm-slim
+
   ENV LANG=en_EN.UTF-8
-  
-  
+
+
   RUN apt-get update \
       && apt-get install --no-install-recommends --no-install-suggests --allow-unauthenticated -y \
           gnupg \
@@ -48,11 +48,13 @@ it. To do so create a directory :file:`qgis-server` and within its directory:
           wget \
           locales \
       && localedef -i en_US -f UTF-8 en_US.UTF-8 \
-      # Add the current key for package downloading - As the key changes every year at least
-      # Please refer to QGIS install documentation and replace it and its fingerprint value with the latest ones
-      && wget -O - https://qgis.org/downloads/qgis-2021.gpg.key | gpg --import \
-      && gpg --export --armor 46B5721DBBD2996A | apt-key add - \
-      && echo "deb http://qgis.org/debian buster main" >> /etc/apt/sources.list.d/qgis.list \
+      # Add the current key for package downloading
+      # Please refer to QGIS install documentation (https://www.qgis.org/fr/site/forusers/alldownloads.html#debian-ubuntu)
+      && mkdir -m755 -p /etc/apt/keyrings \
+      && wget -O /etc/apt/keyrings/qgis-archive-keyring.gpg https://qgis.org/downloads/qgis-archive-keyring.gpg \
+      # Add repository for latest version of qgis-server
+      # Please refer to QGIS repositories documentation if you want other version (https://qgis.org/resources/installation-guide/#repositories)
+      && echo "deb [signed-by=/etc/apt/keyrings/qgis-archive-keyring.gpg] https://qgis.org/debian bookworm main" | tee /etc/apt/sources.list.d/qgis.list \
       && apt-get update \
       && apt-get install --no-install-recommends --no-install-suggests --allow-unauthenticated -y \
           qgis-server \
@@ -63,26 +65,26 @@ it. To do so create a directory :file:`qgis-server` and within its directory:
           gnupg \
           wget \
       && rm -rf /var/lib/apt/lists/*
-  
+
   RUN useradd -m qgis
-  
-  ENV TINI_VERSION v0.17.0
+
+  ENV TINI_VERSION v0.19.0
   ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
   RUN chmod +x /tini
-  
+
   ENV QGIS_PREFIX_PATH /usr
   ENV QGIS_SERVER_LOG_STDERR 1
   ENV QGIS_SERVER_LOG_LEVEL 2
-  
+
   COPY cmd.sh /home/qgis/cmd.sh
   RUN chmod -R 777 /home/qgis/cmd.sh
   RUN chown qgis:qgis /home/qgis/cmd.sh
-  
+
   USER qgis
   WORKDIR /home/qgis
-  
+
   ENTRYPOINT ["/tini", "--"]
-  
+
   CMD ["/home/qgis/cmd.sh"]
 
 * create a file :file:`cmd.sh` with this content:
@@ -90,9 +92,9 @@ it. To do so create a directory :file:`qgis-server` and within its directory:
 .. code-block:: bash
 
   #!/bin/bash
-  
+
   [[ $DEBUG == "1" ]] && env
-  
+
   exec /usr/bin/xvfb-run --auto-servernum --server-num=1 /usr/bin/spawn-fcgi -p 5555 -n -d /home/qgis -- /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
 
@@ -142,7 +144,7 @@ Options used:
 - **-v**: local data directory to be mounted in the container
 - **-p**: host/container port mapping
 - **-e**: environment variable to be used in the container
-          
+
 
 To check, type ``docker ps | grep qgis-server`` and you should see a
 line with **qgis-server**::
@@ -224,7 +226,7 @@ Swarm/docker-compose
 
 Docker now has its own orchestrator: Swarm (compatible with docker-compose
 files). You have to
-`enable it <https://docs.docker.com/get-started/orchestration/#enable-docker-swarm>`_
+`enable it <https://docs.docker.com/engine/swarm/swarm-mode/>`_
 (the Mac version will also work with Linux).
 
 .. _docker-compose-file:
@@ -233,34 +235,34 @@ Stack description
 ^^^^^^^^^^^^^^^^^
 
 Now that you have Swarm working, create the service file (see
-`Deploy to Swarm <https://docs.docker.com/get-started/swarm-deploy/>`_)
+`Deploy to Swarm <https://docs.docker.com/engine/swarm/stack-deploy/>`_)
 :file:`qgis-stack.yaml`:
 
 .. code-block:: yaml
-    
+
   version: '3.7'
-  
+
   services:
     qgis-server:
       # Should use version with utf-8 locale support:
       image: qgis-server:latest
       volumes:
-      - REPLACE_WITH_FULL_PATH/data:/data:ro
+        - REPLACE_WITH_FULL_PATH/data:/data:ro
       environment:
-      - LANG=en_EN.UTF-8
-      - QGIS_PROJECT_FILE=/data/osm.qgs
-      - QGIS_SERVER_LOG_LEVEL=0  # INFO (log all requests)
-      - DEBUG=1                  # display env before spawning QGIS Server
-  
+        - LANG=en_EN.UTF-8
+        - QGIS_PROJECT_FILE=/data/osm.qgs
+        - QGIS_SERVER_LOG_LEVEL=0  # INFO (log all requests)
+        - DEBUG=1                  # display env before spawning QGIS Server
+
     nginx:
       image: nginx:1.13
       ports:
-      - 8080:80
+        - 8080:80
       volumes:
-      - REPLACE_WITH_FULL_PATH/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+        - REPLACE_WITH_FULL_PATH/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       depends_on:
-      - qgis-server
-  
+        - qgis-server
+
 
 To deploy (or update) the stack, type:
 
@@ -281,11 +283,11 @@ Something like:
 
   ID                  NAME                MODE                REPLICAS            IMAGE               PORTS
   gmx7ewlvwsqt        qgis_nginx          replicated          1/1                 nginx:1.13          *:8080->80/tcp
-  l0v2e7cl43u3        qgis_qgis-server    replicated          1/1                 qgis-server:latest    
+  l0v2e7cl43u3        qgis_qgis-server    replicated          1/1                 qgis-server:latest
 
 
-To check WMS capabilities, type in a web browser 
-http://localhost:8080/qgis-server/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities 
+To check WMS capabilities, type in a web browser
+http://localhost:8080/qgis-server/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
 
 Cleanup
 ^^^^^^^
@@ -304,12 +306,12 @@ Installation
 
 If you have a **Docker Desktop** installation, using Kubernetes (aka
 k8s) is pretty straight forward:
-`enable k8s <https://docs.docker.com/get-started/orchestration/#enable-kubernetes>`_.
+`enable k8s <https://docs.docker.com/desktop/use-desktop/kubernetes/>`_.
 
 If not, follow the
 `minikube tutorial <https://kubernetes.io/docs/tutorials/hello-minikube/>`_
 or
-`microk8s for Ubuntu <https://ubuntu.com/tutorials/install-a-local-kubernetes-with-microk8s>`_.
+`microk8s for Ubuntu <https://canonical.com/microk8s/docs/getting-started>`_.
 
 As Kubernetes installation can be really complex, we will only focus
 on aspects used by this demo.
@@ -321,7 +323,7 @@ microk8s
 
 microk8s needs extra steps: you have to enable the registry and tag
 the qgis-server image in order to have Kubernetes to find the created
-images. 
+images.
 
 First, enable the registry:
 
@@ -380,7 +382,7 @@ Create a file :file:`deployments.yaml` with this content:
         containers:
           - name: qgis-server
             image: localhost:32000/qgis-server:latest
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             env:
               - name: LANG
                 value: en_EN.UTF-8
@@ -399,7 +401,7 @@ Create a file :file:`deployments.yaml` with this content:
           - name: qgis-data
             hostPath:
               path: REPLACE_WITH_FULL_PATH/data
-  
+
   ---
   apiVersion: apps/v1
   kind: Deployment
@@ -423,11 +425,35 @@ Create a file :file:`deployments.yaml` with this content:
               - containerPort: 80
             volumeMounts:
               - name: nginx-conf
-                mountPath: /etc/nginx/conf.d/default.conf
+                mountPath: /etc/nginx/conf.d/
         volumes:
           - name: nginx-conf
-            hostPath:
-              path: REPLACE_WITH_FULL_PATH/nginx.conf
+            configMap:
+              name: nginx-configuration
+
+  ---
+  kind: ConfigMap
+  apiVersion: v1
+  metadata:
+    name: nginx-configuration
+  data:
+    nginx.conf: |
+      server {
+        listen 80;
+        server_name _;
+        location / {
+          root  /usr/share/nginx/html;
+          index index.html index.htm;
+        }
+        location /qgis-server {
+          proxy_buffers 16 16k;
+          proxy_buffer_size 16k;
+          gzip off;
+          include fastcgi_params;
+          fastcgi_pass qgis-server:5555;
+          }
+        }
+
 
 Service manifests
 """""""""""""""""
@@ -477,7 +503,7 @@ To deploy or update your manifests:
 
 .. code-block:: bash
 
-  kubectl apply -k ./
+  kubectl apply -f ./
 
 To check what is currently deployed:
 
@@ -490,24 +516,24 @@ You should obtain something like::
   NAME                               READY   STATUS    RESTARTS   AGE
   pod/qgis-nginx-54845ff6f6-8skp9    1/1     Running   0          27m
   pod/qgis-server-75df8ddd89-c7t7s   1/1     Running   0          27m
-  
+
   NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
   service/Kubernetes         ClusterIP   10.152.183.1     <none>        443/TCP        5h51m
   service/qgis-exec-server   ClusterIP   10.152.183.218   <none>        5555/TCP       35m
   service/qgis-nginx         NodePort    10.152.183.234   <none>        80:30080/TCP   27m
   service/qgis-server        ClusterIP   10.152.183.132   <none>        5555/TCP       27m
-  
+
   NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
   deployment.apps/qgis-nginx    1/1     1            1           27m
   deployment.apps/qgis-server   1/1     1            1           27m
-  
+
 To read nginx/qgis logs, type:
 
 .. code-block:: bash
 
   kubectl logs -f POD_NAME
 
-To check WMS capabilities, type in a web browser 
+To check WMS capabilities, type in a web browser
 http://localhost:30080/qgis-server/?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities
 
 Cleanup
@@ -517,7 +543,7 @@ To clean up, type:
 
 .. code-block:: bash
 
-  kubectl delete -n default service/qgis-server service/qgis-nginx deployment/qgis-nginx deployment/qgis-server
+  kubectl delete service/qgis-server service/qgis-nginx deployment/qgis-nginx deployment/qgis-server configmap/nginx-configuration
 
 Cloud deployment
 ================
@@ -549,11 +575,7 @@ custom images to be accessible.
 To use docker-compose alike functionalities, you need to install the
 **ecs-cli** client and have `proper permissions / roles
 <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html>`_.
-Then, with the help of the `ecs-cli compose` commands (see the
-`ecs-cli compose manual
-<https://docs.aws.amazon.com/AmazonECS/latest/developerguide/cmd-ecs-cli-compose.html>`_
-and
-`ecs-cli tutorial <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-cli-tutorial-fargate.html>`_),
+Then, with the help of the `ecs-cli compose <https://github.com/aws/amazon-ecs-cli>`_ commands,
 you can reuse the :ref:`stack description <docker-compose-file>`.
 
 To use Kubernetes, you can use the AWS web console or the command line

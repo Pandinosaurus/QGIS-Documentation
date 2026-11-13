@@ -2,7 +2,7 @@
 
 .. _`label_qgisserver_tutorial`:
 
-|LS| Install QGIS Server
+Lesson: Install QGIS Server
 ===============================================================================
 
 **The goal for this lesson:** To learn how to install **QGIS Server** on Debian
@@ -13,11 +13,11 @@ any Debian based distribution like Ubuntu and its derivatives.
   commands requiring admin permissions. In Debian you can work as admin (``root``),
   without using ``sudo``.
 
-|moderate| |FA| Install from packages
+:abbr:`★★☆ (Moderate level)` Follow Along: Install from packages
 -------------------------------------------------------------------------------
 
 In this lesson we're going to do only the install from packages as shown
-`here <https://qgis.org/en/site/forusers/alldownloads.html#linux>`_ .
+`here <https://qgis.org/resources/installation-guide/#linux>`_ .
 
 Install QGIS Server with:
 
@@ -26,12 +26,12 @@ Install QGIS Server with:
  apt install qgis-server --no-install-recommends --no-install-suggests
 
  # if you want to install server plugins, also:
- apt install python-qgis
+ apt install python3-qgis
 
 QGIS Server should be used in production without QGIS Desktop (with
 the accompanying X Server) installed on the same machine.
 
-|moderate| |FA| QGIS Server Executable
+:abbr:`★★☆ (Moderate level)` Follow Along: QGIS Server Executable
 -------------------------------------------------------------------------------
 
 The QGIS Server executable is ``qgis_mapserv.fcgi``. You can check where it has
@@ -44,21 +44,21 @@ like:
 
 ::
 
- QGIS 3.21.0-Master 'Master' (1c70953f1e)
- QGIS code revision 1c70953f1e
- Qt version 5.15.2
- Python version 3.9.5
- GDAL/OGR version 3.2.2
- PROJ version 7.2.1
- EPSG Registry database version v10.008 (2020-12-16)
- GEOS version 3.9.0-CAPI-1.16.2
- SQLite version 3.34.1
- OS Ubuntu 21.04
+ QGIS 3.99.0-Master 'Master' (478937d)
+ QGIS code revision 478937d
+ Qt version 6.8.3
+ Python version 3.11.10
+ GDAL/OGR version 3.11.0
+ PROJ version 9.6.2
+ EPSG Registry database version v12.013 (2025-05-26)
+ GEOS version 3.13.0-CAPI-1.19.0
+ SQLite version 3.49.2
+ OS Ubuntu 25.10
 
 
 We'll see later on how to make WMS requests.
 
-|hard| HTTP Server Configuration
+:abbr:`★★★ (Advanced level)` HTTP Server Configuration
 -------------------------------------------------------------------------------
 
 In order to access on the installed QGIS server from an Internet Browser we need to use an HTTP server.
@@ -72,7 +72,7 @@ The Apache HTTP Server installation process is detailed in :ref:`httpserver` sec
  following the :ref:`Xvfb installation process <xvfb>`.
 
 
-|moderate| |FA| Create another virtual host
+:abbr:`★★☆ (Moderate level)` Follow Along: Create another virtual host
 -------------------------------------------------------------------------------
 
 Let's create another Apache virtual host pointing to QGIS Server. You can
@@ -121,29 +121,15 @@ choose whatever name you like (``coco.bango``, ``super.duper.training``,
 * If you try again to access the http://myhost/cgi-bin/qgis_mapserv.fcgi url
   you'll notice everything is working now!
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 You learned how to install different QGIS Server versions from packages,
 how to configure Apache with QGIS Server, on Debian based Linux distros.
 
-|WN|
+What's Next?
 -------------------------------------------------------------------------------
 
 Now that you've installed QGIS Server and it's accessible through the HTTP
 protocol, we need to learn how to access some of the services it can offer.
 The topic of the next lesson is to learn how to access QGIS Server WMS services.
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?
-.. |hard| image:: /static/common/hard.png
-.. |moderate| image:: /static/common/moderate.png

@@ -89,7 +89,7 @@ Here are some definition of the most common objects treated in this chapter.
     Authentication DB
 
   Authentication Database
-    A :term:`Master Password` crypted sqlite db :file:`qgis-auth.db`
+    A :term:`Master Password` encrypted SQLite db :file:`qgis-auth.db`
     where :term:`Authentication Configuration` are stored. e.g user/password,
     personal certificates and keys, Certificate Authorities
 
@@ -209,12 +209,44 @@ Available Authentication methods
 :term:`Authentication Method` libraries are loaded dynamically during
 authentication manager init. Available authentication methods are:
 
-#. ``Basic`` User and password authentication
-#. ``Esri-Token`` ESRI token based authentication
-#. ``Identity-Cert`` Identity certificate authentication
-#. ``OAuth2`` OAuth2 authentication
-#. ``PKI-Paths`` PKI paths authentication
-#. ``PKI-PKCS#12`` PKI PKCS#12 authentication
+.. list-table::
+   :header-rows: 1
+   :widths: auto
+   :class: longtable
+
+   * - Method
+     - Description
+     - Target providers
+   * - ``Basic``
+     - User and password authentication
+     - postgres, oracle, ows, wfs, wcs, wms, ogr, gdal, proxy
+   * - ``APIHeader``
+     - HTTP headers
+     - ows, wfs, wcs, wms
+   * - ``AWSS3``
+     - AWS Simple Storage Service
+     - awss3
+   * - ``EsriToken``
+     - ESRI token based authentication for ArcGIS REST servers
+     - arcgismapserver, arcgisfeatureserver
+   * - ``Identity-Cert``
+     - Identity certificate authentication
+     - ows, wfs, wcs, wms, postgres
+   * - ``MapTilerHmacSha256``
+     - MapTiler HMAC-SHA256
+     - wms, vectortile, xyzvectortiles
+   * - ``OAuth2``
+     - OAuth2 authentication
+     - ows, wfs, wcs, wms
+   * - ``PKI-Paths``
+     - PKI paths authentication
+     - ows, wfs, wcs, wms, postgres
+   * - ``PKI-PKCS#12``
+     - PKI PKCS#12 authentication
+     - ows, wfs, wcs, wms, postgres
+   * - ``PlanetaryComputer``
+     - Microsoft Planetary Computer authentication
+     - gdal, copc, stac
 
 
 .. _Populate_Authorities:
@@ -327,7 +359,8 @@ URL like in the following snippet:
 .. testoutput:: auth
     :hide:
 
-    WMS(1): Download of capabilities failed: network request update failed for authentication config
+    WMS(1): Download of capabilities failed:
+    network request update failed for authentication config
 
 In the upper case, the ``wms`` provider will take care to expand ``authcfg``
 URI parameter with credential just before setting the HTTP connection.
@@ -350,7 +383,8 @@ class, is used to set a data source in the following way:
 .. testoutput:: auth
     :hide:
 
-    WMS(1): Download of capabilities failed: network request update failed for authentication config
+    WMS(1): Download of capabilities failed:
+    network request update failed for authentication config
 
 .. note::
 

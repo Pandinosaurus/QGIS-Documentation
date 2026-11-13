@@ -1,4 +1,4 @@
-|LS| Reprojecting and Transforming Data
+Lesson: Reprojecting and Transforming Data
 ======================================================================
 
 Let us talk about Coordinate Reference Systems (CRSs) again.
@@ -7,7 +7,7 @@ means practically.
 
 **The goal for this lesson:** To reproject and transform vector datasets.
 
-|basic| |FA| Projections
+:abbr:`★☆☆ (Basic level)` Follow Along: Projections
 ----------------------------------------------------------------------
 
 The CRS that all the data, as well as the map itself are in right now
@@ -19,7 +19,7 @@ But there's a problem, as we will see.
 #. Save your current map
 #. Then open the map of the world which you will find under
    :file:`exercise_data/world/world.qgs`
-#. Zoom in to South Africa by using the :guilabel:`Zoom In` tool
+#. Zoom in to South Africa by using the |zoomIn| :sup:`Zoom In` tool
 #. Try setting a scale in the :guilabel:`Scale` field, which is in the
    *Statusbar* along the bottom of the screen.
    While over South Africa, set this value to ``1:5 000 000``
@@ -55,7 +55,7 @@ for the scale change and corrects it.
 Therefore, to keep the scale constant, we should reproject our data to
 use a PCS.
 
-|basic| |FA| "On the Fly" Reprojection
+:abbr:`★☆☆ (Basic level)` Follow Along: "On the Fly" Reprojection
 ----------------------------------------------------------------------
 
 By default, QGIS reprojects data "on the fly". What this means is that even if
@@ -87,18 +87,18 @@ in different CRSs.
 #. Add another vector layer to your map which has the data for South
    Africa only.
    You will find it as :file:`exercise_data/world/RSA.shp`.
-#. Load it. 
+#. Load it.
    A quick way to see its CRS is by hovering the mouse over the layer
    in the legend. It is ``EPSG:3410``.
 
    What do you notice?
 
    The layer is visible even if it has a different CRS from the
-   :guilabel:`continents` one.
+   ``continents`` one.
 
 
-|moderate| |FA| Saving a Dataset to Another CRS
-----------------------------------------------------------------------
+:abbr:`★★☆ (Moderate level)` Follow Along: Saving a Dataset to Another CRS
+---------------------------------------------------------------------------
 
 Sometimes you need to export an existing dataset with another CRS.
 As we will see in the next lesson, if you need to make distance
@@ -146,8 +146,8 @@ You can now compare the old and new projections of the layer and see that they
 are in two different CRS but they are still overlapping.
 
 
-|hard| |FA| Creating Your Own Projection
-----------------------------------------------------------------------
+:abbr:`★★★ (Advanced level)` Follow Along: Creating Your Own Projection
+------------------------------------------------------------------------
 
 There are many more projections than just those included in QGIS by default.
 You can also create your own projections.
@@ -160,7 +160,7 @@ You can also create your own projections.
    .. figure:: img/custom_crs.png
       :align: center
 
-#. Click on the |signPlus| :sup:`Add new CRS` button to create a new
+#. Click on the |symbologyAdd| :sup:`Add new CRS` button to create a new
    projection
 #. An interesting projection to use is called ``Van der Grinten I``.
    Enter its name in the :guilabel:`Name` field.
@@ -214,14 +214,14 @@ You can also create your own projections.
    .. figure:: img/van_grinten_projection.png
       :align: center
 
-|IC|
+In Conclusion
 ----------------------------------------------------------------------
 
 Different projections are useful for different purposes. By choosing the
 correct projection, you can ensure that the features on your map are being
 represented accurately.
 
-|FR|
+Further Reading
 ----------------------------------------------------------------------
 
 Materials for the *Advanced* section of this lesson were taken from `this
@@ -229,7 +229,7 @@ article <https://anitagraser.com/2012/03/18/beautiful-global-projections-adding-
 
 Read further information on :ref:`Coordinate Reference Systems <gis_coord_ref_system>`.
 
-|WN|
+What's Next?
 ----------------------------------------------------------------------
 
 In the next lesson you will learn how to analyze vector data using
@@ -242,17 +242,11 @@ QGIS' various vector analysis tools.
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |FA| replace:: Follow Along:
-.. |FR| replace:: Further Reading
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?
-.. |basic| image:: /static/common/basic.png
-.. |hard| image:: /static/common/hard.png
-.. |moderate| image:: /static/common/moderate.png
 .. |projectionEnabled| image:: /static/common/mIconProjectionEnabled.png
    :width: 1.5em
 .. |setProjection| image:: /static/common/mActionSetProjection.png
    :width: 1.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
+   :width: 1.5em
+.. |zoomIn| image:: /static/common/mActionZoomIn.png
    :width: 1.5em

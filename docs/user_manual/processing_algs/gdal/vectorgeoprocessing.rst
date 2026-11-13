@@ -31,7 +31,7 @@ Basic parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer
    * - **Geometry column name**
      - ``GEOMETRY``
@@ -41,7 +41,7 @@ Basic parameters
      - The name of the input layer geometry column to use
    * - **Buffer distance**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 10.0
      - Minimum: 0.0
@@ -51,7 +51,7 @@ Basic parameters
      - ``FIELD``
      - [tablefield: any]
 
-       Default: None
+       Default: Not set
      - Field to use for dissolving
    * - **Dissolve results**
      - ``DISSOLVE``
@@ -59,8 +59,8 @@ Basic parameters
 
        Default: False
      - If set, the result is dissolved.
-	    If no field is set for dissolving, all the buffers are
-	    dissolved into one feature.
+       If no field is set for dissolving, all the buffers are
+       dissolved into one feature.
    * - **Produce one feature for each geometry in any kind of
        geometry collection in the source file**
      - ``EXPLODE_COLLECTIONS``
@@ -73,7 +73,7 @@ Basic parameters
      - [vector: polygon]
 
        Default: ``[Save to temporary file]``
-     - Specify the output buffer layer. One of:
+     - Specify the output buffer layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -94,7 +94,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -106,6 +106,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -133,7 +134,7 @@ Clip vector by extent
 Clips any OGR-supported vector file to a given extent.
 
 This algorithm is derived from the
-`GDAL ogr2ogr utility <https://gdal.org/programs/ogr2ogr.html>`_.
+`GDAL ogr2ogr utility <https://gdal.org/en/latest/programs/ogr2ogr.html>`_.
 
 Parameters
 ..........
@@ -152,7 +153,7 @@ Basic parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer
    * - **Clip extent**
      - ``EXTENT``
@@ -170,7 +171,7 @@ Basic parameters
      - [same as input]
 
        Default: ``[Save to temporary file]``
-     - Specify the output (clipped) layer. One of:
+     - Specify the output (clipped) layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -182,6 +183,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -190,7 +192,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -202,6 +204,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -230,7 +233,7 @@ Clip vector by mask layer
 Clips any OGR-supported vector layer by a mask polygon layer.
 
 This algorithm is derived from the `GDAL ogr2ogr utility
-<https://gdal.org/programs/ogr2ogr.html>`_.
+<https://gdal.org/en/latest/programs/ogr2ogr.html>`_.
 
 Parameters
 ..........
@@ -241,6 +244,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -248,7 +252,7 @@ Basic parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer
    * - **Mask layer**
      - ``MASK``
@@ -259,7 +263,7 @@ Basic parameters
      - [same as input]
 
        Default: ``[Save to temporary file]``
-     - The output (masked) layer. One of:
+     - The output (masked) layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -271,6 +275,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -279,7 +284,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -291,6 +296,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -338,7 +344,7 @@ Basic parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input layer to dissolve
    * - **Dissolve field**
 
@@ -358,7 +364,7 @@ Basic parameters
      - [same as input]
 
        Default: ``[Save to temporary file]``
-     - Specify the output layer. One of:
+     - Specify the output layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
          :start-after: **file_output_types**
@@ -403,7 +409,7 @@ Advanced parameters
 
        Default: False
      - Compute the area and perimeter of dissolved features and
-	   include them in the output layer
+       include them in the output layer
    * - **Compute min/max/sum/mean for attribute**
      - ``COMPUTE_STATISTICS``
      - [boolean]
@@ -420,7 +426,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -432,6 +438,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -440,8 +447,7 @@ Outputs
    * - **Dissolved**
      - ``OUTPUT``
      - [same as input]
-     - The output multipart geometry layer (with dissolved
-	   geometries)
+     - The output multipart geometry layer (with dissolved geometries)
 
 Python code
 ...........
@@ -488,7 +494,7 @@ Basic parameters
      - The name of the input layer geometry column to use
    * - **Offset distance (left-sided: positive, right-sided: negative)**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 10.0
      -
@@ -497,7 +503,7 @@ Basic parameters
      - [vector: line]
 
        Default: ``[Save to temporary file]``
-     - Specify the output line layer. One of:
+     - Specify the output line layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -509,6 +515,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -517,7 +524,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -529,6 +536,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -583,7 +591,7 @@ Basic parameters
      - The name of the input layer geometry column to use
    * - **Buffer distance**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 10.0
      -
@@ -602,7 +610,7 @@ Basic parameters
      - ``FIELD``
      - [tablefield: any]
 
-       Default: None
+       Default: Not set
      - Field to use for dissolving
    * - **Dissolve all results**
      - ``DISSOLVE``
@@ -610,8 +618,7 @@ Basic parameters
 
        Default: False
      - If set, the result is dissolved.
-	If no field is set for dissolving, all the buffers are
-	dissolved into one feature.
+       If no field is set for dissolving, all the buffers are dissolved into one feature.
    * - **Produce one feature for each geometry in any kind of
        geometry collection in the source file**
      - ``EXPLODE_COLLECTIONS``
@@ -624,7 +631,7 @@ Basic parameters
      - [vector: polygon]
 
        Default: ``[Save to temporary file]``
-     - Specify the output buffer layer. One of:
+     - Specify the output buffer layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -636,6 +643,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -644,7 +652,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -656,6 +664,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -680,8 +689,7 @@ Python code
 
 Points along lines
 ------------------
-Generates a point on each line of a line vector layer at a distance
-from start.
+Generates a point on each line of a line vector layer at a distance from start.
 The distance is provided as a fraction of the line length.
 
 Parameters
@@ -711,9 +719,9 @@ Basic parameters
      - The name of the input layer geometry column to use
    * - **Distance from line start represented as a fraction of line length**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double]
 
-       Default: 0.5 (middle of the line)
+       Default: 0.5
      -
    * - **Points along lines**
      - ``OUTPUT``
@@ -721,7 +729,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specify the output point layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -733,6 +741,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -741,7 +750,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -753,6 +762,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name

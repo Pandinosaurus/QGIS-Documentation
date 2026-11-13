@@ -1,7 +1,7 @@
 Interpolation and contouring
 =============================
 
-Module contributed by Paolo Cavallini - `Faunalia <https://www.faunalia.eu>`_
+Module contributed by Paolo Cavallini - `Faunalia`_
 
 .. note:: This chapter shows how to use different backends to calculate different interpolations.
 
@@ -11,7 +11,7 @@ Interpolation
 The project shows a gradient in rainfall, from south to north.
 Let's use different methods for interpolation, all based on vector ``points.shp``, parameter ``RAIN``:
 
-.. warning:: Set cell size to :kbd:`500` for all analyses.
+.. warning:: Set cell size to ``500`` for all analyses.
 
 - :menuselection:`GRASS --> v.surf.rst`
 - :menuselection:`SAGA --> Multilevel B-Spline Interpolation`
@@ -26,7 +26,7 @@ Then measure variation among methods and correlate it with distance to points:
 - :menuselection:`GDAL --> Proximity`
 - :menuselection:`GRASS --> r.covar` to show the correlation matrix; check the
   significance of the correlation e.g. with http://vassarstats.net/rsig.html.
- 
+
 Thus, areas far from points will have less accurate interpolation.
 
 Contour
@@ -37,3 +37,5 @@ Various methods to draw contour lines [always step= 10] on the *stddev* raster:
 - :menuselection:`GRASS --> r.contour.step`
 - :menuselection:`GDAL --> Contour`
 - :menuselection:`SAGA --> Contour lines from grid` [**NB:** in some older SAGA versions, output shp is not valid, known bug]
+
+.. _Faunalia: https://www.faunalia.eu/en

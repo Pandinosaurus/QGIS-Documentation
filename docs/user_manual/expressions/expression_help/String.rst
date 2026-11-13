@@ -6,6 +6,79 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
+.. _expression_function_String_backslash_quote:
+
+\\' (quote character)
+.....................
+
+Inserts a literal single quote character in a string.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - \\' (quote character)
+   * - Examples
+     - * ``'It\'s working'`` → 'It's working'
+
+
+.. end_\\'_(quote_character)_section
+
+.. _expression_function_String_backslash_backslash:
+
+\\\\ (backslash character)
+..........................
+
+Inserts a literal backslash character in a string.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - \\\\ (backslash character)
+   * - Examples
+     - * ``'C:\\Users\\Name'`` → 'C:\\Users\\Name'
+
+
+.. end_\\\\_(backslash_character)_section
+
+.. _expression_function_String_backslash_n:
+
+\\n (newline character)
+.......................
+
+Inserts a newline character in a string literal.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - \\n (newline character)
+   * - Examples
+     - * ``'Hello\nWorld'`` → a string with a newline between 'Hello' and 'World':<br>Hello<br>World
+
+
+.. end_\\n_(newline_character)_section
+
+.. _expression_function_String_backslash_t:
+
+\\t (tab character)
+...................
+
+Inserts a tab character in a string literal.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - \\t (tab character)
+   * - Examples
+     - * ``'Name\tAge\tCity'`` → Name    Age    City (tabs between the words)
+
+
+.. end_\\t_(tab_character)_section
+
 .. _expression_function_String_ascii:
 
 ascii
@@ -51,7 +124,11 @@ Returns the character associated with a unicode code.
 concat
 ......
 
-Concatenates several strings to one. NULL values are converted to empty strings. Other values (like numbers) are converted to strings.
+Concatenates several values to a single string. NULL values are converted to empty strings. Other values (like numbers) are converted to strings.
+
+
+
+See the **||** function for an alternative concatenation behavior.
 
 .. list-table::
    :widths: 15 85
@@ -68,6 +145,27 @@ Concatenates several strings to one. NULL values are converted to empty strings.
 
 
 .. end_concat_section
+
+.. _expression_function_String_concat_ws:
+
+concat_ws
+.........
+
+Concatenates all but first arguments with separators into a single string. The first parameter is used as a separator. NULL arguments are ignored.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - concat_ws(separator, string1, string2, ...)
+   * - Arguments
+     - * **separator** - separator to use when concatenating non-null values
+       * **string** - a string value
+   * - Examples
+     - * ``concat_ws(',', 'abcde', 2, NULL, 22)`` → 'abcde,2,22'
+
+
+.. end_concat_ws_section
 
 .. _expression_function_String_format:
 
@@ -96,7 +194,7 @@ Format a string using supplied arguments.
 format_date
 ...........
 
-Formats a date type or string into a custom string format. Uses Qt date/time format strings. See `QDateTime::toString <https://doc.qt.io/qt-5/qdatetime.html#toString>`_.
+Formats a date type or string into a custom string format. Uses Qt date/time format strings. See `QDateTime::toString <https://doc.qt.io/qt-6/qdatetime.html#toString>`_.
 
 .. list-table::
    :widths: 15 85
@@ -107,7 +205,7 @@ Formats a date type or string into a custom string format. Uses Qt date/time for
        [] marks optional arguments
    * - Arguments
      - * **datetime** - date, time or datetime value
-       * **format** - String template used to format the string. 
+       * **format** - String template used to format the string.
 
          .. csv-table::
             :header-rows: 1
@@ -127,7 +225,6 @@ Formats a date type or string into a custom string format. Uses Qt date/time for
 
 
          These expressions may be used for the time part of the format string:
-
 
          .. csv-table::
             :header-rows: 1
@@ -169,13 +266,15 @@ Returns a number formatted with the locale separator for thousands. By default t
    :widths: 15 85
 
    * - Syntax
-     - format_number(number, [places=0], [language])
+     - format_number(number, [places:=0], [language], [omit_group_separators:=false], [trim_trailing_zeroes:=false])
 
        [] marks optional arguments
    * - Arguments
      - * **number** - number to be formatted
        * **places** - integer representing the number of decimal places to truncate the string to.
        * **language** - language (lowercase, two- or three-letter, `ISO 639 language code <https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes>`_) used to format the number into a string. By default the current QGIS user locale is used.
+       * **omit_group_separators** - if set to true then group separators will not be included in the string
+       * **trim_trailing_zeroes** - if set to true then trailing zeros following the decimal point will be trimmed from the string
    * - Examples
      - * ``format_number(10000000.332,2)`` → '10,000,000.33' if e.g. the current locale is an English variant
        * ``format_number(10000000.332,2,'fr')`` → '10 000 000,33'
@@ -238,7 +337,8 @@ Calculate the length of a geometry line object. Calculations are always planimet
    * - Arguments
      - * **geometry** - line geometry object
    * - Examples
-     - * ``length(geom_from_wkt('LINESTRING(0 0, 4 0)'))`` → 4.0
+     - * ``length(@geometry)`` → length of the current feature's geometry
+       * ``length(geom_from_wkt('LINESTRING(0 0, 4 0)'))`` → 4.0
 
 
 .. end_length_section
@@ -268,23 +368,50 @@ Converts a string to lower case letters.
 lpad
 ....
 
-Returns a string padded on the left to the specified width, using a fill character. If the target width is smaller than the string's length, the string is truncated.
+Returns a string padded on the left to the specified width, using a fill character. If the target width is smaller than the string's length, the string is truncated. If the fill parameter is omitted, the function will default to a space character.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - lpad(string, width, fill)
+     - lpad(string, width, [fill:=' '])
+
+       [] marks optional arguments
    * - Arguments
      - * **string** - string to pad
        * **width** - length of new string
        * **fill** - character to pad the remaining space with
    * - Examples
      - * ``lpad('Hello', 10, 'x')`` → 'xxxxxHello'
+       * ``lpad('Hello', 10)`` → '     Hello'
        * ``lpad('Hello', 3, 'x')`` → 'Hel'
 
 
 .. end_lpad_section
+
+.. _expression_function_String_ltrim:
+
+ltrim
+.....
+
+Removes the longest string containing only the specified characters (a space by default) from the start of string.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - ltrim(string, [characters:=' '])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **string** - string to trim
+       * **characters** - characters to trim
+   * - Examples
+     - * ``ltrim('   hello world  ')`` → 'hello world  '
+       * ``ltrim('zzzytest', 'xyz')`` → 'test'
+
+
+.. end_ltrim_section
 
 .. _expression_function_String_regexp_match:
 
@@ -353,6 +480,27 @@ Returns the portion of a string which matches a supplied regular expression.
 
 .. end_regexp_substr_section
 
+.. _expression_function_String_repeat:
+
+repeat
+......
+
+Repeats a string a specified number of times.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - repeat(string, number)
+   * - Arguments
+     - * **string** - string to repeat
+       * **number** - number of times to repeat string
+   * - Examples
+     - * ``repeat('Hello', 3)`` → 'HelloHelloHello'
+
+
+.. end_repeat_section
+
 .. _expression_function_String_replace:
 
 replace
@@ -398,6 +546,45 @@ Returns a string with the supplied map keys replaced by paired values. Longer ma
 
 .. end_replace_section
 
+.. _expression_function_String_reverse:
+
+reverse
+.......
+
+Reverses the direction of a line string or reverses a string of text.
+
+**String variant**
+
+Reverses the order of characters in a string.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - reverse(string)
+   * - Arguments
+     - * **string** - string to reverse
+   * - Examples
+     - * ``reverse('hello')`` → 'olleh'
+
+
+**Geometry variant**
+
+Reverses the direction of a line string by reversing the order of its vertices.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - reverse(geometry)
+   * - Arguments
+     - * **geometry** - a geometry
+   * - Examples
+     - * ``geom_to_wkt(reverse(geom_from_wkt('LINESTRING(0 0, 1 1, 2 2)')))`` → 'LINESTRING(2 2, 1 1, 0 0)'
+
+
+.. end_reverse_section
+
 .. _expression_function_String_right:
 
 right
@@ -424,23 +611,50 @@ Returns a substring that contains the *n* rightmost characters of the string.
 rpad
 ....
 
-Returns a string padded on the right to the specified width, using a fill character. If the target width is smaller than the string's length, the string is truncated.
+Returns a string padded on the right to the specified width, using a fill character. If the target width is smaller than the string's length, the string is truncated. If the fill parameter is omitted, the function will default to a space character.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - rpad(string, width, fill)
+     - rpad(string, width, [fill:=' '])
+
+       [] marks optional arguments
    * - Arguments
      - * **string** - string to pad
        * **width** - length of new string
        * **fill** - character to pad the remaining space with
    * - Examples
      - * ``rpad('Hello', 10, 'x')`` → 'Helloxxxxx'
+       * ``rpad('Hello', 10)`` → 'Hello     '
        * ``rpad('Hello', 3, 'x')`` → 'Hel'
 
 
 .. end_rpad_section
+
+.. _expression_function_String_rtrim:
+
+rtrim
+.....
+
+Removes the longest string containing only the specified characters (a space by default) from the end of string.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - rtrim(string, [characters:=' '])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **string** - string to trim
+       * **characters** - characters to trim
+   * - Examples
+     - * ``rtrim('   hello world  ')`` → '   hello world'
+       * ``rtrim('testxxzx', 'xyz')`` → 'test'
+
+
+.. end_rtrim_section
 
 .. _expression_function_String_strpos:
 
@@ -493,6 +707,44 @@ Returns a part of a string.
 
 .. end_substr_section
 
+.. _expression_function_String_substr_count:
+
+substr_count
+............
+
+Counts the number of occurrences of a substring within a string. By default, the function counts non-overlapping occurrences (like in Python). If the third argument is set to true, the function counts overlapping occurrences (like in QT).
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - substr_count(string, substring, [overlapping:=false])
+
+       [] marks optional arguments
+   * - Arguments
+     - * **string** - The input string to search in.
+       * **substring** - The substring to search for.
+       * **overlapping** - Optional flag to control whether overlapping occurrences should be counted. Defaults to FALSE (non-overlapping counting). Set to TRUE to count overlapping occurrences.
+   * - Examples
+     - * ``substr_count('banana', 'an')`` → 2
+
+         Counts non-overlapping occurrences of 'an' in 'banana'.
+       * ``substr_count('Funniness', 'n')`` → 3
+
+         Counts non-overlapping occurrences of 'n' in 'Funniness'.
+       * ``substr_count('aaaaa', 'aa')`` → 2
+
+         Counts non-overlapping occurrences of 'aa' in 'aaaaa'.
+       * ``substr_count('aaaaa', 'aa', true)`` → 4
+
+         Counts overlapping occurrences of 'aa' in 'aaaaa'. The substring 'aa' appears four times in an overlapping fashion.
+       * ``substr_count('BANANA', 'an')`` → 0
+
+         Counts non-overlapping occurrences of 'an' in 'BANANA'. Case-sensitive, so no match.
+
+
+.. end_substr_count_section
+
 .. _expression_function_String_title:
 
 title
@@ -518,7 +770,7 @@ Converts all words of a string to title case (all words lower case with leading 
 to_string
 .........
 
-Converts a number to string.
+Converts a number to string. The conversion is not locale-aware, see 'format_number' for a locale-aware alternative.
 
 .. list-table::
    :widths: 15 85
@@ -528,7 +780,7 @@ Converts a number to string.
    * - Arguments
      - * **number** - Integer or real value. The number to convert to string.
    * - Examples
-     - * ``to_string(123)`` → '123'
+     - * ``to_string(1.23)`` → '1.23'
 
 
 .. end_to_string_section
@@ -548,10 +800,61 @@ Removes all leading and trailing whitespace (spaces, tabs, etc) from a string.
    * - Arguments
      - * **string** - string to trim
    * - Examples
-     - * ``trim('   hello world    ')`` → 'hello world'
+     - * ``trim('   hello world  ')`` → 'hello world'
 
 
 .. end_trim_section
+
+.. _expression_function_String_unaccent:
+
+unaccent
+........
+
+Removes accents and other diacritical marks from a string, replacing accented characters with their unaccented ASCII equivalents. This function is compatible with PostgreSQL's unaccent() function and uses the same comprehensive mapping rules.
+
+
+
+The function handles:
+
+* Diacritical marks (é→e, ñ→n, ü→u, etc.)
+* Ligatures (Æ→AE, œ→oe, etc.)
+* Special letters (ß→ss, ł→l, ð→d, etc.)
+* Compatibility characters (℃→°C, ½→ 1/2, etc.)
+* Cyrillic special characters (ё→е, Ё→Е)
+* Full-width characters (＃→#, etc.)
+
+
+
+Common use cases include normalizing text for search operations, creating ASCII-safe identifiers or filenames from international text, and matching user input regardless of accent usage.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - unaccent(string)
+   * - Arguments
+     - * **string** - The string to remove accents from. If NULL, the function returns NULL.
+   * - Examples
+     - * ``unaccent('Hôtel')`` → 'Hotel'
+       * ``unaccent('crème brûlée')`` → 'creme brulee'
+       * ``unaccent('Românește')`` → 'Romaneste'
+       * ``unaccent('Æsir & Œuvre')`` → 'AEsir & OEuvre'
+       * ``unaccent('Łódź')`` → 'Lodz'
+       * ``unaccent('straße')`` → 'strasse'
+       * ``unaccent('ёлка')`` → 'елка' -- Cyrillic yo to ye
+       * ``unaccent('℃')`` → '°C' -- degree Celsius
+
+.. note:: This function is particularly useful when:
+
+   * Searching or filtering data where accents should be ignored (e.g., 'Jose' matches 'José')
+   * Creating URL-safe or filename-safe strings from internationalized text
+   * Normalizing user input for consistent storage or comparison
+   * Preparing text for systems with limited Unicode support
+
+   The function uses Unicode NFC normalization internally to ensure consistent handling of composed and decomposed characters.
+
+
+.. end_unaccent_section
 
 .. _expression_function_String_upper:
 
@@ -597,4 +900,3 @@ Returns a string wrapped to a maximum/minimum number of characters.
 
 
 .. end_wordwrap_section
-

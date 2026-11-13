@@ -25,8 +25,7 @@ From :menuselection:`Plugins --> Manage and Install plugins…`, install:
 * *First Aid*: This will add a Python console and local debugger
   to inspect variables when an exception is raised from a plugin.
 
-
-.. warning:: |outofdate|
+.. warning:: Despite our constant efforts, information beyond this line may not be updated for QGIS 3.
 
 A note on configuring your IDE on Linux and Windows
 ====================================================
@@ -58,7 +57,7 @@ of your OSGeo4W install. Look for something like
 Debugging using Pyscripter IDE (Windows)
 ========================================
 
-For using `Pyscripter IDE <https://github.com/pyscripter/pyscripter>`_,
+For using `Pyscripter IDE <https://github.com/lmbelo/pyscripter>`_,
 here's what you have to do:
 
 #. Make a copy of :file:`qgis-unstable.bat` and rename it ``pyscripter.bat``.
@@ -84,7 +83,7 @@ here's what you have to do:
 
 More popular than Pyscripter, Eclipse is a common choice among developers. In
 the following section, we will be explaining how to configure it for
-developing and testing plugins. 
+developing and testing plugins.
 
 Debugging using Eclipse and PyDev
 =================================
@@ -95,8 +94,8 @@ Installation
 To use Eclipse, make sure you have installed the following
 
 * `Eclipse <https://www.eclipse.org>`_
-* `Aptana Studio 3 Plugin <http://www.aptana.com>`_ or `PyDev <https://www.pydev.org>`_
-* QGIS 2.x
+* `Aptana Studio 3 Plugin <https://www.axway.com/en/aptana>`_ or `PyDev <https://www.pydev.org>`_
+* QGIS 3.x
 * You may also want to install **Remote Debug**, a QGIS plugin. At the moment
   it's still experimental so enable |checkbox| :guilabel:`Experimental plugins`
   under :menuselection:`Plugins --> Manage and Install plugins... --> Options`
@@ -116,7 +115,7 @@ you should also create a batch file and use it to start Eclipse:
 
      call "C:\OSGeo4W\bin\o4w_env.bat"
      set PATH=%PATH%;C:\path\to\your\qgis_core.dll\parent\folder
-     C:\path\to\your\eclipse.exe
+     start /B C:\path\to\your\eclipse.exe
 
 Setting up Eclipse
 ------------------
@@ -217,7 +216,7 @@ libraries.
 #. First open the Libraries tab.
 #. Add a New Folder and choose the python folder of your QGIS installation.
    If you do not know where this folder is (it's not the plugins folder):
-   
+
    #. Open QGIS
    #. Start a python console
    #. Enter ``qgis``
@@ -337,4 +336,3 @@ following these steps.
 
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
-.. |outofdate| replace:: `Despite our constant efforts, information beyond this line may not be updated for QGIS 3. Refer to https://qgis.org/pyqgis/master for the python API documentation or, give a hand to update the chapters you know about. Thanks.`

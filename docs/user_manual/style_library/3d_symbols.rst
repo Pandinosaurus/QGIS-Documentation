@@ -1,23 +1,26 @@
 .. _`3dsymbols`:
 
-*********************
- Creating 3D Symbols
-*********************
+************************************
+ Creating 3D Symbols and Materials
+************************************
 
 .. only:: html
 
    .. contents::
       :local:
 
-The :guilabel:`Style Manager` helps you create and store 3D symbols for every geometry type
+The :guilabel:`Style Manager` helps you create and store 3D symbols and materials for every geometry type
 to render in the :ref:`3D map view <label_3dmapview>`.
 
-As of the other items, enable the |3d| :guilabel:`3D Symbols` tab and expand the |signPlus|
+As of the other items, enable the |3d| :guilabel:`3D Symbols` tab and expand the |symbologyAdd|
 button menu to create:
 
 * :ref:`3D point symbols <3d_pointlayers>`
 * :ref:`3D line symbols <3d_linelayers>`
 * :ref:`3D polygon symbols <3d_polygonlayers>`
+
+Or click the :guilabel:`Materials` tab and expand the |symbologyAdd|
+button to select a material type.
 
 
 .. _`3d_pointlayers`:
@@ -29,6 +32,7 @@ Point Layers
 
 .. figure:: img/3d_point_symbol.png
    :align: center
+   :width: 50%
 
    Properties of a 3D point symbol
 
@@ -43,9 +47,18 @@ Point Layers
     and a :guilabel:`Length`
   * :guilabel:`Plane` defined by a :guilabel:`Size`
   * :guilabel:`Torus` defined by a :guilabel:`Radius` and a :guilabel:`Minor radius`
-  * :guilabel:`3D Model`, using a 3D model file (several formats are supported)
-    that can be a file on disk, a remote URL or :ref:`embedded in the project
-    <embedded_file_selector>`.
+  * :guilabel:`3D Model`, using a 3D model file: supported formats include
+    wavefront :file:`.obj`, :file:`.glTF` and :file:`.fbx`.
+    Models can be a file on disk, a remote URL or :ref:`embedded in the project
+    <embedded_file_selector>`. Community-created models are shared on the `QGIS Hub
+    <https://hub.qgis.org/wavefronts>`_.
+    When placing 3D model symbol, QGIS needs to know the axis conventions used when the model
+    was created. Two settings control this:
+
+     * :guilabel:`Up axis` defines the axis that is considered as vertical (i.e., the one
+       used for height). Default is Z.
+     * :guilabel:`Forward axis` defines the axis that is considered as forward (i.e., the one
+       used for orientation). Default is Y.
   * :guilabel:`Billboard`, defined by the :guilabel:`Billboard height` and
     the :guilabel:`Billboard symbol` (usually based on a :ref:`marker symbol
     <vector_marker_symbols>`). The symbol will have a stable size.
@@ -55,7 +68,7 @@ Point Layers
   can be used when height values of the 3d vectors are provided as absolute
   measures from 0. :guilabel:`Relative` and :guilabel:`Terrain` add given
   elevation values to the underlying terrain elevation.
-* The :ref:`shading <shading_texture>` can be defined.
+* The :ref:`shading <shading_texture>` properties can be defined.
 * Under the :guilabel:`Transformations` frame, you can apply affine transformation
   to the symbol:
 
@@ -73,10 +86,11 @@ Line layers
 
 .. figure:: img/3d_line_symbol.png
    :align: center
+   :width: 50%
 
    Properties of a 3D line symbol
 
-* Beneath the :guilabel:`Width` and :guilabel:`Height` settings you can
+* Beneath the :guilabel:`Width` and :guilabel:`Offset` settings you can
   define the :guilabel:`Extrusion` of the vector lines. If the lines do not have
   z-values, you can define the 3d volumes with this setting.
 * With the :guilabel:`Altitude clamping` you define the position of the
@@ -86,8 +100,7 @@ Line layers
   terrain. Either every :guilabel:`Vertex` of the feature will be clamped
   to the terrain or this will be done by the :guilabel:`Centroid`.
 * It is possible to |checkbox|:guilabel:`Render as simple 3D lines`.
-* The shading can be defined in the menus :guilabel:`Diffuse`, :guilabel:`Ambient`,
-  :guilabel:`Specular` and :guilabel:`Shininess`.
+* The :ref:`shading <shading_texture>` properties can be defined.
 
 .. _`3d_polygonlayers`:
 
@@ -98,15 +111,16 @@ Polygon Layers
 
 .. figure:: img/3d_polygon_symbol.png
    :align: center
+   :width: 50%
 
    Properties of a 3D polygon symbol
 
-* As for the other ones, :guilabel:`Height` can be defined in CRS units. You can
-  also use the |dataDefined| button to overwrite the value with a custom
+* As for the other ones, :guilabel:`Offset` can be defined in CRS units. You can
+  also use the |dataDefine| button to overwrite the value with a custom
   expression, a variable or an entry of the attribute table
 
 * Again, :guilabel:`Extrusion` is possible for missing z-values. Also for the
-  extrusion you can use the |dataDefined| button in order to use the values of
+  extrusion you can use the |dataDefine| button in order to use the values of
   the vector layer and have different results for each polygon:
 
   .. figure:: img/3d_extrusion.png
@@ -116,10 +130,36 @@ Polygon Layers
 
 * The :guilabel:`Altitude clamping`, :guilabel:`Altitude binding` can be defined
   as explained above.
-* There is an additional option to |checkbox|:guilabel:`Add back faces`
-  and |checkbox|:guilabel:`Invert normals`.
-* You can define |checkbox|:guilabel:`Edges` by :guilabel:`Width` and :guilabel:`Color`.
+* The :guilabel:`Culling mode` to apply to the symbol; it can be:
 
+  * :guilabel:`No Culling`: this can help to avoid seemingly missing surfaces
+    when polygonZ/multipatch data do not have consistent ordering of vertices
+    (e.g. all clock-wise or counter clock-wise)
+  * :guilabel:`Front`
+  * or :guilabel:`Back`
+* The :guilabel:`Rendered facade` determines the faces to display. Possible values
+  are |checkbox| :guilabel:`Walls`,
+  |checkbox| :guilabel:`Roof`, and |checkbox| :guilabel:`Floor`.
+  The checkboxes allow selecting any combination of these values.
+* |checkbox| :guilabel:`Add back faces`: for each triangle, creates both front and
+  back face with correct normals - at the expense of increased number of vertex data.
+  This option can be used to fix shading issues (e.g., due to data with inconsistent
+  order of vertices).
+* |checkbox| :guilabel:`Invert normals (experimental)`: can be useful for fixing
+  clockwise/counter-clockwise face vertex orders
+* The :ref:`shading <shading_texture>` properties can be defined.
+* Display of the |checkbox| :guilabel:`Edges` of the symbols can be enabled
+  and assigned a :guilabel:`Width` and :guilabel:`Color`.
+
+.. hint:: **Combination for best rendering of 3D data**
+
+ :guilabel:`Culling mode`, :guilabel:`Add back faces` and :guilabel:`Invert normals`
+ are all meant to fix the look of 3D data if it does not look right.
+ Typically when loading some data, it is best to first try ``culling mode=back``
+ and ``add back faces=disabled`` - it is the most efficient.
+ If the rendering does not look correct, try ``add back faces=enabled`` and
+ keep ``culling mode=no culling``. Other combinations are more advanced and
+ useful only in some scenarios based on how mixed up is the input dataset.
 
 .. _shading_texture:
 
@@ -134,17 +174,50 @@ in order to visualise features.
 Various techniques of shading are used in QGIS and their availability depends
 on the geometry type of the symbol:
 
-* :guilabel:`Realistic (Phong)`: describes the way a surface reflects light as
-  a combination of the :guilabel:`Diffuse` reflection of rough surfaces with
-  the :guilabel:`Specular` reflection of shiny surfaces (:guilabel:`Shininess`).
-  It also includes an :guilabel:`Ambient` option to account for the small amount
-  of light that is scattered about the entire scene.
-  Read more at https://en.wikipedia.org/wiki/Phong_reflection_model#Description
-* :guilabel:`Realistic Textured (Phong)`: same as the :guilabel:`Realistic (Phong)`
-  except that an image is used as :guilabel:`Diffuse Texture`.
-  The image can be a file on disk, a remote URL or :ref:`embedded in the project
-  <embedded_file_selector>`.
-  The :guilabel:`Texture scale` and :guilabel:`Texture rotation` are required.
+
+* :guilabel:`Physically Based`: renders materials that respond naturally to light, making objects look
+  like real-world materials. Available options are:
+
+  * :guilabel:`Base color`: allows users to put base color on surface.
+  * :guilabel:`Metalness`: sets how metallic the surface appears.
+  * :guilabel:`Roughness`: controls how rough or smooth the surface is.
+  * :guilabel:`Reflectance`: controls how much light the surface reflects.
+  * :guilabel:`Anisotropy`: creates directional reflections that align with
+    the direction specified in :guilabel:`Anisotropy direction`.
+  * :guilabel:`Clear coat strength`: controls the intensity of the clear coat layer. Higher values
+    create a stronger glossy appearance, lower values create a more subtle protective layer.
+  * :guilabel:`Clear coat roughness`: controls the roughness of the clear coat surface. Higher values
+    create a matte clear coat, lower values create a shiny, glossy clear coat.
+  * :guilabel:`Emission`: an optional setting where users can select solid emission color for metal rough material.
+    Useful for creating emissive solid color material that are not impacted by scene lighting.
+    Adjust the :guilabel:`Emission strength` value to control the intensity of the light.
+    Check |checkbox| :guilabel:`No Emission` if you want materials which are dependent on lighting.
+
+  Use the :guilabel:`Opacity` slider to adjust transparency.
+* :guilabel:`Physically Based (with textures)`: same as the :guilabel:`Physically Based`, but users can
+  input more complex texture maps. Available options are:
+
+  * :guilabel:`Base color texture`: represents color, pattern, visual detail of the material.
+  * :guilabel:`Metalness texture`: applies metallic material to the surface.
+  * :guilabel:`Roughness texture`: defines surface roughness.
+  * :guilabel:`Normal texture`: adds details to the material. For example: bumps, grooves, scratch and grain.
+  * :guilabel:`Height (displacement) texture`: displaces geometry to add surface depth, making it appear more realistic.
+    Set the :guilabel:`Height texture strength` to modify the depth effect as needed.
+  * :guilabel:`Ambient occlusion texture`: a grayscale image that adds soft shadows to corners, gaps, and areas where objects
+    are close together, making it look more realistic.
+  * :guilabel:`Emission texture`: adds emissive objects to the surface. To brighten
+    the objects, increase the :guilabel:`Emission strength`.
+
+  Set the desired transparency with the :guilabel:`Opacity` slider.
+  To transform the texture, adjust :guilabel:`Texture scale`
+  and :guilabel:`Texture rotation` as desired.
+
+  .. figure:: img/physicallybased_withtextures.png
+     :align: center
+     :width: 50%
+
+     Physically based (with textures) configuration.
+
 * :guilabel:`CAD (Gooch)`: this technique allows shading to occur only in mid-tones
   so that edge lines and highlights remain visually prominent. Along with the
   :guilabel:`Diffuse`, :guilabel:`Specular`, :guilabel:`Shininess` options,
@@ -152,15 +225,30 @@ on the geometry type of the symbol:
   and a :guilabel:`Cool` color (for the ones facing away).
   Also, the relative contributions to the cool and warm colors by the diffuse color
   are controlled by :guilabel:`Alpha` and :guilabel:`Beta` properties respectively.
-  See also https://en.wikipedia.org/wiki/Gooch_shading
-* :guilabel:`Embedded Textures` with 3D models shape
+  See also `Gooch shading <https://en.wikipedia.org/wiki/Gooch_shading>`_.
+* :guilabel:`Legacy (Phong)`: describes the way a surface reflects light as
+  a combination of the :guilabel:`Diffuse` reflection of rough surfaces with
+  the :guilabel:`Specular` reflection of shiny surfaces (:guilabel:`Shininess`).
+  It also includes an :guilabel:`Ambient` option to account for the small amount
+  of light that is scattered about the entire scene.
+  Use the :guilabel:`Opacity` slider to render semi-transparent objects in 3D.
+  Read more at `Phong reflection description <https://en.wikipedia.org/wiki/Phong_reflection_model>`_.
+* :guilabel:`Legacy Textured (Phong)`: same as the :guilabel:`Legacy (Phong)`
+  except that an image is used as :guilabel:`Diffuse Texture`.
+  The image can be a file on disk, a remote URL or :ref:`embedded in the project
+  <embedded_file_selector>`.
+  To transform the texture, adjust the :guilabel:`Texture scale`, :guilabel:`Texture rotation` or
+  :guilabel:`Texture offset` as needed.
+  Use the :guilabel:`Opacity` slider to render semi-transparent objects in 3D.
+* :guilabel:`Single Color (Unlit)`: allows user to apply single color that does not
+  interact with lights.
 
 
 Application example
 ===================
 
 To go through the settings explained above you can have a look at
-https://public.cloudmergin.com/projects/saber/luxembourg/tree.
+https://app.merginmaps.com/projects/saber/luxembourg/tree.
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
@@ -173,7 +261,7 @@ https://public.cloudmergin.com/projects/saber/luxembourg/tree.
    :width: 1.5em
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
-.. |dataDefined| image:: /static/common/mIconDataDefine.png
+.. |dataDefine| image:: /static/common/mIconDataDefine.png
    :width: 1.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
    :width: 1.5em

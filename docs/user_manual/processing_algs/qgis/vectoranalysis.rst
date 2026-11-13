@@ -6,6 +6,7 @@ Vector analysis
    .. contents::
       :local:
       :depth: 1
+      :class: toc-columns
 
 
 .. _qgisbasicstatisticsforfields:
@@ -14,13 +15,11 @@ Basic statistics for fields
 ---------------------------
 Generates basic statistics for a field of the attribute table of a
 vector layer.
-
 Numeric, date, time and string fields are supported.
-
 The statistics returned will depend on the field type.
 
-Statistics are generated as an HTML file and are available in the
-:menuselection:`Processing --> Results viewer`.
+Statistics can be generated as a table or an HTML file
+and are available in the :menuselection:`Processing --> Results viewer`.
 
 **Default menu**: :menuselection:`Vector --> Analysis Tools`
 
@@ -30,6 +29,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -46,11 +46,26 @@ Parameters
    * - **Statistics**
 
        Optional
+
+       ``Added in 3.40``
+     - ``OUTPUT``
+     - [vector: table]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output table for the generated statistics. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types**
+          :end-before: **end_layer_output_types**
+
+   * - **Statistics report**
+
+       Optional
      - ``OUTPUT_HTML_FILE``
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specification of the file for the calculated statistics. One of:
+     - Specification of the file for the calculated statistics. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types_skip**
@@ -69,24 +84,30 @@ Outputs
      - Type
      - Description
    * - **Statistics**
+
+       ``Added in 3.40``
+     - ``OUTPUT``
+     - [vector: table]
+     - Table containing the calculated statistics
+   * - **Statistics report**
      - ``OUTPUT_HTML_FILE``
      - [html]
      - HTML file with the calculated statistics
    * - **Count**
      - ``COUNT``
-     - [number]
+     - [numeric: integer]
      -
    * - **Number of unique values**
      - ``UNIQUE``
-     - [number]
+     - [numeric: integer]
      -
    * - **Number of empty (null) values**
      - ``EMPTY``
-     - [number]
+     - [numeric: integer]
      -
    * - **Number of non-empty values**
      - ``FILLED``
-     - [number]
+     - [numeric: integer]
      -
    * - **Minimum value**
      - ``MIN``
@@ -98,39 +119,39 @@ Outputs
      -
    * - **Minimum length**
      - ``MIN_LENGTH``
-     - [number]
+     - [numeric: integer]
      -
    * - **Maximum length**
      - ``MAX_LENGTH``
-     - [number]
+     - [numeric: integer]
      -
    * - **Mean length**
      - ``MEAN_LENGTH``
-     - [number]
+     - [numeric: double]
      -
    * - **Coefficient of Variation**
      - ``CV``
-     - [number]
+     - [numeric: double]
      -
    * - **Sum**
      - ``SUM``
-     - [number]
+     - [numeric: double]
      -
    * - **Mean value**
      - ``MEAN``
-     - [number]
+     - [numeric: double]
      -
    * - **Standard deviation**
      - ``STD_DEV``
-     - [number]
+     - [numeric: double]
      -
    * - **Range**
      - ``RANGE``
-     - [number]
+     - [numeric: double]
      -
    * - **Median**
      - ``MEDIAN``
-     - [number]
+     - [numeric: double]
      -
    * - **Minority (rarest occurring value)**
      - ``MINORITY``
@@ -142,21 +163,21 @@ Outputs
      -
    * - **First quartile**
      - ``FIRSTQUARTILE``
-     - [number]
+     - [numeric: double]
      -
    * - **Third quartile**
      - ``THIRDQUARTILE``
-     - [number]
+     - [numeric: double]
      -
    * - **Interquartile Range (IQR)**
      - ``IQR``
-     - [number]
+     - [numeric: double]
      -
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:basicstatisticsforfields``
+**Algorithm ID**: ``native:basicstatisticsforfields``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -187,6 +208,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -201,7 +223,7 @@ Parameters
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specification of the output (line) layer. One of:
+     - Specification of the output (line) layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -213,6 +235,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -225,29 +248,27 @@ Outputs
        results from climb calculations.
    * - **Total climb**
      - ``TOTALCLIMB``
-     - [number]
+     - [numeric: double]
      - The sum of the climb for all the line geometries
        in the input layer
    * - **Total descent**
      - ``TOTALDESCENT``
-     - [number]
+     - [numeric: double]
      - The sum of the descent for all the line geometries
        in the input layer
    * - **Minimum elevation**
      - ``MINELEVATION``
-     - [number]
-     - The minimum elevation for the geometries in the
-       layer
+     - [numeric: double]
+     - The minimum elevation for the geometries in the layer
    * - **Maximum elevation**
      - ``MAXELEVATION``
-     - [number]
-     - The maximum elevation for the geometries in the
-       layer
+     - [numeric: double]
+     - The maximum elevation for the geometries in the layer
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:climbalongline``
+**Algorithm ID**: ``native:climbalongline``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -258,8 +279,9 @@ Python code
 
 Count points in polygon
 -----------------------
-Takes a point and a polygon layer and counts the number of points from
-the point layer in each of the polygons of the polygon layer.
+Takes a point layer and a polygon layer and counts the number of points
+from the first layer in each polygon from the second layer.
+Points falling exactly on the boundary of polygons are ignored.
 
 A new polygon layer is generated, with the exact same content as the
 input polygon layer, but containing an additional field with the
@@ -274,6 +296,10 @@ An optional weight field can be used to assign weights to each point.
 Alternatively, a unique class field can be specified.
 If both options are used, the weight field will take precedence and
 the unique class field will be ignored.
+
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 ``Default menu``: :menuselection:`Vector --> Analysis Tools`
 
@@ -328,7 +354,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specification of the output layer. One of:
+     - Specification of the output layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -340,6 +366,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -394,13 +421,13 @@ Basic parameters
      - Layer to analyze
    * - **Minimum cluster size**
      - ``MIN_SIZE``
-     - [number]
+     - [numeric: integer]
 
        Default: 5
      - Minimum number of features to generate a cluster
    * - **Maximum distance between clustered points**
      - ``EPS``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - Distance beyond which two features can not belong
@@ -410,7 +437,7 @@ Basic parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the vector layer for the result of the clustering. One of:
+     - Specify the vector layer for the result of the clustering. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -429,8 +456,6 @@ Advanced parameters
      - Type
      - Description
    * - **Treat border points as noise (DBSCAN\*)**
-
-       Optional
      - ``DBSCAN*``
      - [boolean]
 
@@ -459,6 +484,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -471,7 +497,7 @@ Outputs
        field setting the cluster they belong to
    * - **Number of clusters**
      - ``NUM_CLUSTERS``
-     - [number]
+     - [numeric: integer]
      - The number of clusters discovered
 
 Python code
@@ -488,10 +514,20 @@ Python code
 
 Distance matrix
 ---------------
-Calculates for point features distances to their nearest features in
-the same layer or in another layer.
+Creates a table containing a matrix of distances between all points in a layer
+and their neighbors in the same layer or in another layer.
+
+The algorithm supports both Cartesian and ellipsoidal distance calculations.
+Cartesian calculations are performed using a spatial index and offer high performance,
+but can give inaccurate results when used with CRSs with high distance distortion
+or where shortest distances accounting for great circles is required.
+If ellipsoidal calculations are enabled, the algorithm bypasses the spatial index
+and provides accurate geodetic measurements at a considerable performance cost.
 
 **Default menu**: :menuselection:`Vector --> Analysis Tools`
+
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
 
 .. seealso:: :ref:`qgisjoinbynearest`
 
@@ -541,25 +577,37 @@ Parameters
          The output matrix consists of up to *k* rows per
          input point, and each row has three columns:
          *InputID*, *TargetID* and *Distance*.
-       * 1 --- Standard (N x T) distance matrix
+       * 1 --- Standard (N x T) distance matrix: one row per input point
+         with columns for each target and distance
        * 2 --- Summary distance matrix (mean, std. dev., min,
          max): for each input point, reports statistics on
          the distances to its target points.
    * - **Use only the nearest (k) target points**
      - ``NEAREST_POINTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 0
      - You can choose to calculate the distance to all the
        points in the target layer (*0*) or limit to a number
        (*k*) of closest features.
 
+   * - **Use ellipsoidal calculations**
+
+       ``Added in 4.4``
+     - ``USE_ELLIPSOID``
+     - [boolean]
+
+       Default: True
+     - If checked, the algorithm will bypass the spatial index
+       and calculate ellipsoidal distances for all point combinations.
+       This will reduce performance but provide accurate results.
+
    * - **Distance matrix**
      - ``OUTPUT``
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specification of the output vector layer. One of:
+     - Specification of the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -571,6 +619,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -588,30 +637,38 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:distancematrix``
+**Algorithm ID**: ``native:distancematrix``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
 
-.. _qgisdistancetonearesthublinetohub:
+.. _qgisdistancetonearesthub:
 
-Distance to nearest hub (line to hub)
--------------------------------------
-Creates lines that join each feature of an input vector to the nearest
-feature in a destination layer.
-Distances are calculated based on the
-:ref:`center <qgispointonsurface>` of each feature.
+Distance to nearest hub
+-----------------------
+``Added in 4.0``
 
+Computes the distance between features from the source layer to the closest feature from the destination layer.
+Distance calculations are based on the feature's bounding box center.
+
+Two types of output are possible:
+
+* The resulting line layer contains lines linking each origin point with its nearest destination feature.
+
+* The resulting point layer contains each origin feature's center point with additional fields
+  indicating the identifier of the nearest destination feature and the distance to it.
 
 .. figure:: img/distance_hub.png
   :align: center
 
   Display the nearest hub for the red input features
 
-.. seealso:: :ref:`qgisdistancetonearesthubpoints`,
-   :ref:`qgisjoinbynearest`
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
+
+.. seealso:: :ref:`qgisjoinbynearest`
 
 Parameters
 ..........
@@ -624,13 +681,130 @@ Parameters
      - Name
      - Type
      - Description
+   * - **Source layer (spokes)**
+     - ``INPUT``
+     - [vector: geometry]
+     - Vector layer for which the nearest feature is searched
+   * - **Destination layer (hubs)**
+     - ``HUBS``
+     - [vector: geometry]
+     - Vector layer containing the features to search for
+   * - **Hub layer name attribute**
+     - ``FIELD``
+     - [tablefield: any]
+     - Field to use to uniquely identify features of the destination layer.
+       Used in the output attribute table
+   * - **Measurement unit**
+     - ``UNIT``
+     - [enumeration]
+
+       Default: 0
+     - Units in which to report the distance to the closest feature:
+
+       * 0 --- Meters
+       * 1 --- Feet
+       * 2 --- Miles
+       * 3 --- Kilometers
+       * 4 --- Layer units
+   * - **Hub lines**
+     - ``OUTPUT_LINES``
+     - [vector: line]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output line vector layer connecting the matching points.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types**
+          :end-before: **end_layer_output_types**
+
+   * - **Hub points**
+     - ``OUTPUT_POINTS``
+     - [vector: point]
+
+       Default: ``[Skip output]``
+     - Specify the output point vector layer with the nearest hub.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Hub lines**
+     - ``OUTPUT_LINES``
+     - [vector: line]
+     - Line vector layer connecting the matching features.
+       Its attribute table contains the attributes of the input features,
+       the identifier of their closest feature and the calculated distance.
+   * - **Hub points**
+     - ``OUTPUT_POINTS``
+     - [vector: point]
+     - Point vector layer representing the center of the source features
+       with their attributes, the identifier of their closest
+       feature and the calculated distance.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:distancetonearesthub``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisdistancetonearesthublinetohub:
+
+Distance to nearest hub (line to hub)
+-------------------------------------
+
+.. warning:: This algorithm is deprecated since QGIS 4.0 and can be removed anytime.
+  Prefer using :ref:`qgisdistancetonearesthub` algorithm instead.
+
+Creates lines that join each feature of an input vector to the nearest
+feature in a destination layer.
+Distances are calculated based on the
+:ref:`center <qgispointonsurface>` of each feature.
+
+
+.. figure:: img/distance_hub.png
+  :align: center
+
+  Display the nearest hub for the red input features
+
+.. seealso:: :ref:`qgisdistancetonearesthub`,
+   :ref:`qgisjoinbynearest`
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
    * - **Source points layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer for which the nearest feature is searched
    * - **Destination hubs layer**
      - ``HUBS``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer containing the features to search for
    * - **Hub layer name attribute**
      - ``FIELD``
@@ -657,7 +831,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output line vector layer connecting the matching points.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -669,6 +843,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -695,13 +870,16 @@ Python code
 
 Distance to nearest hub (points)
 --------------------------------
+
+.. warning:: This algorithm is deprecated since QGIS 4.0 and can be removed anytime.
+  Prefer using :ref:`qgisdistancetonearesthub` algorithm instead.
+
 Creates a point layer representing the
 :ref:`center <qgispointonsurface>` of the input features with the
 addition of two fields containing the identifier of the nearest
-feature (based on its center point) and the distance between the
-points.
+feature (based on its center point) and the distance between the points.
 
-.. seealso:: :ref:`qgisdistancetonearesthublinetohub`,
+.. seealso:: :ref:`qgisdistancetonearesthub`,
    :ref:`qgisjoinbynearest`
 
 Parameters
@@ -749,7 +927,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output point vector layer with the nearest hub.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -761,6 +939,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -805,11 +984,13 @@ rendering of the lines.
 Additionally, the distance between vertices can be specified.
 A smaller distance results in a denser, more accurate line.
 
-
 .. figure:: img/join_lines.png
   :align: center
 
   Join points based on a common field / attribute
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
 
 Parameters
 ..........
@@ -828,7 +1009,7 @@ Basic parameters
      - Description
    * - **Hub layer**
      - ``HUBS``
-     - [vector: any]
+     - [vector: geometry]
      - Input layer
    * - **Hub ID field**
      - ``HUB_FIELD``
@@ -843,7 +1024,7 @@ Basic parameters
        If no field(s) are chosen all fields are taken.
    * - **Spoke layer**
      - ``SPOKES``
-     - [vector: any]
+     - [vector: geometry]
      - Additional spoke point layer
    * - **Spoke ID field**
      - ``SPOKE_FIELD``
@@ -868,7 +1049,7 @@ Basic parameters
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output hub line vector layer. One of:
+     - Specify the output hub line vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -888,7 +1069,7 @@ Advanced parameters
      - Description
    * - **Distance between vertices (geodesic lines only)**
      - ``GEODESIC_DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 1000.0 (kilometers)
      - Distance between consecutive vertices (in kilometers).
@@ -907,6 +1088,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -955,6 +1137,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -962,21 +1145,38 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Layer to analyze
    * - **Number of clusters**
      - ``CLUSTERS``
-     - [number]
+     - [numeric: integer]
 
        Default: 5
      - Number of clusters to create with the features
+   * - **Method**
+     - ``METHOD``
+     - [enumeration]
+
+       Default: 0
+     - Initial centers selection method.
+       Possible values are:
+
+       * 0 --- Farthest points: the initial centers are selected as the farthest points from each other.
+       * 1 --- K-means++: The first center is selected uniformly at random from the set of input features.
+         Subsequent centers are chosen based on a weighted probability distribution that favors features farther from existing centers.
+         This ensures that the initial centers are well-dispersed,
+         reducing the likelihood of poor clustering and improving the algorithm's performance.
+
+       *References: Arthur, David & Vassilvitskii, Sergei. (2007).
+       K-Means++: The Advantages of Careful Seeding. Proc. of the Annu. ACM-SIAM Symp. on Discrete Algorithms. 8.*
+
    * - **Clusters**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: same as input]
 
        Default:``[Create temporary layer]``
-     - Specify the output vector layer for generated the clusters.
-       One of:
+     - Specify the output vector layer for the generated clusters.
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1014,6 +1214,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1021,7 +1222,7 @@ Outputs
      - Description
    * - **Clusters**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: same as input]
      - Vector layer containing the original features with
        fields specifying the cluster they belong to and their number in it
 
@@ -1039,8 +1240,7 @@ Python code
 
 List unique values
 ------------------
-Lists unique values of an attribute table field and counts their
-number.
+Lists unique values of an attribute table field and counts their number.
 
 **Default menu**: :menuselection:`Vector --> Analysis Tools`
 
@@ -1050,6 +1250,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1061,16 +1262,16 @@ Parameters
      - Layer to analyze
    * - **Target field(s)**
      - ``FIELDS``
-     - [tablefield: any]
-     - Field to analyze
+     - [tablefield: any] [list]
+     - Field(s) to analyze
    * - **Unique values**
 
        Optional
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
 
        Default:``[Create temporary layer]``
-     - Specify the summary table layer with unique values. One of:
+     - Specify the summary table layer with unique values. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -1084,7 +1285,7 @@ Parameters
 
        Default:``[Save to temporary file]``
      - HTML report of unique values in the
-       :menuselection:`Processing --> Results viewer`. One of:
+       :menuselection:`Processing --> Results viewer`. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types_skip**
@@ -1096,6 +1297,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1103,7 +1305,7 @@ Outputs
      - Description
    * - **Unique values**
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
      - Summary table layer with unique values
    * - **HTML report**
      - ``OUTPUT_HTML_FILE``
@@ -1112,10 +1314,10 @@ Outputs
        :menuselection:`Processing --> Results viewer`
    * - **Total unique values**
      - ``TOTAL_VALUES``
-     - [number]
-     - The number of uniqe values in the input field
-   * - **UNIQUE_VALUES**
-     - ``Unique values``
+     - [numeric: integer]
+     - The number of unique values in the input field
+   * - **Unique values concatenated**
+     - ``UNIQUE_VALUES``
      - [string]
      - A string with the comma separated list of unique values found
        in the input field
@@ -1123,7 +1325,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:listuniquevalues``
+**Algorithm ID**: ``native:listuniquevalues``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1154,6 +1356,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1161,7 +1364,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Weight field**
 
@@ -1171,7 +1374,7 @@ Parameters
      - Field to use if you want to perform a weighted mean
    * - **Unique ID field**
      - ``UID``
-     - [tablefield: numeric]
+     - [tablefield: any]
      - Unique field on which the calculation of the mean will
        be made
    * - **Mean coordinates**
@@ -1179,7 +1382,7 @@ Parameters
      - [vector: point]
 
        Default:``[Create temporary layer]``
-     - Specify the (point vector) layer for the result. One of:
+     - Specify the (point vector) layer for the result. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1191,6 +1394,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1218,8 +1422,7 @@ Nearest neighbour analysis
 Performs nearest neighbor analysis for a point layer. The output tells you
 how your data are distributed (clustered, randomly or distributed).
 
-Output is generated as an HTML file with the computed statistical
-values:
+Output is generated as an HTML file with the computed statistical values:
 
 * Observed mean distance
 * Expected mean distance
@@ -1227,15 +1430,20 @@ values:
 * Number of points
 * Z-Score: Comparing the Z-Score with the normal distribution tells
   you how your data are distributed.
-  A low Z-Score means that the data are unlikely to be the result of a
+  A low Z-Score means that the data are likely to be the result of a
   spatially random process, while a high Z-Score means that your data
-  are likely to be a result of a spatially random process.
+  A Z-Score close to 0 means that the data are likely to be the result of a
+  spatially random process, while a Z-Score far from 0 means that the data
+  are unlikely to be the result of a spatially random process.
 
-  .. figure:: img/normal_distribution.png
-     :align: center
+.. figure:: img/normal_distribution.png
+   :align: center
 
 
 **Default menu**: :menuselection:`Vector --> Analysis Tools`
+
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
 
 .. seealso:: :ref:`qgisjoinbynearest`
 
@@ -1245,6 +1453,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1262,7 +1471,7 @@ Parameters
 
        Default:``[Save to temporary file]``
      - Specification of the HTML file for the computed statistics.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types_skip**
@@ -1274,6 +1483,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1285,23 +1495,23 @@ Outputs
      - HTML file with the computed statistics
    * - **Observed mean distance**
      - ``OBSERVED_MD``
-     - [number]
+     - [numeric: double]
      - Observed mean distance
    * - **Expected mean distance**
      - ``EXPECTED_MD``
-     - [number]
+     - [numeric: double]
      - Expected mean distance
    * - **Nearest neighbour index**
      - ``NN_INDEX``
-     - [number]
+     - [numeric: integer]
      - Nearest neighbour index
    * - **Number of points**
      - ``POINT_COUNT``
-     - [number]
+     - [numeric: integer]
      - Number of points
    * - **Z-Score**
      - ``Z_SCORE``
-     - [number]
+     - [numeric: double]
      - Z-Score
 
 Python code
@@ -1326,12 +1536,19 @@ New attributes are added to the output layer reporting the
 total area of overlap and percentage of the input feature
 overlapped by each of the selected overlay layers.
 
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
+
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1339,18 +1556,144 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: polygon]
      - The input layer.
-   * - **Overlap layers**
+   * - **Overlay layers**
      - ``LAYERS``
-     - [vector: any] [list]
+     - [vector: polygon] [list]
      - The overlay layers.
-   * - **Output layer**
+   * - **Overlap**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types**
+          :end-before: **end_layer_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Grid size**
+
+       Optional
+     - ``GRID_SIZE``
+     - [numeric: double]
+
+       Default: Not set
+     - If provided, the input geometries are snapped to a grid of the given size,
+       and the result vertices are computed on that same grid.
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Overlap**
+     - ``OUTPUT``
+     - [same as input]
+     - The output layer with additional fields reporting the
+       overlap (in map units and percentage) of the input feature
+       overlapped by each of the selected layers.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:calculatevectoroverlaps``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisshortestline:
+
+Shortest line between features
+------------------------------
+
+Creates a line layer as the shortest line between the source and the destination layer. By default only the first nearest feature of the destination layer is taken into account. The n-nearest neighboring features number can be specified.
+If a maximum distance is specified, then only features which are closer than this distance will be considered.
+
+The output features will contain all the source layer attributes, all the attributes from the n-nearest feature and the additional field of the distance.
+
+.. important:: This algorithm uses purely Cartesian calculations for distance,
+  and does not consider geodetic or ellipsoid properties when determining
+  feature proximity. The measurement and output coordinate system is based
+  on the coordinate system of the source layer.
+
+.. figure:: img/shortest_line.png
+   :align: center
+
+   Shortest line from point features to lines
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Source layer**
+     - ``SOURCE``
+     - [vector: geometry]
+     - Origin layer for which to search for nearest neighbors
+   * - **Destination layer**
+     - ``DESTINATION``
+     - [vector: geometry]
+     - Target Layer in which to search for nearest neighbors
+   * - **Method**
+     - ``METHOD``
+     - [enumeration]
+
+       Default: 0
+     - Shortest distance calculation method
+       Possible values are:
+
+       * 0 --- Distance to nearest point on feature
+       * 1 --- Distance to feature centroid
+
+   * - **Maximum number of neighbors**
+     - ``NEIGHBORS``
+     - [numeric: integer]
+
+       Default: 1
+     - Maximum number of neighbors to look for
+   * - **Maximum distance**
+
+       Optional
+     - ``DISTANCE``
+     - [numeric: double]
+     - Only destination features which are closer than this distance
+       will be considered.
+   * - **Shortest lines**
+     - ``OUTPUT``
+     - [vector: line]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1362,6 +1705,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1369,15 +1713,15 @@ Outputs
      - Description
    * - **Output layer**
      - ``OUTPUT``
-     - [same as input]
-     - The output layer with additional fields reporting the
-       overlap (in map units and percentage) of the input feature
-       overlapped by each of the selected layers.
+     - [vector: line]
+     - Line vector layer joining source features to their nearest
+       neighbor(s) in the destination layer. Contains all attributes for
+       both source and destination features, and the computed distance.
 
 Python code
 ...........
 
-**Algorithm ID**: ``native:calculatevectoroverlaps``
+**Algorithm ID**: ``native:shortestline``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1419,20 +1763,20 @@ Basic parameters
      - Field containing the temporal information
    * - **Minimum cluster size**
      - ``MIN_SIZE``
-     - [number]
+     - [numeric: integer]
 
        Default: 5
      - Minimum number of features to generate a cluster
    * - **Maximum distance between clustered points**
      - ``EPS``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - Distance beyond which two features can not belong
        to the same cluster (eps)
    * - **Maximum time duration between clustered points**
      - ``EPS2``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0 (days)
      - Time duration beyond which two features can not belong
@@ -1444,7 +1788,7 @@ Basic parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the vector layer for the result of the clustering. One of:
+     - Specify the vector layer for the result of the clustering. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1463,8 +1807,6 @@ Advanced parameters
      - Type
      - Description
    * - **Treat border points as noise (DBSCAN\*)**
-
-       Optional
      - ``DBSCAN*``
      - [boolean]
 
@@ -1493,6 +1835,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1505,7 +1848,7 @@ Outputs
        field setting the cluster they belong to
    * - **Number of clusters**
      - ``NUM_CLUSTERS``
-     - [number]
+     - [numeric: integer]
      - The number of clusters discovered
 
 Python code
@@ -1531,6 +1874,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1548,14 +1892,14 @@ Parameters
      - If empty only the count will be calculated
    * - **Field(s) with categories**
      - ``CATEGORIES_FIELD_NAME``
-     - [vector: any] [list]
+     - [tablefield: any] [list]
      - The fields that (combined) define the categories
    * - **Statistics by category**
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
 
        Default: ``[Create temporary layer]``
-     - Specify the output table for the generated statistics. One of:
+     - Specify the output table for the generated statistics. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1567,6 +1911,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1574,7 +1919,7 @@ Outputs
      - Description
    * - **Statistics by category**
      - ``OUTPUT``
-     - [table]
+     - [vector: table]
      - Table containing the statistics
 
 Depending on the type of the field being analyzed,
@@ -1673,7 +2018,7 @@ the following statistics are returned for each grouped value:
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:statisticsbycategories``
+**Algorithm ID**: ``native:statisticsbycategories``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1691,7 +2036,14 @@ The resulting layer has the same features as the input polygon layer,
 but with two additional attributes containing the length and count of
 the lines across each polygon.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
+
 **Default menu**: :menuselection:`Vector --> Analysis Tools`
+
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
 
 Parameters
 ..........
@@ -1730,7 +2082,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon layer with generated statistics. One of:
+     - Specify the output polygon layer with generated statistics. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1742,6 +2094,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name

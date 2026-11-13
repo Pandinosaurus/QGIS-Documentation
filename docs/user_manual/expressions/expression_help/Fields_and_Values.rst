@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Fields_and_Values_NULL:
 
 NULL
@@ -25,4 +26,3 @@ Equates to a NULL value.
 
 
 .. end_NULL_section
-

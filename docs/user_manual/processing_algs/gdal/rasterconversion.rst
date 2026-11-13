@@ -8,6 +8,102 @@ Raster conversion
       :depth: 1
 
 
+.. _gdalcreatecog:
+
+Create Cloud Optimized GeoTIFF
+-------------------------------
+``Added in 4.0``
+
+Creates a Cloud Optimized GeoTIFF (COG) from the input raster layers.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layers**
+     - ``INPUT``
+     - [raster][list]
+     - Input raster layers to convert to COG.
+   * - **Output directory**
+     - ``OUTPUT``
+     - [file]
+
+       Default: ``[Save to temporary folder]``
+     - Specification of the output file.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **directory_output_types**
+          :end-before: **end_directory_output_types**
+
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Additional creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output directory**
+     - ``OUTPUT``
+     - [file]
+     - Directory containing the created Cloud Optimized GeoTIFF(s).
+   * - **Output layers**
+     - ``OUTPUT_LAYERS``
+     - [raster][list]
+     - List of created Cloud Optimized GeoTIFF layer(s).
+
+Python code
+...........
+
+**Algorithm ID**: ``gdal:createcog``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
 .. _gdalgdal2xyz:
 
 gdal2xyz
@@ -38,6 +134,40 @@ Parameters
        Default: The first band of the input layer
      - If the raster is multiband, choose the band you want to
        convert
+   * - **Input pixel value to treat as NoData**
+
+       Optional
+     - ``NODATA_INPUT``
+     - [numeric: integer]
+
+       Default: Not set
+     - Input pixel value to treat as "NoData"
+
+       .. attention:: Using this parameter requires QGIS installed with GDAL_ >= 3.7
+          (see :menuselection:`Help --> About` menu).
+
+   * - **Destination NoData**
+
+       Optional
+     - ``NODATA_OUTPUT``
+     - [numeric: integer]
+
+       Default: Not set
+     - Assign specified "NoData" value to output.
+
+       .. attention:: Using this parameter requires QGIS installed with GDAL_ >= 3.7
+          (see :menuselection:`Help --> About` menu).
+
+   * - **Do not output NoData values**
+     - ``SKIP_NODATA``
+     - [boolean]
+
+       Default: False
+     - Do not output "NoData" values.
+
+       .. attention:: Using this parameter requires QGIS installed with GDAL_ >= 3.3
+          (see :menuselection:`Help --> About` menu).
+
    * - **Output comma-separated values**
      - ``CSV``
      - [boolean]
@@ -51,7 +181,7 @@ Parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output file.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -63,6 +193,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -92,7 +223,7 @@ It will convert a pseudocolor band from the input file to
 an RGB file of the desired format.
 
 This algorithm is derived from the
-`GDAL pct2rgb utility <https://gdal.org/programs/pct2rgb.html>`_.
+`GDAL pct2rgb utility <https://gdal.org/en/latest/programs/pct2rgb.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Conversion`
 
@@ -131,18 +262,19 @@ Parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output file.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
-  
+
 Outputs
 .......
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -172,7 +304,7 @@ raster sharing a common pixel value. Each polygon is created with an
 attribute indicating the pixel value of that polygon.
 
 This algorithm is derived from the
-`GDAL polygonize utility <https://gdal.org/programs/gdal_polygonize.html>`_.
+`GDAL polygonize utility <https://gdal.org/en/latest/programs/gdal_polygonize.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Conversion`
 
@@ -223,7 +355,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output (polygon) vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -235,6 +367,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -246,7 +379,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -255,6 +388,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -284,7 +418,7 @@ The algorithm also makes it possible to reorder the bands for the
 newly-created raster.
 
 This algorithm is derived from the
-`GDAL translate utility <https://gdal.org/programs/gdal_translate.html>`_.
+`GDAL translate utility <https://gdal.org/en/latest/programs/gdal_translate.html>`_.
 
 Parameters
 ..........
@@ -309,14 +443,14 @@ Basic parameters
      - ``BANDS``
      - [raster band] [list]
 
-       Default: None
+       Default: Not set
      - Ordered list of the bands to use to create the new raster
    * - **Converted**
      - ``OUTPUT``
      - [raster]
 
        Default:  ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -328,6 +462,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -336,7 +471,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -346,7 +481,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Output data type**
      - ``DATA_TYPE``
@@ -356,18 +491,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Use Input Layer Data Type
-       * 1 --- Byte
-       * 2 --- Int16
-       * 3 --- UInt16
-       * 4 --- UInt32
-       * 5 --- Int32
-       * 6 --- Float32
-       * 7 --- Float64
-       * 8 --- CInt16
-       * 9 --- CInt32
-       * 10 --- CFloat32
-       * 11 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types_extended**
+          :end-before: **end_raster_data_types_extended**
 
 Outputs
 .......
@@ -375,6 +501,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -411,7 +538,7 @@ classes it can be helpful to downsample your image with this algorithm
 before.
 
 This algorithm is derived from the
-`GDAL rgb2pct utility <https://gdal.org/programs/rgb2pct.html>`_.
+`GDAL rgb2pct utility <https://gdal.org/en/latest/programs/rgb2pct.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Conversion`
 
@@ -433,7 +560,7 @@ Parameters
      - Input (RGB) raster layer
    * - **Number of colors**
      - ``NCOLORS``
-     - [number]
+     - [numeric: integer]
 
        Default: 2
      - The number of colors the resulting image will contain.
@@ -443,7 +570,7 @@ Parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -455,6 +582,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -483,7 +611,7 @@ Translate (convert format)
 Converts raster data between different formats.
 
 This algorithm is derived from the
-`GDAL translate utility <https://gdal.org/programs/gdal_translate.html>`_.
+`GDAL translate utility <https://gdal.org/en/latest/programs/gdal_translate.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Conversion`
 
@@ -512,14 +640,14 @@ Basic parameters
      - ``TARGET_CRS``
      - [crs]
      - Specify a projection for the output file
-   * - **Assign a specified nodata value to output bands**
-       
+   * - **Assign a specified NoData value to output bands**
+
        Optional
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: Not set
-     - Defines the value to use for nodata in the output raster
+     - Defines the value to use for NoData in the output raster
    * - **Copy all subdatasets of this file to individual output files**
      - ``COPY_SUBDATASETS``
      - [boolean]
@@ -532,7 +660,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output (translated) raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -544,6 +672,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -552,7 +681,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -562,15 +691,15 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
        Optional
      - ``EXTRA``
-     - [string]   
+     - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -580,18 +709,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Use Input Layer Data Type
-       * 1 --- Byte
-       * 2 --- Int16
-       * 3 --- UInt16
-       * 4 --- UInt32
-       * 5 --- Int32
-       * 6 --- Float32
-       * 7 --- Float64
-       * 8 --- CInt16
-       * 9 --- CInt32
-       * 10 --- CFloat32
-       * 11 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types_extended**
+          :end-before: **end_raster_data_types_extended**
 
 Outputs
 .......
@@ -599,6 +719,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -617,3 +738,6 @@ Python code
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
+
+
+.. _GDAL: https://gdal.org/en/stable/index.html

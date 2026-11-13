@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_General_env:
 
 env
@@ -74,7 +75,7 @@ Evaluates a template which is passed in a string. Useful to expand dynamic param
 is_layer_visible
 ................
 
-Returns true if a specified layer is visible.
+Returns TRUE if a specified layer is visible.
 
 .. list-table::
    :widths: 15 85
@@ -84,7 +85,7 @@ Returns true if a specified layer is visible.
    * - Arguments
      - * **layer** - a string, representing either a layer name or layer ID
    * - Examples
-     - * ``is_layer_visible('baseraster')`` → True
+     - * ``is_layer_visible('baseraster')`` → TRUE
 
 
 .. end_is_layer_visible_section
@@ -151,4 +152,3 @@ This function sets a variable for any expression code that will be provided as 3
 
 
 .. end_with_variable_section
-

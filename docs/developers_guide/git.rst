@@ -41,11 +41,11 @@ Environment
 
 To get started using and contributing to the QGIS repository, you need to:
 
-#. have a `GitHub account <https://github.com/join>`_
+#. have a `GitHub account <https://github.com/signup>`_
 #. make your own copy of the `QGIS repository <https://github.com/qgis/QGIS>`_
-   (see `fork <https://docs.github.com/en/github/getting-started-with-github/fork-a-repo#fork-an-example-repository>`_)
+   (see `fork <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo>`_)
 #. have a :ref:`git client installed <installing_git>` on your system
-#. set up your `git environment <https://docs.github.com/en/github/getting-started-with-github/set-up-git#setting-up-git>`_
+#. set up your `git environment <https://docs.github.com/en/get-started/git-basics/set-up-git>`_
 #. and have fun!
 
 
@@ -162,6 +162,22 @@ Procedure
     Code your changes in your local disk with your usual IDE.
     Remember to write tests suite for your modifications, when appropriate.
 
+#. Proper formatting, spell check, and code quality control
+
+    Proper formatting, spell check, and code quality control are managed from a pre-commit git hook.
+
+    This can be automated by running:
+
+    .. code-block:: bash
+
+      pre-commit install
+
+    The spell checker script can also be run alone with:
+
+    .. code-block:: bash
+
+      ./scripts/astyle_all.sh
+
 #. Commit your changes to the git repo:
     When making a commit, put a descriptive comment and rather do
     several small commits if the changes across a number of files are unrelated.
@@ -171,6 +187,11 @@ Procedure
 
       git add path/to/your/files
       git commit -m "Add a comment describing your nice feature"
+
+    Without the ``-m`` option, a new editor window will open for you to write your commit message.
+
+    `Here are some recommendations <https://www.conventionalcommits.org/en/v1.0.0/#summary>`_
+    about commit description format.
 
 #. Now, you may want to share your work with QGIS community members.
    Push your new feature up to your online fork repository by doing:
@@ -208,8 +229,8 @@ Procedure
 .. note:: See the following sites for information on becoming a GIT master.
 
  * https://git-scm.com/book/en/v2
- * http://gitready.com
- * https://help.github.com/en
+ * https://gitready.com
+ * https://support.github.com/
 
 Testing before merging back to master
 --------------------------------------
@@ -225,15 +246,22 @@ Submitting Pull Requests
 
 There are a few guidelines that will help you to get your patches and pull
 requests into QGIS easily, and help us deal with the patches that are sent to
-use easily.
+us easily.
 
 In general it is easier for developers if you submit GitHub pull
 requests. We do not describe Pull Requests here, but rather refer you to the
-`GitHub pull request documentation <https://help.github.com/articles/about-pull-requests>`_.
+`GitHub pull request documentation <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests>`_.
 
 If you make a pull request we ask that you please merge master to your PR
 branch regularly so that your PR is always mergeable to the upstream master
 branch.
+
+Pull requests will cause various checks of the Continuous Integration (CI) system
+to run: building for different environments and running tests, running code
+linters, spell checkers, etc. Make sure to look at the results of those checks
+and try to address issues they raise. Of course, you can ask a question in the
+pull request if you need help from other developers to understand and/or resolve
+an issue.
 
 If you are a developer and wish to evaluate the pull request queue, there is a
 very nice `tool that lets you do this from the command line
@@ -250,14 +278,12 @@ developer to help you and contact them asking them if they can look at your patc
 If you feel the PR is not receiving the attention it
 deserves your options to accelerate it should be (in order of priority):
 
-* Help review others pull requests to free the person assigned to yours.
+* Help review others' pull requests to free the person assigned to yours.
 * Send a message to the mailing list 'marketing' your PR and how wonderful it
   will be to have it included in the code base.
 * Send a message to the person your PR has been assigned to in the PR queue.
-* Send a message to Marco Hugentobler (who manages the PR queue).
 * Send a message to the project steering committee asking them to help see your
   PR incorporated into the code base.
-
 
 Best practice for creating a pull request
 -----------------------------------------
@@ -272,7 +298,7 @@ Best practice for creating a pull request
 * You may do a git rebase like in the last line repeatedly without doing any
   damage (as long as the only purpose of your branch is to get merged into
   master).
-* Attention: After a rebase you need to ``git push -f`` to your forked repo. 
+* Attention: After a rebase you need to ``git push -f`` to your forked repo.
   **CORE DEVS: DO NOT DO THIS ON THE QGIS PUBLIC REPOSITORY!**
 
 
@@ -286,7 +312,7 @@ feature deserves such a label.
 
 Moreover, you can add special tags to your commit messages to provide more information
 to documenters. The commit message is then added to the generated issue report:
-  
+
 * ``[needs-docs]`` to instruct doc writers to please add some extra documentation
   after a fix or addition to an already existing functionality.
 * ``[feature]`` in case of new functionality. Filling a good description in your
@@ -305,6 +331,11 @@ submit patches which are unencumbered by conflicting intellectual property
 rights. Also do not submit code that you are not happy to have made available
 under the GPL.
 
+Pull Requests merge criteria
+============================
+
+Please see `QEP 323 - Change submission and merge policies <https://github.com/qgis/QGIS-Enhancement-Proposals/blob/master/qep-323-code-submission-policy.md>`_
+for the current policies regarding acceptable pull request submission.
 
 Obtaining GIT Write Access
 ===========================

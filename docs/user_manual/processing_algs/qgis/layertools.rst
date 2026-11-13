@@ -24,6 +24,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -31,14 +32,14 @@ Parameters
      - Description
    * - **Input layers**
      - ``LAYERS``
-     - [vector: any][list]
-     - Input vector layers to get information on.
+     - [layer] [list]
+     - Input layers to get information on.
    * - **Output**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specification of the output layer with information. One of:
+     - Specification of the output layer with information. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -50,6 +51,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -77,7 +79,7 @@ Export to spreadsheet
 ---------------------
 
 Exports the attributes of a selection of vector layers into a spreadsheet document
-or optionally appends them to an existing spreadsheet as additional sheets. 
+or optionally appends them to an existing spreadsheet as additional sheets.
 
 Parameters
 ..........
@@ -85,6 +87,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -92,7 +95,7 @@ Parameters
      - Description
    * - **Input layers**
      - ``LAYERS``
-     - [vector: any][list]
+     - [vector: any] [list]
      - Input vector layers. The output spreadsheet will consist of a sheet,
        for each layer, that contains the attributes of this layer.
    * - **Use field aliases as column headings**
@@ -121,7 +124,7 @@ Parameters
      - [file]
 
        Default: ``[Save to temporary file]``
-     - Output spreadsheet with a sheet for every layer. One of:
+     - Output spreadsheet with a sheet for every layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -133,6 +136,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -165,8 +169,7 @@ Extract layer extent
 Generates a vector layer with the minimum bounding box (rectangle with
 N-S orientation) that covers all the input features.
 
-The output layer contains a single bounding box for the whole input
-layer.
+The output layer contains a single bounding box for the whole input layer.
 
 .. figure:: img/extract_layer_extent.png
    :align: center
@@ -181,6 +184,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -196,7 +200,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the polygon vector layer for the output extent.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -204,9 +208,11 @@ Parameters
 
 Outputs
 .......
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    *  - Label
       - Name
@@ -221,7 +227,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:polygonfromlayerextent``
+**Algorithm ID**: ``native:polygonfromlayerextent``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**

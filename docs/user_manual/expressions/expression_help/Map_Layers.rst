@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Map_Layers_decode_uri:
 
 decode_uri
@@ -42,12 +43,12 @@ Returns a matching layer property or metadata value.
    :widths: 15 85
 
    * - Syntax
-     - layer_property(layer, property)
+     - layer_property(layer, property, [translate:=true])
+
+       [] marks optional arguments
    * - Arguments
      - * **layer** - a string, representing either a layer name or layer ID
        * **property** - a string corresponding to the property to return. Valid options are:
-
-         
 
          * name: layer name
          * id: layer ID
@@ -64,6 +65,7 @@ Returns a matching layer property or metadata value.
          * crs: layer CRS
          * crs_definition: layer CRS full definition
          * crs_description: layer CRS description
+         * crs_ellipsoid: acronym of the layer CRS ellipsoid
          * extent: layer extent (as a geometry object)
          * distance_units: layer distance units
          * type: layer type, e.g., Vector or Raster
@@ -71,8 +73,9 @@ Returns a matching layer property or metadata value.
          * geometry_type: geometry type, e.g., Point (vector layers only)
          * feature_count: approximate feature count for layer (vector layers only)
          * path: File path to the layer data source. Only available for file based layers.
-         
 
+
+       * **translate** - whether to return translated string. Currently affects only 'type' property. By default translated strings are returned. Setting this to false will disable translation, always returning English strings.
    * - Examples
      - * ``layer_property('streets','title')`` → 'Basemap Streets'
        * ``layer_property('airports','feature_count')`` → 120
@@ -81,3 +84,23 @@ Returns a matching layer property or metadata value.
 
 .. end_layer_property_section
 
+.. _expression_function_Map_Layers_load_layer:
+
+load_layer
+..........
+
+Loads a layer by source URI and provider name.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - load_layer(uri, provider)
+   * - Arguments
+     - * **uri** - layer source URI string
+       * **provider** - layer data provider name
+   * - Examples
+     - * ``layer_property(load_layer('c:/data/roads.shp', 'ogr'), 'feature_count')`` → count of features from the c:/data/roads.shp vector layer
+
+
+.. end_load_layer_section

@@ -1,7 +1,6 @@
 .. highlight:: python
    :linenothreshold: 5
 
-
 .. Tests are skipped because they fail to import from processing_provider under CI
 .. everything runs fine when testing locally with make -f docker.mk doctest
 
@@ -32,19 +31,6 @@ To distribute those algorithms, you should create a new plugin that adds them to
 Processing Toolbox. The plugin should contain an algorithm provider, which has to be
 registered when the plugin is instantiated.
 
-Creating from scratch
-=====================
-
-To create a plugin from scratch which contains an algorithm provider, you can
-follow these steps using the Plugin Builder:
-
-#. Install the **Plugin Builder** plugin
-#. Create a new plugin using the Plugin Builder. When the Plugin Builder asks you for
-   the template to use, select "Processing provider".
-#. The created plugin contains a provider with a single algorithm. Both the provider
-   file and the algorithm file are fully commented and contain information about how to
-   modify the provider and add additional algorithms. Refer to them for more information.
-
 Updating a plugin
 =================
 
@@ -60,25 +46,25 @@ If you want to add your existing plugin to Processing, you need to add some code
    you need to adapt some lines like this:
 
    .. testcode:: processing
-        :skipif: True
+      :skipif: True
 
-        from qgis.core import QgsApplication
-        from processing_provider.provider import Provider
+      from qgis.core import QgsApplication
+      from .processing_provider.provider import Provider
 
-        class YourPluginName():
+      class YourPluginName:
 
-            def __init__(self):
-                self.provider = None
+          def __init__(self):
+              self.provider = None
 
-            def initProcessing(self):
-                self.provider = Provider()
-                QgsApplication.processingRegistry().addProvider(self.provider)
+          def initProcessing(self):
+              self.provider = Provider()
+              QgsApplication.processingRegistry().addProvider(self.provider)
 
-            def initGui(self):
-                self.initProcessing()
+          def initGui(self):
+              self.initProcessing()
 
-            def unload(self):
-                QgsApplication.processingRegistry().removeProvider(self.provider)
+          def unload(self):
+              QgsApplication.processingRegistry().removeProvider(self.provider)
 
 #. You can create a folder :file:`processing_provider` with three files in it:
 
@@ -88,46 +74,115 @@ If you want to add your existing plugin to Processing, you need to add some code
      your algorithms.
 
      .. testcode:: processing
-      :skipif: True
+        :skipif: True
 
-      from qgis.core import QgsProcessingProvider
+        from qgis.core import QgsProcessingProvider
+        from qgis.PyQt.QtGui import QIcon
 
-      from processing_provider.example_processing_algorithm import ExampleProcessingAlgorithm
+        from .example_processing_algorithm import ExampleProcessingAlgorithm
 
+        class Provider(QgsProcessingProvider):
 
-      class Provider(QgsProcessingProvider):
+            """ The provider of our plugin. """
 
-          def loadAlgorithms(self, *args, **kwargs):
-              self.addAlgorithm(ExampleProcessingAlgorithm())
-              # add additional algorithms here
-              # self.addAlgorithm(MyOtherAlgorithm())
+            def loadAlgorithms(self):
+                """ Load each algorithm into the current provider. """
+                self.addAlgorithm(ExampleProcessingAlgorithm())
+                # add additional algorithms here
+                # self.addAlgorithm(MyOtherAlgorithm())
 
-          def id(self, *args, **kwargs):
-              """The ID of your plugin, used for identifying the provider.
+            def id(self) -> str:
+                """The ID of your plugin, used for identifying the provider.
 
-              This string should be a unique, short, character only string,
-              eg "qgis" or "gdal". This string should not be localised.
-              """
-              return 'yourplugin'
+                This string should be a unique, short, character only string,
+                eg "qgis" or "gdal". This string should not be localised.
+                """
+                return 'yourplugin'
 
-          def name(self, *args, **kwargs):
-              """The human friendly name of your plugin in Processing.
+            def name(self) -> str:
+                """The human friendly name of your plugin in Processing.
 
-              This string should be as short as possible (e.g. "Lastools", not
-              "Lastools version 1.0.1 64-bit") and localised.
-              """
-              return self.tr('Your plugin')
+                This string should be as short as possible (e.g. "Lastools", not
+                "Lastools version 1.0.1 64-bit") and localised.
+                """
+                return self.tr('Your plugin')
 
-          def icon(self):
-              """Should return a QIcon which is used for your provider inside
-              the Processing toolbox.
-              """
-              return QgsProcessingProvider.icon(self)
+            def icon(self) -> QIcon:
+                """Should return a QIcon which is used for your provider inside
+                the Processing toolbox.
+                """
+                return QgsProcessingProvider.icon(self)
 
    * :file:`example_processing_algorithm.py` which contains the example
      algorithm file. Copy/paste the content of the :source:`script template
      file <python/plugins/processing/script/ScriptTemplate.py>` and
      update it according to your needs.
 
+   You should have a tree similar to this:
+
+   .. code-block:: bash
+
+    └── your_plugin_root_folder
+       ├── __init__.py
+       ├── LICENSE
+       ├── metadata.txt
+       └── processing_provider
+             ├── example_processing_algorithm.py
+             ├── __init__.py
+             └── provider.py
+
 #. Now you can reload your plugin in QGIS and you should see your example
    script in the Processing toolbox and modeler.
+
+Creating a custom algorithm
+---------------------------
+
+Here's a simple example of a custom buffer algorithm:
+
+.. testcode:: processing
+
+    from qgis.core import (
+        QgsProcessingAlgorithm,
+        QgsProcessingParameterFeatureSource,
+        QgsProcessingParameterNumber,
+        QgsProcessingParameterFeatureSink,
+        QgsFeatureSink,
+    )
+
+    class BufferAlgorithm(QgsProcessingAlgorithm):
+
+        INPUT = 'INPUT'
+        DISTANCE = 'DISTANCE'
+        OUTPUT = 'OUTPUT'
+
+        def initAlgorithm(self, config=None):
+            self.addParameter(QgsProcessingParameterFeatureSource(self.INPUT, 'Input layer'))
+            self.addParameter(QgsProcessingParameterNumber(self.DISTANCE, 'Buffer distance', defaultValue=100.0))
+            self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT, 'Output layer'))
+
+        def processAlgorithm(self, parameters, context, feedback):
+            source = self.parameterAsSource(parameters, self.INPUT, context)
+            distance = self.parameterAsDouble(parameters, self.DISTANCE, context)
+            (sink, dest_id) = self.parameterAsSink(parameters, self.OUTPUT, context,
+                                                   source.fields(), source.wkbType(), source.sourceCrs())
+
+            for f in source.getFeatures():
+                f.setGeometry(f.geometry().buffer(distance, 5))
+                sink.addFeature(f, QgsFeatureSink.FastInsert)
+
+            return {self.OUTPUT: dest_id}
+
+        def name(self):
+            return 'buffer'
+
+        def displayName(self):
+            return 'Buffer Features'
+
+        def group(self):
+            return 'Examples'
+
+        def groupId(self):
+            return 'examples'
+
+        def createInstance(self):
+            return BufferAlgorithm()

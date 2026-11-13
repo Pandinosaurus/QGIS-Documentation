@@ -6,6 +6,8 @@ Vector geometry
    .. contents::
       :local:
       :depth: 1
+      :class: toc-columns
+
 
 .. _qgisexportaddgeometrycolumns:
 
@@ -30,6 +32,9 @@ dimension of the input layer:
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
 
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
+
 Parameters
 ..........
 
@@ -44,27 +49,27 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Calculate using**
-     - ``CALC_METHOD``
+     - ``METHOD``
      - [enumeration]
 
        Default: 0
      - Calculation parameters to use for the geometric properties.
        One of:
 
-       * 0 --- Layer CRS
-       * 1 --- Project CRS
-       * 2 --- Ellipsoidal
+       * 0 --- Cartesian Calculations in Layer's CRS
+       * 1 --- Cartesian Calculations in Project's CRS
+       * 2 --- Ellipsoidal Calculations
 
-   * - **Added geom info**
+   * - **Added geometry info**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
      - Specify the output (input copy with geometry) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -83,7 +88,7 @@ Outputs
      - Name
      - Type
      - Description
-   * - **Added geom info**
+   * - **Added geometry info**
      - ``OUTPUT``
      - [same as input]
      - Copy of the input vector layer with the addition of the geometry fields
@@ -91,7 +96,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:exportaddgeometrycolumns``
+**Algorithm ID**: ``native:exportaddgeometrycolumns``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -112,9 +117,13 @@ Z and M values (if present) can be translated and scaled.
 .. figure:: img/affinetransform.png
    :align: center
 
-   Vector point layer (green dots) before (left), and after (rigth) an affine transformation (translation). 
+   Vector point layer (green dots) before (left), and after (right) an affine transformation (translation).
 
-.. seealso:: :ref:`qgistranslategeometry` 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
+
+.. seealso:: :ref:`qgistranslategeometry`
 
 Parameters
 ..........
@@ -130,62 +139,62 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Translation (x-axis)**
      - ``DELTA_X``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 0
+       Default: 0.0
      - Displacement to apply on the X axis.
    * - **Translation (y-axis)**
      - ``DELTA_Y``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 0
+       Default: 0.0
      - Displacement to apply on the Y axis.
    * - **Translation (z-axis)**
      - ``DELTA_Z``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 0
+       Default: 0.0
      - Displacement to apply on the Z axis.
    * - **Translation (m-values)**
      - ``DELTA_M``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 0
+       Default: 0.0
      - Offset to apply on m values.
    * - **Scale factor (x-axis)**
      - ``SCALE_X``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 1
-     - Scaling value (expansion or contraction) to apply on the X axis. 
+       Default: 1.0
+     - Scaling value (expansion or contraction) to apply on the X axis.
    * - **Scale factor (y-axis)**
      - ``SCALE_Y``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 1
+       Default: 1.0
      - Scaling value (expansion or contraction) to apply on the Y axis.
    * - **Scale factor (z-axis)**
      - ``SCALE_Z``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 1
+       Default: 1.0
      - Scaling value (expansion or contraction) to apply on the Z axis.
    * - **Scale factor (m-values)**
      - ``SCALE_M``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 1
+       Default: 1.0
      - Scaling value (expansion or contraction) to apply on m values.
    * - **Rotation around z-axis (degrees counter-clockwise)**
      - ``ROTATION_Z``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 0
-     - Angle of the rotation in degrees.	
+       Default: 0.0
+     - Angle of the rotation in degrees.
 
    * - **Transformed**
      - ``OUTPUT``
@@ -193,12 +202,12 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
           :end-before: **end_layer_output_types_append**
-   
+
 Outputs
 .......
 
@@ -250,6 +259,9 @@ definition.
 This algorithm allows to use the default
 :ref:`aggregates functions <aggregates_function>` of the QGIS Expression engine.
 
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
+
 .. seealso:: :ref:`qgiscollect`, :ref:`qgisdissolve`
 
 Parameters
@@ -297,41 +309,55 @@ Parameters
        For each of the fields you'd like to retrieve information from,
        you need to define the following:
 
-       ``Input expression`` [expression] (``input``)
+       :guilabel:`Input expression` (``input``) [expression]
          Field or expression from the input layer.
 
-       ``Aggregate function`` [enumeration] (``aggregate``)
-         :ref:`Function <aggregates_function>` to use on the input
-         expression to return the aggregated value.
+       :guilabel:`Aggregate function` (``aggregate``) [enumeration]
+         Function to use on the input expression to return the aggregated value.
+         These are mainly the :ref:`aggregates_function`, plus dedicated
+         "first_value" and "last_value" functions for ordered list items.
 
          Default: *concatenate* (for string data type), *sum* (for
          numeric data type)
 
-       ``Delimiter`` [string] (``delimiter``)
+       :guilabel:`Delimiter` (``delimiter``) [string]
          Text string to separate aggregated values, for example in
          case of concatenation.
 
          Default: *,*
 
-       ``Output field name`` [string] (``name``)
+       :guilabel:`Output field name` (``name``) [string]
          Name of the aggregated field in the output layer.
          By default input field name is kept.
 
-       ``Type`` [enumeration] (``type``)
-         Data type of the output field. One of:
+       :guilabel:`Type` (``type``) [enumeration]
+         Data type of the output field.
+         Available types may not be compatible with the output layer provider.
+         One of:
 
-         * 1 --- Boolean
-         * 2 --- Integer
-         * 4 --- Integer64
-         * 6 --- Double
-         * 10 --- String
-         * 14 --- Date
-         * 16 --- DateTime
+         .. attention:: For certain field types, e.g. lists,
+          an extra ``sub_type`` parameter helps refine the specific type of the data.
+          It is automatically set in the GUI but may be needed
+          if you're running the algorithm in Python or from the command line.
 
-       ``Length`` [number] (``length``)
+         .. include:: ../algs_include.rst
+            :start-after: **vector_field_types**
+            :end-before: **end_vector_field_types**
+
+       :guilabel:`Sub-type` (``sub_type``) [enumeration]
+         For certain field types, e.g. lists, this parameter helps refine the specific ``type`` of the data.
+         It is automatically set in the GUI but may be needed
+         if you're running the algorithm in Python or from the command line.
+         :ref:`One of <output_parameter_widget>`:
+
+         .. include:: ../algs_include.rst
+            :start-after: **vector_field_subtypes**
+            :end-before: **end_vector_field_subtypes**
+
+       :guilabel:`Length` (``length``) [numeric: integer]
          Length of the output field.
 
-       ``Precision`` [number] (``precision``)
+       :guilabel:`Precision` (``precision``) [numeric: integer]
          Precision of the output field.
 
    * - **Load fields from layer**
@@ -345,12 +371,11 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (aggregate) layer
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
           :end-before: **end_layer_output_types**
-
 
 Outputs
 .......
@@ -358,6 +383,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -377,6 +403,93 @@ Python code
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
+
+.. _qgisapproximatemedialaxis:
+
+Approximate medial axis
+-----------------------
+``Added in 4.0``
+
+Generates a simplified skeleton of polygon geometries by approximating their
+medial axis. The output is a line layer representing the central structure
+of each polygon, preserving main topology while ignoring small variations.
+
+Z values are ignored; the medial axis is calculated from the 2D projection
+of input geometries.
+
+.. figure:: img/approxmedialaxis.png
+   :align: center
+
+   Medial axis (red line) of a polygon layer
+
+.. attention:: Running this algorithm requires QGIS installed with SFCGAL_ >= 2.0
+   (see :menuselection:`Help --> About` menu).
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input polygon vector layer
+   * - **Extend endpoints to the polygon boundary**
+
+
+       ``Added in 4.2``
+     - ``EXTEND_TO_EDGES``
+     - [boolean]
+
+       Default: False
+     - Extends the medial axis so that its endpoints reach the boundary of the input polygon
+
+       .. attention:: Using this method requires QGIS installed with SFCGAL_ >= 2.3
+         (see :menuselection:`Help --> About` menu).
+   * - **Medial axis**
+     - ``OUTPUT``
+     - [vector: line]
+
+       Default: ``[Create temporary layer]``
+     - Specification of the output line layer.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Medial axis**
+     - ``OUTPUT``
+     - [vector: line]
+     - Output line layer containing the approximate medial axis
+
+Python code
+...........
+
+**Algorithm ID**: ``native:approximatemedialaxis``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
 
 .. _qgisboundary:
 
@@ -408,6 +521,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -423,7 +537,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (boundary) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -435,6 +549,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -470,6 +585,7 @@ Polygon and line geometries are supported.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 .. seealso:: :ref:`qgisminimumboundinggeometry`
 
@@ -479,6 +595,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -494,7 +611,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (bounding box) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -506,6 +623,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -514,7 +632,9 @@ Outputs
    * - **Bounds**
      - ``OUTPUT``
      - [vector: polygon]
-     - Bounding boxes of input layer
+     - Bounding boxes of input layer.
+       Other than the input attributes, the output layer also contains following fields:
+       ``width``, ``height``, ``area`` and ``perimeter`` of the generated polygon.
 
 Python code
 ...........
@@ -531,7 +651,7 @@ Python code
 Buffer
 ------
 Computes a buffer area for all the features in an input layer, using
-a fixed distance.
+a fixed or data defined distance.
 
 It is possible to use a negative distance for polygon input layers.
 In this case the buffer will result in a smaller polygon (setback).
@@ -539,18 +659,27 @@ In this case the buffer will result in a smaller polygon (setback).
 .. figure:: img/buffer.png
    :align: center
 
-   Buffer (in yellow) of points, line and polygon
+   Buffer (in yellow) of points, line, polygon with positive buffer,
+   and polygon with negative buffer
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 **Default menu**: :menuselection:`Vector --> Geoprocessing Tools`
+
+.. warning::
+ This algorithm may drop existing primary keys or FID values and regenerate them in output layers,
+ depending on the input parameters.
 
 .. seealso:: :ref:`qgisvariabledistancebuffer`,
    :ref:`qgismultiringconstantbuffer`, :ref:`qgisbufferbym`
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -563,21 +692,20 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Distance**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 10.0
      - Buffer distance (from the boundary of each feature).
        You can use the Data Defined button on the right to choose
        a field from which the radius will be calculated.
-       This way you can have different radius for each feature
-       (see :ref:`qgisvariabledistancebuffer`).
+       This way you can have different radius for each feature.
    * - **Segments**
      - ``SEGMENTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 5
      - Controls the number of line segments to use to approximate
@@ -603,7 +731,7 @@ Parameters
      - ``JOIN_STYLE``
      - [enumeration]
 
-       Default: *0*
+       Default: 0
      - Specifies whether round, miter or beveled joins should be
        used when offsetting corners in a line.
        Options are:
@@ -612,39 +740,78 @@ Parameters
        * 1 --- Miter
        * 2 --- Bevel
 
+       .. figure:: img/buffer_join_style.png
+          :align: center
+          :width: 100%
+
+          Round, miter, and bevel join styles
    * - **Miter limit**
      - ``MITER_LIMIT``
-     - [number]
+     - [numeric: double]
 
        Default: 2.0
-     - Controls the maximum distance from the offset curve to use
-       when creating a mitered join (only applicable for miter
+     - Sets the maximum distance from the offset geometry to use
+       when creating a mitered join as a factor of the offset distance (only applicable for miter
        join styles).
-       Minimum: 1.
+       Minimum: 1.0
+
+       .. figure:: img/buffer_miter_limit.png
+          :align: center
+          :width: 100%
+
+          A 10m buffer with a limit of 2 and a 10m buffer with a limit of 1
    * - **Dissolve result**
      - ``DISSOLVE``
      - [boolean]
 
        Default: False
      - Dissolve the final buffer. If ``True`` (checked), overlapping
-       buffers will be dissolved (combined) into a new feature.
+       buffers will be dissolved (combined) into a single multipart feature.
 
        .. figure:: img/buffer_dissolve.png
           :align: center
           :width: 100%
 
-          Standard and dissolved buffer
+          Standard (three single part features - left), dissolved (1 multipart feature with 2 parts - right)
    * - **Buffered**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
      - Specify the output (buffer) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
           :end-before: **end_layer_output_types_append**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Keep disjoint features separate**
+
+       ``Added in 3.32``
+     - ``SEPARATE_DISJOINT``
+     - [boolean]
+
+       Default: False
+     - If ``True`` (checked) and dissolved is checked, features that do not overlap or touch will be exported as
+       separate features
+       (instead of parts of a multipart feature).
+
+       .. figure:: img/buffer_disjoint.png
+          :align: center
+
+          Results in 2 single part features
 
 Outputs
 .......
@@ -652,6 +819,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -694,8 +862,13 @@ as for the original features.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point features
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
+
+.. warning::
+ This algorithm may drop existing primary keys or FID values and regenerate them in output layers,
+ depending on the input parameters.
 
 .. seealso:: :ref:`qgispointonsurface`
 
@@ -705,6 +878,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -712,11 +886,11 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Create centroid for each part**
      - ``ALL_PARTS``
-     - [boolean |dataDefined|]
+     - [boolean] |dataDefine|
 
        Default: False
      - If True (checked), a centroid will be created for each part
@@ -727,7 +901,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (centroid) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -739,6 +913,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -792,8 +967,8 @@ additional information (number of errors found and types of error):
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
 
-.. seealso:: :ref:`qgisfixgeometries` and the core plugin
-   :ref:`geometry_checker`
+.. seealso:: :ref:`checkgeometry_algorithms`, :ref:`qgisfixgeometries`,
+   :ref:`qgiscoveragevalidate`
 
 Parameters
 ..........
@@ -809,7 +984,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT_LAYER``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Method**
      - ``METHOD``
@@ -834,7 +1009,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the vector layer to contain a copy of the valid
-       features of the source layer. One of:
+       features of the source layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -847,7 +1022,7 @@ Parameters
        Default: ``[Create temporary layer]``
      - Vector layer containing copy of the invalid features of
        the source layer with the field  ``_errors`` listing the
-       summary of the error(s) found. One of:
+       summary of the error(s) found. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -860,7 +1035,7 @@ Parameters
        Default: ``[Create temporary layer]``
      - Point layer of the exact position of the validity
        problems detected with the ``message`` field describing
-       the error(s) found. One of:
+       the error(s) found. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -881,7 +1056,7 @@ Outputs
      - Description
    * - **Count of errors**
      - ``ERROR_COUNT``
-     - [number]
+     - [numeric: integer]
      - The number of geometries that caused errors.
    * - **Error output**
      - ``ERROR_OUTPUT``
@@ -891,7 +1066,7 @@ Outputs
        the error(s) found.
    * - **Count of invalid features**
      - ``INVALID_COUNT``
-     - [number]
+     - [numeric: integer]
      - The number of invalid geometries.
    * - **Invalid output**
      - ``INVALID_OUTPUT``
@@ -901,7 +1076,7 @@ Outputs
        summary of the error(s) found.
    * -  **Count of valid features**
      - ``VALID_COUNT``
-     - [number]
+     - [numeric: integer]
      - The number of valid geometries.
    * -  **Valid output**
      - ``VALID_OUTPUT``
@@ -912,7 +1087,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:checkvalidity``
+**Algorithm ID**: ``native:checkvalidity``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -924,129 +1099,86 @@ Python code
 Types of error messages and their meanings
 ..........................................
 
-.. list-table:: If the GEOS method is used the following error messages can occur:
+.. list-table:: Some examples of geometry check failures in QGIS
    :widths: 30 30 40
    :header-rows: 1
    :class: longtable
 
-   * - Error message
-     - Explanation
-     - Example
+   * - Geometry context
+     - GEOS validation and error message
+     - QGIS validation and error message
+   * - **Consecutive points on a line have the same coordinates**
 
-   * - Repeated point
-     - This error happens when a given vertex is repeated.
-     - .. figure:: img/geos_rep_point.png
+       .. figure:: img/geos_rep_point.png
           :align: center
 
-   * - Ring self-intersection
-     - This error happens when a geometry touches itself and generates
-       a ring.
-     - .. figure:: img/geos_ring_inter.png
+     - |taskCancel| *Repeated point*
+     - |taskCancel| *Line a contains x duplicate node(s) at b*
+   * - **Segments of a line intersect each other**
+
+       .. figure:: img/qgis_seg_line_int.png
           :align: center
 
-   * - Self-intersection
-     - This error happens when a geometry touches itself.
-     - .. figure:: img/geos_self_inter.png
+     -
+     - |taskCancel| *Segments a and b of line c intersect at d*
+   * - **Polygon geometry touches itself and generates a ring**
+
+       .. figure:: img/geos_ring_inter.png
           :align: center
 
-   * - Topology validation error
-     -
-     -
+     - |taskCancel| *Ring self-intersection*
+     - |taskCancel| *Ring self-intersection*
+   * - **Two rings (exterior or interior) of a
+       polygon geometry are identical**
 
-   * - Hole lies outside shell
-     -
-     -
-
-   * - Holes are nested
-     -
-     -
-
-   * - Interior is disconnected
-     -
-     -
-
-   * - Nested shells
-     - This error happens when a polygon geometry is on top of another
-       polygon geometry.
-     - .. figure:: img/geos_nest_shell.png
+       .. figure:: img/geos_dupl_rings.png
           :align: center
 
-   * - Duplicate rings
-     - This error happens when two rings (exterior or interior) of a
-       polygon geometry are identical
+     - |taskCancel| *Duplicate rings*
+     -
+   * - **Geometry touches itself**
 
-     - .. figure:: img/geos_dupl_rings.png
+       .. figure:: img/geos_self_inter.png
           :align: center
 
-   * - Too few points in geometry component
+     - |taskCancel| *Self-intersection*
      -
+   * - **A polygon geometry is on top of another polygon geometry**
+
+       .. figure:: img/geos_nest_shell.png
+          :align: center
+
+     - |taskCancel| *Nested shell*
+     -
+   * - **Part of a MultiPolygon geometry is within a hole of a MultiPolygon geometry**
+
+       .. figure:: img/qgis_poliinside_.png
+          :align: center
+
+     -
+     - |taskCancel| *Polygon a lies inside polygon b*
+   * - Point geometry does not have a proper coordinate pair.
+       The coordinate pair does not contain a latitude value and a longitude value in that order.
+     - |taskCancel| *Invalid coordinate*
      -
 
-   * - Invalid coordinate
-     - For a point geometry, this error happens when the geometry does
-       not have a proper coordinate pair.
-       The coordinate pair does not contain a latitude value and a
-       longitude value in that order.
-     -
+.. use |success| when context is valid for a specificator
 
-   * - Ring is not closed
-     -
-     -
-
-
-.. list-table:: If the QGIS method is used the following error messages can occur:
-   :widths: 50 50 50
-   :header-rows: 1
-   :class: longtable
-
-   * - Error message
-     - Explanation
-     - Example
-
-   * - Segment %1 of ring %2 of polygon %3 intersects segment %4
+.. to do list:
+     GEOS:
+     - Topology validation error
+     - Hole lies outside shell
+     - Holes are nested
+     - Interior is disconnected
+     - Ring is not closed
+     - Too few points in geometry component
+     QGIS:
+     - Segment %1 of ring %2 of polygon %3 intersects segment %4
        of ring %5 of polygon %6 at %7
-     -
-     -
-
-   * - Ring %1 with less than four points
-     -
-     -
-
-   * - Ring %1 not closed
-     -
-     -
-
-   * - Line %1 with less than two points
-     -
-     -
-
-   * - Line %1 contains %n duplicate node(s) at %2
-     - This error happens when consecutive points on a line have the
-       same coordinates.
-     - .. figure:: img/geos_rep_point.png
-          :align: center
-
-   * - Segments %1 and %2 of line %3 intersect at %4
-     - This error happens when a line self intersects (two segments
-       of the line intersect each other).
-     - .. figure:: img/qgis_seg_line_int.png
-          :align: center
-
-   * - Ring self-intersection
-     - This error happens when an outer or inner (island) ring /
-       boundary of a polygon geometry intersects itself.
-     - .. figure:: img/geos_ring_inter.png
-          :align: center
-
-   * - Ring %1 of polygon %2 not in exterior ring
-     -
-     -
-
-   * - Polygon %1 lies inside polygon %2
-     - This error happens when a part of a MultiPolygon geometry is
-       inside a hole of a MultiPolygon geometry.
-     - .. figure:: img/qgis_poliinside_.png
-          :align: center
+     - Ring %1 with less than four points
+     - Ring %1 not closed
+     - Line %1 with less than two points
+     - Ring %1 of polygon %2 not in exterior ring
 
 
 .. _qgiscollect:
@@ -1071,6 +1203,9 @@ alternative options.
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
 
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 .. seealso:: :ref:`qgisaggregate`, :ref:`qgispromotetomulti`,
    :ref:`qgisdissolve`
 
@@ -1080,6 +1215,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1087,7 +1223,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Unique ID fields**
      - ``FIELD``
@@ -1104,6 +1240,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1115,7 +1252,7 @@ Outputs
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer for the collected geometries.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1131,20 +1268,24 @@ Python code
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
+.. _qgisconcavehullbyfeature:
 
-.. _qgisconcavehull:
-
-Concave hull (alpha shapes)
+Concave hull (by feature)
 ---------------------------
-Computes the concave hull of the features in an input point layer.
 
-.. figure:: img/concave_hull_threshold.png
+``Added in 3.44``
+
+Calculates the concave hull for each multipoint feature in an input layer.
+See the :ref:`qgisconcavehull` algorithm for a concave hull calculation
+which covers the whole layer.
+
+.. figure:: img/concave_hull_byfeature.png
     :align: center
 
-    Concave hulls with different thresholds (0.3, 0.6, 0.9)
+    Concave hulls by feature
 
 
-.. seealso:: :ref:`qgisconvexhull`, :ref:`qgisknearestconcavehull`
+.. seealso:: :ref:`qgisconvexhull`, :ref:`qgistightconcavehullofpolygons`
 
 Parameters
 ..........
@@ -1158,35 +1299,34 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Input point layer**
+   * - **Input layer**
      - ``INPUT``
-     - [vector: point]
-     - Input point vector layer
-   * - **Threshold**
+     - [vector: geometry]
+     - Input vector layer
+   * - **Threshold (0-1, where 1 is equivalent with Convex Hull)**
      - ``ALPHA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.3
      - Number from 0 (maximum concave hull) to 1 (convex hull).
+
+       .. figure:: img/concave_hull_byfeature_threshold.png
+          :align: center
+          :width: 100%
+
+          Concave hulls with different thresholds (0.3, 0.6, 0.9)
    * - **Allow holes**
      - ``HOLES``
      - [boolean]
 
        Default: True
      - Choose whether to allow holes in the final concave hull
-   * - **Split multipart geometry into singlepart geometries**
-     - ``NO_MULTIGEOMETRY``
-     - [boolean]
-
-       Default: True
-     - Check if you want to have singlepart geometries
-       instead of multipart ones.
-   * - **Concave hull**
+   * - **Concave hulls**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1199,47 +1339,37 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Concave hull**
+   * - **Concave hulls**
      - ``OUTPUT``
      - [vector: polygon]
-     - The output vector layer
+     - The output vector layer with polygons covering individual multipoint features.
+       Area and perimeter fields are added.
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:concavehull``
+**Algorithm ID**: ``native:concavehullbyfeature``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
+.. _qgisconcavehull:
 
-.. _qgisknearestconcavehull:
+Concave hull (by layer)
+---------------------------
 
-Concave hull (k-nearest neighbor)
----------------------------------
-Generates a concave hull polygon from a set of points.
-If the input layer is a line or polygon layer, it will use the
-vertices.
+Computes the concave hull covering all features from an input point layer.
+See the :ref:`qgisconcavehullbyfeature` algorithm for a concave hull calculation
+which covers individual features from a layer.
 
-The number of neighbors to consider determines the concaveness of the
-output polygon.
-A lower number will result in a concave hull that follows the points
-very closely, while a higher number will have a smoother shape.
-The minimum number of neighbor points to consider is 3.
-A value equal to or greater than the number of points will result in
-a convex hull.
-
-If a field is selected, the algorithm will group the features in the
-input layer using unique values in that field and generate individual
-polygons in the output layer for each group.
-
-.. seealso:: :ref:`qgisconcavehull`
+.. seealso:: :ref:`qgisconvexhull`, :ref:`qgistightconcavehullofpolygons`
 
 Parameters
 ..........
@@ -1247,6 +1377,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1254,36 +1385,39 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
-     - Input vector layer
-   * - **Number of neighboring points to consider (a lower number is more concave, a higher number is smoother)**
-     - ``KNEIGHBORS``
-     - [number]
+     - [vector: point]
+     - Input point vector layer
+   * - **Threshold (0-1, where 1 is equivalent with Convex Hull)**
+     - ``ALPHA``
+     - [numeric: double]
 
-       Default: 3
-     - Determines the concaveness of the output polygon.
-       A small number will result in a concave hull that follows the
-       points very closely, while a high number will make the polygon
-       look more like the convex hull (if the number is equal to or
-       larger than the number of features, the result will be the
-       convex hull).
-       Minimum value: 3.
-   * - **Field**
+       Default: 0.3
+     - Number from 0 (maximum concave hull) to 1 (convex hull).
 
-       Optional
-     - ``FIELD``
-     - [tablefield: any]
+       .. figure:: img/concave_hull_threshold.png
+          :align: center
+          :width: 100%
 
-       Default: None
-     - If specified, one concave hull polygon is generated for each
-       unique value of the field (by selecting features using this
-       value).
+          Concave hulls with different thresholds (0.3, 0.6, 0.9)
+   * - **Allow holes**
+     - ``HOLES``
+     - [boolean]
+
+       Default: True
+     - Choose whether to allow holes in the final concave hull
+   * - **Split multipart geometry into singleparts**
+     - ``NO_MULTIGEOMETRY``
+     - [boolean]
+
+       Default: False
+     - Check if you want to have singlepart geometries
+       instead of multipart ones.
    * - **Concave hull**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1296,6 +1430,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1304,17 +1439,16 @@ Outputs
    * - **Concave hull**
      - ``OUTPUT``
      - [vector: polygon]
-     - The output vector layer
+     - The output vector layer covering all features from an input point layer.
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:knearestconcavehull``
+**Algorithm ID**: ``native:concavehull``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
-
 
 .. _qgisconvertgeometrytype:
 
@@ -1339,6 +1473,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1346,7 +1481,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **New geometry type**
      - ``TYPE``
@@ -1364,11 +1499,11 @@ Parameters
 
    * - **Converted**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1381,6 +1516,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1388,13 +1524,13 @@ Outputs
      - Description
    * - **Converted**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Output vector layer - the type depends on the parameters
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:convertgeometrytype``
+**Algorithm ID**: ``native:convertgeometrytype``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1409,6 +1545,10 @@ Convert to curved geometries
 Converts a geometry into its curved geometry equivalent.
 
 Already curved geometries will be retained without change.
+
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of line and polygon features
 
 Parameters
 ..........
@@ -1428,14 +1568,14 @@ Parameters
      - Input vector layer
    * - **Maximum distance tolerance**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.000001
      - The maximum distance allowed between the original location of vertices
        and where they would fall on the converted curved geometries
    * - **Maximum angle tolerance**
      - ``ANGLE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.000001
      - Segments are considered as suitable for replacing with an arc
@@ -1448,7 +1588,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -1460,6 +1600,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1497,6 +1638,7 @@ features.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 **Default menu**: :menuselection:`Vector --> Geoprocessing Tools`
 
@@ -1509,6 +1651,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1516,14 +1659,14 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Convex hull**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -1535,6 +1678,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1543,153 +1687,14 @@ Outputs
    * - **Convex hull**
      - ``OUTPUT``
      - [vector: polygon]
-     - The output (convex hull) vector layer
+     - The output (convex hull) vector layer.
+       Other than the input attributes, the output layer also contains the following fields:
+       ``area`` and ``perimeter`` of the generated polygon.
 
 Python code
 ...........
 
 **Algorithm ID**: ``native:convexhull``
-
-.. include:: ../algs_include.rst
-  :start-after: **algorithm_code_section**
-  :end-before: **end_algorithm_code_section**
-
-
-.. _qgisextenttolayer:
-
-Create layer from extent
-------------------------
-Creates a new vector layer that contains a single feature with
-geometry matching the extent of the input layer.
-
-It can be used in models to convert a literal extent (``xmin``,
-``xmax``, ``ymin``, ``ymax`` format) into a layer which can be used
-for other algorithms which require a layer based input.
-
-.. seealso:: :ref:`qgispointtolayer`
-
-Parameters
-..........
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Label
-     - Name
-     - Type
-     - Description
-   * - **Extent (xmin, xmax, ymin, ymax)**
-     - ``INPUT``
-     - [extent]
-     - Input extent
-
-       .. include:: ../algs_include.rst
-          :start-after: **extent_options**
-          :end-before: **end_extent_options**
-
-   * - **Extent**
-     - ``OUTPUT``
-     - [vector: polygon]
-
-       Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
-
-       .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
-
-
-Outputs
-.......
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Label
-     - Name
-     - Type
-     - Description
-   * - **Extent**
-     - ``OUTPUT``
-     - [vector: polygon]
-     - The output (extent) vector layer
-
-Python code
-...........
-
-**Algorithm ID**: ``native:extenttolayer``
-
-.. include:: ../algs_include.rst
-  :start-after: **algorithm_code_section**
-  :end-before: **end_algorithm_code_section**
-
-
-.. _qgispointtolayer:
-
-Create layer from point
------------------------------
-
-Creates a new vector layer that contains a single feature with
-geometry matching a point parameter.
-It can be used in models to convert a point into a point layer for
-algorithms which require a layer based input.
-
-.. seealso:: :ref:`qgisextenttolayer`
-
-Parameters
-..........
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Label
-     - Name
-     - Type
-     - Description
-   * - **Point**
-     - ``INPUT``
-     - [coordinates]
-     - Input point, including CRS info
-       (example: ``397254,6214446 [EPSG:32632]``).
-
-       If the CRS is not provided, the Project CRS will be used.
-
-       The point can be specified by clicking on the map canvas.
-   * - **Point**
-     - ``OUTPUT``
-     - [vector: point]
-
-       Default: ``[Create temporary layer]``
-     - Specify the output layer.
-       One of:
-
-       .. include:: ../algs_include.rst
-          :start-after: **layer_output_types**
-          :end-before: **end_layer_output_types**
-
-Outputs
-.......
-
-.. list-table::
-   :header-rows: 1
-   :widths: 20 20 20 40
-
-   * - Label
-     - Name
-     - Type
-     - Description
-   * - **Point**
-     - ``OUTPUT``
-     - [vector: point]
-     - The output point vector layer containing the input point.
-
-Python code
-...........
-
-**Algorithm ID**: ``native:pointtolayer``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1732,13 +1737,13 @@ Parameters
      - Input point vector layer
    * - **Azimuth (degrees from North)**
      - ``AZIMUTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Angle (in degrees) as the middle value of the wedge
    * - **Wedge width (in degrees)**
      - ``WIDTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 45.0
      - Width (in degrees) of the buffer.
@@ -1752,7 +1757,7 @@ Parameters
 
    * - **Outer radius**
      - ``OUTER_RADIUS``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - The outer *size* (length) of the wedge:
@@ -1762,7 +1767,7 @@ Parameters
 
        Optional
      - ``INNER_RADIUS``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Inner radius value.
@@ -1772,7 +1777,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -1784,6 +1789,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1824,6 +1830,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1833,12 +1840,31 @@ Parameters
      - ``INPUT``
      - [vector: point]
      - Input point vector layer
+   * - **Tolerance**
+
+       Optional
+
+       ``Added in 3.34``
+     - ``TOLERANCE``
+     - [numeric: double]
+
+       Default: 0.0
+     - Specifies an optional snapping tolerance which can be used to improve the robustness of the triangulation.
+   * - **Add point IDs to output**
+
+       ``Added in 3.34``
+     - ``ADD_ATTRIBUTES``
+     - [boolean]
+
+       Default: True
+     - Specifies whether fields storing involved point features ID should be added to the output.
+       If False, an ``id`` field is used to identify the polygons.
    * - **Delaunay triangulation**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -1851,6 +1877,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1864,7 +1891,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:delaunaytriangulation``
+**Algorithm ID**: ``native:delaunaytriangulation``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1891,6 +1918,9 @@ are smaller than a specified area threshold. Leaving this parameter at
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
+
+.. seealso:: qgisfixgeometryhole
 
 Parameters
 ..........
@@ -1898,6 +1928,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1911,7 +1942,7 @@ Parameters
 
        Optional
      - ``MIN_AREA``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Only holes with an area less than this threshold will be
@@ -1922,7 +1953,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -1934,6 +1965,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1974,6 +2006,7 @@ input parameter.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line and polygon features
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
 
@@ -1985,6 +2018,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1996,7 +2030,7 @@ Parameters
      - Input line or polygon vector layer
    * - **Vertices to add**
      - ``VERTICES``
-     - [number]
+     - [numeric: integer]
 
        Default: 1
      - Number of vertices to add to each segment
@@ -2005,7 +2039,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2017,6 +2051,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2066,6 +2101,7 @@ at 2.5 increments allows them to be evenly spaced over the segment.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line and polygon features
 
 .. seealso:: :ref:`qgisdensifygeometries`
 
@@ -2075,6 +2111,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2086,7 +2123,7 @@ Parameters
      - Input line or polygon vector layer
    * - **Interval between vertices to add**
      - ``INTERVAL``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Maximum distance between two consecutive vertices
@@ -2095,7 +2132,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2107,6 +2144,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2140,27 +2178,38 @@ feature.
 All output geometries will be converted to multi geometries.
 In case the input is a polygon layer, common boundaries of adjacent
 polygons being dissolved will get erased.
+If enabled, the optional "Keep disjoint features separate" setting will
+cause features and parts that do not overlap or touch to be exported as
+separate features (instead of parts of a single multipart feature).
 
 The resulting attribute table will have the same fields as the input
 layer.
 The values in the output layer's fields are the ones of the first
 input feature that happens to be processed.
 
+
 .. figure:: img/dissolve.png
    :align: center
 
-   Dissolve the polygon layer on a common attribute
+   Dissolving a layer into a single multipart feature
 
 **Default menu**: :menuselection:`Vector --> Geoprocessing Tools`
 
-.. seealso:: :ref:`qgisaggregate`, :ref:`qgiscollect`
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+.. seealso:: :ref:`qgiscoverageunion`, :ref:`qgisaggregate`, :ref:`qgiscollect`
 
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2168,7 +2217,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Dissolve field(s)**
 
@@ -2184,16 +2233,52 @@ Parameters
        If no field is provided then all the
        features are dissolved, resulting in a
        single (multipart) feature.
+
+       .. figure:: img/dissolve_field.png
+          :align: center
+
+          Dissolve the polygon layer on a common attribute (2 multipart features)
+
    * - **Dissolved**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
           :end-before: **end_layer_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Keep disjoint features separate**
+     - ``SEPARATE_DISJOINT``
+     - [boolean]
+
+       Default: False
+     - Parts of dissolved features are exported as separate features
+       (instead of parts of a multipart feature).
+
+       .. figure:: img/dissolve_disjoint.png
+          :align: center
+
+          source (left), dissolve all (3 distinct features - right)
+
+       .. figure:: img/dissolve_disjoint_field.png
+          :align: center
+
+          source (left), dissolve on field (5 distinct features - right)
 
 Outputs
 .......
@@ -2201,6 +2286,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2234,6 +2320,10 @@ the new value.
 If no Z values exist, the geometry will be upgraded to include the Z
 dimension.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features with Z enabled
+
 .. seealso:: :ref:`qgissetmfromraster`, :ref:`qgissetzvalue`
 
 Parameters
@@ -2250,7 +2340,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Raster layer**
      - ``RASTER``
@@ -2262,27 +2352,34 @@ Parameters
 
        Default: 1
      - The raster band to take the Z values from
-   * - **Value for nodata or non-intersecting vertices**
+   * - **Value for NoData or non-intersecting vertices**
      - ``NODATA``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: 0
+       Default: 0.0
      - Value to use in case the vertex does not intersect
        (a valid pixel of) the raster
    * - **Scale factor**
      - ``SCALE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Scaling value: the band values are multiplied
        by this value.
+   * - **Offset**
+     - ``OFFSET``
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Offset value: it is algebraically added to the band
+       values after applying the "Scale factor".
    * - **Updated**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer (with Z values
-       from the raster layer). One of:
+       from the raster layer). :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2294,6 +2391,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2329,6 +2427,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2336,7 +2435,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer with M or Z values
    * - **Drop M Values**
      - ``DROP_M_VALUES``
@@ -2355,7 +2454,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2367,6 +2466,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2413,6 +2513,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2426,7 +2527,7 @@ Parameters
      - ``MODE``
      - [enumeration]
 
-       Default: None
+       Default: Not set
      - Choose the parameter to use in order to get rid of
        the selected polygons:
 
@@ -2439,7 +2540,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -2451,6 +2552,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2476,12 +2578,16 @@ Python code
 Explode lines
 -------------
 Takes a lines layer and creates a new one in which each line layer is
-replaced by a set of lines representing the segments in the original
-line.
+replaced by a set of lines representing the segments in the original line.
 
-Each line in the resulting layer contains only a start and an end
-point, with no intermediate vertices between them.
+Each line in the resulting layer contains only a start and an end point,
+with no intermediate vertices between them.
 
+If the input layer consists of CircularStrings or CompoundCurves,
+the output layer will be of the same type and contain only single curve segments.
+
+.. note::
+ This algorithm does not require valid geometries as input.
 
 .. figure:: img/explode_lines.png
    :align: center
@@ -2489,7 +2595,10 @@ point, with no intermediate vertices between them.
    The original line layer and the exploded one
 
 |checkbox| Allows
-:ref:`features in-place modification <processing_inplace_edit>`
+:ref:`features in-place modification <processing_inplace_edit>` of line features
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
 
 .. seealso:: :ref:`qgissubdivide`, :ref:`qgislinesubstring`
 
@@ -2499,6 +2608,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2513,7 +2623,7 @@ Parameters
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2525,6 +2635,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2564,6 +2675,7 @@ the line.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line features
 
 .. seealso:: :ref:`qgislinesubstring`
 
@@ -2573,6 +2685,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2584,20 +2697,22 @@ Parameters
      - Input line vector layer
    * - **Start distance**
      - ``START_DISTANCE``
-     - [number |dataDefined|]
-     - Distance by which to extend the first segment of the line
-       (starting point)
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Distance by which to extend the first segment of the line (starting point)
    * - **End distance**
      - ``END_DISTANCE``
-     - [number |dataDefined|]
-     - Distance by which to extend the last segment of the line
-       (ending point)
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Distance by which to extend the last segment of the line (ending point)
    * - **Extended**
      - ``OUTPUT``
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2609,6 +2724,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2657,7 +2773,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Summaries to calculate**
      - ``SUMMARIES``
@@ -2696,7 +2812,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2708,6 +2824,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2753,6 +2870,13 @@ vertex’s part and its index within the part (as well as its ring for
 polygons), distance along the original geometry and bisector angle of
 vertex for the original geometry.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point features
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 .. seealso:: :ref:`qgisextractvertices`, :ref:`qgisfilterverticesbym`,
    :ref:`qgisfilterverticesbyz`
 
@@ -2762,6 +2886,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2769,7 +2894,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Vertex indices**
      - ``VERTICES``
@@ -2783,7 +2908,7 @@ Parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2795,6 +2920,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2805,6 +2931,16 @@ Outputs
      - [vector: point]
      - The output (point) vector layer containing the specified
        vertices from the input layer geometries.
+       Other than the input attributes, the output layer also contains the following fields:
+
+       - ``vertex_pos``: the index of the vertex in the geometry, as requested by the user.
+       - ``vertex_index``: the index of the vertex within the geometry. The first vertex is indexed as 0.
+       - ``vertex_part``: the part number of the geometry that the vertex belongs to. For single-part geometries, this is always 0.
+         For multi-part geometries (e.g. MultiPolygon or MultiLine), this indicates which part the vertex comes from.
+       - ``vertex_part_ring``: for polygon geometries, this indicates whether the vertex belongs to the outer ring (0) or one of the inner rings (1, 2, ...).
+       - ``vertex_part_index``: the index of the vertex in its specific ring (outer or inner).
+       - ``distance``: the cumulative length of line segments from the first vertex of the geometry.
+       - ``angle``: the angle (in degrees) between the previous and the current vertex.
 
 Python code
 ...........
@@ -2836,7 +2972,14 @@ geometry and bisector angle of vertex for original geometry.
 
    Vertices extracted for line and polygon layer
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point features
+
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
 
 .. seealso:: :ref:`qgisextractspecificvertices`,
    :ref:`qgisfilterverticesbym`, :ref:`qgisfilterverticesbyz`
@@ -2847,6 +2990,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2854,14 +2998,14 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Vertices**
      - ``OUTPUT``
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2873,6 +3017,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2883,6 +3028,18 @@ Outputs
      - [vector: point]
      - The output (point) vector layer containing the vertices from
        the input layer geometries.
+       Other than the input attributes, the output layer also contains the following fields:
+
+       - ``vertex_index``: the index of the vertex within the geometry. The first vertex is indexed as 0.
+       - ``vertex_part``: the part number of the geometry that the vertex belongs to. For single-part geometries, this is always 0.
+         For multi-part geometries (e.g. MultiPolygon or MultiLine), this indicates which part the vertex comes from.
+       - ``vertex_part_ring``: for polygon geometries, this indicates whether the vertex belongs to the outer ring (0) or one of the inner rings (1, 2, ...).
+       - ``vertex_part_index``: the index of the vertex in its specific ring (outer or inner).
+       - ``distance``: the distance from the previous vertex.
+       - ``angle``: returns approximate angle at a vertex.
+         Usually the average angle between adjacent segments,
+         and can be pictured as the orientation of a line following
+         the curvature of the geometry at the specified vertex.
 
 Python code
 ...........
@@ -2923,7 +3080,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Summaries to calculate**
      - ``SUMMARIES``
@@ -2962,7 +3119,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -2974,6 +3131,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2992,6 +3150,208 @@ Python code
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
+
+
+.. _qgisextrude:
+
+Extrude
+--------------------------
+
+``Added in 4.2``
+
+Generates 3D geometries by extruding 2D polygon features along a specified direction.
+
+Each feature is displaced according to the X, Y, and Z extrusion parameters: X and Y control the horizontal displacement,
+while Z controls the vertical elevation. Setting only the Z parameter produces vertical extrusions,
+whereas combining X, Y, and Z allows the creation of non-vertical extrusions.
+Negative values are supported, enabling extrusions in the opposite direction.
+
+If the input features already carry Z values, those values are preserved and used as the base elevation of the extruded geometry.
+
+For MultiPolygon geometries, each part is extruded separately, producing one output feature per part.
+
+Output geometries are of type PolyhedralSurfaceZ, representing the extruded surface of each input feature.
+
+.. figure:: img/extrude.png
+   :align: center
+
+   The left image shows a 2D polygon, while the right image shows the polygon extruded along the Z direction.
+
+.. attention:: Running this algorithm requires QGIS installed with SFCGAL_ >= 2.0
+   (see :menuselection:`Help --> About` menu).
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input vector layer
+   * - **Extrusion (x-axis)**
+     - ``EXTRUDE_X``
+     - [numeric: double] |dataDefine|
+
+       Default: 0
+     - Specify the extrusion value along the X-axis
+   * - **Extrusion (y-axis)**
+     - ``EXTRUDE_Y``
+     - [numeric: double] |dataDefine|
+
+       Default: 0
+     - Specify the extrusion value along the Y-axis
+   * - **Extrusion (z-axis)**
+     - ``EXTRUDE_Z``
+     - [numeric: double] |dataDefine|
+
+       Default: 0
+     - Specify the extrusion value along the Z-axis
+   * - **Extrusion**
+     - ``OUTPUT``
+     - [vector: 3D polygon]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Extrusion**
+     - ``OUTPUT``
+     - [vector: 3D polygon]
+     - The output layer containing the extruded polygon features.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:extrude``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+.. _qgistightconcavehullofpolygons:
+
+Fill gaps between polygons
+---------------------------
+
+``Added in 4.2``
+
+Calculates a concave hull for each multi-polygon feature in an input layer.
+
+Unlike the standard Concave Hull algorithm, a tight concave hull is a (possibly)
+non-convex polygon containing all the input polygons.
+The computed hull fills the gaps between the polygons without intersecting their interiors.
+It strictly follows the outer boundaries of the input polygons, allowing you to fill gaps between
+them without distorting their original shapes.
+
+It is particularly useful for cases such as generalizing groups of building outlines,
+creating 'district' polygons around blocks, or removing gaps and joining disjoint sets of polygons.
+
+The algorithm works by creating a constrained Delaunay Triangulation of the space between
+the polygons and removing the longest outer edges until a target criterion is reached.
+
+The input geometry must be a valid Polygon or MultiPolygon
+(i.e., the individual polygons within the same multipolygon must not overlap).
+
+.. figure:: img/fill_gaps_between_polygons.png
+    :align: center
+
+    Filling gaps between polygons using ratio values of 0.3 and 1 (holes allowed).
+
+
+.. seealso:: :ref:`qgisconvexhull`, :ref:`qgisconcavehullbyfeature`, :ref:`qgisconcavehull`
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input vector layer with multipolygon features
+   * - **Ratio**
+     - ``RATIO``
+     - [numeric: double]
+
+       Default: 0.3
+     - Specifies the maximum edge length as a fraction of the difference between the longest and shortest edge
+       lengths between the polygons. This normalizes the maximum edge length to be scale-free.
+       A value of 1 produces the convex hull; a value of 0 produces the original polygons.
+   * - **Allow holes**
+     - ``HOLES``
+     - [boolean]
+
+       Default: True
+     - Controls whether the computed concave hull is allowed to contain holes.
+   * - **Tight concave hulls**
+     - ``OUTPUT``
+     - [vector: polygon]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types**
+          :end-before: **end_layer_output_types**
+
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Tight concave hulls**
+     - ``OUTPUT``
+     - [vector: polygon]
+     - The output vector layer containing the tight concave hull
+       for each input multipolygon feature.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:tightconcavehullofpolygons``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
 
 
 .. _qgisfilterverticesbym:
@@ -3013,9 +3373,12 @@ the minimum value is tested.
    The red line represents the black line with only vertices whose M
    value is <=10.
 
-.. note:: Depending on the input geometry attributes and the filters
-   used, the resultant geometries created by this algorithm may no
-   longer be valid.
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line and polygon features with M enabled
+
+.. warning:: Depending on the input geometry attributes and the filters used,
+   the geometries created by this algorithm may no longer be valid.
 
 .. seealso:: :ref:`qgisfilterverticesbyz`, :ref:`qgisextractvertices`,
  :ref:`qgisextractspecificvertices`
@@ -3026,6 +3389,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3033,31 +3397,31 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: line, polygon]
-     - Input line or polygon vector layer
+     - [vector: geometry]
+     - Input vector layer
        to remove vertices from
    * - **Minimum**
 
        Optional
      - ``MIN``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: *Not set*
+       Default: Not set
      - Minimum of M values allowed
    * - **Maximum**
 
        Optional
      - ``MAX``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: *Not set*
+       Default: Not set
      - Maximum of M values allowed
    * - **Filtered**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3069,6 +3433,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3109,9 +3474,12 @@ the minimum value is tested.
    The red line represents the black line with only vertices whose Z
    value is <=10.
 
-.. note:: Depending on the input geometry attributes and the filters
-   used, the resultant geometries created by this algorithm may no
-   longer be valid.
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line and polygon features with Z enabled
+
+.. warning:: Depending on the input geometry attributes and the filters used,
+   the geometries created by this algorithm may no longer be valid.
    You may need to run the :ref:`qgisfixgeometries` algorithm to
    ensure their validity.
 
@@ -3124,6 +3492,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3131,31 +3500,31 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: line, polygon]
-     - Input line or polygon vector layer
+     - [vector: geometry]
+     - Input vector layer
        to remove vertices from
    * - **Minimum**
 
        Optional
      - ``MIN``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: *Not set*
+       Default: Not set
      - Minimum of Z values allowed
    * - **Maximum**
 
        Optional
      - ``MAX``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: *Not set*
+       Default: Not set
      - Maximum of Z values allowed
    * - **Filtered**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3167,6 +3536,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3197,12 +3567,13 @@ without losing any of the input vertices.
 Already valid geometries are returned without further intervention.
 Always outputs multi-geometry layer.
 
-.. note:: M values will be dropped from the output.
-
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features without M enabled
 
-.. seealso:: :ref:`qgischeckvalidity`
+.. warning:: M values will be dropped from the output.
+
+.. seealso:: :ref:`qgischeckvalidity`, :ref:`fixgeometry_algorithms`
 
 Parameters
 ..........
@@ -3210,6 +3581,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3217,14 +3589,30 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
+   * - **Repair method**
+     - ``METHOD``
+     - [enumeration]
+
+       Default: 1
+     - Method used to repair the geometries. One of:
+
+       * 0 --- ``Linework``: combines all rings into a set of noded lines and
+         then extracts valid polygons from that linework
+       * 1 --- ``Structure``: first makes all rings valid and then merges shells
+         and subtracts holes from shells to generate valid result.
+         Assumes that holes and shells are correctly categorized.
+
+         .. attention:: Using this method requires QGIS installed with GEOS_ >= 3.10
+          (see :menuselection:`Help --> About` menu).
+
    * - **Fixed geometries**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3236,6 +3624,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3256,15 +3645,19 @@ Python code
   :end-before: **end_algorithm_code_section**
 
 
-.. _qgisforcerhr:
+.. _qgisforcecw:
 
-Force right-hand-rule
---------------------------
+Force polygons clockwise
+------------------------
+``Added in 4.0``
 
-Forces polygon geometries to respect the Right-Hand-Rule, in which
-the area that is bounded by a polygon is to the right of the boundary.
-In particular, the exterior ring is oriented in a clockwise
-direction and any interior rings in a counter-clockwise direction.
+Forces polygon geometries to respect the convention where the exterior ring
+is oriented in a clockwise direction and the interior rings in a counter-clockwise
+direction.
+
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 Parameters
 ..........
@@ -3272,6 +3665,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3286,7 +3680,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3298,6 +3692,146 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Reoriented**
+     - ``OUTPUT``
+     - [vector: polygon]
+     - The output vector layer with reoriented geometries.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:forcecw``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisforceccw:
+
+Force polygons counter-clockwise
+--------------------------------
+``Added in 4.0``
+
+Forces polygon geometries to respect the convention where the exterior ring
+is oriented in a counter-clockwise direction and the interior rings in a clockwise
+direction.
+
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input vector layer
+   * - **Reoriented**
+     - ``OUTPUT``
+     - [vector: polygon]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Reoriented**
+     - ``OUTPUT``
+     - [vector: polygon]
+     - The output vector layer with reoriented geometries.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:forceccw``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisforcerhr:
+
+Force right-hand-rule
+--------------------------
+
+Forces polygon geometries to respect the Right-Hand-Rule, in which
+the area that is bounded by a polygon is to the right of the boundary.
+In particular, the exterior ring is oriented in a clockwise
+direction and any interior rings in a counter-clockwise direction.
+
+Due to the inconsistency in the definition of the Right-Hand-Rule in some contexts,
+it is recommended to use the explicit :ref:`qgisforcecw` algorithm instead.
+
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input vector layer
+   * - **Reoriented**
+     - ``OUTPUT``
+     - [vector: polygon]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3340,12 +3874,20 @@ this breakpoint.
 If the input geometry contains M or Z values, these will be linearly
 interpolated for the new vertices created at the antimeridian.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of line features
+
+.. note:: This algorithm uses ellipsoid based measurements
+  and respects the current :ref:`ellipsoid settings <measurements_ellipsoid>`.
+
 Parameters
 ..........
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3360,7 +3902,7 @@ Parameters
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output line vector layer. One of:
+     - Specify the output line vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3372,6 +3914,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3459,10 +4002,10 @@ Parameters
        with their help and guide.
    * - **Modified geometry**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3474,6 +4017,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3481,7 +4025,7 @@ Outputs
      - Description
    * - **Modified geometry**
      - ``OUTPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The output vector layer
 
 Python code
@@ -3534,7 +4078,7 @@ Parameters
      - Input line or polygon vector layer
    * - **Distance**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Distance from the beginning of the line
@@ -3543,7 +4087,7 @@ Parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3555,6 +4099,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3597,6 +4142,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3608,7 +4154,7 @@ Parameters
      - Input polygon vector layer
    * - **Parts to keep**
      - ``PARTS``
-     - [number]
+     - [numeric: integer] |dataDefine|
 
        Default: 1
      - Number of parts to keep. If 1, only the biggest part of the
@@ -3618,7 +4164,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -3630,6 +4176,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3644,7 +4191,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:keepnbiggestparts``
+**Algorithm ID**: ``native:keepnbiggestparts``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -3671,6 +4218,7 @@ considered when calculating the substring.
    ending distance at 250 meters.
 
 |checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of line features
 
 .. seealso:: :ref:`qgisextendlines`
 
@@ -3680,6 +4228,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3691,20 +4240,22 @@ Parameters
      - Input line vector layer
    * - **Start distance**
      - ``START_DISTANCE``
-     - [number |dataDefined|]
-     - Distance along the input line to the start point of
-       the output feature
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Distance along the input line to the start point of the output feature
    * - **End distance**
      - ``END_DISTANCE``
-     - [number |dataDefined|]
-     - Distance along the input line to the end point of
-       the output feature
+     - [numeric: double] |dataDefine|
+
+       Default: 1.0
+     - Distance along the input line to the end point of the output feature
    * - **Substring**
      - ``OUTPUT``
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output line vector layer. One of:
+     - Specify the output line vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3716,6 +4267,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3756,6 +4308,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3770,7 +4323,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3782,6 +4335,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3815,6 +4369,7 @@ any lines which could be merged and any non-connected line parts.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line features
 
 Parameters
 ..........
@@ -3822,6 +4377,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3836,7 +4392,7 @@ Parameters
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output line vector layer. One of:
+     - Specify the output line vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3848,6 +4404,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3907,7 +4464,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Field**
 
@@ -3935,7 +4492,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -3947,6 +4504,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3956,11 +4514,19 @@ Outputs
      - ``OUTPUT``
      - [vector: polygon]
      - The output (bounding) polygon vector layer.
+       It has the fields from the input layer
+       and, depending on the selected parameter ``TYPE``,
+       the output also has the attributes:
+
+       * ``width``, ``height``, ``area`` and ``perimeter`` of the Envelope (Bounding Box)
+       * ``width``, ``height``, ``area``, ``angle`` and ``perimeter`` of the Minimum Oriented Rectangle
+       * ``radius`` and ``area`` of the Minimum Enclosing Circle
+       * ``area`` and ``perimeter`` of the Convex Hull
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:minimumboundinggeometry``
+**Algorithm ID**: ``native:minimumboundinggeometry``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -3981,6 +4547,7 @@ layer.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 .. seealso:: :ref:`qgisminimumboundinggeometry`
 
@@ -3990,6 +4557,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3997,21 +4565,21 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
-   * - **Number of segment in circles**
+   * - **Number of segments in circles**
      - ``SEGMENTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 72
-     - The number of segment used to approximate a circle.
+     - The number of segments used to approximate a circle.
        Minimum 8, maximum 100000.
    * - **Minimum enclosing circles**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4023,6 +4591,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4032,6 +4601,9 @@ Outputs
      - ``OUTPUT``
      - [vector: polygon]
      - The output polygon vector layer.
+       Other than the input attributes, the output layer also contains the following fields:
+       ``area`` and ``radius`` of the generated polygon.
+
 
 Python code
 ...........
@@ -4057,11 +4629,13 @@ input layer, using a fixed or dynamic distance and number of rings.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
-.. seealso:: :ref:`qgisbuffer`,
-   :ref:`qgisvariabledistancebuffer`,
-   :ref:`qgisrectanglesovalsdiamonds`,
-   :ref:`qgissinglesidedbuffer`
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+.. seealso:: :ref:`qgisbuffer`, :ref:`qgisvariabledistancebuffer`,
+   :ref:`qgisrectanglesovalsdiamonds`, :ref:`qgissinglesidedbuffer`
 
 Parameters
 ..........
@@ -4077,11 +4651,11 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Number of rings**
      - ``RINGS``
-     - [number |dataDefined|]
+     - [numeric: integer] |dataDefine|
 
        Default: 1
      - The number of rings.
@@ -4090,7 +4664,7 @@ Parameters
        rings depends on feature values).
    * - **Distance between rings**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Distance between the rings.
@@ -4102,7 +4676,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4114,6 +4688,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4123,6 +4698,8 @@ Outputs
      - ``OUTPUT``
      - [vector: polygon]
      - The output polygon vector layer.
+       Other than the input attributes, the output layer also contains the following fields:
+       ``ringId`` and ``distance`` of the generated buffer polygon.
 
 Python code
 ...........
@@ -4152,8 +4729,12 @@ but divided into single features.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
 
 .. seealso:: :ref:`qgiscollect`, :ref:`qgispromotetomulti`
 
@@ -4163,6 +4744,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4170,14 +4752,14 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Single parts**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4189,6 +4771,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4224,6 +4807,7 @@ distances will offset them to the right.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line features
 
 .. seealso:: :ref:`qgisarrayoffsetlines`, :ref:`qgistranslategeometry`
 
@@ -4246,7 +4830,7 @@ Parameters
      - Input line vector layer
    * - **Distance**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 10.0
      - Offset distance.
@@ -4256,7 +4840,7 @@ Parameters
        (see :ref:`qgisvariabledistancebuffer`).
    * - **Segments**
      - ``SEGMENTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 8
      - Controls the number of line segments to use to approximate
@@ -4265,7 +4849,7 @@ Parameters
      - ``JOIN_STYLE``
      - [enumeration]
 
-       Default: *0*
+       Default: 0
      - Specifies whether round, miter or beveled joins should be
        used when offsetting corners in a line.
        Options are:
@@ -4274,22 +4858,33 @@ Parameters
        * 1 --- Miter
        * 2 --- Bevel
 
+       .. figure:: img/buffer_join_style.png
+          :align: center
+          :width: 100%
+
+          Round, miter, and bevel join styles
    * - **Miter limit**
      - ``MITER_LIMIT``
-     - [number]
+     - [numeric: double]
 
        Default: 2.0
-     - Controls the maximum distance from the offset curve to use
-       when creating a mitered join (only applicable for miter
+     - Sets the maximum distance from the offset geometry to use
+       when creating a mitered join as a factor of the offset distance (only applicable for miter
        join styles).
-       Minimum: 1.
+       Minimum: 1.0
+
+       .. figure:: img/buffer_miter_limit.png
+          :align: center
+          :width: 100%
+
+          A 10m buffer with a limit of 2 and a 10m buffer with a limit of 1
    * - **Offset**
      - ``OUTPUT``
      - [vector: line]
 
        Default: ``[Create temporary layer]``
      - Specify the output (offset) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4301,6 +4896,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4328,6 +4924,9 @@ Oriented minimum bounding box
 Calculates the minimum area rotated rectangle for each feature in the
 input layer.
 
+.. note:: For singlepart point features, the output corresponds to
+   the bounding box of the geometry.
+
 .. figure:: img/oriented_minimum_bounding_box.png
    :align: center
 
@@ -4335,6 +4934,7 @@ input layer.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 .. seealso:: :ref:`qgisminimumboundinggeometry`
 
@@ -4344,6 +4944,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4351,14 +4952,14 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Bounding boxes**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4370,6 +4971,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4379,6 +4981,9 @@ Outputs
      - ``OUTPUT``
      - [vector: polygon]
      - The output polygon vector layer.
+       Other than the input attributes, the output layer also contains the following fields:
+       ``width``, ``height``, ``angle``, ``area`` and ``perimeter`` of the generated polygon.
+
 
 Python code
 ...........
@@ -4407,6 +5012,7 @@ every angle in the geometry either a right angle or a straight line.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line and polygon features
 
 Parameters
 ..........
@@ -4426,9 +5032,9 @@ Parameters
      - Input line or polygon vector layer
    * - **Maximum angle tolerance (degrees)**
      - ``ANGLE_TOLERANCE``
-     - [number]
+     - [numeric: double]
 
-       Default: 15
+       Default: 15.0
      - Specify the maximum deviation from a right angle or straight
        line a vertex can have for it to be adjusted.
        Smaller tolerances mean that only vertices which are already
@@ -4437,7 +5043,7 @@ Parameters
        also be adjusted.
    * - **Maximum algorithm iterations**
      - ``MAX_ITERATIONS``
-     - [number]
+     - [numeric: integer]
 
        Default: 1000
      - Setting a larger number for the maximum number of iterations
@@ -4448,7 +5054,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4460,6 +5066,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4489,6 +5096,11 @@ guaranteed to lie on the surface of the feature geometry.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point features
+
+.. warning::
+ This algorithm may drop existing primary keys or FID values and regenerate them in output layers,
+ depending on the input parameters.
 
 .. seealso:: :ref:`qgiscentroids`
 
@@ -4498,6 +5110,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4505,19 +5118,18 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Create point on surface for each part**
      - ``ANGLE_TOLERANCE``
-     - [boolean |dataDefined|]
-     - If checked, a point will be created for each part of the
-       geometry.
+     - [boolean] |dataDefine|
+     - If checked, a point will be created for each part of the geometry.
    * - **Point**
      - ``OUTPUT``
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output point vector layer. One of:
+     - Specify the output point vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4529,6 +5141,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4566,6 +5179,9 @@ created.
 
    Points created along the source line layer
 
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 .. seealso:: :ref:`qgisinterpolatepoint`
 
 Parameters
@@ -4586,30 +5202,30 @@ Parameters
      - Input line or polygon vector layer
    * - **Distance**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Distance between two consecutive points along the line
    * - **Start offset**
      - ``START_OFFSET``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Distance from the beginning of the input line, representing the
        position of the first point.
    * - **End offset**
      - ``END_OFFSET``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Distance from the end of the input line, representing the
-       position beyond which no point feature shoud be created.
+       position beyond which no point feature should be created.
    * - **Interpolated points**
      - ``OUTPUT``
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4621,6 +5237,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4631,6 +5248,9 @@ Outputs
      - [vector: point]
      - Point vector layer with features placed along lines or polygon
        boundaries of the input layer.
+       Other than the input attributes on every related point, the output layer
+       also contains the following fields:
+       ``distance`` and ``angle`` of the generated point.
 
 Python code
 ...........
@@ -4669,7 +5289,7 @@ Parameters
      - Input point vector layer
    * - **Minimum distance to other points**
      - ``PROXIMITY``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - Distance below which point features are
@@ -4677,7 +5297,7 @@ Parameters
        Close features are distributed altogether.
    * - **Displacement distance**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - Radius of the circle on which close features are placed
@@ -4694,7 +5314,7 @@ Parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -4706,6 +5326,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4739,9 +5360,6 @@ of inaccessibility within a specified tolerance.
 A more precise tolerance (lower value) requires more iterations and
 will take longer to calculate.
 
-The distance from the calculated pole to the polygon boundary will be
-stored as a new attribute in the output layer.
-
 .. figure:: img/pole_inaccessibility.png
    :align: center
 
@@ -4753,6 +5371,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4764,7 +5383,7 @@ Parameters
      - Input vector layer
    * - **Tolerance**
      - ``TOLERANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - Set the tolerance for the calculation
@@ -4773,7 +5392,7 @@ Parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4785,6 +5404,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4793,7 +5413,9 @@ Outputs
    * - **Point**
      - ``OUTPUT``
      - [vector: point]
-     - The output point vector layer
+     - The output point vector layer.
+       It will contain a new attribute with the distance ``dist_pole`` from the
+       calculated pole to the polygon boundary.
 
 Python code
 ...........
@@ -4828,6 +5450,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4838,8 +5461,6 @@ Parameters
      - [vector: line]
      - Input line vector layer
    * - **Keep fields from the input layer**
-
-       Optional
      - ``KEEP_FIELDS``
      - [boolean]
 
@@ -4850,7 +5471,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output polygon vector layer. One of:
+     - Specify the output polygon vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -4862,6 +5483,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4871,6 +5493,7 @@ Outputs
      - ``OUTPUT``
      - [vector: polygon]
      - The output polygon vector layer from lines
+
 
 Python code
 ...........
@@ -4907,6 +5530,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4921,7 +5545,7 @@ Parameters
      - [vector: line]
 
        Default: ``[Create temporary layer]``
-     - Specify the output line vector layer. One of:
+     - Specify the output line vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -4933,6 +5557,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -4961,6 +5586,7 @@ Projects point geometries by a specified distance and bearing (azimuth).
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point features
 
 Parameters
 ..........
@@ -4980,13 +5606,13 @@ Parameters
      - Input point vector layer
    * - **Bearing (degrees from North)**
      - ``BEARING``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Clockwise angle starting from North, in degree (°) unit
    * - **Distance**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Distance to offset geometries, in layer units
@@ -4995,7 +5621,7 @@ Parameters
      - [vector: point]
 
        Default: ``[Create temporary layer]``
-     - Specify the output point vector layer. One of:
+     - Specify the output point vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5007,6 +5633,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5043,8 +5670,10 @@ features.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
-.. seealso:: :ref:`qgisaggregate`, :ref:`qgiscollect`
+.. seealso:: :ref:`qgisaggregate`, :ref:`qgiscollect`,
+  :ref:`qgisfixgeometrymultipart`
 
 Parameters
 ..........
@@ -5052,6 +5681,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5059,14 +5689,14 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Multiparts**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output multipart vector layer. One of:
+     - Specify the output multipart vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5078,6 +5708,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5140,13 +5771,13 @@ Parameters
 
    * - **Width**
      - ``WIDTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Width of the buffer shape
    * - **Height**
      - ``HEIGHT``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Height of the buffer shape
@@ -5154,13 +5785,13 @@ Parameters
 
        Optional
      - ``ROTATION``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
-       Default: None
+       Default: 0.0
      - Rotation of the buffer shape
-   * - **Number of segment**
+   * - **Number of segments**
      - ``SEGMENTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 36
      - Number of segments for a full circle (*Ovals* shape)
@@ -5169,7 +5800,7 @@ Parameters
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5181,6 +5812,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5219,15 +5851,17 @@ If the :guilabel:`Use Z Value` parameter is true, then the Z values
 are also tested and vertices with the same X and Y but different Z
 will be maintained.
 
+|checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
+
 .. note:: Duplicate vertices are not tested between different parts
    of a multipart geometry, e.g. a multipoint geometry with
    overlapping points will not be changed by this method.
 
-|checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
-
 .. seealso:: :ref:`qgisextractvertices`,
    :ref:`qgisextractspecificvertices`,
-   :ref:`qgisdeleteduplicategeometries`
+   :ref:`qgisdeleteduplicategeometries`,
+   :ref:`qgisfixgeometryduplicatenodes`
 
 Parameters
 ..........
@@ -5243,18 +5877,18 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Tolerance**
      - ``TOLERANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.000001
      - Vertices closer than the specified distance are considered
        duplicates
    * - **Use Z value**
      - ``USE_Z_VALUE``
-     - [boolean |dataDefined|]
+     - [boolean] |dataDefine|
 
        Default: False
      - If the :guilabel:`Use Z Value` parameter is true, then the Z
@@ -5265,7 +5899,7 @@ Parameters
      - [same as input]
 
        Default: ``[Create temporary layer]``
-     - Specify the output vector layer. One of:
+     - Specify the output vector layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5277,6 +5911,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5329,12 +5964,12 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer (with non-NULL geometries)
    * - **Also remove empty geometries**
      - ``REMOVE_EMPTY``
      - [boolean]
-     - 
+     -
    * - **Non null geometries**
      - ``OUTPUT``
 
@@ -5344,7 +5979,7 @@ Parameters
        Default: ``[Create temporary layer]``
      - Specify the output vector layer for the non-NULL (and
        non-empty) geometries.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -5358,7 +5993,7 @@ Parameters
 
        Default: ``[Skip output]``
      - Specify the output vector layer for the NULL (and empty) geometries.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -5370,6 +6005,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5394,6 +6030,172 @@ Python code
   :end-before: **end_algorithm_code_section**
 
 
+.. _qgisremovepartsbyarea:
+
+Remove parts by area
+----------------------
+``Added in 4.0``
+
+Takes a polygon layer and removes polygons which are smaller than a specified area.
+
+If the input geometry is a multipart geometry, then the parts will be filtered by their individual areas.
+If no parts match the required minimum area, then the feature will be skipped and omitted from the output layer.
+
+If the input geometry is a singlepart geometry, then the feature will be skipped
+if the geometry's area is below the required size and omitted from the output layer.
+
+The area will be calculated using Cartesian calculations in the source layer's coordinate reference system.
+
+Attributes are not modified.
+
+|checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of line features
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input vector layer whose features are to be filtered by area.
+   * - **Remove parts with area less than**
+     - ``MIN_AREA``
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Minimum area of the polygons to keep, using cartesian calculations in the layer's CRS.
+   * - **Cleaned**
+     - ``OUTPUT``
+     - [vector: polygon]
+
+       Default: ``[Create temporary layer]``
+     - Specify the polygon output vector layer.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Cleaned**
+     - ``OUTPUT``
+     - [vector: polygon]
+     - The output polygon vector layer with features
+       whose individual parts have a surface greater than the given area.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:removepartsbyarea``
+
+.. include:: ../algs_include.rst
+   :start-after: **algorithm_code_section**
+   :end-before: **end_algorithm_code_section**
+
+
+.. _qgisremovepartsbylength:
+
+Remove parts by length
+----------------------
+``Added in 4.0``
+
+Takes a line layer and removes lines which are shorter than a specified length.
+
+If the input geometry is a multipart geometry, then the parts will be filtered by their individual lengths.
+If no parts match the required minimum length, then the feature will be skipped and omitted from the output layer.
+
+If the input geometry is a singlepart geometry, then the feature will be skipped
+if the geometry's length is below the required size and omitted from the output layer.
+
+The length will be calculated using Cartesian calculations in the source layer's coordinate reference system.
+
+Attributes are not modified.
+
+|checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of line features
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: line]
+     - Input vector layer whose features are to be filtered by length.
+   * - **Remove parts with lengths less than**
+     - ``MIN_LENGTH``
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Minimum length of the lines to keep, using cartesian calculations in the layer's CRS.
+   * - **Cleaned**
+     - ``OUTPUT``
+     - [vector: line]
+
+       Default: ``[Create temporary layer]``
+     - Specify the line output vector layer.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Cleaned**
+     - ``OUTPUT``
+     - [vector: line]
+     - The output line vector layer with features
+       whose individual parts are longer than the given value.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:removepartsbylength``
+
+.. include:: ../algs_include.rst
+   :start-after: **algorithm_code_section**
+   :end-before: **end_algorithm_code_section**
+
+
 .. _qgisreverselinedirection:
 
 Reverse line direction
@@ -5406,6 +6208,7 @@ Inverts the direction of a line layer.
    Before and after the direction inversion
 
 |checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of line features
 
 Parameters
 ..........
@@ -5413,6 +6216,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5428,7 +6232,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output line vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5440,6 +6244,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5470,6 +6275,7 @@ around a unique preset point.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
 .. seealso:: :ref:`qgistranslategeometry`, :ref:`qgisswapxy`
 
@@ -5479,6 +6285,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5486,11 +6293,11 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Rotation (degrees clockwise)**
      - ``ANGLE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Angle of the rotation in degrees
@@ -5498,9 +6305,9 @@ Parameters
 
        Optional
      - ``ANCHOR``
-     - [point]
+     - [coordinates]
 
-       Default: None
+       Default: Not set
      - X,Y coordinates of the point to rotate the
        features around.
        If not set the rotation occurs around each
@@ -5511,7 +6318,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer (with rotated geometries).
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5523,6 +6330,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5537,6 +6345,79 @@ Python code
 ...........
 
 **Algorithm ID**: ``native:rotatefeatures``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisroundness:
+
+Roundness
+---------
+
+Calculates the roundness of each feature and stores it as a new field ``roundness``. The input vector layer must contain polygons.
+
+The roundness of a polygon is defined as 4π × polygon area / perimeter².
+The roundness value varies between 0 and 1. A perfect circle has a roundness of 1,
+while a completely flat polygon has a roundness of 0.
+
+.. note:: The algorithm returns NULL for multipart polygon features.
+
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
+
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Input vector layer
+   * - **Roundness**
+     - ``OUTPUT``
+     - [vector: polygon]
+
+       Default: ``[Create temporary layer]``
+     - Specify the output vector layer (with roundness field).
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Roundness**
+     - ``OUTPUT``
+     - [same as input]
+     - The output vector layer with ``roundness`` value in a field
+
+Python code
+...........
+
+**Algorithm ID**: ``native:roundness``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -5565,6 +6446,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5576,7 +6458,7 @@ Parameters
      - Input line or polygon vector layer
    * - **Maximum angle between vertices (degrees)**
      - ``ANGLE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 5.0
      - Maximum allowed radius angle between vertices
@@ -5587,7 +6469,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer (with segmentized geometries).
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5599,6 +6481,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5640,6 +6523,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5651,7 +6535,7 @@ Parameters
      - Input line or polygon vector layer
    * - **Maximum offset distance**
      - ``DISTANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Maximum allowed offset distance between the
@@ -5663,7 +6547,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer (with segmentized geometries).
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5675,6 +6559,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5707,6 +6592,10 @@ If no M values exist, the geometry will be upgraded to include M
 values and the specified value used as the initial M value for all
 geometries.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features with M enabled
+
 .. tip:: Use the |identify|:sup:`Identify Features` button to check
    the added M value: the results are available in the
    :guilabel:`Identify Results` dialog.
@@ -5720,6 +6609,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5727,11 +6617,11 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **M Value**
      - ``M_VALUE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - M value to assign to the feature geometries
@@ -5741,7 +6631,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5753,6 +6643,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5788,6 +6679,10 @@ the new value.
 If no M values exist, the geometry will be upgraded to include M
 values.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features with M enabled
+
 .. seealso:: :ref:`qgissetzfromraster`, :ref:`qgissetmvalue`
 
 Parameters
@@ -5804,7 +6699,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Raster layer**
      - ``RASTER``
@@ -5816,26 +6711,33 @@ Parameters
 
        Default: 1
      - The raster band from which the M values are taken
-   * - **Value for nodata or non-intersecting vertices**
+   * - **Value for NoData or non-intersecting vertices**
      - ``NODATA``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
+
        Default: 0.0
      - Value to use in case the vertex does not intersect
        (a valid pixel of) the raster
    * - **Scale factor**
      - ``SCALE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
-     - Scaling value: the band values are multiplied
-       by this value.
+     - Scaling value: the band values are multiplied by this value.
+   * - **Offset**
+     - ``OFFSET``
+     - [numeric: double] |dataDefine|
+
+       Default: 0.0
+     - Offset value: it is algebraically added to the band
+       values after applying the "Scale factor".
    * - **Updated**
      - ``OUTPUT``
      - [same as input]
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer (with updated M values).
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5847,6 +6749,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5879,6 +6782,10 @@ If no Z values exist, the geometry will be upgraded to include Z
 values and the specified value used as the initial Z value for all
 geometries.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features with Z enabled
+
 .. tip:: Use the |identify|:sup:`Identify Features` button to check
  the added Z value: the results are available in the
  :guilabel:`Identify Results` dialog.
@@ -5892,6 +6799,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5899,11 +6807,11 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Z Value**
      - ``Z_VALUE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Z value to assign to the feature geometries
@@ -5913,7 +6821,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -5925,6 +6833,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -5959,14 +6868,14 @@ distance based (the "Douglas-Peucker" algorithm), area based
 .. figure:: img/simplify_geometries.png
    :align: center
 
-   Clockwise from top left: source layer and increasing
-   simplification tolerances
+   From left to right, source layer and increasing simplification tolerances
 
 |checkbox| Allows :ref:`features in-place modification <processing_inplace_edit>`
+of line and polygon features
 
 **Default menu**: :menuselection:`Vector --> Geometry Tools`
 
-.. seealso:: :ref:`qgissmoothgeometry`, :ref:`qgisdensifygeometries`,
+.. seealso:: :ref:`qgiscoveragesimplify`, :ref:`qgissmoothgeometry`, :ref:`qgisdensifygeometries`,
  :ref:`qgisdensifygeometriesgivenaninterval`
 
 Parameters
@@ -5998,7 +6907,7 @@ Parameters
 
    * - **Tolerance**
      - ``TOLERANCE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Threshold tolerance (in units of the layer):
@@ -6011,7 +6920,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (simplified) vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6023,6 +6932,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6077,13 +6987,15 @@ Parameters
      - Input line vector layer
    * - **Distance**
      - ``DISTANCE``
-     - [number]
+     - [numeric: double] |dataDefine|
 
        Default: 10.0
      - Buffer distance.
    * - **Side**
      - ``SIDE``
      - [enumeration]
+
+       Default: 0
      - Which side to create the buffer on.
        One of:
 
@@ -6092,7 +7004,7 @@ Parameters
 
    * - **Segments**
      - ``SEGMENTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 8
      - Controls the number of line segments to use to approximate
@@ -6100,6 +7012,8 @@ Parameters
    * - **Join style**
      - ``JOIN_STYLE``
      - [enumeration]
+
+       Default: 0
      - Specifies whether round, miter or beveled joins should be
        used when offsetting corners in a line.
        Options are:
@@ -6108,22 +7022,33 @@ Parameters
        * 1 --- Miter
        * 2 --- Bevel
 
+       .. figure:: img/buffer_join_style.png
+          :align: center
+          :width: 100%
+
+          Round, miter, and bevel join styles
    * - **Miter limit**
      - ``MITER_LIMIT``
-     - [number]
+     - [numeric: double]
 
        Default: 2.0
-     - Controls the maximum distance from the offset curve to use
-       when creating a mitered join (only applicable for miter
+     - Sets the maximum distance from the offset geometry to use
+       when creating a mitered join as a factor of the offset distance (only applicable for miter
        join styles).
        Minimum: 1.0
+
+       .. figure:: img/buffer_miter_limit.png
+          :align: center
+          :width: 100%
+
+          A 10m buffer with a limit of 2 and a 10m buffer with a limit of 1
    * - **Buffer**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
      - Specify the output (buffer) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6135,6 +7060,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6190,10 +7116,10 @@ this will not be smoothed. For example, setting the maximum angle to
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of line and polygon features
 
-.. seealso:: :ref:`qgissimplifygeometries`,
-   :ref:`qgisdensifygeometries`,
-   :ref:`qgisdensifygeometriesgivenaninterval`
+.. seealso:: :ref:`qgissimplifygeometries`, :ref:`qgiscoveragesimplify`,
+   :ref:`qgisdensifygeometries`, :ref:`qgisdensifygeometriesgivenaninterval`
 
 Parameters
 ..........
@@ -6213,21 +7139,21 @@ Parameters
      - Input line or polygon vector layer
    * - **Iterations**
      - ``ITERATIONS``
-     - [number |dataDefined|]
+     - [numeric: integer] |dataDefine|
 
        Default: 1
      - Increasing the number of iterations will give smoother
        geometries (and more vertices).
    * - **Offset**
      - ``OFFSET``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.25
      - Increasing values will *move* the smoothed lines / boundaries
        further away from the input lines / boundaries.
    * - **Maximum node angle to smooth**
      - ``MAX_ANGLE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 180.0
      - Every node below this value will be smoothed
@@ -6237,7 +7163,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (smoothed) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6249,6 +7175,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6280,6 +7207,10 @@ Matching is done based on a tolerance distance, and vertices will be
 inserted or removed as required to make the geometries match the
 reference geometries.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
+
 .. seealso:: :ref:`qgissnappointstogrid`
 
 Parameters
@@ -6296,15 +7227,15 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Reference layer**
      - ``REFERENCE_LAYER``
-     - [vector: any]
+     - [vector: geometry]
      - Vector layer to snap to
    * - **Tolerance**
      - ``TOLERANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 10.0
      - Control how close input vertices need to be to the
@@ -6366,7 +7297,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (snapped) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -6378,6 +7309,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6411,11 +7343,12 @@ the feature's geometry will be cleared.
 Snapping can be performed on the X, Y, Z or M axis. A grid spacing of
 0 for any axis will disable snapping for that axis.
 
-.. note:: Snapping to grid may generate an invalid geometry in some
-   corner cases.
-
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
+
+.. warning:: Snapping to grid may generate an invalid geometry in some
+   corner cases.
 
 .. seealso:: :ref:`qgissnapgeometries`
 
@@ -6433,29 +7366,29 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **X Grid Spacing**
      - ``HSPACING``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Grid spacing on the X axis
    * - **Y Grid Spacing**
      - ``VSPACING``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 1.0
      - Grid spacing on the Y axis
    * - **Z Grid Spacing**
      - ``ZSPACING``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Grid spacing on the Z axis
    * - **M Grid Spacing**
      - ``MSPACING``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Grid spacing on the M axis
@@ -6465,7 +7398,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (snapped) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6477,6 +7410,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6506,12 +7440,20 @@ multiple parts, where each part is of a specified maximum length.
 Z and M values at the start and end of the new line substrings are
 linearly interpolated from existing values.
 
+|checkbox| Allows
+:ref:`features in-place modification <processing_inplace_edit>`
+of line features
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
 Parameters
 ..........
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6523,7 +7465,7 @@ Parameters
      - The input line vector layer
    * - **Maximum line length**
      - ``LENGTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 10.0
      - The maximum length of a line in the output.
@@ -6533,7 +7475,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output line vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6545,6 +7487,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6554,9 +7497,10 @@ Outputs
    * - **Split**
      - ``OUTPUT``
      - [vector: line]
-     - The new line vector layer - the length of the feature geometries
-       is less than or equal to the length specified in
-       the LENGTH parameter.
+     - The new line vector layer.
+       The length of the feature geometries is less than or equal to the length
+       specified in the LENGTH parameter. An additional field containing the
+       ``order`` will be added.
 
 Python code
 ...........
@@ -6587,11 +7531,12 @@ Curved geometries will be segmentized before subdivision.
    Left the input layer, middle maximum nodes value is 100 and right
    maximum value is 200
 
-.. note:: Subdividing a geometry can generate geometry parts that may
-   not be valid and may contain self-intersections.
-
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
+
+.. note:: Subdividing a geometry can generate geometry parts that may
+   not be valid and may contain self-intersections.
 
 .. seealso:: :ref:`qgisexplodelines`, :ref:`qgislinesubstring`
 
@@ -6601,6 +7546,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6609,11 +7555,11 @@ Parameters
 
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer
    * - **Maximum nodes in parts**
      - ``MAX_NODES``
-     - [number |dataDefined|]
+     - [numeric: integer] |dataDefine|
 
        Default: 256
      - Maximum number of vertices each new
@@ -6625,7 +7571,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (subdivided) vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6637,6 +7583,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6669,6 +7616,7 @@ latitude and longitude values reversed.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
 .. seealso:: :ref:`qgistranslategeometry`, :ref:`qgisrotatefeatures`
 
@@ -6678,6 +7626,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6686,7 +7635,7 @@ Parameters
 
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - The input vector layer
    * - **Swapped**
      - ``OUTPUT``
@@ -6694,7 +7643,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6706,6 +7655,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6760,21 +7710,21 @@ Parameters
      - Input line vector layer
    * - **Start width**
      - ``START_WIDTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Represents the radius of the buffer applied
        at the start point of the line feature
    * - **End width**
      - ``END_WIDTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Represents the radius of the buffer applied
        at the end point of the line feature.
    * - **Segments**
      - ``SEGMENTS``
-     - [number |dataDefined|]
+     - [numeric: integer] |dataDefine|
 
        Default: 16
      - Controls the number of line segments to use to approximate
@@ -6785,7 +7735,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (buffer) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6797,6 +7747,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6835,6 +7786,7 @@ component polygons.
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of polygon features
 
 Parameters
 ..........
@@ -6842,6 +7794,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6851,13 +7804,13 @@ Parameters
      - ``INPUT``
      - [vector: polygon]
      - Input polygon vector layer
-   * - **Tesselated**
+   * - **Tessellated**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
      - Specify the output layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -6869,12 +7822,13 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Tesselated**
+   * - **Tessellated**
      - ``OUTPUT``
      - [vector: polygon]
      - Output multipolygonZ layer
@@ -6898,21 +7852,17 @@ Creates transects on vertices for (multi)linestring.
 A transect is a line oriented from an angle (by default perpendicular)
 to the input polylines (at vertices).
 
-Field(s) from feature(s) are returned in the transect with these
-new fields:
-
-* TR_FID: ID of the original feature
-* TR_ID: ID of the transect. Each transect have an unique ID
-* TR_SEGMENT: ID of the segment of the linestring
-* TR_ANGLE: Angle in degrees from the original line at the vertex
-* TR_LENGTH: Total length of the transect returned
-* TR_ORIENT: Side of the transect (only on the left or right of
-  the line, or both side)
+The output transect layer includes the original feature fields along with new transect fields.
 
 .. figure:: img/transect.png
    :align: center
 
    Dashed red lines represent the transect of the input line layer
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+.. seealso:: :ref:`qgistransectfixeddistance`
 
 Parameters
 ..........
@@ -6932,13 +7882,13 @@ Parameters
      - Input line vector layer
    * - **Length of the transect**
      - ``LENGTH``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 5.0
      - Length in map unit of the transect
    * - **Angle in degrees from the original line at the vertices**
      - ``ANGLE``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 90.0
      - Change the angle of the transect
@@ -6950,14 +7900,24 @@ Parameters
        * 0 --- Left
        * 1 --- Right
        * 2 --- Both
+   * - **Direction**
 
+       Optional
+     - ``DIRECTION``
+     - [enumeration]
+
+       Default: ``0``
+     - Orientation direction for transects:
+
+       * 0 --- Left to Right
+       * 1 --- Right to Left
    * - **Transect**
      - ``OUTPUT``
      - [vector: line]
 
        Default: ``[Create temporary layer]``
      - Specify the output line layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -6969,6 +7929,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -6977,7 +7938,15 @@ Outputs
    * - **Transect**
      - ``OUTPUT``
      - [vector: line]
-     - Output line layer
+     - Output line layer.
+       The output layer contains the following fields:
+
+       - ``TR_FID``: ID of the original feature
+       - ``TR_ID``: ID of the transect. Each transect have a unique ID
+       - ``TR_SEGMENT``: ID of the segment of the linestring
+       - ``TR_ANGLE``: Angle in degrees from the original line at the vertex
+       - ``TR_LENGTH``: Total length of the transect returned
+       - ``TR_ORIENT``: Side of the transect (only on the left or right of the line, or both side)
 
 Python code
 ...........
@@ -6988,6 +7957,130 @@ Python code
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
+.. _qgistransectfixeddistance:
+
+Transect (fixed distance)
+-------------------------
+``Added in 4.0``
+
+Creates transects at fixed distance intervals along (multi)linestrings.
+
+A transect is a line oriented from an angle (by default perpendicular)
+to the input polylines at regular intervals.
+
+The output transect layer includes the original feature fields along with new transect fields.
+
+.. figure:: img/transect_fixed_distance.png
+   :align: center
+
+   Transects (red lines) created at fixed intervals along the input line layer (blue lines)
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+.. seealso:: :ref:`qgistransect`
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [vector: line]
+     - Input line vector layer
+   * - **Fixed sampling interval**
+     - ``INTERVAL``
+     - [numeric: double]
+
+       Default: ``10.0``
+     - Distance between transects along the line
+   * - **Length of the transect**
+     - ``LENGTH``
+     - [numeric: double] |dataDefine|
+
+       Default: ``5.0``
+     - Total length of each transect line
+   * - **Angle from original line at the vertices**
+     - ``ANGLE``
+     - [numeric: double] |dataDefine|
+
+       Default: ``90.0``
+     - Angle in degrees from the original line. A value of 90° creates
+       perpendicular transects
+   * - **Side to create the transects**
+     - ``SIDE``
+     - [enumeration]
+
+       Default: ``0``
+     - Which side of the line to create transects on (relative to the line
+       digitizing direction):
+
+       * 0 --- Left
+       * 1 --- Right
+       * 2 --- Both
+   * - **Direction**
+       Optional
+     - ``DIRECTION``
+     - [enumeration]
+
+       Default: ``0``
+     - Orientation direction for transects:
+
+       * 0 --- Left to Right
+       * 1 --- Right to Left
+   * - **Transect**
+     - ``OUTPUT``
+     - [vector: line]
+
+       Default: ``[Create temporary layer]``
+     - Specification of the output line layer.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types**
+          :end-before: **end_layer_output_types**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Transect**
+     - ``OUTPUT``
+     - [vector: line]
+     - Output line layer containing the generated transects.
+       The output layer contains the following fields:
+
+       - ``TR_FID``: ID of the original feature
+       - ``TR_ID``: ID of the transect. Each transect have a unique ID
+       - ``TR_SEGMENT``: ID of the segment of the linestring
+       - ``TR_ANGLE``: Angle in degrees from the original line at the vertex
+       - ``TR_LENGTH``: Total length of the transect returned
+       - ``TR_ORIENT``: Side of the transect (only on the left or right of the line, or both side)
+
+Python code
+...........
+
+**Algorithm ID**: ``native:transectfixeddistance``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
 
 .. _qgistranslategeometry:
 
@@ -7001,10 +8094,11 @@ Z and M values present in the geometry can also be translated.
 .. figure:: img/translate_geometry.png
    :align: center
 
-   Dashed lines represent the translated geometry of the input layer
+   Features in red represent the translated geometry of the input (blue) layer
 
 |checkbox| Allows
 :ref:`features in-place modification <processing_inplace_edit>`
+of point, line, and polygon features
 
 .. seealso:: :ref:`qgisarraytranslatedfeatures`,
    :ref:`qgisoffsetline`, :ref:`qgisrotatefeatures`, :ref:`qgisswapxy`
@@ -7023,29 +8117,29 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Offset distance (x-axis)**
      - ``DELTA_X``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Displacement to apply on the X axis
    * - **Offset distance (y-axis)**
      - ``DELTA_Y``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Displacement to apply on the Y axis
    * - **Offset distance (z-axis)**
      - ``DELTA_Z``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Displacement to apply on the Z axis
    * - **Offset distance (m values)**
      - ``DELTA_M``
-     - [number |dataDefined|]
+     - [numeric: double] |dataDefine|
 
        Default: 0.0
      - Displacement to apply on the M axis
@@ -7055,7 +8149,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -7067,6 +8161,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -7108,6 +8203,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -7119,7 +8215,7 @@ Parameters
      - Input line vector layer
    * - **Segments**
      - ``SEGMENTS``
-     - [number |dataDefined|]
+     - [numeric: integer] |dataDefine|
 
        Default: 16
      - Number of the buffer segments per quarter circle.
@@ -7132,7 +8228,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output (buffer) layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -7144,6 +8240,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -7188,6 +8285,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -7199,18 +8297,37 @@ Parameters
      - Input point vector layer
    * - **Buffer region (% of extent)**
      - ``BUFFER``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The extent of the output layer will be this much
        bigger than the extent of the input layer
+   * - **Tolerance**
+
+       Optional
+
+       ``Added in 3.34``
+     - ``TOLERANCE``
+     - [numeric: double]
+
+       Default: 0.0
+     - Specifies an optional snapping tolerance which can be used to improve the robustness of the voronoi.
+   * - **Copy attributes from input features**
+
+       ``Added in 3.34``
+     - ``COPY_ATTRIBUTES``
+     - [boolean]
+
+       Default: True
+     - Specifies whether fields storing involved point features ID should be added to the output.
+       If False, an ``id`` field is created to identify the polygons.
    * - **Voronoi polygons**
      - ``OUTPUT``
      - [vector: polygon]
 
        Default: ``[Create temporary layer]``
      - Specify the output layer (with the Voronoi polygons).
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -7222,6 +8339,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -7235,11 +8353,15 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:voronoipolygons``
+**Algorithm ID**: ``native:voronoipolygons``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
+
+
+.. _GEOS: https://libgeos.org/
+.. _SFCGAL: https://sfcgal.gitlab.io/SFCGAL/
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
@@ -7256,11 +8378,15 @@ Python code
    :width: 1.3em
 .. |clearText| image:: /static/common/mIconClearText.png
    :width: 1.5em
-.. |dataDefined| image:: /static/common/mIconDataDefine.png
+.. |dataDefine| image:: /static/common/mIconDataDefine.png
    :width: 1.5em
 .. |deleteAttribute| image:: /static/common/mActionDeleteAttribute.png
    :width: 1.5em
 .. |identify| image:: /static/common/mActionIdentify.png
    :width: 1.5em
 .. |newAttribute| image:: /static/common/mActionNewAttribute.png
+   :width: 1.5em
+.. |success| image:: /static/common/mIconSuccess.png
+   :width: 1em
+.. |taskCancel| image:: /static/common/mTaskCancel.png
    :width: 1.5em

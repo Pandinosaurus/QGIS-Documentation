@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Conditionals_CASE:
 
 CASE
@@ -165,4 +166,3 @@ Tries an expression and returns its value if error-free. If the expression retur
 
 
 .. end_try_section
-

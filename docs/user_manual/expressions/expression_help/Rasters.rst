@@ -6,6 +6,30 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
+.. _expression_function_Rasters_raster_attributes:
+
+raster_attributes
+.................
+
+Returns a map with the fields names as keys and the raster attribute table values as values from the attribute table entry that matches the given raster value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - raster_attributes(layer, band, value)
+   * - Arguments
+     - * **layer** - the name or id of a raster layer
+       * **band** - the band number for the associated attribute table lookup.
+       * **value** - raster value
+   * - Examples
+     - * ``raster_attributes('vegetation', 1, raster_value('vegetation', 1, make_point(1,1)))`` → {'class': 'Vegetated', 'subclass': 'Trees'}
+       * ``raster_attributes('vegetation', 1, raster_value('vegetation', 1, @layer_cursor_point))`` → {'class': 'Vegetated', 'subclass': 'Trees'}
+
+
+.. end_raster_attributes_section
+
 .. _expression_function_Rasters_raster_statistic:
 
 raster_statistic
@@ -23,15 +47,13 @@ Returns statistics from a raster layer.
        * **band** - integer representing the band number from the raster layer, starting at 1
        * **property** - a string corresponding to the property to return. Valid options are:
 
-         
-
          * min: minimum value
          * max: maximum value
          * avg: average (mean) value
          * stdev: standard deviation of values
          * range: range of values (max - min)
          * sum: sum of all values from raster
-         
+
 
    * - Examples
      - * ``raster_statistic('lc',1,'avg')`` → Average value from band 1 from 'lc' raster layer
@@ -58,7 +80,7 @@ Returns the raster value found at the provided point.
        * **point** - point geometry (for multipart geometries having more than one part, a NULL value will be returned)
    * - Examples
      - * ``raster_value('dem', 1, make_point(1,1))`` → 25
+       * ``raster_value('ndvi', 2, @layer_cursor_point)`` → 25
 
 
 .. end_raster_value_section
-

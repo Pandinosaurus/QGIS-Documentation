@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Math_abs:
 
 abs
@@ -396,7 +397,7 @@ Returns a random integer within the range specified by the minimum and maximum a
    :widths: 15 85
 
    * - Syntax
-     - rand(min, max, [seed=NULL])
+     - rand(min, max, [seed:=NULL])
 
        [] marks optional arguments
    * - Arguments
@@ -420,7 +421,7 @@ Returns a random float within the range specified by the minimum and maximum arg
    :widths: 15 85
 
    * - Syntax
-     - randf([min=0.0], [max=1.0], [seed=NULL])
+     - randf([min:=0.0], [max:=1.0], [seed:=NULL])
 
        [] marks optional arguments
    * - Arguments
@@ -438,30 +439,64 @@ Returns a random float within the range specified by the minimum and maximum arg
 round
 .....
 
-Rounds a number to number of decimal places.
+Rounds a number to number of decimal places. The rounding is done to the nearest number. The ceil or floor functions can be used if rounding up or down is required.
 
 .. list-table::
    :widths: 15 85
 
    * - Syntax
-     - round(value, [places=0])
+     - round(value, [places:=0])
 
        [] marks optional arguments
    * - Arguments
      - * **value** - decimal number to be rounded
-       * **places** - Optional integer representing number of places to round decimals to. Can be negative.
+       * **places** - Optional integer representing number of places to round decimals to. For negative integers the rounding is done to the left of the decimal point.
    * - Examples
      - * ``round(1234.567, 2)`` → 1234.57
        * ``round(1234.567)`` → 1235
        * ``round(1234.567, -1)`` → 1230
+       * ``round(1234.567, -2)`` → 1200
 
 
 .. end_round_section
 
-.. _expression_function_Math_scale_exp:
+.. _expression_function_Math_scale_cubic_bezier:
 
-scale_exp
-.........
+scale_cubic_bezier
+..................
+
+Transforms a given value from an input domain to an output range using a cubic Bézier curve. This function can be used to ease values in or out of the specified output range using custom control points.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - scale_cubic_bezier(value, domain_min, domain_max, range_min, range_max, x1, y1, x2, y2)
+   * - Arguments
+     - * **value** - A value in the input domain. The function will return a corresponding scaled value in the output range.
+       * **domain_min** - Specifies the minimum value in the input domain, the smallest value the input value should take.
+       * **domain_max** - Specifies the maximum value in the input domain, the largest value the input value should take.
+       * **range_min** - Specifies the minimum value in the output range, the smallest value which should be output by the function.
+       * **range_max** - Specifies the maximum value in the output range, the largest value which should be output by the function.
+       * **x1** - The x-coordinate of the first control point. Must be a value between 0 and 1.
+       * **y1** - The y-coordinate of the first control point. Must be a value between 0 and 1.
+       * **x2** - The x-coordinate of the second control point. Must be a value between 0 and 1.
+       * **y2** - The y-coordinate of the second control point. Must be a value between 0 and 1.
+   * - Examples
+     - * ``scale_cubic_bezier(5, 0, 10, 0, 100, 0.42, 0.0, 0.58, 1.0)`` → 50.0
+
+         easing in and out using a symmetrical cubic Bézier curve
+       * ``scale_cubic_bezier(5, 0, 10, 0, 100, 0.25, 0.1, 0.25, 1.0)`` → 80.24034
+
+         a standard ease curve, accelerating quickly before decelerating gradually
+
+
+.. end_scale_cubic_bezier_section
+
+.. _expression_function_Math_scale_exponential:
+
+scale_exponential
+.................
 
 Transforms a given value from an input domain to an output range using an exponential curve. This function can be used to ease values in or out of the specified output range.
 
@@ -469,7 +504,7 @@ Transforms a given value from an input domain to an output range using an expone
    :widths: 15 85
 
    * - Syntax
-     - scale_exp(value, domain_min, domain_max, range_min, range_max, exponent)
+     - scale_exponential(value, domain_min, domain_max, range_min, range_max, exponent)
    * - Arguments
      - * **value** - A value in the input domain. The function will return a corresponding scaled value in the output range.
        * **domain_min** - Specifies the minimum value in the input domain, the smallest value the input value should take.
@@ -478,15 +513,15 @@ Transforms a given value from an input domain to an output range using an expone
        * **range_max** - Specifies the maximum value in the output range, the largest value which should be output by the function.
        * **exponent** - A positive value (greater than 0), which dictates the way input values are mapped to the output range. Large exponents will cause the output values to 'ease in', starting slowly before accelerating as the input values approach the domain maximum. Smaller exponents (less than 1) will cause output values to 'ease out', where the mapping starts quickly but slows as it approaches the domain maximum.
    * - Examples
-     - * ``scale_exp(5,0,10,0,100,2)`` → 25
+     - * ``scale_exponential(5,0,10,0,100,2)`` → 3.030
 
          easing in, using an exponent of 2
-       * ``scale_exp(3,0,10,0,100,0.5)`` → 54.772
+       * ``scale_exponential(3,0,10,0,100,0.5)`` → 87.585
 
          easing out, using an exponent of 0.5
 
 
-.. end_scale_exp_section
+.. end_scale_exponential_section
 
 .. _expression_function_Math_scale_linear:
 
@@ -517,6 +552,36 @@ Transforms a given value from an input domain to an output range using linear in
 
 
 .. end_scale_linear_section
+
+.. _expression_function_Math_scale_polynomial:
+
+scale_polynomial
+................
+
+Transforms a given value from an input domain to an output range using a polynomial curve. This function can be used to ease values in or out of the specified output range.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - scale_polynomial(value, domain_min, domain_max, range_min, range_max, exponent)
+   * - Arguments
+     - * **value** - A value in the input domain. The function will return a corresponding scaled value in the output range.
+       * **domain_min** - Specifies the minimum value in the input domain, the smallest value the input value should take.
+       * **domain_max** - Specifies the maximum value in the input domain, the largest value the input value should take.
+       * **range_min** - Specifies the minimum value in the output range, the smallest value which should be output by the function.
+       * **range_max** - Specifies the maximum value in the output range, the largest value which should be output by the function.
+       * **exponent** - A positive value (greater than 0), which dictates the way input values are mapped to the output range. Large exponents will cause the output values to 'ease in', starting slowly before accelerating as the input values approach the domain maximum. Smaller exponents (less than 1) will cause output values to 'ease out', where the mapping starts quickly but slows as it approaches the domain maximum.
+   * - Examples
+     - * ``scale_polynomial(5,0,10,0,100,2)`` → 25
+
+         easing in, using an exponent of 2
+       * ``scale_polynomial(3,0,10,0,100,0.5)`` → 54.772
+
+         easing out, using an exponent of 0.5
+
+
+.. end_scale_polynomial_section
 
 .. _expression_function_Math_sin:
 
@@ -577,4 +642,3 @@ Returns the tangent of an angle.
 
 
 .. end_tan_section
-

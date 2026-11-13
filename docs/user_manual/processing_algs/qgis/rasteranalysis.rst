@@ -6,6 +6,7 @@ Raster analysis
    .. contents::
       :local:
       :depth: 1
+      :class: toc_columns
 
 
 .. _qgiscellstackpercentrankfromvalue:
@@ -26,7 +27,7 @@ There are two methods for percentile calculation:
 * Inclusive linear interpolation (PERCENTRANK.INC)
 * Exclusive linear interpolation (PERCENTRANK.EXC)
 
-The linear interpolation method return the unique percent rank for different values.
+The linear interpolation methods return the unique percent rank for different values.
 Both interpolation methods follow their counterpart methods implemented
 by `LibreOffice <https://help.libreoffice.org/latest/en-US/text/scalc/01/04060184.html?DbPAR=CALC#bm_id3148807>`_
 or Microsoft Excel.
@@ -77,7 +78,7 @@ Basic parameters
        * 1 --- Exclusive linear interpolation (PERCENTRANK.EXC)
    * - **Value**
      - ``VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: 10.0
      - Value to rank among the respective values in the stack of all overlaid
@@ -96,10 +97,10 @@ Basic parameters
        (extent, CRS, pixel dimensions)
    * - **Output layer**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -117,12 +118,29 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``OUTPUT_NODATA_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -130,6 +148,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -149,15 +168,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -240,7 +259,7 @@ Basic parameters
        * 2 --- Exclusive linear interpolation (PERCENTILE.EXC)
    * - **Percentile**
      - ``VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.25
      - Value to rank among the respective values in the stack of all overlaid
@@ -259,10 +278,10 @@ Basic parameters
        (extent, CRS, pixel dimensions)
    * - **Output layer**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -280,12 +299,29 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``OUTPUT_NODATA_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -293,6 +329,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -312,15 +349,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -335,7 +372,7 @@ Python code
 
 .. _qgiscellstackpercentrankfromrasterlayer:
 
-cell stack percentrank from raster layer
+Cell stack percentrank from raster layer
 ----------------------------------------
 
 Calculates the cell-wise percentrank value of a stack of rasters based
@@ -397,7 +434,7 @@ Basic parameters
      - The layer to rank the values among the stack of all overlaid layers
    * - **Value raster band**
      - ``VALUE_RASTER_BAND``
-     - [integer]
+     - [numeric: integer]
 
        Default: 1
      - Band of the "value raster layer" to compare to
@@ -424,10 +461,10 @@ Basic parameters
        (extent, CRS, pixel dimensions)
    * - **Output layer**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -445,12 +482,29 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``OUTPUT_NODATA_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -458,6 +512,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -477,15 +532,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -552,6 +607,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -593,10 +649,10 @@ Basic parameters
        from (extent, CRS, pixel dimensions)
    * - **Output layer**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -614,14 +670,31 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
 
        Optional
      - ``OUTPUT_NO_DATA_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -629,6 +702,7 @@ Outputs
 .. list-table::
   :header-rows: 1
   :widths: 20 20 20 40
+  :class: longtable
 
   * - Label
     - Name
@@ -644,7 +718,7 @@ Outputs
     - The spatial extent of the output raster layer
   * - **Height in pixels**
     - ``HEIGHT_IN_PIXELS``
-    - [integer]
+    - [numeric: integer]
     - The number of rows in the output raster layer
   * - **Output raster**
     - ``OUTPUT``
@@ -652,11 +726,11 @@ Outputs
     - Output raster layer containing the result
   * - **Total pixel count**
     - ``TOTAL_PIXEL_COUNT``
-    - [integer]
+    - [numeric: integer]
     - The count of pixels in the output raster layer
   * - **Width in pixels**
     - ``WIDTH_IN_PIXELS``
-    - [integer]
+    - [numeric: integer]
     - The number of columns in the output raster layer
 
 Python code
@@ -736,10 +810,10 @@ Basic parameters
        will result in a NoData cell in the output raster
    * - **Output layer**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -757,14 +831,31 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
 
        Optional
      - ``OUTPUT_NO_DATA_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -772,6 +863,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -791,27 +883,27 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Count of cells with equal value occurrences**
      - ``FOUND_LOCATIONS_COUNT``
-     - [number]
+     - [numeric: integer]
      -
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [number]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
    * - **Mean frequency at valid cell locations**
      - ``MEAN_FREQUENCY_PER_LOCATION``
-     - [number]
+     - [numeric: double]
      -
    * - **Count of value occurrences**
      - ``OCCURRENCE_COUNT``
-     - [number]
+     - [numeric: integer]
      -
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
 
 .. **endfrequencyparams**
@@ -836,16 +928,15 @@ membership value to each pixel, using a Gaussian membership function.
 Membership values range from 0 to 1.
 In the fuzzified raster, a value of 0 implies no membership of the
 defined fuzzy set, whereas a value of 1 means full membership.
-The gaussian membership function is defined as |gaussian_formula|,
+The gaussian membership function is defined as :math:`\mu(x)=e^{−f_1*(x−f_2)^2}`,
 where *f1* is the spread and *f2* the midpoint.
 
 .. figure:: img/gaussianimage.png
   :align: center
 
-  Fuzzify raster example. Input raster source: Land Tirol -
-  data.tirol.gv.at.
+  Fuzzify raster (gaussian membership) example (midpoint=300, spread=0.00001).
 
-.. seealso:: :ref:`qgisfuzzifyrasterlargemembership`
+.. seealso:: :ref:`qgisfuzzifyrasterlargemembership`,
   :ref:`qgisfuzzifyrasterlinearmembership`,
   :ref:`qgisfuzzifyrasternearmembership`,
   :ref:`qgisfuzzifyrasterpowermembership`,
@@ -853,6 +944,9 @@ where *f1* is the spread and *f2* the midpoint.
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -876,26 +970,56 @@ Parameters
        you want to fuzzify.
    * - **Function midpoint**
      - ``FUZZYMIDPOINT``
-     - [number]
+     - [numeric: double]
 
-       Default: 10
+       Default: 10.0
      - Midpoint of the gaussian function
    * - **Function spread**
      - ``FUZZYSPREAD``
-     - [number]
+     - [numeric: double]
 
        Default: 0.01
      - Spread of the gaussian function
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -903,6 +1027,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -910,7 +1035,7 @@ Outputs
      - Description
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
      - Output raster layer containing the result
    * - **CRS authority identifier**
      - ``CRS_AUTHID``
@@ -922,15 +1047,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -953,8 +1078,13 @@ membership value to each pixel, using a Large membership function.
 Membership values range from 0 to 1.
 In the fuzzified raster, a value of 0 implies no membership of the
 defined fuzzy set, whereas a value of 1 means full membership.
-The large membership function is defined as |fuzzy_large_formula|,
+The large membership function is defined as :math:`\mu(x)={1}/({1+{(x/f_2)}^{-f_1}})`
 where *f1* is the spread and *f2* the midpoint.
+
+.. figure:: img/largemembershipimage.png
+  :align: center
+
+  Fuzzify raster (large membership) example (midpoint=300, spread=10).
 
 .. seealso:: :ref:`qgisfuzzifyrastergaussianmembership`,
   :ref:`qgisfuzzifyrasterlinearmembership`,
@@ -965,9 +1095,13 @@ where *f1* is the spread and *f2* the midpoint.
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -986,26 +1120,56 @@ Parameters
        fuzzify.
    * - **Function midpoint**
      - ``FUZZYMIDPOINT``
-     - [number]
+     - [numeric: double]
 
-       Default: 50
+       Default: 50.0
      - Midpoint of the large function
    * - **Function spread**
      - ``FUZZYSPREAD``
-     - [number]
+     - [numeric: double]
 
-       Default: 5
+       Default: 5.0
      - Spread of the large function
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1013,6 +1177,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1020,7 +1185,7 @@ Outputs
      - Description
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
      - Output raster layer containing the result
 
    * - **CRS authority identifier**
@@ -1033,15 +1198,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -1063,14 +1228,19 @@ Transforms an input raster to a fuzzified raster by assigning a
 membership value to each pixel, using a Linear membership function.
 Membership values range from 0 to 1. In the fuzzified raster, a value
 of 0 implies no membership of the defined fuzzy set, whereas a value
-of 1 means full membership.
-The linear function is defined as |fuzzy_linear_formula|, where *a*
-is the low bound and *b* the high bound. This equation assigns
+of 1 means full membership. The linear function is defined as
+:math:`\mu(x)=\begin{cases}0&\text{x≤a}\\(x-a)/(b-a)&\text{a<x<b}\\1&\text{x≥b}\end{cases}`,
+where *a* is the low bound and *b* the high bound. This equation assigns
 membership values using a linear transformation for pixel values
 between the low and high bounds.
 Pixels values smaller than the low bound are given 0 membership
 whereas pixel values greater than the high bound are given 1
 membership.
+
+.. figure:: img/linearmembershipimage.png
+  :align: center
+
+  Fuzzify raster (linear membership) example (low bound=100, high bound=590).
 
 .. seealso:: :ref:`qgisfuzzifyrastergaussianmembership`,
   :ref:`qgisfuzzifyrasterlargemembership`,
@@ -1081,9 +1251,13 @@ membership.
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1102,26 +1276,56 @@ Parameters
        fuzzify.
    * - **Low fuzzy membership bound**
      - ``FUZZYLOWBOUND``
-     - [number]
+     - [numeric: double]
 
-       Default: 0
+       Default: 0.0
      - Low bound of the linear function
    * - **High fuzzy membership bound**
      - ``FUZZYHIGHBOUND``
-     - [number]
+     - [numeric: double]
 
-       Default: 1
+       Default: 1.0
      - High bound of the linear function
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1129,6 +1333,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1136,7 +1341,7 @@ Outputs
      - Description
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
      - Output raster layer containing the result
    * - **CRS authority identifier**
      - ``CRS_AUTHID``
@@ -1148,15 +1353,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -1179,8 +1384,14 @@ membership value to each pixel, using a Near membership function.
 Membership values range from 0 to 1.
 In the fuzzified raster, a value of 0 implies no membership of the
 defined fuzzy set, whereas a value of 1 means full membership.
-The near membership function is defined as |near_formula|, where
-*f1* is the spread and *f2* the midpoint.
+The near membership function is defined as :math:`\mu(x)={1}/(1+f_1*({x-f_2})²)`,
+where *f1* is the spread and *f2* the midpoint.
+
+.. figure:: img/nearmembershipimage.png
+  :align: center
+
+  Fuzzify raster (near membership) example (midpoint=300, spread=0.00001).
+
 
 .. seealso:: :ref:`qgisfuzzifyrastergaussianmembership`,
   :ref:`qgisfuzzifyrasterlargemembership`,
@@ -1191,9 +1402,13 @@ The near membership function is defined as |near_formula|, where
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1212,26 +1427,56 @@ Parameters
        fuzzify.
    * - **Function midpoint**
      - ``FUZZYMIDPOINT``
-     - [number]
+     - [numeric: double]
 
-       Default: 50
+       Default: 50.0
      - Midpoint of the near function
    * - **Function spread**
      - ``FUZZYSPREAD``
-     - [number]
+     - [numeric: double]
 
        Default: 0.01
      - Spread of the near function
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1239,6 +1484,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1246,7 +1492,7 @@ Outputs
      - Description
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
      - Output raster layer containing the result
    * - **CRS authority identifier**
      - ``CRS_AUTHID``
@@ -1258,15 +1504,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -1289,13 +1535,19 @@ membership value to each pixel, using a Power membership function.
 Membership values range from 0 to 1.
 In the fuzzified raster, a value of 0 implies no membership of the
 defined fuzzy set, whereas a value of 1 means full membership.
-The power function is defined as |power_formula|, where *a* is the
-low bound, *b* is the high bound, and *f1* the exponent.
+The power function is defined as
+:math:`\mu(x)=\begin{cases}0&\text{x≤a}\\{(({x-a})/({b-a}))}^{f_1}&\text{a<x<b}\\1&\text{x≥b}\end{cases}`,
+where *a* is the low bound, *b* is the high bound, and *f1* the exponent.
 This equation assigns membership values using the power transformation
 for pixel values between the low and high bounds.
 Pixels values smaller than the low bound are given 0 membership
 whereas pixel values greater than the high bound are given 1
 membership.
+
+.. figure:: img/powermembershipimage.png
+  :align: center
+
+  Fuzzify raster (power membership) example (low bound=100, high bound=590, membership exponent=2).
 
 .. seealso:: :ref:`qgisfuzzifyrastergaussianmembership`, :ref:`qgisfuzzifyrasterlargemembership`,
   :ref:`qgisfuzzifyrasterlinearmembership`, :ref:`qgisfuzzifyrasternearmembership`,
@@ -1304,9 +1556,13 @@ membership.
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1325,32 +1581,62 @@ Parameters
        fuzzify.
    * - **Low fuzzy membership bound**
      - ``FUZZYLOWBOUND``
-     - [number]
+     - [numeric: double]
 
-       Default: 0
+       Default: 0.0
      - Low bound of the power function
    * - **High fuzzy membership bound**
      - ``FUZZYHIGHBOUND``
-     - [number]
+     - [numeric: double]
 
-       Default: 1
+       Default: 1.0
      - High bound of the power function
    * - **High fuzzy membership bound**
      - ``FUZZYEXPONENT``
-     - [number]
+     - [numeric: double]
 
-       Default: 2
+       Default: 2.0
      - Exponent of the power function
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1358,6 +1644,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1365,7 +1652,7 @@ Outputs
      - Description
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
      - Output raster layer containing the result
    * - **CRS authority identifier**
      - ``CRS_AUTHID``
@@ -1377,15 +1664,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
@@ -1408,11 +1695,16 @@ membership value to each pixel, using a Small membership function.
 Membership values range from 0 to 1.
 In the fuzzified raster, a value of 0 implies no membership of the
 defined fuzzy set, whereas a value of 1 means full membership.
-The small membership function is defined as |small_formula|, where
-*f1* is the spread and *f2* the midpoint.
+The small membership function is defined as :math:`\mu(x)=1/({1+{(x/f_2)}^{f_1}})`,
+where *f1* is the spread and *f2* the midpoint.
+
+.. figure:: img/smallmembershipimage.png
+  :align: center
+
+  Fuzzify raster (small membership) example (midpoint=300, spread=10).
 
 .. seealso:: :ref:`qgisfuzzifyrastergaussianmembership`,
-  :ref:`qgisfuzzifyrasterlargemembership`
+  :ref:`qgisfuzzifyrasterlargemembership`,
   :ref:`qgisfuzzifyrasterlinearmembership`,
   :ref:`qgisfuzzifyrasternearmembership`,
   :ref:`qgisfuzzifyrasterpowermembership`
@@ -1420,9 +1712,13 @@ The small membership function is defined as |small_formula|, where
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1437,30 +1733,59 @@ Parameters
      - [raster band]
 
        Default: The first band of the raster layer
-     - If the raster is multiband, choose the band that you want to
-       fuzzify.
+     - If the raster is multiband, choose the band that you want to fuzzify.
    * - **Function midpoint**
      - ``FUZZYMIDPOINT``
-     - [number]
+     - [numeric: double]
 
-       Default: 50
+       Default: 50.0
      - Midpoint of the small function
    * - **Function spread**
      - ``FUZZYSPREAD``
-     - [number]
+     - [numeric: double]
 
-       Default: 5
+       Default: 5.0
      - Spread of the small function
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1468,6 +1793,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1475,7 +1801,7 @@ Outputs
      - Description
    * - **Fuzzified raster**
      - ``OUTPUT``
-     - [same as input]
+     - [raster]
      - Output raster layer containing the result
    * - **CRS authority identifier**
      - ``CRS_AUTHID``
@@ -1487,21 +1813,134 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 Python code
 ...........
 
 **Algorithm ID**: ``native:fuzzifyrastersmallmembership``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+.. _qgisrastergaussianblur:
+
+Gaussian blur
+----------------------
+``Added in 4.0``
+
+Applies a Gaussian blur filter to an input raster layer.
+The radius parameter controls the strength of the blur.
+A larger radius results in a smoother output, at the cost of execution time.
+
+.. figure:: img/gaussianblur.png
+  :align: center
+
+  Gaussian blur applied to input raster with blur radius 2 pixels and 4 pixels.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [raster]
+     - Input raster layer to be processed.
+   * - **Band number**
+     - ``BAND``
+     - [raster band]
+
+       Default: The first band of the raster layer
+     - If the raster is multiband, choose the band that you want to process.
+   * - **Blur radius (pixels)**
+     - ``RADIUS``
+     - [numeric: integer]
+
+       Default: 2
+     - The radius of the Gaussian kernel in pixels.
+       Larger values produce a more pronounced blur effect.
+   * - **Output layer**
+     - ``OUTPUT``
+     - [raster]
+
+       Default: ``[Save to temporary file]``
+     - Specification of the output raster containing the result.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output layer**
+     - ``OUTPUT``
+     - [raster]
+     - Output raster layer containing the result.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:rastergaussianblur``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -1611,7 +2050,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster containing the result.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1629,12 +2068,29 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``OUTPUT_NODATA_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1642,6 +2098,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1661,15 +2118,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
 
 .. **endpositionparams**
@@ -1732,7 +2189,7 @@ Lowest position in raster stack
 Evaluates on a cell-by-cell basis the position of the raster with the lowest value
 in a stack of rasters. Position counts start with 1 and range to the total number
 of input rasters. The order of the input rasters is relevant for the algorithm.
-If multiple rasters feature the highest value, the first raster will be used for
+If multiple rasters feature the lowest value, the first raster will be used for
 the position value.
 
 If multiband rasters are used in the data raster stack, the algorithm will
@@ -1779,10 +2236,15 @@ use as a reference when creating the output raster.
 The output raster will have the same extent, CRS, and pixel dimensions
 as this layer.
 
-By default, a nodata pixel in ANY of the input layers will result in a
-nodata pixel in the output raster.
-If the :guilabel:`Treat nodata values as false` option is checked,
-then nodata inputs will be treated the same as a ``0`` input value.
+By default, a NoData pixel in ANY of the input layers will result in a
+NoData pixel in the output raster.
+If the :guilabel:`Treat NoData values as false` option is checked,
+then NoData inputs will be treated the same as a ``0`` input value.
+
+.. figure:: img/rasterbooleanAND.png
+  :align: center
+
+  Raster boolean AND example.
 
 .. seealso:: :ref:`qgisrasterbooleanor`
 
@@ -1810,12 +2272,12 @@ Basic parameters
      - [raster]
      - The reference layer to create the output layer
        from (extent, CRS, pixel dimensions)
-   * - **Treat nodata values as false**
+   * - **Treat NoData values as false**
      - ``NODATA_AS_FALSE``
      - [boolean]
 
        Default: False
-     - Treat nodata values in the input files as 0 when performing the
+     - Treat NoData values in the input files as 0 when performing the
        operation
    * - **Output layer**
      - ``OUTPUT``
@@ -1823,7 +2285,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster containing the result.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1841,12 +2303,12 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``NO_DATA``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
    * - **Output data type**
      - ``DATA_TYPE``
      - [enumeration]
@@ -1854,17 +2316,27 @@ Advanced parameters
        Default: 5
      - Output raster data type. Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **native_raster_data_types**
+          :end-before: **end_native_raster_data_types**
+
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -1888,27 +2360,27 @@ Outputs
      - The coordinate reference system of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
-   * - **NODATA pixel count**
+   * - **NoData pixel count**
      - ``NODATA_PIXEL_COUNT``
-     - [integer]
-     - The count of nodata pixels in the output raster layer
+     - [numeric: integer]
+     - The count of NoData pixels in the output raster layer
    * - **True pixel count**
      - ``TRUE_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of True pixels (value = 1) in the output raster layer
    * - **False pixel count**
      - ``FALSE_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of False pixels (value = 0) in the output raster
        layer
    * - **Output layer**
@@ -1930,21 +2402,26 @@ Python code
 
 Raster boolean OR
 ----------------------
-Calculates the boolean ``OR`` for a set of input rasters.
-If all of the input rasters have a zero value for a pixel, that
-pixel will be set to ``0`` in the output raster.
-If any of the input rasters have ``1`` values for the pixel it will
-be set to ``1`` in the output raster.
+Calculates the boolean OR for a set of input rasters.
+If any of the input rasters have a non-zero value for a pixel,
+that pixel will be set to 1 in the output raster.
+If all the input rasters have 0 values for the
+pixel it will be set to 0 in the output raster.
 
 The reference layer parameter specifies an existing raster layer to
 use as a reference when creating the output raster.
 The output raster will have the same extent, CRS, and pixel dimensions
 as this layer.
 
-By default, a nodata pixel in ANY of the input layers will result in a
-nodata pixel in the output raster.
-If the :guilabel:`Treat nodata values as false` option is checked,
-then nodata inputs will be treated the same as a ``0`` input value.
+By default, a NoData pixel in ANY of the input layers will result in a
+NoData pixel in the output raster.
+If the :guilabel:`Treat NoData values as false` option is checked,
+then NoData inputs will be treated the same as a ``0`` input value.
+
+.. figure:: img/rasterbooleanOR.png
+  :align: center
+
+  Raster boolean OR example.
 
 .. seealso:: :ref:`qgisrasterbooleanand`
 
@@ -1972,12 +2449,12 @@ Basic parameters
      - [raster]
      - The reference layer to create the output layer
        from (extent, CRS, pixel dimensions)
-   * - **Treat nodata values as false**
+   * - **Treat NoData values as false**
      - ``NODATA_AS_FALSE``
      - [boolean]
 
        Default: False
-     - Treat nodata values in the input files as 0 when performing the
+     - Treat NoData values in the input files as 0 when performing the
        operation
    * - **Output layer**
      - ``OUTPUT``
@@ -1985,7 +2462,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster containing the result.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2003,12 +2480,12 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``NO_DATA``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to use for nodata in the output layer
+     - Value to use for NoData in the output layer
    * - **Output data type**
      - ``DATA_TYPE``
      - [enumeration]
@@ -2016,17 +2493,27 @@ Advanced parameters
        Default: 5
      - Output raster data type. Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **native_raster_data_types**
+          :end-before: **end_native_raster_data_types**
+
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -2050,27 +2537,27 @@ Outputs
      - The coordinate reference system of the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
-   * - **NODATA pixel count**
+   * - **NoData pixel count**
      - ``NODATA_PIXEL_COUNT``
-     - [integer]
-     - The count of nodata pixels in the output raster layer
+     - [numeric: integer]
+     - The count of NoData pixels in the output raster layer
    * - **True pixel count**
      - ``TRUE_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of True pixels (value = 1) in the output raster layer
    * - **False pixel count**
      - ``FALSE_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of False pixels (value = 0) in the output raster layer
    * - **Output layer**
      - ``OUTPUT``
@@ -2087,18 +2574,20 @@ Python code
   :end-before: **end_algorithm_code_section**
 
 
-.. _qgisrastercalculator:
+.. _qgisrastercalc:
 
 Raster calculator
 -----------------
+
 Performs algebraic operations using raster layers.
 
-The resulting layer will have its values computed according to an
-expression.
+The resulting layer will have its values computed according to an expression.
 The expression can contain numerical values, operators and references
 to any of the layers in the current project.
 
-.. note:: When using the calculator in :ref:`processing_batch` or from
+.. Is this still true?
+
+  .. note:: When using the calculator in :ref:`processing_batch` or from
   the :ref:`console` the files to use have to be specified.
   The corresponding layers are referred using the base name of the
   file (without the full path).
@@ -2106,10 +2595,13 @@ to any of the layers in the current project.
   the first band of that layer will be referred as
   ``rasterfile.tif@1``.
 
-.. seealso:: :ref:`label_raster_calc`
+.. seealso:: :ref:`qgisvirtualrastercalc`, :ref:`gdalrastercalculator`, :ref:`label_raster_calc`
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -2120,58 +2612,14 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Layers**
-     -  GUI only
-     -
-     - Shows the list of all raster layers loaded in the legend.
-       These can be used to fill the expression box (double click to
-       add).
-       Raster layers are referred by their name and the number of the
-       band: ``layer_name@band_number``.
-       For instance, the first band from a layer named ``DEM`` will
-       be referred as ``DEM@1``.
-   * - **Operators**
-     -  GUI only
-     -
-     - Contains some calculator like buttons that can be used to fill
-       the expression box.
-   * - **Expression**
-     -  ``EXPRESSION``
-     - [string]
-     - Expression that will be used to calculate the output raster
-       layer.
-       You can use the operator buttons provided to type directly the
-       expression in this box.
-   * - **Predefined expressions**
-     - GUI only
-     -
-     - You can use the predefined ``NDVI`` expression or you can
-       define new expressions for calculations.
-       The :guilabel:`Add...` button loads a defined expression (and
-       lets you set the parameters).
-       The :guilabel:`Save...` button lets you define a new
-       expression.
-   * - **Reference layer(s) (used for automated extent, cellsize, and CRS)**
-
-       Optional
-     - ``LAYERS``
+   * - **Input layers**
+     - ``INPUT``
      - [raster] [list]
-     - Layer(s) that will be used to fetch extent, cell size and CRS.
-       By choosing the layer in this box you avoid filling in all the
-       other parameters by hand.
-       Raster layers are referred by their name and the number of
-       the band: ``layer_name@band_number``.
-       For instance, the first band from a layer named ``DEM`` will be
-       referred as ``DEM@1``.
-   * - **Cell size (use 0 or empty to set it automatically)**
-
-       Optional
-     - ``CELLSIZE``
-     - [number]
-     - Cell size of the output raster layer.
-       If the cell size is not specified, the minimum cell size of
-       the selected reference layer(s) will be used.
-       The cell size will be the same for the X and Y axes.
+     - List of input raster layers
+   * - **Expression**
+     - ``EXPRESSION``
+     - [expression]
+     - :ref:`Raster-based expression <raster_expression>` that will be used to calculate the output raster layer.
    * - **Output extent**
 
        Optional
@@ -2185,6 +2633,15 @@ Parameters
           :start-after: **extent_options**
           :end-before: **end_extent_options**
 
+   * - **Output cell size (leave empty to set automatically)**
+
+       Optional
+     - ``CELLSIZE``
+     - [numeric: double]
+     - Cell size of the output raster layer.
+       If the cell size is not specified, the minimum cell size of
+       the selected reference layer(s) will be used.
+       The cell size will be the same for the X and Y axes.
    * - **Output CRS**
 
        Optional
@@ -2193,16 +2650,44 @@ Parameters
      - CRS of the output raster layer.
        If the output CRS is not specified, the CRS of the first
        reference layer will be used.
-   * - **Output**
+   * - **Calculated**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -2210,12 +2695,13 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Output**
+   * - **Calculated**
      - ``OUTPUT``
      - [raster]
      - Output raster file with the calculated values.
@@ -2223,7 +2709,232 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:rastercalculator``
+**Algorithm ID**: ``native:rastercalc``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisvirtualrastercalc:
+
+Raster calculator (virtual)
+---------------------------
+``Added in 3.34``
+
+Performs algebraic operations using raster layers and generates in-memory result.
+
+The resulting layer will have its values computed according to an expression.
+The expression can contain numerical values, operators and references
+to any of the layers in the current project.
+
+A virtual raster layer is a raster layer defined by its URI and whose pixels are calculated on-the-fly.
+It's not a new file on disk; the virtual layer is still connected to the rasters used in the calculation
+meaning that deleting or moving these rasters would break it.
+A :guilabel:`Layer name` can be provided, otherwise the calculation expression is used as such.
+Removing the virtual layer from the project deletes it, and it can be made persistent in file using the layer
+:menuselection:`Export --> Save as...` contextual menu.
+
+.. seealso:: :ref:`qgisrastercalc`, :ref:`gdalrastercalculator`, :ref:`label_raster_calc`
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layers**
+     - ``INPUT``
+     - [raster] [list]
+     - List of input raster layers
+   * - **Expression**
+     - ``EXPRESSION``
+     - [expression]
+     - :ref:`Raster-based expression <raster_expression>` that will be used to calculate the output raster layer.
+   * - **Output extent**
+
+       Optional
+     - ``EXTENT``
+     - [extent]
+     - Specify the spatial extent of the output raster layer.
+       If the extent is not specified, the minimum extent that covers
+       all the selected reference layers will be used.
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+
+   * - **Output cell size (leave empty to set automatically)**
+
+       Optional
+     - ``CELLSIZE``
+     - [numeric: double]
+     - Cell size of the output raster layer.
+       If the cell size is not specified, the minimum cell size of
+       the selected reference layer(s) will be used.
+       The cell size will be the same for the X and Y axes.
+   * - **Output CRS**
+
+       Optional
+     - ``CRS``
+     - [crs]
+     - CRS of the output raster layer.
+       If the output CRS is not specified, the CRS of the first
+       reference layer will be used.
+   * - **Output layer name**
+
+       Optional
+     - ``LAYER_NAME``
+     - [string]
+     - The name to assign to the generated layer.
+       If not set, the text of the calculation expression is used.
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Calculated**
+     - ``OUTPUT``
+     - [raster]
+     - Output virtual raster layer with the calculated values.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:virtualrastercalc``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisrastercellindex:
+
+Raster grid cell index
+-----------------------
+``Added in 4.4``
+
+Ranks valid non-NoData raster grid cells according to their value,
+outputting a new grid where each cell contains its 0-based sorted index (rank).
+NoData cells in the input layer are preserved as NoData in the output layer.
+
+.. seealso:: This algorithm is a port of the SAGA `Grid Cell Index`_ tool.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [raster]
+     - Input raster layer
+   * - **Band number**
+     - ``BAND``
+     - [raster band]
+
+       Default: 1
+     - The raster band number with cell values to rank.
+   * - **Sort order**
+
+       Optional
+     - ``ORDER``
+     - [enumeration]
+
+       Default: 0
+     - Sort order:
+
+       * 0 --- ``Ascending``: assigns 0 to the lowest value
+       * 1 --- ``Descending``: assigns 0 to the highest value
+   * - **Output layer**
+     - ``OUTPUT``
+     - [raster]
+
+       Default: ``[Save to temporary file]``
+     - Specification of the ranked output raster layer:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output NoData value**
+     - ``NODATA``
+     - [numeric: integer]
+
+       Default: -9999
+     - Value to use for NoData cells in the output raster.
+   * - **Creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the raster
+       to be created (colors, block size, file compression...).
+       For convenience, you can rely on predefined profiles
+       (see :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options
+       with a pipe character (``|``).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output layer**
+     - ``OUTPUT``
+     - [raster]
+     - Output raster file with cells assigned their ranked value.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:rastercellindex``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -2237,7 +2948,7 @@ Raster layer properties
 
 Returns basic properties of the given raster layer, including the extent,
 size in pixels and dimensions of pixels (in map units), number of bands,
-and no data value.
+and NoData value.
 
 This algorithm is intended for use as a means of extracting these useful properties
 to use as the input values to other algorithms in a model - e.g. to allow to pass
@@ -2249,6 +2960,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2274,6 +2986,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2281,7 +2994,7 @@ Outputs
      - Description
    * - **Number of bands in raster**
      - ``BAND_COUNT``
-     - [number]
+     - [numeric: integer]
      - The number of bands in the raster
    * - **CRS authority identifier**
      - ``CRS_AUTHID``
@@ -2294,43 +3007,43 @@ Outputs
    * - **Band has a NoData value set**
      - ``HAS_NODATA_VALUE``
      - [Boolean]
-     - Indicates whether the raster layer has a value set for NODATA pixels
+     - Indicates whether the raster layer has a value set for NoData pixels
        in the selected band
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the raster layer
    * - **Band NoData value**
      - ``NODATA_VALUE``
-     - [number]
+     - [numeric: double]
      - The value (if set) of the NoData pixels in the selected band
    * - **Pixel size (height) in map units**
      - ``PIXEL_HEIGHT``
-     - [integer]
+     - [numeric: integer]
      - Vertical size in map units of the pixel
    * - **Pixel size (width) in map units**
      - ``PIXEL_WIDTH``
-     - [integer]
+     - [numeric: integer]
      - Horizontal size in map units of the pixel
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the raster layer
    * - **Maximum x-coordinate**
      - ``X_MAX``
-     - [number]
+     - [numeric: double]
      -
    * - **Minimum x-coordinate**
      - ``X_MIN``
-     - [number]
+     - [numeric: double]
      -
    * - **Maximum y-coordinate**
      - ``Y_MAX``
-     - [number]
+     - [numeric: double]
      -
    * - **Minimum y-coordinate**
      - ``Y_MIN``
-     - [number]
+     - [numeric: double]
      -
 
 Python code
@@ -2358,6 +3071,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2399,15 +3113,15 @@ Outputs
      - Description
    * - **Maximum value**
      - ``MAX``
-     - [number]
+     - [numeric: double]
      -
    * - **Mean value**
      - ``MEAN``
-     - [number]
+     - [numeric: double]
      -
    * - **Minimum value**
      - ``MIN``
-     - [number]
+     - [numeric: double]
      -
    * - **Statistics**
      - ``OUTPUT_HTML_FILE``
@@ -2426,25 +3140,25 @@ Outputs
 
    * - **Range**
      - ``RANGE``
-     - [number]
+     - [numeric: double]
      -
    * - **Standard deviation**
      - ``STD_DEV``
-     - [number]
+     - [numeric: double]
      -
    * - **Sum**
      - ``SUM``
-     - [number]
+     - [numeric: double]
      -
    * - **Sum of the squares**
      - ``SUM_OF_SQUARES``
-     - [number]
+     - [numeric: double]
      -
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:rasterlayerstatistics``
+**Algorithm ID**: ``native:rasterlayerstatistics``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -2456,6 +3170,7 @@ Python code
 Raster layer unique values report
 ---------------------------------
 Returns the count and area of each unique value in a given raster layer.
+The calculation of the area is done in the area unit of the layer's CRS.
 
 Parameters
 ..........
@@ -2493,7 +3208,7 @@ Parameters
 
    * - **Unique values table**
      - ``OUTPUT_TABLE``
-     - [table]
+     - [vector: table]
 
        Default: ``[Skip output]``
      - Specification of the table for unique values:
@@ -2524,15 +3239,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
-   * - **NODATA pixel count**
+   * - **NoData pixel count**
      - ``NODATA_PIXEL_COUNT``
-     - [number]
-     - The number of NODATA pixels in the output raster layer
+     - [numeric: integer]
+     - The number of NoData pixels in the output raster layer
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [integer]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
    * - **Unique values report**
      - ``OUTPUT_HTML_FILE``
@@ -2545,20 +3260,21 @@ Outputs
        * Width in pixels: number of columns and pixel width size
        * Height in pixels: number of rows and pixel width size
        * Total pixel count: count of all the pixels
-       * NODATA pixel count: count of pixels with NODATA value
+       * NoData pixel count: count of pixels with NoData value
    * - **Unique values table**
      - ``OUTPUT_TABLE``
-     - [table]
+     - [vector: table]
      - A table with three columns:
 
        * *value*: pixel value
        * *count*: count of pixels with this value
-       * *m*\ :sup:`2`: total area in square meters of pixels with
-         this value.
+       * *m2* or *deg2* or *ft2* or ... : total area of pixels with this value.
+         The column name depends on the area unit of the layer's CRS
+         and the calculation is done in that unit.
 
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of columns in the output raster layer
 
 Python code
@@ -2595,7 +3311,7 @@ Basic parameters
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [raster]
      - Input raster layer
@@ -2621,10 +3337,10 @@ Basic parameters
        the zones
    * - **Statistics**
      - ``OUTPUT_TABLE``
-     - [table]
+     - [vector: table]
 
        Default: ``[Create temporary layer]``
-     - Specification of the output report. One of:
+     - Specification of the output report. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -2680,15 +3396,15 @@ Outputs
      - The spatial extent of the output raster layer
    * - **Height in pixels**
      - ``HEIGHT_IN_PIXELS``
-     - [integer]
+     - [numeric: integer]
      - The number of rows in the output raster layer
-   * - **NODATA pixel count**
+   * - **NoData pixel count**
      - ``NODATA_PIXEL_COUNT``
-     - [number]
-     - The number of NODATA pixels in the output raster layer
+     - [numeric: integer]
+     - The number of NoData pixels in the output raster layer
    * - **Statistics**
      - ``OUTPUT_TABLE``
-     - [table]
+     - [vector: table]
      - The output layer contains the following information
        **for each zone**:
 
@@ -2700,17 +3416,234 @@ Outputs
        * Mean: the mean of the pixel values in the zone;
    * - **Total pixel count**
      - ``TOTAL_PIXEL_COUNT``
-     - [number]
+     - [numeric: integer]
      - The count of pixels in the output raster layer
    * - **Width in pixels**
      - ``WIDTH_IN_PIXELS``
-     - [number]
+     - [numeric: integer]
      - The number of columns in the output raster layer
 
 Python code
 ...........
 
 **Algorithm ID**: ``native:rasterlayerzonalstats``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisrasterminmax:
+
+Raster minimum/maximum
+----------------------
+Extracts the minimum and maximum pixel values from a specified band of a raster layer.
+If multiple pixels share the same minimum or maximum value,
+only one of them will be included in the output.
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [raster]
+     - Raster layer from which to extract the minimum and maximum pixel values.
+   * - **Band number**
+     - ``BAND``
+     - [raster band]
+
+       Default: 1
+     - The band of the raster to analyze. If the raster is multiband, specify the band number (starting from 1).
+   * - **Extract extrema**
+     - ``EXTRACT``
+     - [enumeration]
+
+       Default: 0 (Minimum and Maximum)
+     - Choose which extrema to extract:
+
+       - 0: Minimum and Maximum
+       - 1: Minimum only
+       - 2: Maximum only
+   * - **Output layer**
+     - ``OUTPUT``
+     - [vector: point]
+
+       Default: ``[Create temporary layer]``
+     - Specification of the output layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_skip**
+          :end-before: **end_layer_output_types_skip**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output layer**
+     - ``OUTPUT``
+     - [vector: point]
+     - Vector layer with point features at the locations of the minimum and/or maximum pixel values.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:rasterminmax``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisrasterrank:
+
+Raster rank
+----------------
+``Added in 3.44``
+
+Performs a cell-by-cell analysis in which output values match
+the rank of a sorted list of overlapping cell values from input layers.
+The output raster will be multi-band if multiple ranks are provided.
+If multiband rasters are used in the data raster stack,
+the algorithm will always perform the analysis on the first band of the rasters.
+
+.. figure:: img/raster_rank.png
+  :align: center
+
+  Raster rank result for rank 1 (minimum value). NoData cells in any input raster result in a NoData output cell.
+
+.. seealso:: :ref:`qgiscellstackpercentrankfromvalue`, :ref:`qgiscellstackpercentile`, :ref:`qgiscellstackpercentrankfromrasterlayer`, :ref:`qgiscellstatistics`, :ref:`qgisrastercalc`
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input raster layers**
+     - ``INPUT_RASTERS``
+     - [raster] [list]
+     - Input raster layer(s) to calculate the rank from.
+   * - **Rank**
+     - ``RANKS``
+     - [numeric: integer] [list]
+
+       Default: [1]
+     - List of ranks to calculate for each pixel in the sorted list of cells values
+       from the input rasters.
+       Cells whose values match the given rank(s) are kept in the output layer.
+       The ranks are 1-based, meaning that the first rank is 1.
+       Negative values are also supported.
+   * - **NoData value handling**
+     - ``NODATA_HANDLING``
+     - [enumeration]
+
+       Default: 0
+     - Choose how to handle NoData values in the input raster:
+
+       * 0 --- Exclude NoData from values lists: will not include NoData values in the list of pixel values when calculating ranks.
+       * 1 --- Presence of NoData in a values list results in NoData output cells: the output raster will have NoData values in the corresponding locations.
+   * - **Ranked**
+     - ``OUTPUT``
+     - [raster]
+
+       Default: ``[Save to temporary file]``
+     - Specification of the output raster containing the rank values.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output extent**
+
+       Optional
+     - ``EXTENT``
+     - [extent]
+     - Specify the spatial extent of the output raster layer.
+       If the extent is not specified, the minimum extent that covers
+       all the selected reference layers will be used.
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+
+   * - **Output cell size**
+
+       Optional
+     - ``CELL_SIZE``
+     - [numeric: double]
+     - Cell size of the output raster layer.
+       If the cell size is not specified, the minimum cell size of
+       the selected reference layer(s) will be used.
+       The cell size will be the same for the X and Y axes.
+   * - **Output CRS**
+
+       Optional
+     - ``CRS``
+     - [crs]
+     - CRS of the output raster layer.
+       If the output CRS is not specified, the CRS of the first
+       reference layer will be used.
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Ranked**
+     - ``OUTPUT``
+     - [raster]
+     - Output raster layer containing the result.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:rasterrank``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -2736,7 +3669,7 @@ Parameters
      - Name
      - Type
      - Description
-   * - **INPUT layer**
+   * - **Input layer**
      - ``INPUT``
      - [raster]
      - Input raster, representing a surface
@@ -2749,7 +3682,7 @@ Parameters
        the surface.
    * - **Base level**
      - ``LEVEL``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Define a base or reference value.
@@ -2766,15 +3699,14 @@ Parameters
        Options:
 
        * 0 --- Count Only Above Base Level: only pixels above the base
-	 level will add to the volume.
+         level will add to the volume.
        * 1 --- Count Only Below Base Level: only pixels below the base
-	 level will add to the volume.
+         level will add to the volume.
        * 2 --- Subtract Volumes Below Base level: pixels above the
-	 base level will add to the volume, pixels below the base
-	 level will subtract from the volume.
+         base level will add to the volume, pixels below the base
+         level will subtract from the volume.
        * 3 --- Add Volumes Below Base level: Add the volume
-         regardless whether the pixel is above or below the base
-	 level.
+         regardless whether the pixel is above or below the base level.
          This is equivalent to sum the absolute values of the
          difference between the pixel value and the base level.
    * - **Surface volume report**
@@ -2782,7 +3714,7 @@ Parameters
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output HTML report. One of:
+     - Specification of the output HTML report. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -2790,10 +3722,10 @@ Parameters
 
    * - **Surface volume table**
      - ``OUTPUT_TABLE``
-     - [table]
+     - [vector: table]
 
        Default: ``[Skip output]``
-     - Specification of the output table. One of:
+     - Specification of the output table. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_skip**
@@ -2805,6 +3737,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2812,15 +3745,15 @@ Outputs
      - Description
    * - **Volume**
      - ``VOLUME``
-     - [number]
+     - [numeric: double]
      - The calculated volume
    * - **Area**
      - ``AREA``
-     - [number]
+     - [numeric: double]
      - The area in square map units
    * - **Pixel_count**
      - ``PIXEL_COUNT``
-     - [number]
+     - [numeric: integer]
      - The total number of pixels that have been analyzed
    * - **Surface volume report**
      - ``OUTPUT_HTML_FILE``
@@ -2829,7 +3762,7 @@ Outputs
        pixel count) in HTML format
    * - **Surface volume table**
      - ``OUTPUT_TABLE``
-     - [table]
+     - [vector: table]
      - The output table (containing volume, area and
        pixel count)
 
@@ -2847,8 +3780,15 @@ Python code
 
 Reclassify by layer
 -------------------
+
 Reclassifies a raster band by assigning new class values based on the
 ranges specified in a vector table.
+
+
+.. figure:: img/reclassify_by_layer.png
+  :align: center
+
+  Reclassified raster by layer (range boundaries: min <= value < max).
 
 Parameters
 ..........
@@ -2884,22 +3824,24 @@ Basic parameters
      - ``MIN_FIELD``
      - [tablefield: numeric]
      - Field with the minimum value of the range for the class.
+       Use ``-inf`` to capture the lowest possible value.
    * - **Maximum class value field**
      - ``MAX_FIELD``
      - [tablefield: numeric]
      - Field with the maximum value of the range for the class.
+       Use ``inf`` to capture the highest possible value.
    * - **Output value field**
      - ``VALUE_FIELD``
      - [tablefield: numeric]
      - Field with the value that will be assigned to the pixels that
-       fall in the class (between the corresponding min and max
-       values).
+       fall in the class (between the corresponding min and max values).
+       Use ``nan`` to set the value of the range to NoData.
    * - **Reclassified raster**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2917,12 +3859,12 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``NO_DATA``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to apply to no data values.
+     - Value to apply to NoData values.
    * - **Range boundaries**
      - ``RANGE_BOUNDARIES``
      - [enumeration]
@@ -2935,13 +3877,12 @@ Advanced parameters
        * 1 --- min <= value < max
        * 2 --- min <= value <= max
        * 3 --- min < value < max
-   * - **Use no data when no range matches value**
+   * - **Use NoData when no range matches value**
      - ``NODATA_FOR_MISSING``
      - [boolean]
 
        Default: False
-     - Applies the no data value to band values that do not fall in
-       any class.
+     - Applies the NoData value to band values that do not fall in any class.
        If False, the original value is kept.
    * - **Output data type**
      - ``DATA_TYPE``
@@ -2951,17 +3892,27 @@ Advanced parameters
      - Defines the format of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **native_raster_data_types**
+          :end-before: **end_native_raster_data_types**
+
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -2969,6 +3920,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2995,6 +3947,11 @@ Reclassify by table
 -------------------
 Reclassifies a raster band by assigning new class values based on the
 ranges specified in a fixed table.
+
+.. figure:: img/reclassify_by_table.png
+  :align: center
+
+  Reclassified raster by table (range boundaries: min <= value < max).
 
 Parameters
 ..........
@@ -3023,17 +3980,19 @@ Basic parameters
      - Raster band for which you want to recalculate values.
    * - **Reclassification table**
      - ``TABLE``
-     - [table]
+     - [vector: table]
      - A 3-columns table to fill with the values to set the boundaries
        of each class (``Minimum`` and ``Maximum``) and the new
        ``Value`` to assign to the band values that fall in the class.
+       The value ``-inf`` can be used as minimum, ``inf`` as maximum,
+       and ``nan`` can be used to set the output value to NoData.
    * - **Reclassified raster**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -3051,12 +4010,12 @@ Advanced parameters
      - Name
      - Type
      - Description
-   * - **Output no data value**
+   * - **Output NoData value**
      - ``NO_DATA``
-     - [number]
+     - [numeric: double]
 
        Default: -9999.0
-     - Value to apply to no data values.
+     - Value to apply to NoData values.
    * - **Range boundaries**
      - ``RANGE_BOUNDARIES``
      - [enumeration]
@@ -3069,12 +4028,12 @@ Advanced parameters
        * 1 --- min <= value < max
        * 2 --- min <= value <= max
        * 3 --- min < value < max
-   * - **Use no data when no range matches value**
+   * - **Use NoData when no range matches value**
      - ``NODATA_FOR_MISSING``
      - [boolean]
 
        Default: False
-     - Applies the no data value to band values that do not fall in
+     - Applies the NoData value to band values that do not fall in
        any class.
        If False, the original value is kept.
    * - **Output data type**
@@ -3085,17 +4044,27 @@ Advanced parameters
      - Defines the format of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **native_raster_data_types**
+          :end-before: **end_native_raster_data_types**
+
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -3103,6 +4072,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3127,13 +4097,12 @@ Python code
 
 Rescale raster
 --------------
-Rescales raster layer to a new value range, while preserving the shape 
-(distribution) of the raster's histogram (pixel values). Input values 
-are mapped using a linear interpolation from the source raster's 
-minimum and maximum pixel values to the destination minimum and miximum 
-pixel range.
+Rescales raster layer to a new value range, while preserving the shape
+(distribution) of the raster's histogram (pixel values). Input values
+are mapped using a linear interpolation from the source raster's
+minimum and maximum pixel values to the destination minimum and maximum pixel range.
 
-By default the algorithm preserves the original NODATA value, but there 
+By default the algorithm preserves the original NoData value, but there
 is an option to override it.
 
 .. figure:: img/rescale_raster.png
@@ -3143,6 +4112,9 @@ is an option to override it.
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -3157,43 +4129,73 @@ Parameters
      - [raster]
      - Raster layer to use for rescaling
    * - **Band number**
-     - ``Band``
+     - ``BAND``
      - [raster band]
 
        Default: The first band of the input layer
      - If the raster is multiband, choose a band.
    * - **New minimum value**
      - ``MINIMUM``
-     - [number]
+     - [numeric: double]
 
        Default value: 0.0
      - Minimum pixel value to use in the rescaled layer
    * - **New maximum value**
      - ``MAXIMUM``
-     - [number]
+     - [numeric: double]
 
        Default value: 255.0
      - Maximum pixel value to use in the rescaled layer
-   * - **New NODATA value**
-   
+   * - **New NoData value**
+
        Optional
      - ``NODATA``
-     - [number]
-     
+     - [numeric: double]
+
        Default value: Not set
-     - Value to assign to the NODATA pixels.
-       If unset, original NODATA values are preserved.
+     - Value to assign to the NoData pixels.
+       If unset, original NoData values are preserved.
    * - **Rescaled**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -3201,6 +4203,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3266,7 +4269,7 @@ Basic parameters
      - The raster to process.
    * - **Band number**
      - ``BAND``
-     - [number]
+     - [raster band]
 
        Default: 1
      - The band of the raster
@@ -3282,7 +4285,7 @@ Basic parameters
        * 2 --- Round down
    * - **Number of decimals places**
      - ``DECIMAL_PLACES``
-     - [number]
+     - [numeric: integer]
 
        Default: 2
      - Number of decimals places to round to.
@@ -3292,7 +4295,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output file. One of:
+     - Specification of the output file. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -3312,11 +4315,28 @@ Advanced parameters
      - Description
    * - **Base n for rounding to multiples of n**
      - ``BASE_N``
-     - [number]
+     - [numeric: integer]
 
        Default: 10
      - When the ``DECIMAL_PLACES`` parameter is negative,
        raster values are rounded to multiples of the base n value
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -3324,6 +4344,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3365,11 +4386,11 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Input Layer**
+   * - **Input layer**
      - ``INPUT``
      - [vector: point]
-     - Point vector layer to use for  sampling
-   * - **Raster Layer**
+     - Point vector layer to use for sampling
+   * - **Raster layer**
      - ``RASTERCOPY``
      - [raster]
      - Raster layer to sample at the given point locations.
@@ -3387,7 +4408,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output layer containing the sampled values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -3399,6 +4420,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3440,6 +4462,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3473,7 +4496,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector polygon layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types**
@@ -3485,6 +4508,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3503,6 +4527,84 @@ Python code
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
+
+.. _qgiszonalminmaxpoint:
+
+Zonal Minimum/Maximum Point
+---------------------------
+``Added in 3.42``
+
+Extracts point features corresponding to the minimum and maximum pixel values within polygon zones.
+
+The output will contain one point feature for the minimum and one for the maximum raster value
+for every individual zonal feature from a polygon layer.
+The created point layer will be in the same spatial reference system as the selected raster layer.
+
+.. warning::
+ This algorithm drops existing primary keys or FID values and regenerates them in output layers.
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input Layer**
+     - ``INPUT``
+     - [vector: polygon]
+     - Polygon layer defining the zones.
+   * - **Raster Layer**
+     - ``RASTER``
+     - [raster]
+     - Raster layer to extract the minimum and maximum values from.
+   * - **Raster Band**
+     - ``BAND``
+     - [raster band]
+
+       Default: The first band of the raster layer
+     - If the raster has multiple bands, select the band to process.
+   * - **Zonal extrema**
+     - ``OUTPUT``
+     - [vector: point]
+
+       Default: ``[Create temporary layer]``
+     - Specification of the output layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **layer_output_types_append**
+          :end-before: **end_layer_output_types_append**
+
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Zonal extrema**
+     - ``OUTPUT``
+     - [vector: point]
+     - Output layer containing the minimum and maximum points for each zone.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:zonalminmaxpoint``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
 
 
 .. _qgiszonalstatisticsfb:
@@ -3570,7 +4672,7 @@ Parameters
 
        Default: ``[Create temporary layer]``
      - Specify the output vector polygon layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **layer_output_types_append**
@@ -3582,6 +4684,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -3601,16 +4704,160 @@ Python code
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
+.. _qgisrasterfeaturepreservingsmoothing:
 
-.. |gaussian_formula| image:: img/fuzzy_gaussian_formula.png
-   :height: 1.5em
-.. |fuzzy_large_formula| image:: img/fuzzy_large_formula.png
-   :height: 3.2em
-.. |fuzzy_linear_formula| image:: img/fuzzy_linear_formula.png
-   :height: 3.8em
-.. |near_formula| image:: img/fuzzy_near_formula.png
-   :height: 2.5em
-.. |power_formula| image:: img/fuzzy_power_formula.png
-   :height: 4.4em
-.. |small_formula| image:: img/fuzzy_small_formula.png
-   :height: 3.2em
+Feature preserving DEM smoothing
+--------------------------------
+``Added in 4.0``
+
+Can be used to remove surface roughness from digital elevation model without significantly altering sharp
+features such as breaks-in-slope, stream banks, or terrace scarps. This makes this algorithm superior to
+standard low-pass filters (e.g., mean, median, Gaussian) or resampling, which often blur distinct topographic
+features.
+
+The algorithm works in three steps:
+
+ #. Calculating surface normal 3D vectors for each grid cell.
+ #. Smoothing the normal vector field using a filter that applies more
+    weight to neighbors with similar surface normals (preserving edges).
+ #. Iteratively updating the elevations in the DEM to match the smoothed normal field.
+
+*References: Lindsay, John et al (2019): LiDAR DEM Smoothing and the Preservation of Drainage Features.
+Remote Sensing, Vol. 11, Issue 16, https://doi.org/10.3390/rs11161926*
+
+.. seealso:: This is a port of the WhiteboxTools `FeaturePreservingSmoothing`_ algorithm.
+
+.. _`FeaturePreservingSmoothing`: https://www.whiteboxgeo.com/manual/wbt_book/available_tools/geomorphometric_analysis.html#FeaturePreservingSmoothing
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [raster]
+     - Digital Terrain Model raster layer
+   * - **Band number**
+     - ``BAND``
+     - [raster band]
+     - The band of the DEM to consider
+   * - **Filter radius (pixels)**
+     - ``RADIUS``
+     - [numeric: integer]
+
+       Default: 5
+     - Radius of the filter kernel.
+       A radius of 5 results in an 11x11 kernel.
+   * - **Normal difference threshold (degrees)**
+     - ``THRESHOLD``
+     - [numeric: double]
+
+       Default: 15.0
+     - Maximum angular difference (in degrees) between the normal vector of the center cell and
+       a neighbor for the neighbor to be included in the filter. Higher values result in more
+       neighbors being included, producing smoother surfaces. A range of 10-20 degrees
+       is typically optimal.
+   * - **Elevation update iterations**
+     - ``ITERATIONS``
+     - [numeric: integer]
+
+       Default: 3
+     - Number of times the smoothing process (elevation update) is repeated. Increasing this
+       value from the default of 3 will result in significantly greater smoothing.
+   * - **Maximum elevation change**
+
+       Optional
+     - ``MAX_ELEVATION_CHANGE``
+     - [numeric: double]
+
+       Default: 0.0
+     - The allowed maximum height change of any cell in one iteration. If the calculated change
+       exceeds this value, the elevation remains unchanged. This prevents excessive deviation
+       from the original surface.
+   * - **Z factor**
+     - ``Z_FACTOR``
+     - [numeric: double]
+
+       Default: 1.0
+     - Vertical exaggeration.
+       This parameter is useful when the Z units differ from the X and Y units, for example
+       feet and meters. You can use this parameter to adjust for this. Increasing the value of
+       this parameter will exaggerate the final result (making it look more "hilly").
+       The default is 1 (no exaggeration).
+   * - **Output layer**
+     - ``OUTPUT``
+     - [raster]
+
+       Default: ``Save to temporary file``
+     - Specify the output hillshade raster layer. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+     - ``CREATION_OPTIONS``
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the raster
+       to be created (colors, block size, file compression...).
+       For convenience, you can rely on predefined profiles
+       (see :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options
+       with a pipe character (``|``).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output layer**
+     - ``OUTPUT``
+     - [raster]
+     - The output smoothed raster layer
+
+Python code
+...........
+
+**Algorithm ID**: ``native:rasterfeaturepreservingsmoothing``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _`Grid Cell Index`: https://saga-gis.sourceforge.io/saga_tool_doc/9.13.0/grid_tools_21.html

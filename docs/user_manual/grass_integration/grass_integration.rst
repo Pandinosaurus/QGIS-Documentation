@@ -13,7 +13,7 @@ GRASS GIS Integration
 GRASS integration provides access to GRASS GIS databases and functionalities
 (see GRASS-PROJECT in :ref:`literature_and_web`). The integration consists of two parts:
 provider and plugin. The provider allows to browse, manage and visualize GRASS raster
-and vector layers. The plugin can be used to create new GRASS locations and mapsets,
+and vector layers. The plugin can be used to create new GRASS projects and mapsets,
 change GRASS region, create and edit vector layers and analyze GRASS 2-D and 3-D data
 with more than 400 GRASS modules. In this section, we'll introduce the provider and plugin
 functionalities and give some examples of managing and working with GRASS data.
@@ -24,285 +24,42 @@ GRASS 6 or GRASS 7 or for both versions at the same time
 (binaries have different file names). Only one version of the provider/plugin may be
 loaded on runtime however.
 
-Demo dataset
-============
-
-As an example, we will use the QGIS Alaska dataset (see section :ref:`label_sampledata`).
-It includes a small sample GRASS :file:`LOCATION` with three vector layers and one
-raster elevation map. Create a new folder called :file:`grassdata`, download
-the QGIS 'Alaska' dataset :file:`qgis\_sample\_data.zip` from
-https://qgis.org/downloads/data/ and unzip the file into :file:`grassdata`.
-
-More sample GRASS :file:`LOCATIONs` are available at the GRASS website at
-https://grass.osgeo.org/download/sample-data/.
-
-.. _sec_load_grassdata:
-
-Loading GRASS raster and vector layers
-======================================
-
-If the provider is loaded in QGIS, the location item with GRASS |grass|
-icon is added in the browser tree under each folder item which contains GRASS location.
-Go to the folder :file:`grassdata` and expand location :file:`alaska` and
-mapset :file:`demo`.
-
-You can load GRASS raster and vector layers like any other layer from the browser either
-by double click on layer item or by dragging and dropping to map canvas or legend.
-
-.. tip:: **GRASS Data Loading**
-
-   If you don't see GRASS location item, verify in
-   :menuselection:`Help --> About --> Providers` if
-   GRASS vector provider is loaded.
-
-.. _import_data_dnd:
-
-Importing data into a GRASS LOCATION via drag and drop
-======================================================
-
-This section gives an example of how to import raster and vector data into a GRASS mapset.
-
-#. In QGIS browser navigate to the mapset you want to import data into.
-#. In QGIS browser find a layer you want to import to GRASS, note that you can
-   open another instance of the browser (:guilabel:`Browser Panel (2)`) if
-   source data are too far from the mapset in the tree.
-#. Drag a layer and drop it on the target mapset. The import may take some time for
-   larger layers, you will see animated icon |import| in front of new layer item
-   until the import finishes.
-
-When raster data are in different CRS, they can be reprojected using an :guilabel:`Approximate`
-(fast) or :guilabel:`Exact` (precise) transformation. If a link to the source raster
-is created (using ``r.external``), the source data are in the same CRS and the format
-is known to GDAL, the source data CRS will be used. You can set these options in the
-:guilabel:`Browser` tab in :ref:`grass_options`.
-
-If a source raster has more bands, a new GRASS map is created for each layer with
-**.<band number>** suffix and group of all maps with |rasterGroup| icon is created.
-External rasters have a different icon |rasterLink|.
-
-.. _managing_grass_data:
-
-Managing GRASS data in QGIS Browser
-===================================
-
-* Copying maps: GRASS maps may be copied between mapsets within the same location using drag and drop.
-* Deleting maps: Right click on a GRASS map and select :guilabel:`Delete` from context menu.
-* Renaming maps: Right click on a GRASS map and select :guilabel:`Rename` from context menu.
-
-.. _grass_options:
-
-GRASS Options
-=============
-
-GRASS options may be set in :guilabel:`GRASS Options` dialog, which can be opened by right
-clicking on the location or mapset item in the browser and then choosing :guilabel:`GRASS Options`.
-
-.. _sec_starting_grass:
-
-Starting the GRASS plugin
-=========================
-
-To use GRASS functionalities in QGIS, you must select and load the GRASS plugin using the
-Plugin Manager. To do this, go to the menu :menuselection:`Plugins -->` |showPluginManager|
-:menuselection:`Manage and Install Plugins...`, select |checkbox| :guilabel:`GRASS` and click
-:guilabel:`OK`.
-
-The following main features are provided with the GRASS menu
-(:menuselection:`Plugins --> GRASS`) when you start the GRASS plugin:
-
-* |grassOpenMapset| :sup:`Open Mapset`
-* |grassNewMapset| :sup:`New Mapset`
-* |grassCloseMapset| :sup:`Close Mapset`
-* |grassTools| :sup:`Open GRASS Tools`
-* |grassRegion| :sup:`Display Current GRASS Region`
-* |general| :sup:`GRASS Options`
-
-Opening GRASS mapset
-====================
-
-A GRASS mapset must be opened to get access to GRASS Tools in the plugin (the tools
-are disabled if no mapset is open). You can open a mapset from the browser:
-right click on mapset item and then choose :guilabel:`Open mapset` from context menu.
 
 .. _sec_about_loc:
 
-GRASS LOCATION and MAPSET
+GRASS PROJECT and MAPSET
 =========================
 
 GRASS data are stored in a directory referred to as GISDBASE. This directory, often
 called :file:`grassdata`, must be created before you start working with the GRASS
 plugin in QGIS. Within this directory, the GRASS GIS data are organized by projects
-stored in subdirectories called :file:`LOCATIONs`. Each :file:`LOCATION` is defined
+stored in subdirectories called :file:`PROJECTs`. Each :file:`PROJECT` is defined
 by its coordinate system, map projection and geographical boundaries. Each
-:file:`LOCATION` can have several :file:`MAPSETs` (subdirectories of the
-:file:`LOCATION`) that are used to subdivide the project into different topics or
-subregions, or as workspaces for individual team members (see Neteler & Mitasova
-2008 in :ref:`literature_and_web`). In order to analyse vector and raster layers
-with GRASS modules, you generally have to import them into a GRASS :file:`LOCATION`.
+:file:`PROJECT` can have several :file:`MAPSETs` (subdirectories of the
+:file:`PROJECT`) that are used to subdivide the project into different topics or
+sub-regions, or as workspaces for individual team members (see Neteler & Mitasova
+2008 in :ref:`literature_and_web`). In order to analyze vector and raster layers
+with GRASS modules, you generally have to import them into a GRASS :file:`PROJECT`.
 (This is not strictly true -- with the GRASS modules :file:`r.external` and :file:`v.external`
-you can create read-only links to external GDAL/OGR-supported datasets without
+you can create read-only links to external GDAL-supported datasets without
 importing them. This is not the usual way for beginners to work with GRASS, therefore
 this functionality will not be described here.)
 
-.. _figure_grass_location:
+.. _figure_grass_project:
 
-.. figure:: img/grass_location.png
+.. figure:: img/grass_project.png
    :align: center
 
-   GRASS data in the alaska LOCATION
-
-.. _sec_import_loc_data:
-
-Importing data into a GRASS LOCATION
-====================================
-
-See section :ref:`import_data_dnd` to find how data can be easily imported
-by dragging and dropping in the browser.
-
-This section gives an example of how to import raster and vector data into the
-'alaska' GRASS :file:`LOCATION` provided by the QGIS 'Alaska' dataset in traditional
-way, using standard GRASS modules.
-Therefore, we use the landcover raster map :file:`landcover.img` and the vector GML
-file :file:`lakes.gml` from the QGIS 'Alaska' dataset (see :ref:`label_sampledata`).
-
-#. Start QGIS and make sure the GRASS plugin is loaded.
-#. In the GRASS toolbar, click the |grassOpenMapset| :sup:`Open MAPSET` icon
-   to bring up the :guilabel:`MAPSET` wizard.
-#. Select as GRASS database the folder :file:`grassdata` in the QGIS
-   Alaska dataset, as :file:`LOCATION` 'alaska', as :file:`MAPSET` 'demo' and
-   click :guilabel:`OK`.
-#. Now click the |grassTools| :sup:`Open GRASS tools` icon. The
-   GRASS Toolbox (see section :ref:`subsec_grass_toolbox`) dialog appears.
-#. To import the raster map :file:`landcover.img`, click the module
-   :file:`r.in.gdal` in the :guilabel:`Modules Tree` tab. This GRASS module
-   allows you to import GDAL-supported raster files into a GRASS
-   :file:`LOCATION`. The module dialog for :file:`r.in.gdal` appears.
-#. Browse to the folder :file:`raster` in the QGIS 'Alaska' dataset
-   and select the file :file:`landcover.img`.
-#. As raster output name, define :file:`landcover_grass` and click
-   :guilabel:`Run`. In the :guilabel:`Output` tab, you see the currently running GRASS
-   command ``r.in.gdal -o input=/path/to/landcover.img
-   output=landcover_grass``.
-#. When it says **Successfully finished**, click :guilabel:`View Output`.
-   The :file:`landcover_grass` raster layer is now imported into GRASS and
-   will be visualized in the QGIS canvas.
-#. To import the vector GML file :file:`lakes.gml`, click the module
-   :file:`v.in.ogr` in the :guilabel:`Modules Tree` tab. This GRASS module allows
-   you to import OGR-supported vector files into a GRASS :file:`LOCATION`. The
-   module dialog for :file:`v.in.ogr` appears.
-#. Browse to the folder :file:`gml` in the QGIS 'Alaska' dataset and select the
-   file :file:`lakes.gml` as OGR file.
-#. As vector output name, define :file:`lakes_grass` and click :guilabel:`Run`. You
-   don't have to care about the other options in this example. In the
-   :guilabel:`Output` tab you see the currently running GRASS command
-   ``v.in.ogr -o dsn=/path/to/lakes.gml output=lakes\_grass``.
-#. When it says **Succesfully finished**, click :guilabel:`View Output`. The
-   :file:`lakes_grass` vector layer is now imported into GRASS and will be
-   visualized in the QGIS canvas.
-
-.. _sec_create_loc:
-
-Creating a new GRASS LOCATION
------------------------------
-
-As an example, here is the sample GRASS :file:`LOCATION alaska`, which is
-projected in the Albers Equal Area projection using feet as units.
-This sample GRASS :file:`LOCATION alaska` will be used for all examples and
-exercises in the following GRASS-related sections. It is useful to download and
-install the dataset on your computer (see :ref:`label_sampledata`).
-
-#. Start QGIS and make sure the GRASS plugin is loaded.
-#. Visualize the :file:`alaska.shp` shapefile (see section :ref:`loading_file`)
-   from the QGIS Alaska dataset (see :ref:`label_sampledata`).
-#. In the GRASS toolbar, click on the |grassNewMapset| :sup:`New mapset` icon
-   to bring up the :guilabel:`MAPSET` wizard.
-#. Select an existing GRASS database (GISDBASE) folder :file:`grassdata`, or create
-   one for the new :file:`LOCATION` using a file manager on your computer. Then
-   click :guilabel:`Next`.
-#. We can use this wizard to create a new :file:`MAPSET` within an existing
-   :file:`LOCATION` (see section :ref:`sec_add_mapset`) or to create a new
-   :file:`LOCATION` altogether. Select |radioButtonOn| :guilabel:`Create new
-   location` (see :numref:`figure_grass_new_location`).
-#. Enter a name for the :file:`LOCATION` -- we used 'alaska' -- and click :guilabel:`Next`.
-#. Define the projection by clicking on the radio button |radioButtonOn|
-   :guilabel:`Projection` to enable the projection list.
-#. We are using Albers Equal Area Alaska (feet) projection. Since we happen to
-   know that it is represented by the EPSG ID 2964, we enter it in the search box.
-   (Note: If you want to repeat this process for another :file:`LOCATION` and
-   projection and haven't memorized the EPSG ID, click on the |projectionEnabled|
-   :sup:`CRS Status` icon in the lower right-hand corner of the status bar (see
-   section :ref:`label_projections`)).
-#. In :guilabel:`Filter`, insert 2964 to select the projection.
-#. Click :guilabel:`Next`.
-#. To define the default region, we have to enter the :file:`LOCATION` bounds in the
-   north, south, east, and west directions. Here, we simply click on the button
-   :guilabel:`Set Current QGIS Extent`, to apply the extent of the loaded layer
-   :file:`alaska.shp` as the GRASS default region extent.
-#. Click :guilabel:`Next`.
-#. We also need to define a :file:`MAPSET` within our new :file:`LOCATION` (this
-   is necessary when creating a new :file:`LOCATION`). You can name it whatever you
-   like - we used 'demo'. GRASS automatically creates a special :file:`MAPSET` called
-   :file:`PERMANENT`, designed to store the core data for the project, its default
-   spatial extent and coordinate system definitions (see Neteler & Mitasova 2008
-   in :ref:`literature_and_web`).
-#. Check out the summary to make sure it's correct and click :guilabel:`Finish`.
-#. The new :file:`LOCATION`, 'alaska', and two :file:`MAPSETs`, 'demo' and 'PERMANENT',
-   are created. The currently opened working set is 'demo', as you defined.
-#. Notice that some of the tools in the GRASS toolbar that were disabled are now
-   enabled.
+   GRASS data structure
 
 
-.. _figure_grass_new_location:
-
-.. figure:: img/create_grass_location.png
-   :align: center
-
-   Creating a new GRASS LOCATION or a new MAPSET in QGIS
-
-If that seemed like a lot of steps, it's really not all that bad and a very quick
-way to create a :file:`LOCATION`. The :file:`LOCATION` 'alaska' is now ready for
-data import (see section :ref:`sec_import_loc_data`). You can also use the already-existing
-vector and raster data in the sample GRASS :file:`LOCATION` 'alaska',
-included in the QGIS 'Alaska' dataset :ref:`label_sampledata`, and move on to
-section :ref:`label_vectmodel`.
-
-.. _sec_add_mapset:
-
-Adding a new MAPSET
--------------------
-
-A user has write access only to a GRASS :file:`MAPSET` which he or she created. This
-means that besides access to your own :file:`MAPSET`, you can read maps in other users'
-:file:`MAPSETs` (and they can read yours), but you can modify or remove only the maps in
-your own :file:`MAPSET`.
-
-All :file:`MAPSETs` include a :file:`WIND` file that stores the current boundary
-coordinate values and the currently selected raster resolution (see Neteler & Mitasova
-2008 in :ref:`literature_and_web`, and section :ref:`sec_grass_region`).
-
-#. Start QGIS and make sure the GRASS plugin is loaded.
-#. In the GRASS toolbar, click on the |grassNewMapset| :sup:`New mapset` icon
-   to bring up the :guilabel:`MAPSET` wizard.
-#. Select the GRASS database (GISDBASE) folder :file:`grassdata` with the
-   :file:`LOCATION` 'alaska', where we want to add a further :file:`MAPSET`
-   called 'test'.
-#. Click :guilabel:`Next`.
-#. We can use this wizard to create a new :file:`MAPSET` within an existing
-   :file:`LOCATION` or to create a new :file:`LOCATION` altogether. Click on the
-   radio button |radioButtonOn| :guilabel:`Select location`
-   (see :numref:`figure_grass_new_location`) and click :guilabel:`Next`.
-#. Enter the name :file:`test` for the new :file:`MAPSET`. Below in the wizard, you
-   see a list of existing :file:`MAPSETs` and corresponding owners.
-#. Click :guilabel:`Next`, check out the summary to make sure it's all correct and
-   click :guilabel:`Finish`.
-
-
+.. index:: GRASS vector data model
 .. _label_vectmodel:
 
 The GRASS vector data model
 ===========================
 
-It is important to understand the :index:`GRASS vector data model` prior to digitizing.
+It is important to understand the GRASS vector data model prior to digitizing.
 In general, GRASS uses a topological vector model.
 This means that areas are not represented as closed polygons, but by one or more
 boundaries. A boundary between two adjacent areas is digitized only once, and it
@@ -329,7 +86,7 @@ number which defines if there is more than one layer inside the dataset (e.g.,
 if the geometry is forest or lake). For now, it can be only a number. In the future,
 GRASS will also support names as fields in the user interface.
 
-Attributes can be stored inside the GRASS :file:`LOCATION` as dBase,  SQLite3 or
+Attributes can be stored inside the GRASS :file:`PROJECT` as dBase,  SQLite3 or
 in external database tables, for example, PostgreSQL, MySQL, Oracle, etc.
 
 .. index::
@@ -348,8 +105,364 @@ used as the link to one key column in the database table.
 
    The best way to learn the GRASS vector model and its capabilities is to
    download one of the many GRASS tutorials where the vector model is described
-   more deeply. See https://grass.osgeo.org/documentation/manuals/ for more information,
+   more deeply. See https://grass.osgeo.org/learn/manuals/ for more information,
    books and tutorials in several languages.
+
+
+Working with GRASS data in QGIS
+================================
+
+QGIS provides access to GRASS data and functionality.
+This integration consists of allowing to browse, manage
+and visualize GRASS raster and vector layers.
+It also includes ability to create new GRASS projects and mapsets,
+change GRASS region, create and edit vector layers
+and apply geoprocessing analysis to GRASS 2D and 3D data.
+This can be done using:
+
+* the :guilabel:`Browser Panel`
+* the :guilabel:`GRASS GIS Processing Provider` core plugin
+  from the :menuselection:`Plugins --> Manage and Install Plugins…` menu
+* the :guilabel:`GRASS 8 (deprecated plugin)` core plugin:
+  the most featured tool for GRASS in QGIS, while transitioning to the Browser panel.
+
+The GRASS project provides official `sample data <https://grass.osgeo.org/download/data/>`_ to work with.
+
+.. attention::
+  In order to manipulate GRASS data in QGIS,
+  you first need to `install GRASS <https://grass.osgeo.org/download/>`_.
+  Supported GRASS versions may vary depending on your Operating System.
+  Also verify in :menuselection:`Help --> About --> Providers`
+  if GRASS vector and raster providers are correctly loaded.
+
+.. _grass_browser_panel:
+
+Browser Panel
+-------------
+
+GRASS menus
+...........
+
+With GRASS installed and provider enabled, browse the :guilabel:`Browser panel`,
+and expand the downloaded dataset to preview the database structure in QGIS.
+GRASS projects and mapsets are identified by the |grassLogo| GRASS icon next to the entry.
+Inside mapset, layers are identifiable by their name and geometry type.
+
+Inside the GRASS database directory you also see a replication of each GRASS project as normal folder,
+with the mapsets displayed as sub-folders of specific structure.
+You shouldn't have to manipulate those folders.
+
+.. _figure_grass_browser:
+
+.. figure:: img/grass_browser.png
+   :align: center
+
+   GRASS data in Browser panel
+
+Right-clicking an item in the GRASS folder will provide you with different options.
+
+.. table:: Contextual menu of GRASS dataset items
+
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | Contextual menu                                                                       | Database   |            |            |            |            |
+   |                                                                                       | Folder     | PROJECT    | MAPSET     | Vector MAP | Raster MAP |
+   +=======================================================================================+============+============+============+============+============+
+   | :guilabel:`GRASS Options…`                                                            |            | |checkbox| | |checkbox| | |checkbox| | |checkbox| |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`New Mapset…`                                                               |            | |checkbox| |            |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Open Mapset`                                                               |            |            | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Add Mapset to Search Path`                                                 |            |            | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Remove Mapset from Search Path`                                            |            |            | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Rename…`                                                                   |            |            |            | |checkbox| | |checkbox| |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Delete…`                                                                   |            |            |            | |checkbox| | |checkbox| |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`New Point Layer…`                                                          |            |            | |checkbox| | |checkbox| |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`New Line Layer…`                                                           |            |            | |checkbox| | |checkbox| |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`New Polygon Layer…`                                                        |            |            | |checkbox| | |checkbox| |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`Export Layer --> To File…`                                            |            |            |            | |checkbox| | |checkbox| |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Refresh`                                                                   | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`New -->` |newFolder| :menuselection:`Directory…`                      | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`New -->` |newGeoPackageLayer| :menuselection:`GeoPackage…`            | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`New -->` |newVectorLayer| :menuselection:`Shapefile…`                 | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`New -->` |newFileGeodatabase| :menuselection:`ESRI FileGeodatabase…`  | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | |favorites| :guilabel:`Add as a Favorite`                                             | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Hide from Browser`                                                         | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Set Color…`                                                                | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`Scanning -->` |checkbox| :menuselection:`Monitor for Changes`         | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :menuselection:`Scanning -->` |unchecked| :menuselection:`Fast Scan this Directory`   | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | |folder24| :guilabel:`Open Directory…`                                                | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | |terminal| :guilabel:`Open in Terminal…`                                              | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Add Layer to Project`                                                      |            |            |            | |checkbox| | |checkbox| |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Layer Properties…`                                                         |            |            |            | |checkbox| | |checkbox| |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Properties…`                                                               | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+   | :guilabel:`Directory Properties…`                                                     | |checkbox| | |checkbox| | |checkbox| |            |            |
+   +---------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+
+.. _grass_options:
+
+GRASS Options
+.............
+
+GRASS options may be set in :guilabel:`GRASS Options` dialog,
+which can be opened by right clicking on the project
+or mapset item in the browser and then choosing :guilabel:`GRASS Options`.
+
+.. This section needs more details and could be moved later next to the GRASS Region.
+
+
+.. _grass_plugin:
+
+Exploring the GRASS plugin
+--------------------------
+
+.. warning::
+   The GRASS plugin is the tool originally used to work with GRASS data in QGIS.
+   There are plans to replace it with tools in both the :guilabel:`Browser` panel
+   and the :ref:`Processing <grass_configure>` toolbox,
+   and as such, it is currently marked as deprecated.
+   In the meantime, it still has functionalities not yet ported to the :guilabel:`Browser` panel
+   we will describe below.
+   Be aware that this plugin can be removed from QGIS at any time.
+
+The GRASS plugin can be used to create new GRASS projects and mapsets,
+change GRASS region, create and edit vector layers
+and analyze GRASS 2D and 3D data with hundreds of GRASS modules.
+To use GRASS plugin:
+
+#. Go to the menu :menuselection:`Plugins -->` |showPluginManager|
+   :menuselection:`Manage and Install Plugins…`
+#. Enable |checkbox| :guilabel:`GRASS 8 (deprecated plugin)`
+#. Press :guilabel:`Close`.
+#. A :guilabel:`GRASS` toolbar is added to QGIS interface.
+   A new menu :menuselection:`Plugins --> GRASS` is also added to QGIS with following entries:
+
+   * |grassOpenMapset| :sup:`Open Mapset`: displays a dialog for selecting database, project
+     and specific mapset to open in QGIS
+   * |grassNewMapset| :sup:`New Mapset`: helps create a new mapset through a wizard dialog in which
+     you define a new or existing database and then select or create a project in it
+     (with CRS and extent parameters)
+   * |grassCloseMapset| :sup:`Close Mapset`: closes the currently opened mapset,
+     making it impossible to interact with its data through the plugin tools
+   * |grassTools| :sup:`Open GRASS Tools`, also available in the :guilabel:`GRASS` toolbar,
+     provides a set of GRASS modules and parameters to work with
+   * |grassRegion| :sup:`Display Current GRASS Region`, also available in the :guilabel:`GRASS` toolbar,
+     shows the current opened mapset extent in the map canvas
+   * |general| :sup:`GRASS Options`: displays :ref:`various options <grass_options>` of the GRASS database
+
+Additional functionalities are available through a new :guilabel:`GRASS Tools` panel.
+To get access to the tools, a GRASS mapset must first be opened.
+This can be achieved either:
+
+* from the :guilabel:`Browser` panel, by right-clicking the mapset
+  and selecting the |grassOpenMapset| :guilabel:`Open Mapset` command;
+* from the newly loaded |grassOpenMapset| :guilabel:`Open Mapset` tool,
+  a dialog helps you fill the GIS database, the project and select the mapset to open.
+
+The :guilabel:`GRASS Tools` panel contains two tabs: :guilabel:`Modules` and :guilabel:`Region`.
+
+
+.. index::
+   single: GRASS; Toolbox
+.. _subsec_grass_toolbox:
+
+The GRASS Modules
+.................
+
+The :guilabel:`Modules` tab of the plugin provides GRASS module functionalities
+to work with data inside a selected GRASS project and mapset.
+To use the GRASS Toolbox you need to open a project and mapset
+that you have write permission for (usually granted, if you created the mapset).
+This is necessary, because new raster or vector layers created during analysis
+need to be written to the currently selected project and mapset.
+
+.. _figure_grass_toolbox:
+
+.. figure:: img/grass_toolbox_moduletree.png
+   :align: center
+
+   GRASS Toolbox and Module Tree
+
+
+.. index::
+   single: GRASS; Region
+.. _sec_grass_region:
+
+The GRASS Region
+................
+
+The region definition (setting a spatial working window) in GRASS is important
+for working with raster layers. Vector analysis is by default not limited to any
+defined region definitions. But all newly created rasters will have the spatial
+extension and resolution of the currently defined GRASS region, regardless of
+their original extension and resolution. The current GRASS region is stored in
+the :file:`$PROJECT/$MAPSET/WIND` file, and it defines north, south, east and
+west bounds, number of columns and rows, horizontal and vertical spatial resolution.
+
+It is possible to switch on and off the visualization of the GRASS region in the QGIS
+canvas using the |grassRegion| :sup:`Display current GRASS region` button.
+
+.. index::
+   single: GRASS; Region editing
+
+The region can be modified in 'Region' tab in 'GRASS Tools' dock widget.
+Type in the new region bounds and resolution, and click :guilabel:`Apply`.
+If you click on :guilabel:`Select the extent by dragging on canvas` you can select
+a new region interactively with your mouse on the QGIS canvas dragging a rectangle.
+
+The GRASS module :file:`g.region` provides a lot more parameters to define an
+appropriate region extent and resolution for your raster analysis. You can use
+these parameters with the GRASS Toolbox, described in section :ref:`subsec_grass_toolbox`.
+
+
+.. _managing_grass_data:
+
+Managing GRASS data
+===================
+
+.. _sec_load_grassdata:
+
+Loading raster and vector layers from/to GRASS
+----------------------------------------------
+
+Loading GRASS raster and vector layers into a QGIS project is like any other layer:
+from the :guilabel:`Browser` panel, either double-click on the layer item or
+drag-and-drop it from the mapset to the map canvas or :guilabel:`Layers` panel.
+
+Likewise, importing a layer to a GRASS database or across mapsets
+can be done through drag-and-drop in the :guilabel:`Browser` panel:
+
+#. Select the layer to import, either from the :guilabel:`Browser` panel or the :guilabel:`Layers` panel,
+#. Drag-and-drop it over the target GRASS mapset. The import may take some time for larger layers,
+   you will see animated icon |import| in front of new layer item until the import finishes.
+
+When raster data are in different CRS than the mapset, they can be reprojected
+using an :guilabel:`Approximate` (fast) or :guilabel:`Exact` (precise) transformation.
+If a link to the source raster is created (using ``r.external``),
+the source data are in the same CRS and the format is known to GDAL, the source data CRS will be used.
+You can set these options in the :guilabel:`Browser` tab in :ref:`grass_options`.
+
+If a source raster has more bands, a new GRASS map is created for each layer with
+``.<band number>`` suffix and group of all maps with |rasterGroup| icon is created.
+External rasters have a different icon |rasterLink|.
+
+.. note:: GRASS modules and Processing algorithms provide some more advanced tools
+   to achieve the above actions.
+
+
+.. _sec_create_project:
+
+Creating a new GRASS Project
+----------------------------
+
+Creating a GRASS project in QGIS can be done only through the :guilabel:`GRASS Plugin`.
+
+#. Start QGIS and make sure the GRASS plugin is loaded.
+#. In the :menuselection:`Plugins --> GRASS` menu,
+   click on the |grassNewMapset| :guilabel:`New mapset`
+   to bring up the :guilabel:`New Mapset` wizard.
+#. Browse to or enter path to a folder, as :guilabel:`Database directory`.
+   It can be an existing GRASS database (GISDBASE) folder,
+   or a simple folder on your computer.
+#. Click :guilabel:`Next`.
+#. In the :guilabel:`GRASS Project` page, select :guilabel:`Create new project`
+   and enter a name.
+
+   .. _figure_grass_new_project:
+
+   .. figure:: img/create_grass_project.png
+      :align: center
+
+      Creating a new GRASS Project in QGIS
+
+#. Click :guilabel:`Next`.
+#. Click on the radio button |radioButtonOn| :guilabel:`Projection`
+   to enable the list of Coordinate Reference Systems.
+   Find and select the CRS you want to use in the GRASS project.
+   You can enter a CRS name or ID in the :guilabel:`Filter` search box,
+   and select the target projection in the list.
+#. Click :guilabel:`Next`.
+#. Indicate the default region to use in the GRASS project.
+   You can enter the bounds in the north, south, east, and west directions
+   or calculate them from a layer, map or bookmark extent (see :ref:`extent_selector`).
+   The widget also allows selection of country :guilabel:`Preset regions`.
+   You can preview the set extent as a red polygon over a world map.
+#. Click :guilabel:`Next`.
+#. You also need to define a mapset within your new project
+   (this is necessary when creating a new project). Name it whatever you like.
+
+   GRASS also automatically creates a special mapset called :file:`PERMANENT`,
+   designed to store the core data for the project, its default spatial extent
+   and coordinate system definitions.
+#. Check out the summary to make sure it's correct.
+   You can leave |checkbox| :guilabel:`Open new mapset` ticked if you want the new mapset
+   to get automatically activated in QGIS.
+#. Click :guilabel:`Finish`.
+   The new project containing two mapsets is created.
+   With the mapset opened, you can notice that some of the tools in the GRASS toolbar
+   that were disabled are now enabled.
+
+If that seemed like a lot of steps, it's really not all that bad and a very quick
+way to create a project. The project is now ready for data import or editing.
+
+
+.. _sec_add_mapset:
+
+Adding a new Mapset
+-------------------
+
+To create a mapset in an existing GRASS project:
+
+#. Start QGIS and make sure the GRASS plugin is loaded.
+#. In the :menuselection:`Plugins --> GRASS` menu,
+   click on the |grassNewMapset| :guilabel:`New mapset`
+   to bring up the :guilabel:`New Mapset` wizard.
+#. Browse to or enter path to a folder, as :guilabel:`Database directory`.
+#. Click :guilabel:`Next`.
+#. In the :guilabel:`GRASS Project` page, tick :guilabel:`Select project`
+   and pick a project from the drop-down menu.
+#. From the :guilabel:`GRASS Project` page, you can create a new mapset within an existing
+   project or :ref:`create a new project <sec_create_project>` altogether.
+   Let's click on the radio button |radioButtonOn| :guilabel:`Select project`
+   and pick a project from the drop-down menu.
+#. Click :guilabel:`Next`.
+#. Enter the name for the new mapset. Below in the wizard, you
+   see a list of existing mapsets and corresponding owners.
+#. Click :guilabel:`Next`, check out the summary to make sure it's all correct and
+   click :guilabel:`Finish`.
+
+A user has write access only to a GRASS mapset which they created.
+This means that besides access to your own mapset,
+you can read maps in other users' mapsets (and they can read yours),
+but you can modify or remove only the maps in your own mapset.
+
+All mapsets include a :file:`WIND` file that stores the current boundary
+coordinate values and the currently selected raster resolution (see :ref:`sec_grass_region`).
+
 
 .. index::
       seealso: Creating new layer; GRASS
@@ -357,29 +470,39 @@ used as the link to one key column in the database table.
 .. _creating_new_grass_vectors:
 
 Creating a new GRASS vector layer
-=================================
+---------------------------------
 
-To create a new GRASS vector layer, select one of following items from mapset context
-menu in the browser:
+To create a new GRASS vector layer:
 
-* New Point Layer
-* New Line Layer
-* New Polygon Layer
+#. In the :guilabel:`Browser` panel, select the target mapset
+#. Right-click and select one of following items:
 
-and enter a name in the dialog. A new vector map will be created and layer will be added
-to canvas and editing started. Selecting type of the layer does not restrict geometry
-types which can be digitized in the vector map. In GRASS, it is possible to organize all sorts
-of geometry types (point, line and polygon) in one vector map. The type is only used to add
-the layer to the canvas, because QGIS requires a layer to have a specific type.
+   * :guilabel:`New Point Layer…`
+   * :guilabel:`New Line Layer…`
+   * :guilabel:`New Polygon Layer…`
+
+#. Enter a name in the dialog.
+   A new vector map will be created and a layer added to the canvas in edit mode.
+
+   Selecting type of the layer does not restrict geometry types
+   which can be digitized in the vector map.
+   In GRASS, it is possible to organize all sorts of geometry types
+   (point, line and polygon) in one vector map.
+   The type is only used to add the layer to the canvas,
+   because QGIS requires a layer to have a specific type.
+
+In GRASS, it is possible to organize all sorts of geometry types
+(point, line and area) in one layer, because GRASS uses a topological vector model,
+so you don't need to select the geometry type when creating a new GRASS vector.
+This is different from shapefile creation with QGIS for example,
+because shapefiles use the Simple Feature vector model (see section :ref:`sec_create_vector`).
 
 It is also possible to add layers to existing vector maps selecting one of the items
-described above from context menu of existing vector map.
+described above from the contextual menu of an existing vector map.
+A new layer of the same name as the map is loaded in the :guilabel:`Layers` panel, ready for editing.
+Note that this is currently possible only if the :ref:`GRASS plugin <grass_plugin>` is enabled
+from the :guilabel:`Plugin Manager`.
 
-In GRASS, it is possible to organize all sorts of geometry types (point, line and
-area) in one layer, because GRASS uses a topological vector model, so you don't
-need to select the geometry type when creating a new GRASS vector. This is
-different from shapefile creation with QGIS, because shapefiles use the Simple
-Feature vector model (see section :ref:`sec_create_vector`).
 
 .. index::
    pair: GRASS; Digitizing tools
@@ -388,67 +511,80 @@ Feature vector model (see section :ref:`sec_create_vector`).
 Digitizing and editing a GRASS vector layer
 ===========================================
 
-GRASS vector layers can be digitized using the standard QGIS digitizing tools.
-There are however some particularities, which you should know about, due to
+When editing GRASS layers, changes are written after each operation.
+There are two main reasons for this behaviour:
 
-* GRASS topological model versus QGIS simple feature
-* complexity of GRASS model
+* It is the nature of GRASS vectors coming from conviction that user wants to do what he is doing
+  and it is better to have data saved when the work is suddenly interrupted (for example, blackout)
+* Necessity for effective editing of topological data is visualized information about topological correctness,
+  such information can only be acquired from GRASS vector map if changes are written to the map.
+
+It is however, possible to undo/redo or discard all changes when closing editing.
+If changes are undone or discarded, original state is rewritten in vector map and attribute tables.
+
+Simultaneous editing of multiple layers within the same vector at the same time is not supported.
+This is mainly due to the impossibility of handling multiple undo stacks for a single data source.
+
+On Linux and macOS only one GRASS layer can be edited at a time.
+This is due to a bug in GRASS which does not allow to close database drivers in random order.
+This is being solved with GRASS developers.
+
+Geometry digitizing
+-------------------
+
+GRASS vector layers can be digitized using the standard QGIS :ref:`digitizing tools <editingvector>`.
+There are however :ref:`some particularities <label_vectmodel>`, which you should consider:
+
+* You must be the owner of the GRASS mapset you want to edit.
+  It is impossible to edit data layers in a mapset that is not yours,
+  even if you have write permission.
+* GRASS topological model versus the usual OGC Simple Feature model
+* Complexity of the GRASS model with:
 
   * multiple layers in single maps
   * multiple geometry types in single map
   * geometry sharing by multiple features from multiple layers
 
-The particularities are discussed in the following sections.
+Due to these particularities, the :guilabel:`Digitizing Toolbar` presents specific tools
+when a GRASS layer is edited.
+The :ref:`GRASS 8 <grass_plugin>` plugin must first be enabled.
 
-**Save, discard changes, undo, redo**
-
-.. warning:: All the changes done during editing are immediately written to vector map and related attribute tables.
-
-Changes are written after each operation, it is however, possible to do undo/redo
-or discard all changes when closing editing. If undo or discard changes is used, original state
-is rewritten in vector map and attribute tables.
-
-There are two main reasons for this behaviour:
-
-* It is the nature of GRASS vectors coming from conviction that user wants to do what he is
-  doing and it is better to have data saved when the work is suddenly interrupted (for example,
-  blackout)
-* Necessity for effective editing of topological data is visualized information about topological
-  correctness, such information can only be acquired from GRASS vector map if changes are
-  written to the map.
-
-**Toolbar**
-
-The 'Digitizing Toolbar' has some specific tools when a GRASS layer is edited:
 
 .. _table_grass_digitizing:
 
-+-------------------------+------------------------+---------------------------------------------+
-| Icon                    | Tool                   | Purpose                                     |
-+=========================+========================+=============================================+
-| |capturePoint|          | New Point              | Digitize new point                          |
-+-------------------------+------------------------+---------------------------------------------+
-| |captureLine|           | New Line               | Digitize new line                           |
-+-------------------------+------------------------+---------------------------------------------+
-| |captureBoundary|       | New Boundary           | Digitize new boundary                       |
-+-------------------------+------------------------+---------------------------------------------+
-| |captureCentroid|       | New Centroid           | Digitize new centroid (label existing area) |
-+-------------------------+------------------------+---------------------------------------------+
-| |capturePolygon|        | New Closed Boundary    | Digitize new closed boundary                |
-+-------------------------+------------------------+---------------------------------------------+
+.. table:: GRASS Digitizing Tools
+
+   +-------------------------+------------------------+---------------------------------------------+
+   | Icon                    | Tool                   | Purpose                                     |
+   +=========================+========================+=============================================+
+   | |capturePoint|          | New Point              | Digitize new point                          |
+   +-------------------------+------------------------+---------------------------------------------+
+   | |captureLine|           | New Line               | Digitize new line                           |
+   +-------------------------+------------------------+---------------------------------------------+
+   | |captureBoundary|       | New Boundary           | Digitize new boundary                       |
+   +-------------------------+------------------------+---------------------------------------------+
+   | |captureCentroid|       | New Centroid           | Digitize new centroid (label existing area) |
+   +-------------------------+------------------------+---------------------------------------------+
+   | |capturePolygon|        | New Closed Boundary    | Digitize new closed boundary                |
+   +-------------------------+------------------------+---------------------------------------------+
+
+Refer to the :ref:`editingvector` chapter for common ways to digitize point, line or polygon geometries.
+Note however that if you want to create a polygon in GRASS,
+you first digitize the boundary of the polygon.
+Then you add a centroid (label point) into the closed boundary.
+The reason for this is that a topological vector model links the attribute information of
+a polygon always to the centroid and not to the boundary.
+
+To form an area, vertices of connected boundaries must have **exactly** the same coordinates.
+This can be achieved using snapping tool only if canvas and vector map have the same CRS.
+Otherwise, due to conversion from map coordinates to canvas and back, the coordinate may become
+slightly different due to representation error and CRS transformations.
+
+.. tip:: Use layer's CRS also for canvas when editing.
 
 
-Table GRASS Digitizing: GRASS Digitizing Tools
-
-.. tip:: **Digitizing polygons in GRASS**
-
-   If you want to create a polygon in GRASS, you first digitize the boundary of
-   the polygon. Then you add a centroid (label point) into the closed boundary.
-   The reason for this is that a topological vector model links the attribute information of
-   a polygon always to the centroid and not to the boundary.
-
-
-**Category**
+Category
+--------
 
 Category, often called cat, is sort of ID. The name comes from times when GRASS vectors
 had only singly attribute "category". Category is used as a link between geometry and attributes.
@@ -464,10 +600,11 @@ It is not possible to assign more categories to geometry using QGIS editing,
 such data are properly represented as multiple features, and individual features,
 even from different layers, may be deleted.
 
-**Attributes**
+Attributes
+----------
 
 Attributes of currently edited layer can only be modified. If the vector map contains more layers,
-features of other layers will have all attributes set to '<not editable (layer #)>' to warn you that
+features of other layers will have all attributes set to ``<not editable (layer #)>`` to warn you that
 such attribute is not editable. The reason is, that other layers may have and usually have different
 set of fields while QGIS only supports one fixed set of fields per layer.
 
@@ -476,15 +613,17 @@ assigned and new record in attribute table is created when an attribute of that 
 
 .. tip::
 
-   If you want to do bulk update of attributes in table, for example using 'Field Calculator'
-   (:ref:`vector_field_calculator`), and there are features without category which you don't want
-   to update (typically boundaries), you can filter them out by setting 'Advanced Filter' to ``cat is not null``.
+   If you want to do bulk update of attributes in table,
+   for example using :ref:`Field Calculator <vector_field_calculator>`,
+   and there are features without category which you don't want to update (typically boundaries),
+   you can filter them out by setting :guilabel:`Advanced Filter` to ``cat is not null``.
 
-
-**Editing style**
 
 .. index::
    single: GRASS; Style
+
+Editing style
+-------------
 
 The topological symbology is essential for effective editing of topological data. When editing
 starts, a specialized 'GRASS Edit' renderer is set on the layer automatically and original renderer
@@ -493,110 +632,37 @@ The style can also be stored in project file or in separate file as any other st
 If you customize the style, do not change its name, because it is used to reset the style
 when editing is started again.
 
-.. tip::  Do not save project file when the layer is edited, the layer would be stored with
+.. warning:: Do not save project file when the layer is edited, the layer would be stored with
    'Edit Style' which has no meaning if layer is not edited.
 
 The style is based on topological information which is temporarily added to attribute table
 as field 'topo_symbol'. The field is automatically removed when editing is closed.
 
-.. tip::  Do not remove 'topo_symbol' field from attribute table, that would make features
+.. warning:: Do not remove ``topo_symbol`` field from attribute table, that would make features
    invisible because the renderer is based on that column.
 
-
-**Snapping**
-
-To form an area, vertices of connected boundaries must have **exactly** the same coordinates.
-This can be achieved using snapping tool only if canvas and vector map have the same CRS.
-Otherwise, due conversion from map coordinates to canvas and back, the coordinate may become
-slightly different due to representation error and CRS transformations.
-
-.. tip:: Use layer's CRS also for canvas when editing.
-
-
-**Limitations**
-
-Simultaneous editing of multiple layers within the same vector at the same time is not
-supported. This is mainly due to the impossibility of handling multiple undo stacks for
-a single data source.
-
-|nix| |osx| On Linux and macOS only one GRASS layer can be edited at time. This is
-due to a bug in GRASS which does not allow to close database drivers in random order.
-This is being solved with GRASS developers.
-
-
-.. tip:: **GRASS Edit Permissions**
-
-   You must be the owner of the GRASS :file:`MAPSET` you want to edit. It is
-   impossible to edit data layers in a :file:`MAPSET` that is not yours, even
-   if you have write permission.
-
-
-.. index::
-   single: GRASS; Region
-.. _sec_grass_region:
-
-The GRASS region tool
-=====================
-
-
-The region definition (setting a spatial working window) in GRASS is important
-for working with raster layers. Vector analysis is by default not limited to any
-defined region definitions. But all newly created rasters will have the spatial
-extension and resolution of the currently defined GRASS region, regardless of
-their original extension and resolution. The current GRASS region is stored in
-the :file:`$LOCATION/$MAPSET/WIND` file, and it defines north, south, east and
-west bounds, number of columns and rows, horizontal and vertical spatial resolution.
-
-It is possible to switch on and off the visualization of the GRASS region in the QGIS
-canvas using the |grassRegion| :sup:`Display current GRASS region` button.
-
-.. index::
-   single: GRASS; Region editing
-
-The region can be modified in 'Region' tab in 'GRASS Tolls' dock widget.
-Type in the new region bounds and resolution, and click :guilabel:`Apply`.
-If you click on :guilabel:`Select the extent by dragging on canvas` you can select
-a new region interactively with your mouse on the QGIS canvas dragging a rectangle.
-
-
-The GRASS module :file:`g.region` provides a lot more parameters to define an
-appropriate region extent and resolution for your raster analysis. You can use
-these parameters with the GRASS Toolbox, described in section :ref:`subsec_grass_toolbox`.
-
-.. index::
-   single: GRASS; Toolbox
-.. _subsec_grass_toolbox:
-
-The GRASS Toolbox
-=================
-
-The |grassTools| :sup:`Open GRASS Tools` box provides GRASS module functionalities
-to work with data inside a selected GRASS :file:`LOCATION` and :file:`MAPSET`.
-To use the GRASS Toolbox you need to open a :file:`LOCATION` and :file:`MAPSET`
-that you have write permission for (usually granted, if you created the :file:`MAPSET`).
-This is necessary, because new raster or vector layers created during analysis
-need to be written to the currently selected :file:`LOCATION` and :file:`MAPSET`.
-
-.. _figure_grass_toolbox:
-
-.. figure:: img/grass_toolbox_moduletree.png
-   :align: center
-
-   GRASS Toolbox and Module Tree
 
 .. _grass_modules:
 
 Working with GRASS modules
----------------------------
+==========================
 
-The GRASS shell inside the GRASS Toolbox provides access to almost all (more than
-300) GRASS modules in a command line interface. To offer a more user-friendly
-working environment, about 200 of the available GRASS modules and functionalities
-are also provided by graphical dialogs within the GRASS plugin Toolbox.
+.. tip:: **Use Processing as replacement for the GRASS modules**
+
+   The :ref:`Processing Toolbox <label_processing>` represents a more modern
+   and integrated environment to do analysis on GRASS datasets within QGIS.
+   Enabling :menuselection:`Plugin Manager --> GRASS GIS Processing` plugin
+   provides access to hundreds of algorithms that replace most of the modules
+   in the GRASS plugin.
+
+The GRASS plugin provides a user-friendly toolbox with about 200 of the available
+GRASS modules and functionalities.
+
+The Interface
+-------------
 
 A complete list of GRASS modules available in the graphical Toolbox in QGIS
-version |CURRENT| is available in the GRASS wiki at
-https://grasswiki.osgeo.org/wiki/GRASS-QGIS_relevant_module_list.
+is available in the `GRASS wiki <https://grasswiki.osgeo.org/wiki/GRASS-QGIS_relevant_module_list>`_.
 
 It is also possible to customize the GRASS Toolbox content. This procedure is
 described in section :ref:`sec_toolbox-customizing`.
@@ -609,7 +675,8 @@ By clicking on a graphical module icon, a new tab will be added to the Toolbox d
 providing three new sub-tabs: :guilabel:`Options`, :guilabel:`Output` and
 :guilabel:`Manual`.
 
-**Options**
+Options
+.......
 
 The :guilabel:`Options` tab provides a simplified module dialog where you can
 usually select a raster or vector layer visualized in the QGIS canvas and enter
@@ -623,17 +690,14 @@ further module-specific parameters to run the module.
    GRASS Toolbox Module Options
 
 The provided module parameters are often not complete to keep the dialog simple.
-If you want to use further module parameters and flags, you need to start the
-GRASS shell and run the module in the command line.
+The :guilabel:`Show Advanced Options` button below the simplified module dialog
+in the :guilabel:`Options` tab allows you to use the complete GRASS module options
+without the need to switch to the GRASS shell.
+For some modules however, you may still need to start the GRASS shell
+and run the module in the command line if you want to use further parameters and flags.
 
-A new feature since QGIS 1.8 is the support for a :guilabel:`Show Advanced Options`
-button below the simplified module dialog in the :guilabel:`Options` tab. At the
-moment, it is only added to the module :file:`v.in.ascii` as an example of use, but it will
-probably be part of more or all modules in the GRASS Toolbox in future versions
-of QGIS. This allows you to use the complete GRASS module options without the need
-to switch to the GRASS shell.
-
-**Output**
+Output
+......
 
 .. _figure_grass_module_output:
 
@@ -647,7 +711,8 @@ module. When you click the :guilabel:`Run` button, the module switches to the
 :guilabel:`Output` tab and you see information about the analysis process. If
 all works well, you will finally see a ``Successfully finished`` message.
 
-**Manual**
+Manual
+......
 
 .. _figure_grass_module_manual:
 
@@ -671,32 +736,85 @@ module :file:`g.manual`.
    If you want to display your calculation results immediately in your map canvas,
    you can use the 'View Output' button at the bottom of the module tab.
 
+
 GRASS module examples
 ---------------------
 
 The following examples will demonstrate the power of some of the GRASS modules.
 
+.. _sec_import_loc_data:
+
+Importing data into a GRASS Project
+...................................
+
+This section gives an example of how to import raster and vector data into a
+GRASS project using the standard GRASS modules.
+We will use the landcover raster map :file:`landcover.img`
+and the vector GML file :file:`lakes.gml` from the QGIS :ref:`Alaska dataset <label_sampledata>`.
+
+#. Start QGIS and make sure the GRASS plugin is loaded.
+#. In the :menuselection:`Plugins --> GRASS` menu, click the |grassOpenMapset| :sup:`Open MAPSET` icon
+   to bring up the :guilabel:`Select GRASS Mapset` dialog.
+#. Select as GRASS database the folder :file:`grassdata` in the QGIS
+   Alaska dataset, as project 'alaska', as mapset 'demo' and
+   click :guilabel:`OK`.
+#. Now click the |grassTools| :sup:`Open GRASS tools` icon.
+   The GRASS Toolbox dialog appears.
+#. To import the raster map :file:`landcover.img`,
+   find and click the module :guilabel:`r.in.gdal` in the :guilabel:`Modules` tab.
+   The module dialog for :file:`r.in.gdal` appears.
+   This GRASS module allows you to import GDAL-supported raster files into a GRASS project.
+#. Browse to the folder :file:`raster` in the QGIS 'Alaska' dataset
+   and select the file :file:`landcover.img` as raster file to import.
+#. As raster output name, define ``landcover_grass`` and click :guilabel:`Run`.
+   In the :guilabel:`Output` tab, you see the currently running GRASS command:
+
+   .. code-block:: sh
+
+      r.in.gdal -o input=/path/to/landcover.img output=landcover_grass
+
+#. When it says **Successfully finished**, click :guilabel:`View Output`.
+   The :file:`landcover_grass` raster layer is now imported into GRASS and
+   will be visualized in the QGIS canvas.
+#. To import the vector GML file :file:`lakes.gml`, find and click the module
+   :guilabel:`v.in.ogr` in the :guilabel:`Modules` tab.
+   The module dialog for :file:`v.in.ogr` appears.
+   This GRASS module allows you to import OGR-supported vector files into a GRASS project.
+#. Browse to the folder :file:`gml` in the QGIS 'Alaska' dataset
+   and select the file :file:`lakes.gml` as OGR file to import.
+#. As vector output name, define ``lakes_grass`` and click :guilabel:`Run`.
+   You don't have to care about the other options in this example.
+   In the :guilabel:`Output` tab you see the currently running GRASS command:
+
+   .. code-block:: sh
+
+     v.in.ogr -o dsn=/path/to/lakes.gml output=lakes_grass
+
+#. When it says **Successfully finished**, click :guilabel:`View Output`.
+   The :file:`lakes_grass` vector layer is now imported into GRASS
+   and will be visualized in the QGIS canvas.
+
 Creating contour lines
 ......................
 
-The first example creates a vector contour map from an elevation raster (DEM).
-Here, it is assumed that you have the Alaska :file:`LOCATION` set up as explained
+This example creates a vector contour map from an elevation raster (DEM).
+Here, it is assumed that you have the Alaska project set up as explained
 in section :ref:`sec_import_loc_data`.
 
-* First, open the location by clicking the
-  |grassOpenMapset| :sup:`Open mapset` button and choosing the Alaska location.
-* Now open the Toolbox with the |grassTools| :sup:`Open GRASS tools` button.
-* In the list of tool categories, double-click :menuselection:`Raster --> Surface
-  Management --> Generate vector contour lines`.
-* Now a single click on the tool **r.contour** will open the tool dialog as
-  explained above (see :ref:`grass_modules`).
-* In the :guilabel:`Name of input raster map` enter ``gtopo30``.
-* Type into the :guilabel:`Increment between Contour levels` |selectNumber|
-  the value 100. (This will create contour lines at intervals of 100 meters.)
-* Type into the :guilabel:`Name for output vector map` the name ``ctour_100``.
-* Click :guilabel:`Run` to start the process. Wait for several moments until the message
-  ``Successfully finished`` appears in the output window. Then click :guilabel:`View Output`
-  and :guilabel:`Close`.
+#. First, open the project by clicking the |grassOpenMapset| :sup:`Open mapset` button
+   and choosing the Alaska project.
+#. Now open the Toolbox with the |grassTools| :sup:`Open GRASS tools` button.
+#. In the list of tool categories, double-click :menuselection:`Raster --> Surface
+   Management --> Generate vector contour lines`.
+#. Now a single click on the tool :guilabel:`r.contour` will open the tool dialog as
+   explained above (see :ref:`grass_modules`).
+#. In the :guilabel:`Name of input raster map` enter ``gtopo30``.
+#. Type into the :guilabel:`Increment between Contour levels`
+   the value 100. (This will create contour lines at intervals of 100 meters.)
+#. Type into the :guilabel:`Name for output vector map` the name ``ctour_100``.
+#. Click :guilabel:`Run` to start the process. Wait for several moments until the message
+   ``Successfully finished`` appears in the output window. Then click :guilabel:`View Output`
+   and :guilabel:`Close`.
 
 Since this is a large region, it will take a while to display. After it finishes
 rendering, you can open the layer properties window to change the line color so
@@ -718,24 +836,24 @@ map, so the detail is unnecessary.
    Douglas-Peuker algorithm.
 
 However, the purpose of this example is different. The contour lines created by
-``r.contour`` have sharp angles that should be smoothed. Among the **v.generalize**
+``r.contour`` have sharp angles that should be smoothed. Among the ``v.generalize``
 algorithms, there is Chaiken's, which does just that (also Hermite splines). Be
 aware that these algorithms can **add** additional vertices to the vector,
 causing it to load even more slowly.
 
-* Open the GRASS Toolbox and double-click the categories :menuselection:`Vector -->
-  Develop map --> Generalization`, then click on the **v.generalize** module to
-  open its options window.
-* Check that the 'ctour_100' vector appears as the :guilabel:`Name of input vector`.
-* From the list of algorithms, choose Chaiken's. Leave all other options at their
-  default, and scroll down to the last row to enter in the field :guilabel:`Name
-  for output vector map` 'ctour_100_smooth', and click :guilabel:`Run`.
-* The process takes several moments. Once ``Successfully finished`` appears in
-  the output windows, click :guilabel:`View Output` and then :guilabel:`Close`.
-* You may change the color of the vector to display it clearly on the raster
-  background and to contrast with the original contour lines. You will notice
-  that the new contour lines have smoother corners than the original while staying
-  faithful to the original overall shape.
+#. Open the GRASS Toolbox and double-click the categories :menuselection:`Vector -->
+   Develop map --> Generalization`, then click on the :guilabel:`v.generalize` module to
+   open its options window.
+#. Check that the 'ctour_100' vector appears as the :guilabel:`Name of input vector`.
+#. From the list of algorithms, choose Chaiken's. Leave all other options at their
+   default, and scroll down to the last row to enter in the field :guilabel:`Name
+   for output vector map` 'ctour_100_smooth', and click :guilabel:`Run`.
+#. The process takes several moments. Once ``Successfully finished`` appears in
+   the output windows, click :guilabel:`View Output` and then :guilabel:`Close`.
+#. You may change the color of the vector to display it clearly on the raster
+   background and to contrast with the original contour lines. You will notice
+   that the new contour lines have smoother corners than the original while staying
+   faithful to the original overall shape.
 
 .. _figure_grass_module_generalize:
 
@@ -751,8 +869,8 @@ causing it to load even more slowly.
    you have a raster map of precipitation data, for example, then the same method
    will be used to create a vector map of isohyetal (constant rainfall) lines.
 
-Creating a Hillshade 3-D effect
-.................................
+Creating a Hillshade 3D effect
+..............................
 
 Several methods are used to display elevation layers and give a 3-D effect to maps.
 The use of contour lines, as shown above, is one popular method often chosen to
@@ -762,65 +880,23 @@ the slope and aspect of each cell, then simulating the sun's position in the sky
 and giving a reflectance value to each cell. Thus, you get sun-facing slopes
 lighted; the slopes facing away from the sun (in shadow) are darkened.
 
-* Begin this example by loading the ``gtopo30`` elevation raster. Start the GRASS
-  Toolbox, and under the Raster category, double-click to open :menuselection:`Spatial
-  analysis --> Terrain analysis`.
-* Then click **r.shaded.relief** to open the module.
-* Change the :guilabel:`azimuth angle` |selectNumber| 270 to 315.
-* Enter ``gtopo30_shade`` for the new hillshade raster, and click :guilabel:`Run`.
-* When the process completes, add the hillshade raster to the map. You should see
-  it displayed in grayscale.
-* To view both the hillshading and the colors of the ``gtopo30`` together, move
-  the hillshade map below the ``gtopo30`` map in the table of contents, then open
-  the :menuselection:`Properties` window of ``gtopo30``, switch to the
-  :guilabel:`Transparency` tab and set its transparency level to about 25%.
+#. Begin this example by loading the ``gtopo30`` elevation raster. Start the GRASS
+   Toolbox, and under the Raster category, double-click to open :menuselection:`Spatial
+   analysis --> Terrain analysis`.
+#. Then click :guilabel:`r.shaded.relief` to open the module.
+#. Change the :guilabel:`Azimuth angle` from 270 to 315.
+#. Enter ``gtopo30_shade`` for the new hillshade raster, and click :guilabel:`Run`.
+#. When the process completes, add the hillshade raster to the map. You should see
+   it displayed in grayscale.
+#. To view both the hillshading and the colors of the ``gtopo30`` together, move
+   the hillshade map below the ``gtopo30`` map in the table of contents, then open
+   the :menuselection:`Properties` window of ``gtopo30``, switch to the
+   :guilabel:`Transparency` tab and set its transparency level to about 25%.
 
 You should now have the ``gtopo30`` elevation with its colormap and transparency
 setting displayed **above** the grayscale hillshade map. In order to see the
 visual effects of the hillshading, turn off the ``gtopo30_shade`` map, then turn
 it back on.
-
-**Using the GRASS shell**
-
-The GRASS plugin in QGIS is designed for users who are new to GRASS and not
-familiar with all the modules and options. As such, some modules in the Toolbox
-do not show all the options available, and some modules do not appear at all.
-The GRASS shell (or console) gives the user access to those additional GRASS
-modules that do not appear in the Toolbox tree, and also to some additional
-options to the modules that are in the Toolbox with the simplest default
-parameters. This example demonstrates the use of an additional option in the
-**r.shaded.relief** module that was shown above.
-
-.. _figure_grass_module_shell:
-
-.. figure:: img/grass_toolbox_shell.png
-   :align: center
-
-   The GRASS shell, r.shaded.relief module
-
-The module **r.shaded.relief** can take a parameter ``zmult``, which multiplies
-the elevation values relative to the X-Y coordinate units so that the hillshade
-effect is even more pronounced.
-
-* Load the ``gtopo30`` elevation raster as above, then start the GRASS Toolbox
-  and click on the GRASS shell. In the shell window, type the command
-  ``r.shaded.relief map=gtopo30 shade=gtopo30_shade2 azimuth=315 zmult=3`` and
-  press :kbd:`Enter`.
-* After the process finishes, shift to the :guilabel:`Browse` tab and double-click
-  on the new ``gtopo30_shade2`` raster to display it in QGIS.
-* As explained above, move the shaded relief raster below the ``gtopo30`` raster in
-  the table of contents, then check the transparency of the colored ``gtopo30`` layer.
-  You should see that the 3-D effect stands out more strongly compared with the
-  first shaded relief map.
-
-.. _figure_grass_module_display:
-
-.. figure:: img/grass_toolbox_shadedrelief.png
-   :align: center
-   :width: 35em
-
-   Displaying shaded relief created with the GRASS module r.shaded.relief
-
 
 Raster statistics in a vector map
 ..................................
@@ -828,29 +904,28 @@ Raster statistics in a vector map
 The next example shows how a GRASS module can aggregate raster data and add columns
 of statistics for each polygon in a vector map.
 
-* Again using the Alaska data, refer to :ref:`sec_import_loc_data` to import the
-  :file:`shapefiles/trees.shp` file into GRASS.
-* Now an intermediate step is required: centroids must be added to the imported
-  trees map to make it a complete GRASS area vector (including both boundaries
-  and centroids).
-* From the Toolbox, choose :menuselection:`Vector --> Manage features`, and open
-  the module **v.centroids**.
-* Enter as the :guilabel:`output vector map` 'forest_areas' and run the module.
-* Now load the ``forest_areas`` vector and display the types of forests - deciduous,
-  evergreen, mixed - in different colors: In the layer :guilabel:`Properties`
-  window, :guilabel:`Symbology` tab, choose from :guilabel:`Legend type`
-  |selectString| 'Unique value' and set the :guilabel:`Classification field`
-  to 'VEGDESC'. (Refer to the explanation of the symbology tab in
-  :ref:`vector_style_menu` of the vector section.)
-* Next, reopen the GRASS Toolbox and open :menuselection:`Vector --> Vector update`
-  by other maps.
-* Click on the **v.rast.stats** module. Enter ``gtopo30`` and ``forest_areas``.
-* Only one additional parameter is needed: Enter :guilabel:`column prefix` ``elev``,
-  and click :guilabel:`Run`. This is a computationally heavy operation, which will run
-  for a long time (probably up to two hours).
-* Finally, open the ``forest_areas`` attribute table, and verify that several new
-  columns have been added, including ``elev_min``, ``elev_max``, ``elev_mean``,
-  etc., for each forest polygon.
+#. Again using the Alaska data, refer to :ref:`sec_import_loc_data` to import the
+   :file:`shapefiles/trees.shp` file into GRASS.
+#. Now an intermediate step is required: centroids must be added to the imported
+   trees map to make it a complete GRASS area vector (including both boundaries
+   and centroids).
+#. From the Toolbox, choose :menuselection:`Vector --> Manage features`,
+   and open the module :guilabel:`v.centroids`.
+#. Enter ``forest_areas`` as the :guilabel:`Output vector map` and run the module.
+#. Now load the ``forest_areas`` vector and display the types of forests - deciduous,
+   evergreen, mixed - in different colors: in the layer :guilabel:`Properties` window,
+   :guilabel:`Symbology` tab, choose ``Categorized`` in the top drop-down menu
+   and set the :guilabel:`Value` field to ``VEGDESC``. Then press :guilabel:`Classify`.
+   Refer to the explanation of the symbology tab in :ref:`vector_style_menu` of the vector section.
+#. Next, reopen the GRASS Toolbox and open :menuselection:`Vector --> Vector update`
+   by other maps.
+#. Click on the :guilabel:`v.rast.stats` module. Enter ``gtopo30`` and ``forest_areas``.
+#. Only one additional parameter is needed: Enter ``elev`` as :guilabel:`Column prefix`,
+   and click :guilabel:`Run`. This is a computationally heavy operation, which will run
+   for a long time (probably up to two hours).
+#. Finally, open the ``forest_areas`` attribute table, and verify that several new
+   columns have been added, including ``elev_min``, ``elev_max``, ``elev_mean``,
+   etc., for each forest polygon.
 
 .. index::
    single: GRASS; Customize toolbox
@@ -863,8 +938,8 @@ Nearly all GRASS modules can be added to the GRASS Toolbox. An XML interface is
 provided to parse the pretty simple XML files that configure the modules'
 appearance and parameters inside the Toolbox.
 
-A sample XML file for generating the module ``v.buffer`` (v.buffer.qgm) looks
-like this:
+A sample XML file for generating the module ``v.buffer`` (:file:`v.buffer.qgm`)
+looks like this:
 
 .. code-block:: xml
 
@@ -879,9 +954,7 @@ like this:
 
 
 The parser reads this definition and creates a new tab inside the Toolbox when
-you select the module. A more detailed description for adding new modules, changing
-a module's group, etc., can be found at 
-https://qgis.org/en/site/getinvolved/development/addinggrasstools.html.
+you select the module.
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
@@ -890,7 +963,6 @@ https://qgis.org/en/site/getinvolved/development/addinggrasstools.html.
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |CURRENT| replace:: 3.16
 .. |captureBoundary| image:: /static/common/mActionCaptureBoundary.png
    :width: 1.5em
 .. |captureCentroid| image:: /static/common/mActionCaptureCentroid.png
@@ -903,11 +975,15 @@ https://qgis.org/en/site/getinvolved/development/addinggrasstools.html.
    :width: 1.5em
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
+.. |favorites| image:: /static/common/mIconFavorites.png
+   :width: 1.5em
+.. |folder24| image:: /static/common/mIconFolder24.png
+   :width: 1.5em
 .. |general| image:: /static/common/general.png
    :width: 1.5em
-.. |grass| image:: /static/common/grasslogo.png
-   :width: 1.5em
 .. |grassCloseMapset| image:: /static/common/grass_close_mapset.png
+   :width: 1.5em
+.. |grassLogo| image:: /static/common/grasslogo.png
    :width: 1.5em
 .. |grassNewMapset| image:: /static/common/grass_new_mapset.png
    :width: 1.5em
@@ -919,11 +995,13 @@ https://qgis.org/en/site/getinvolved/development/addinggrasstools.html.
    :width: 1.5em
 .. |import| image:: /static/common/mIconImport.png
    :width: 1.5em
-.. |nix| image:: /static/common/nix.png
-   :width: 1em
-.. |osx| image:: /static/common/osx.png
-   :width: 1em
-.. |projectionEnabled| image:: /static/common/mIconProjectionEnabled.png
+.. |newFileGeodatabase| image:: /static/common/mActionNewFileGeodatabase.png
+   :width: 1.5em
+.. |newFolder| image:: /static/common/mActionNewFolder.png
+   :width: 1.5em
+.. |newGeoPackageLayer| image:: /static/common/mActionNewGeoPackageLayer.png
+   :width: 1.5em
+.. |newVectorLayer| image:: /static/common/mActionNewVectorLayer.png
    :width: 1.5em
 .. |radioButtonOn| image:: /static/common/radiobuttonon.png
    :width: 1.5em
@@ -931,9 +1009,9 @@ https://qgis.org/en/site/getinvolved/development/addinggrasstools.html.
    :width: 1.5em
 .. |rasterLink| image:: /static/common/mIconRasterLink.png
    :width: 1.5em
-.. |selectNumber| image:: /static/common/selectnumber.png
-   :width: 2.8em
-.. |selectString| image:: /static/common/selectstring.png
-   :width: 2.5em
 .. |showPluginManager| image:: /static/common/mActionShowPluginManager.png
    :width: 1.5em
+.. |terminal| image:: /static/common/mActionTerminal.png
+   :width: 1.5em
+.. |unchecked| image:: /static/common/unchecked.png
+   :width: 1.3em

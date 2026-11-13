@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Form_current_parent_value:
 
 current_parent_value
@@ -45,4 +46,3 @@ Returns the current, unsaved value of a field in the form or table row currently
 
 
 .. end_current_value_section
-

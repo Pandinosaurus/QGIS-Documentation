@@ -6,12 +6,13 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Operators_modulo:
 
 %
 .
 
-Remainder of division
+Remainder of division. Takes the sign of the dividend.
 
 .. list-table::
    :widths: 15 85
@@ -22,7 +23,9 @@ Remainder of division
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 % 4`` → 1
+     - * ``9 % 2`` → 1
+       * ``9 % -2`` → 1
+       * ``-9 % 2`` → -1
        * ``5 % NULL`` → NULL
 
 
@@ -33,7 +36,15 @@ Remainder of division
 \*
 ..
 
-Multiplication of two values
+Multiplication of two values.
+
+
+
+When used with two colors, performs component-wise multiplication on the color components (not alpha), clamping results to [0, 1]. The alpha channel of the left color is used. HSL and HSV colors are converted to RGB for the operation, and the result is an RGB color. CMYK colors produce a CMYK result.
+
+
+
+When used with a color and a number (in any order), multiplies each color component (excluding alpha) by the number, clamping results to [0, 1]. The alpha channel is preserved.
 
 .. list-table::
    :widths: 15 85
@@ -46,6 +57,7 @@ Multiplication of two values
    * - Examples
      - * ``5 * 4`` → 20
        * ``5 * NULL`` → NULL
+       * ``color_rgbf(0.2, 0.4, 0.6) * 2`` → RGBA: 0.40,0.80,1.00,1.00
 
 
 .. end_*_section
@@ -55,7 +67,23 @@ Multiplication of two values
 \+
 ..
 
-Addition of two values. If one of the values is NULL the result will be NULL.
+Addition of two values or concatenation of two strings.
+
+
+
+For numeric and datetime operations if either value is NULL the result will be NULL.
+
+
+
+For string concatenation NULL values from fields are treated as empty strings. Use the || operator instead if NULL propagation for strings is required.
+
+
+
+When used with two colors, performs component-wise addition on the color components (not alpha), clamping results to [0, 1]. The alpha channel of the left color is used. HSL and HSV colors are converted to RGB for the operation, and the result is an RGB color. CMYK colors produce a CMYK result.
+
+
+
+When used with a color and a number (in any order), adds the number to each color component (excluding alpha), clamping results to [0, 1]. The alpha channel is preserved.
 
 .. list-table::
    :widths: 15 85
@@ -68,8 +96,11 @@ Addition of two values. If one of the values is NULL the result will be NULL.
    * - Examples
      - * ``5 + 4`` → 9
        * ``5 + NULL`` → NULL
+       * ``'5' + NULL`` → NULL
+       * ``'5' + "name"`` → '5' (if value in "name" field is NULL) or a concatenation of the two strings
        * ``'QGIS ' + 'ROCKS'`` → 'QGIS ROCKS'
        * ``to_datetime('2020-08-01 12:00:00') + '1 day 2 hours'`` → 2020-08-02T14:00:00
+       * ``color_rgbf(0.2, 0.4, 0.6) + 0.1`` → RGBA: 0.30,0.50,0.70,1.00
 
 
 .. end_+_section
@@ -80,6 +111,14 @@ Addition of two values. If one of the values is NULL the result will be NULL.
 ..
 
 Subtraction of two values. If one of the values is NULL the result will be NULL.
+
+
+
+When used with two colors, performs component-wise subtraction on the color components (not alpha), clamping results to [0, 1]. The alpha channel of the left color is used. HSL and HSV colors are converted to RGB for the operation, and the result is an RGB color. CMYK colors produce a CMYK result.
+
+
+
+When used with a color and a number (in any order), subtracts one from the other per color component (excluding alpha), clamping results to [0, 1]. The alpha channel is preserved.
 
 .. list-table::
    :widths: 15 85
@@ -93,6 +132,7 @@ Subtraction of two values. If one of the values is NULL the result will be NULL.
      - * ``5 - 4`` → 1
        * ``5 - NULL`` → NULL
        * ``to_datetime('2012-05-05 12:00:00') - to_interval('1 day 2 hours')`` → 2012-05-04T10:00:00
+       * ``color_rgbf(0.8, 0.6, 0.4) - 0.1`` → RGBA: 0.70,0.50,0.30,1.00
 
 
 .. end_-_section
@@ -102,7 +142,15 @@ Subtraction of two values. If one of the values is NULL the result will be NULL.
 /
 .
 
-Division of two values
+Division of two values.
+
+
+
+When used with two colors, performs component-wise division on the color components (not alpha), clamping results to [0, 1]. The alpha channel of the left color is used. HSL and HSV colors are converted to RGB for the operation, and the result is an RGB color. CMYK colors produce a CMYK result.
+
+
+
+When used with a color and a number, divides each color component (excluding alpha) by the number, clamping results to [0, 1]. The color must be on the left side. Division by zero returns NULL. The alpha channel is preserved.
 
 .. list-table::
    :widths: 15 85
@@ -115,9 +163,31 @@ Division of two values
    * - Examples
      - * ``5 / 4`` → 1.25
        * ``5 / NULL`` → NULL
+       * ``color_rgbf(0.8, 0.6, 0.4) / 2`` → RGBA: 0.40,0.30,0.20,1.00
 
 
 .. end_/_section
+
+.. _expression_function_Operators_floordiv:
+
+//
+..
+
+Floor division of two values
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - a // b
+   * - Arguments
+     - * **a** - value
+       * **b** - value
+   * - Examples
+     - * ``9 // 2`` → 4
+
+
+.. end_//_section
 
 .. _expression_function_Operators_lt:
 
@@ -135,9 +205,9 @@ Compares two values and evaluates to 1 if the left value is less than the right 
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 < 4`` → 0
-       * ``5 < 5`` → 0
-       * ``4 < 5`` → 1
+     - * ``5 < 4`` → FALSE
+       * ``5 < 5`` → FALSE
+       * ``4 < 5`` → TRUE
 
 
 .. end_<_section
@@ -158,9 +228,9 @@ Compares two values and evaluates to 1 if the left value is less or equal than t
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 <= 4`` → 0
-       * ``5 <= 5`` → 1
-       * ``4 <= 5`` → 1
+     - * ``5 <= 4`` → FALSE
+       * ``5 <= 5`` → TRUE
+       * ``4 <= 5`` → TRUE
 
 
 .. end_<=_section
@@ -181,8 +251,8 @@ Compares two values and evaluates to 1 if they are not equal.
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 <> 4`` → 1
-       * ``4 <> 4`` → 0
+     - * ``5 <> 4`` → TRUE
+       * ``4 <> 4`` → FALSE
        * ``5 <> NULL`` → NULL
        * ``NULL <> NULL`` → NULL
 
@@ -205,8 +275,8 @@ Compares two values and evaluates to 1 if they are equal.
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 = 4`` → 0
-       * ``4 = 4`` → 1
+     - * ``5 = 4`` → FALSE
+       * ``4 = 4`` → TRUE
        * ``5 = NULL`` → NULL
        * ``NULL = NULL`` → NULL
 
@@ -229,9 +299,9 @@ Compares two values and evaluates to 1 if the left value is greater than the rig
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 > 4`` → 1
-       * ``5 > 5`` → 0
-       * ``4 > 5`` → 0
+     - * ``5 > 4`` → TRUE
+       * ``5 > 5`` → FALSE
+       * ``4 > 5`` → FALSE
 
 
 .. end_>_section
@@ -252,9 +322,9 @@ Compares two values and evaluates to 1 if the left value is greater or equal tha
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``5 >= 4`` → 1
-       * ``5 >= 5`` → 1
-       * ``4 >= 5`` → 0
+     - * ``5 >= 4`` → TRUE
+       * ``5 >= 5`` → TRUE
+       * ``4 >= 5`` → FALSE
 
 
 .. end_>=_section
@@ -264,7 +334,7 @@ Compares two values and evaluates to 1 if the left value is greater or equal tha
 AND
 ...
 
-Returns 1 when condition a and b are true.
+Returns TRUE when conditions a and b are true.
 
 .. list-table::
    :widths: 15 85
@@ -275,20 +345,47 @@ Returns 1 when condition a and b are true.
      - * **a** - condition
        * **b** - condition
    * - Examples
-     - * ``TRUE AND TRUE`` → 1
-       * ``TRUE AND FALSE`` → 0
-       * ``4 = 2+2 AND 1 = 1`` → 1
-       * ``4 = 2+2 AND 1 = 2`` → 0
+     - * ``TRUE AND TRUE`` → TRUE
+       * ``TRUE AND FALSE`` → FALSE
+       * ``4 = 2+2 AND 1 = 1`` → TRUE
+       * ``4 = 2+2 AND 1 = 2`` → FALSE
 
 
 .. end_AND_section
+
+.. _expression_function_Operators_BETWEEN:
+
+BETWEEN
+.......
+
+Returns TRUE if value is within the specified range. The range is considered inclusive of the bounds. To test for exclusion NOT BETWEEN can be used.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - value BETWEEN lower_bound AND higher_bound
+   * - Arguments
+     - * **value** - the value to compare with a range. It can be a string, a number or a date.
+       * **lower_bound AND higher_bound** - range bounds
+   * - Examples
+     - * ``'B' BETWEEN 'A' AND 'C'`` → TRUE
+       * ``2 BETWEEN 1 AND 3`` → TRUE
+       * ``2 BETWEEN 2 AND 3`` → TRUE
+       * ``'B' BETWEEN 'a' AND 'c'`` → FALSE
+       * ``lower('B') BETWEEN 'a' AND 'b'`` → TRUE
+
+.. note:: *value BETWEEN lower_bound AND higher_bound* is the same as "*value >= lower_bound AND value <= higher_bound*".
+
+
+.. end_BETWEEN_section
 
 .. _expression_function_Operators_ILIKE:
 
 ILIKE
 .....
 
-Returns 1 if the first parameter matches case-insensitive the supplied pattern. LIKE can be used instead of ILIKE to make the match case-sensitive. Works with numbers also.
+Returns TRUE if the first parameter matches case-insensitive the supplied pattern. LIKE can be used instead of ILIKE to make the match case-sensitive. Works with numbers also.
 
 .. list-table::
    :widths: 15 85
@@ -299,21 +396,21 @@ Returns 1 if the first parameter matches case-insensitive the supplied pattern. 
      - * **string/number** - string to search
        * **pattern** - pattern to find, you can use '%' as a wildcard, '_' as a single char and '\\\\' to escape these special characters.
    * - Examples
-     - * ``'A' ILIKE 'A'`` → 1
-       * ``'A' ILIKE 'a'`` → 1
-       * ``'A' ILIKE 'B'`` → 0
-       * ``'ABC' ILIKE 'b'`` → 0
-       * ``'ABC' ILIKE 'B'`` → 0
-       * ``'ABC' ILIKE '_b_'`` → 1
-       * ``'ABC' ILIKE '_B_'`` → 1
-       * ``'ABCD' ILIKE '_b_'`` → 0
-       * ``'ABCD' ILIKE '_B_'`` → 0
-       * ``'ABCD' ILIKE '_b%'`` → 1
-       * ``'ABCD' ILIKE '_B%'`` → 1
-       * ``'ABCD' ILIKE '%b%'`` → 1
-       * ``'ABCD' ILIKE '%B%'`` → 1
-       * ``'ABCD%' ILIKE 'abcd\\%'`` → 1
-       * ``'ABCD' ILIKE '%B\\%'`` → 0
+     - * ``'A' ILIKE 'A'`` → TRUE
+       * ``'A' ILIKE 'a'`` → TRUE
+       * ``'A' ILIKE 'B'`` → FALSE
+       * ``'ABC' ILIKE 'b'`` → FALSE
+       * ``'ABC' ILIKE 'B'`` → FALSE
+       * ``'ABC' ILIKE '_b_'`` → TRUE
+       * ``'ABC' ILIKE '_B_'`` → TRUE
+       * ``'ABCD' ILIKE '_b_'`` → FALSE
+       * ``'ABCD' ILIKE '_B_'`` → FALSE
+       * ``'ABCD' ILIKE '_b%'`` → TRUE
+       * ``'ABCD' ILIKE '_B%'`` → TRUE
+       * ``'ABCD' ILIKE '%b%'`` → TRUE
+       * ``'ABCD' ILIKE '%B%'`` → TRUE
+       * ``'ABCD%' ILIKE 'abcd\\%'`` → TRUE
+       * ``'ABCD' ILIKE '%B\\%'`` → FALSE
 
 
 .. end_ILIKE_section
@@ -323,7 +420,7 @@ Returns 1 if the first parameter matches case-insensitive the supplied pattern. 
 IN
 ..
 
-Returns 1 if value is found within a list of values.
+Returns TRUE if value is found within a list of values.
 
 .. list-table::
    :widths: 15 85
@@ -334,8 +431,8 @@ Returns 1 if value is found within a list of values.
      - * **a** - value
        * **b** - list of values
    * - Examples
-     - * ``'A' IN ('A','B')`` → 1
-       * ``'A' IN ('C','B')`` → 0
+     - * ``'A' IN ('A','B')`` → TRUE
+       * ``'A' IN ('C','B')`` → FALSE
 
 
 .. end_IN_section
@@ -345,7 +442,7 @@ Returns 1 if value is found within a list of values.
 IS
 ..
 
-Returns 1 if a is the same as b.
+Returns TRUE if a is the same as b.
 
 .. list-table::
    :widths: 15 85
@@ -356,22 +453,22 @@ Returns 1 if a is the same as b.
      - * **a** - any value
        * **b** - any value
    * - Examples
-     - * ``'A' IS 'A'`` → 1
-       * ``'A' IS 'a'`` → 0
-       * ``4 IS 4`` → 1
-       * ``4 IS 2+2`` → 1
-       * ``4 IS 2`` → 0
-       * ``$geometry IS NULL`` → 0, if your geometry is not NULL
+     - * ``'A' IS 'A'`` → TRUE
+       * ``'A' IS 'a'`` → FALSE
+       * ``4 IS 4`` → TRUE
+       * ``4 IS 2+2`` → TRUE
+       * ``4 IS 2`` → FALSE
+       * ``@geometry IS NULL`` → 0, if your geometry is not NULL
 
 
 .. end_IS_section
 
-.. _expression_function_Operators_IS NOT:
+.. _expression_function_Operators_IS_NOT:
 
 IS NOT
 ......
 
-Returns 1 if a is not the same as b.
+Returns TRUE if a is not the same as b.
 
 .. list-table::
    :widths: 15 85
@@ -382,19 +479,19 @@ Returns 1 if a is not the same as b.
      - * **a** - value
        * **b** - value
    * - Examples
-     - * ``'a' IS NOT 'b'`` → 1
-       * ``'a' IS NOT 'a'`` → 0
-       * ``4 IS NOT 2+2`` → 0
+     - * ``'a' IS NOT 'b'`` → TRUE
+       * ``'a' IS NOT 'a'`` → FALSE
+       * ``4 IS NOT 2+2`` → FALSE
 
 
-.. end_IS NOT_section
+.. end_IS_NOT_section
 
 .. _expression_function_Operators_LIKE:
 
 LIKE
 ....
 
-Returns 1 if the first parameter matches the supplied pattern. Works with numbers also.
+Returns TRUE if the first parameter matches case-sensitive the supplied pattern. ILIKE can be used instead of LIKE to make the match case-insensitive. Works with numbers also.
 
 .. list-table::
    :widths: 15 85
@@ -405,16 +502,16 @@ Returns 1 if the first parameter matches the supplied pattern. Works with number
      - * **string/number** - value
        * **pattern** - pattern to compare value with, you can use '%' as a wildcard, '_' as a single char and '\\\\' to escape these special characters.
    * - Examples
-     - * ``'A' LIKE 'A'`` → 1
-       * ``'A' LIKE 'a'`` → 0
-       * ``'A' LIKE 'B'`` → 0
-       * ``'ABC' LIKE 'B'`` → 0
-       * ``'ABC' LIKE '_B_'`` → 1
-       * ``'ABCD' LIKE '_B_'`` → 0
-       * ``'ABCD' LIKE '_B%'`` → 1
-       * ``'ABCD' LIKE '%B%'`` → 1
-       * ``'1%' LIKE '1\\%'`` → 1
-       * ``'1_' LIKE '1\\%'`` → 0
+     - * ``'A' LIKE 'A'`` → TRUE
+       * ``'A' LIKE 'a'`` → FALSE
+       * ``'A' LIKE 'B'`` → FALSE
+       * ``'ABC' LIKE 'B'`` → FALSE
+       * ``'ABC' LIKE '_B_'`` → TRUE
+       * ``'ABCD' LIKE '_B_'`` → FALSE
+       * ``'ABCD' LIKE '_B%'`` → TRUE
+       * ``'ABCD' LIKE '%B%'`` → TRUE
+       * ``'1%' LIKE '1\\%'`` → TRUE
+       * ``'1_' LIKE '1\\%'`` → FALSE
 
 
 .. end_LIKE_section
@@ -434,18 +531,45 @@ Negates a condition.
    * - Arguments
      - * **a** - condition
    * - Examples
-     - * ``NOT 1`` → 0
-       * ``NOT 0`` → 1
+     - * ``NOT 1`` → FALSE
+       * ``NOT 0`` → TRUE
 
 
 .. end_NOT_section
+
+.. _expression_function_Operators_NOT_BETWEEN:
+
+NOT BETWEEN
+...........
+
+Returns TRUE if value is not within the specified range. The range is considered inclusive of the bounds.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - value NOT BETWEEN lower_bound AND higher_bound
+   * - Arguments
+     - * **value** - the value to compare with a range. It can be a string, a number or a date.
+       * **lower_bound AND higher_bound** - range bounds
+   * - Examples
+     - * ``'B' NOT BETWEEN 'A' AND 'C'`` → FALSE
+       * ``1.0 NOT BETWEEN 1.1 AND 1.2`` → TRUE
+       * ``2 NOT BETWEEN 2 AND 3`` → FALSE
+       * ``'B' NOT BETWEEN 'a' AND 'c'`` → TRUE
+       * ``lower('B') NOT BETWEEN 'a' AND 'b'`` → FALSE
+
+.. note:: *value NOT BETWEEN lower_bound AND higher_bound* is the same as "*value < lower_bound OR value > higher_bound*".
+
+
+.. end_NOT_BETWEEN_section
 
 .. _expression_function_Operators_OR:
 
 OR
 ..
 
-Returns 1 when condition a or b is true.
+Returns TRUE when condition a or b is true.
 
 .. list-table::
    :widths: 15 85
@@ -456,9 +580,9 @@ Returns 1 when condition a or b is true.
      - * **a** - condition
        * **b** - condition
    * - Examples
-     - * ``4 = 2+2 OR 1 = 1`` → 1
-       * ``4 = 2+2 OR 1 = 2`` → 1
-       * ``4 = 2   OR 1 = 2`` → 0
+     - * ``4 = 2+2 OR 1 = 1`` → TRUE
+       * ``4 = 2+2 OR 1 = 2`` → TRUE
+       * ``4 = 2   OR 1 = 2`` → FALSE
 
 
 .. end_OR_section
@@ -518,7 +642,7 @@ Joins two values together into a string.
 
 
 
-If one of the values is NULL the result will be NULL. See the CONCAT function for a different behavior.
+If one of the values is NULL the result will be NULL. See the **concat** function for an alternative concatenation behavior.
 
 .. list-table::
    :widths: 15 85
@@ -553,11 +677,10 @@ Performs a regular expression match on a string value. Backslash characters must
      - * **string** - A string value
        * **regex** - A regular expression. Slashes must be escaped, eg \\\\d.
    * - Examples
-     - * ``'hello' ~ 'll'`` → 1
-       * ``'hello' ~ '^ll'`` → 0
-       * ``'hello' ~ 'llo$'`` → 1
-       * ``'abc123' ~ '\\d+'`` → 1
+     - * ``'hello' ~ 'll'`` → TRUE
+       * ``'hello' ~ '^ll'`` → FALSE
+       * ``'hello' ~ 'llo$'`` → TRUE
+       * ``'abc123' ~ '\\d+'`` → TRUE
 
 
 .. end_~_section
-

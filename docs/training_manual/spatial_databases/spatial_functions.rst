@@ -1,4 +1,4 @@
-|LS| PostGIS Setup
+Lesson: PostGIS Setup
 ===============================================================================
 
 Setting up PostGIS functions will allow you to access spatial functions from
@@ -35,7 +35,7 @@ commands.
 .. code-block:: bash
 
   $ sudo apt install wget ca-certificates
-  $ sudo lsb_release -a 
+  $ sudo lsb_release -a
   $ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
   $ sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
   $ sudo apt-get update
@@ -45,19 +45,20 @@ commands.
 Installing under Windows
 -------------------------------------------------------------------------------
 
-Installing on Windows can be done from binary packages using a normal Windows installation dialogs. 
+Installing on Windows can be done from binary packages using a normal Windows installation dialogs.
 
 First Visit `the download page <https://www.postgresql.org/download/>`_. Then follow `this guide
 <https://www.bostongis.com/PrinterFriendly.aspx?content_name=postgis_tut01>`_.
 
 More information about installing on Windows can be found on the `PostGIS
-website <https://postgis.net/windows_downloads>`_.
+website <https://postgis.net/documentation/getting_started/>`_.
 
 Installing on Other Platforms
 -------------------------------------------------------------------------------
 
-The `PostGIS website download <https://postgis.net/install/>`_ has information about
-installing on other platforms including macOS and on other Linux distributions
+The `PostGIS website download <https://postgis.net/documentation/getting_started/>`_
+has information about installing on other platforms including macOS
+and on other Linux distributions
 
 Configuring Databases to use PostGIS
 -------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ already connected to the ``address`` database, do so now. Then run:
 
   \df *point*
 
-This is the command we're looking for: :kbd:`st_pointfromtext`.  To page through
+This is the command we're looking for: ``st_pointfromtext``.  To page through
 the list, use the down arrow, then press :kbd:`Q` to quit back to the psql shell.
 
 Try running this command:
@@ -114,7 +115,7 @@ Result:
 Three things to note:
 
 * We defined a point at position 1,1 (EPSG:4326 is assumed) using
-  :kbd:`POINT(1 1)`,
+  ``POINT(1 1)``,
 * We ran an sql statement, but not on any table, just on data entered from the
   SQL prompt,
 * The resulting row does not make much sense.
@@ -145,9 +146,9 @@ Result:
     POINT(1 1)
     (1 row)
 
-Here, we entered the string :kbd:`POINT(1,1)`, turned it
-into a point using :kbd:`st_pointfromtext()`, and turned it back into a
-human-readable form with :kbd:`st_astext()`, which gave us back our original
+Here, we entered the string ``POINT(1,1)``, turned it
+into a point using ``st_pointfromtext()``, and turned it back into a
+human-readable form with ``st_astext()``, which gave us back our original
 string.
 
 One last example before we really get into the detail of using PostGIS:
@@ -217,27 +218,16 @@ Result:
   AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]
   proj4text | +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
 
-The :kbd:`srtext` is the projection definition in well known text (you may recognise
+The ``srtext`` is the projection definition in well known text (you may recognise
 this from .prj files in your shapefile collection).
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 You now have PostGIS functions installed in your copy of PostgreSQL. With this
 you'll be able to make use of PostGIS' extensive spatial functions.
 
-|WN|
+What's Next?
 -------------------------------------------------------------------------------
 
 Next you'll learn how spatial features are represented in a database.
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?

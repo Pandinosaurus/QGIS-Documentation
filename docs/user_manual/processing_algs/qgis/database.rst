@@ -30,7 +30,7 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Layer to import**
+   * - **Layer to export**
      - ``INPUT``
      - [vector: any]
      - Vector layer to add to the database
@@ -72,7 +72,7 @@ Parameters
 
        Default: 'geom'
      - Defines the name of the geometry column in the
-       new PostGIS table.
+       new PostgreSQL table.
        Geometry information for the features is stored
        in this column.
    * - **Encoding**
@@ -132,7 +132,7 @@ The algorithm has no output.
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:importintopostgis``
+**Algorithm ID**: ``native:importintopostgis``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -159,7 +159,7 @@ Parameters
      - Name
      - Type
      - Description
-   * - **Layer to import**
+   * - **Layer to export**
      - ``INPUT``
      - [vector: any]
      - Vector layer to add to the database
@@ -214,7 +214,7 @@ Parameters
    * - **Create spatial index**
      - ``CREATEINDEX``
      - [boolean]
-       
+
        Default: True
      - Specifies whether to create a spatial index or not
    * - **Convert field names to lowercase**
@@ -249,7 +249,7 @@ The algorithm has no output.
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:importintospatialite``
+**Algorithm ID**: ``native:importintospatialite``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -270,9 +270,13 @@ is not checked, the layer will be appended.
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -300,7 +304,14 @@ Parameters
      - [boolean]
 
        Default: True
-     - Save the layer styles
+     - Save the layer styles.
+   * - **Save layer metadata into GeoPackage**
+     - ``SAVE_METADATA``
+     - [boolean]
+
+       Default: True
+     - If checked, copies the source layer metadata into the GeoPackage
+       so it becomes the default metadata for the layer.
    * - **Save only selected features**
      - ``SELECTED_FEATURES_ONLY``
      - [boolean]
@@ -309,16 +320,53 @@ Parameters
      - If a layer has a selection, setting this option to ``True``
        will result in only selected features being saved. For
        layers without a selection all features will be saved.
+   * - **Export related layers following relations defined in the project**
+     - ``EXPORT_RELATED_LAYERS``
+     - [boolean]
+
+       Default: False
+     - If an input layer has :ref:`relations <vector_relations>` set in the project,
+       setting this option to ``True`` will result in exporting also its related layer(s).
+       If the layer has features selected, then only their related features will be exported
+       unless the related layer was also an input layer.
+   * - **Extent**
+
+       Optional
+     - ``EXTENT``
+     - [extent]
+     - Limit the exported features to those with geometries that intersect the provided
+       extent. If none of the features from a specific input layer intersect the extent,
+       the layer will still be created in the GeoPackage file, but it will be empty.
    * - **Destination GeoPackage**
      - ``OUTPUT``
      - [file]
 
        Default: ``[Save to temporary file]``
-     - Specify where to store the GeoPackage file. One of
+     - Specify where to store the GeoPackage file. One of:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Destination CRS**
+
+       Optional
+     - ``CRS``
+     - [crs]
+     - The coordinate reference system to use for the output layer.
+       If not set, each layer will keep its original CRS.
 
 Outputs
 .......
@@ -326,6 +374,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -396,6 +445,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -432,6 +482,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -445,7 +496,7 @@ Outputs
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:postgisexecuteandloadsql``
+**Algorithm ID**: ``native:postgisexecuteandloadsql``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -475,6 +526,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -513,12 +565,13 @@ SpatiaLite execute SQL
 ----------------------
 
 Allows a SQL database query to be performed on a SpatiaLite database.
+The database is determined by an input layer or file.
 The algorithm **won't** create a new layer: it is designed to run
 queries on the layer itself.
 
 .. seealso:: :ref:`qgispostgisexecutesql`, :ref:`qgisexecutesql`
 
- For some SQL query examples see :ref:`PostGIS SQL Query Examples
+ For some SQL query examples see :ref:`PostgreSQL Query Examples
  <qgis_postgis_execute_sql_example>`.
 
 Parameters
@@ -527,14 +580,15 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **File Database**
+   * - **Database layer (or file)**
      - ``DATABASE``
-     - [vector]
+     - [file]
      - The SQLite/SpatiaLite database file to connect to
    * - **SQL query**
      - ``SQL``
@@ -572,7 +626,7 @@ queries on the layer itself.
 
 .. seealso:: :ref:`qgispostgisexecutesql`, :ref:`qgisexecutesql`
 
- For some SQL query examples see :ref:`PostGIS SQL Query Examples
+ For some SQL query examples see :ref:`PostgreSQL Query Examples
  <qgis_postgis_execute_sql_example>`.
 
 Parameters
@@ -581,6 +635,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -590,7 +645,7 @@ Parameters
    * - **Database**
      - ``DATABASE``
      - [enumeration]
-       
+
        Default: not set
      - Select a SQLite/SpatiaLite database connected to the current session
    * - **SQL query**

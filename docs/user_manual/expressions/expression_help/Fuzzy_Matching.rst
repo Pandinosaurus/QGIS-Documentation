@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Fuzzy_Matching_hamming_distance:
 
 hamming_distance
@@ -25,6 +26,7 @@ Returns the Hamming distance between two strings. This equates to the number of 
      - * ``hamming_distance('abc','xec')`` → 2
        * ``hamming_distance('abc','ABc')`` → 2
        * ``hamming_distance(upper('abc'),upper('ABC'))`` → 0
+       * ``hamming_distance('abc','abcd')`` → NULL
 
 
 .. end_hamming_distance_section
@@ -98,4 +100,3 @@ Returns the Soundex representation of a string. Soundex is a phonetic matching a
 
 
 .. end_soundex_section
-

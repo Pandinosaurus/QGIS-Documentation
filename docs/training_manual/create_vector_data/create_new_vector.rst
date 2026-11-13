@@ -1,4 +1,4 @@
-|LS| Creating a New Vector Dataset
+Lesson: Creating a New Vector Dataset
 ===============================================================================
 
 The data that you use has to come from somewhere. For most common applications,
@@ -8,7 +8,7 @@ you'll need to create your own new data.
 
 **The goal for this lesson:** To create a new vector dataset.
 
-|basic| |FA| The Layer Creation Dialog
+:abbr:`★☆☆ (Basic level)` Follow Along: The Layer Creation Dialog
 -------------------------------------------------------------------------------
 
 Before you can add new vector data, you need a vector dataset to add it to. In
@@ -17,7 +17,7 @@ existing dataset. Therefore, you'll need to define your own new dataset first.
 
 #. Open QGIS and create a new blank project.
 #. Navigate to and click on the menu entry
-   :menuselection:`Layer --> Create Layer --> New Shapefile Layer`. 
+   :menuselection:`Layer --> Create Layer --> New Shapefile Layer`.
    You'll be presented with the :guilabel:`New Shapefile Layer` dialog, which will
    allow you to define a new layer.
 
@@ -49,7 +49,7 @@ existing dataset. Therefore, you'll need to define your own new dataset first.
    position on the surface of the Earth.
    See the User Manual on :ref:`Working with Projections <label_projections>`
    to learn more.
-   
+
    For this example we will use the default CRS associated with this
    project, which is WGS84.
 
@@ -80,7 +80,7 @@ The new layer should appear in your :guilabel:`Layers` panel.
 
 .. _tm_datasources:
 
-|basic| |FA| Data Sources
+:abbr:`★☆☆ (Basic level)` Follow Along: Data Sources
 -------------------------------------------------------------------------------
 
 When you create new data, it obviously has to be about objects that really
@@ -99,7 +99,7 @@ are provided, so you'll need to import them as necessary.
 
 #. Click on |dataSourceManager| :sup:`Data Source Manager` button.
 #. Select |raster| :guilabel:`Raster` on the left side.
-#. In the :guilabel:`Source` panel, click on the :guilabel:`...` button: 
+#. In the :guilabel:`Source` panel, click on the :guilabel:`...` button:
 #. Navigate to :file:`exercise_data/raster/`.
 #. Select the file :file:`3420C_2010_327_RGB_LATLNG.tif`.
 #. Click :guilabel:`Open` to close the dialogue window.
@@ -178,7 +178,7 @@ To enter edit mode for the ``school_property`` layer:
 #. Start digitizing by clicking on a point somewhere along the edge of the field.
 #. Place more points by clicking further along the edge, until the shape you're
    drawing completely covers the field.
-  
+
    .. figure:: img/school_field_outline.png
      :align: center
 
@@ -234,7 +234,7 @@ digitizing until you're done creating the feature as above. Then:
    to get out of edit mode.
 
 
-|basic| |TY| Digitizing Polygons 
+:abbr:`★☆☆ (Basic level)` Try Yourself: Digitizing Polygons
 -------------------------------------------------------------------------------
 
 Digitize the school itself and the upper field. Use this image to assist you:
@@ -252,7 +252,7 @@ Remember that each new feature needs to have a unique ``id`` value!
    lessons.
 
 
-|moderate| |FA| Using Vertex Editor Table
+:abbr:`★★☆ (Moderate level)` Follow Along: Using Vertex Editor Table
 -------------------------------------------------------------------------------
 
 Another way to edit a feature is to manually enter the actual
@@ -264,13 +264,13 @@ table.
    :sup:`Vertex Tool` button.
 #. Move the mouse over one of the polygon features you created in the
    ``school_property`` layer and right click on it.
-   This will select the feature and a :guilabel:`Vertex Editor` pane will appear.  
+   This will select the feature and a :guilabel:`Vertex Editor` pane will appear.
 
    .. figure:: img/vertex_editor_table.png
      :align: center
 
-   .. note:: This table contains the coordinates for the vertices of the feature.  
-      Notice there are seven vertices for this feature, but only six are 
+   .. note:: This table contains the coordinates for the vertices of the feature.
+      Notice there are seven vertices for this feature, but only six are
       visually identified in the map area.
       Upon closer inspection, one will notice that row 0 and 6 have
       identical coordinates.
@@ -285,7 +285,7 @@ table.
    The selected vertices will change to a color blue and the
    :guilabel:`Vertex Editor` table will have the corresponding rows
    highlighted, which contain the coordinates of the vertices.
-   
+
    .. figure:: img/vertex_selected.png
      :align: center
 
@@ -296,13 +296,13 @@ table.
 
    .. figure:: img/edit_vertex_in_vertex_editor.png
      :align: center
-	 
+
 #. After entering the updated value, hit the enter key to apply the change.
    You will see the vertex move to the new location in the map window.
 #. When done editing, click the |toggleEditing| :sup:`Toggle Editing`
    button to get out of edit mode, and save your edits.
 
-|basic| |TY| Digitizing Lines
+:abbr:`★☆☆ (Basic level)` Try Yourself: Digitizing Lines
 -------------------------------------------------------------------------------
 We are going to digitize two routes which are not already marked on the roads layer;
 one is a path, the other is a track.
@@ -321,10 +321,10 @@ Our track is a little further to the south:
    layer from the GeoPackage file :file:`training-data.gpkg` included in the
    :file:`exercise_data` folder of the training data you downloaded.
    You can read :ref:`load_geopackage` for a how-to.
-#. Create a new ESRI Shapefile line dataset called ``routes.shp`` in the 
+#. Create a new ESRI Shapefile line dataset called ``routes.shp`` in the
    :file:`exercise_data` directory, with attributes ``id`` and ``type``
    (use the approach above to guide you.)
-#. Activate edit mode on the :guilabel:`routes` layer.
+#. Activate edit mode on the ``routes`` layer.
 #. Since you are working with a line feature, click on the
    |captureLine| :sup:`Add Line` button to initiate line
    digitizing mode.
@@ -347,7 +347,7 @@ Our track is a little further to the south:
       :align: center
 
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 Now you know how to create features! This course doesn't cover adding point
@@ -359,7 +359,7 @@ usual, and then the feature is created.
 Knowing how to digitize is important because it's a very common activity in GIS
 programs.
 
-|WN|
+What's Next?
 -------------------------------------------------------------------------------
 
 Features in a GIS layer aren't just pictures, but objects in space. For
@@ -374,19 +374,12 @@ be useful.
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |TY| replace:: Try Yourself
-.. |WN| replace:: What's Next?
-.. |basic| image:: /static/common/basic.png
 .. |captureLine| image:: /static/common/mActionCaptureLine.png
    :width: 1.5em
 .. |capturePolygon| image:: /static/common/mActionCapturePolygon.png
    :width: 1.5em
 .. |dataSourceManager| image:: /static/common/mActionDataSourceManager.png
    :width: 1.5em
-.. |moderate| image:: /static/common/moderate.png
 .. |raster| image:: /static/common/mIconRaster.png
    :width: 1.5em
 .. |saveEdits| image:: /static/common/mActionSaveEdits.png

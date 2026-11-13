@@ -6,6 +6,7 @@ Raster analysis
    .. contents::
       :local:
       :depth: 1
+      :class: toc-columns
 
 
 .. _gdalaspect:
@@ -22,7 +23,7 @@ On the northern hemisphere, the north side of slopes is often shaded
 solar radiation (higher azimuth from 180°-270°).
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`_.
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -79,7 +80,7 @@ Parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Output raster layer. One of:
+     - Output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -100,7 +101,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -110,7 +111,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -118,7 +119,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -127,6 +128,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -159,7 +161,7 @@ By default, the colors between the given elevation values are blended
 smoothly and the result is a nice colorized elevation raster.
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`_.
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`_.
 
 Parameters
 ..........
@@ -207,7 +209,7 @@ Parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -217,7 +219,7 @@ Parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -225,14 +227,14 @@ Parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Color relief**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Output raster layer. One of:
+     - Output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -245,6 +247,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -267,12 +270,12 @@ Python code
 
 .. _gdalfillnodata:
 
-Fill nodata
+Fill NoData
 -----------
-Fill raster regions with no data values by interpolation from edges.
-The values for the no-data regions are calculated by the sourrounding
+Fill raster regions with NoData values by interpolation from edges.
+The values for the NoData regions are calculated by the surrounding
 pixel values using inverse distance weighting.
-After the interpolation a smoothing of the results takes placce.
+After the interpolation a smoothing of the results takes place.
 Input can be any GDAL-supported raster layer. This algorithm is
 generally suitable for interpolating missing regions of fairly
 continuously varying rasters (such as elevation models for instance).
@@ -282,7 +285,7 @@ It is generally not so great for interpolating a raster from sparse
 point data.
 
 This algorithm is derived from the
-`GDAL fillnodata utility <https://gdal.org/programs/gdal_fillnodata.html>`_.
+`GDAL fillnodata utility <https://gdal.org/en/latest/programs/gdal_fillnodata.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -315,28 +318,22 @@ Basic parameters
      - [raster band]
 
        Default: 1
-     - The band to operate on. Nodata values must be
+     - The band to operate on. NoData values must be
        represented by the value 0.
    * - **Maximum distance (in pixels) to search out for values to interpolate**
      - ``DISTANCE``
-     - [number]
+     - [numeric: integer]
 
        Default: 10
      - The number of pixels to search in all directions to find values
        to interpolate from
    * - **Number of smoothing iterations to run after the interpolation**
      - ``ITERATIONS``
-     - [number]
+     - [numeric: integer]
 
        Default: 0
      - The number of 3x3 filter passes to run (0 or more) to smoothen
        the results of the interpolation.
-   * - **Do not use default validity mask for the input band**
-     - ``NO_MASK``
-     - [boolean]
-
-       Default: False
-     - Activates the user-defined validity mask
    * - **Validity mask**
      - ``MASK_LAYER``
      - [raster]
@@ -346,7 +343,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster layer. One of:
+     - Specification of the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -367,7 +364,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -377,7 +374,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -385,7 +382,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -394,6 +391,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -422,11 +420,11 @@ Computes some data metrics using the specified window and output grid
 geometry.
 
 This algorithm is derived from the
-`GDAL grid utility <https://gdal.org/programs/gdal_grid.html>`_.
+`GDAL grid utility <https://gdal.org/en/latest/programs/gdal_grid.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
-.. seealso:: `GDAL grid tutorial <https://gdal.org/tutorials/gdal_grid_tut.html>`_
+.. seealso:: `GDAL grid tutorial <https://gdal.org/en/latest/tutorials/gdal_grid_tut.html>`_
 
 Parameters
 ..........
@@ -473,47 +471,47 @@ Basic parameters
 
    * - **The first radius of search ellipse**
      - ``RADIUS_1``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The first radius (X axis if rotation angle is 0) of
        the search ellipse
    * - **The second radius of search ellipse**
      - ``RADIUS_2``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The second radius (Y axis if rotation angle is 0)
        of the search ellipse
    * - **Angle of search ellipse rotation in degrees (counter clockwise)**
      - ``ANGLE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Angle of ellipse rotation in degrees.
        Ellipse rotated counter clockwise.
    * - **Minimum number of data points to use**
      - ``MIN_POINTS``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Minimum number of data points to average.
        If less amount of points found the grid node
        considered empty and will be filled with
-       NODATA marker.
-   * - **Nodata**
+       NoData marker.
+   * - **NoData**
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - No data marker to fill empty points
+     - NoData marker to fill empty points
    * - **Interpolated (data metrics)**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -540,7 +538,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -550,7 +548,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -558,7 +556,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -568,17 +566,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -586,6 +576,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -616,9 +607,9 @@ nearest neighbor method.
 Ideal when a maximum number of data points to use is required.
 
 This algorithm is derived from the
-`GDAL grid utility <https://gdal.org/programs/gdal_grid.html>`_.
+`GDAL grid utility <https://gdal.org/en/latest/programs/gdal_grid.html>`_.
 
-.. seealso:: `GDAL grid tutorial <https://gdal.org/tutorials/gdal_grid_tut.html>`_
+.. seealso:: `GDAL grid tutorial <https://gdal.org/en/latest/tutorials/gdal_grid_tut.html>`_
 
 Parameters
 ..........
@@ -638,50 +629,50 @@ Parameters
      - Input point vector layer
    * - **Weighting power**
      - ``POWER``
-     - [number]
+     - [numeric: double]
 
        Default: 2.0
      - Weighting power
    * - **Smoothing**
      - ``SMOOTHING``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Smoothing parameter
    * - **The radius of the search circle**
      - ``RADIUS``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - The radius of the search circle
    * - **Maximum number of data points to use**
      - ``MAX_POINTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 12
      - Do not search for more points than this number.
    * - **Minimum number of data points to use**
      - ``MIN_POINTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 0
      - Minimum number of data points to average.
        If less amount of points found the grid node
        considered empty and will be filled with
-       NODATA marker.
-   * - **Nodata**
+       NoData marker.
+   * - **NoData**
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - No data marker to fill empty points
+     - NoData marker to fill empty points
    * - **Interpolated (IDW with NN search)**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -708,7 +699,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -718,7 +709,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -726,7 +717,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -736,17 +727,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -754,6 +737,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -786,11 +770,11 @@ including coordinates of every data point and output grid geometry.
 The function will compute interpolated value for the given position in output grid.
 
 This algorithm is derived from the
-`GDAL grid utility <https://gdal.org/programs/gdal_grid.html>`_.
+`GDAL grid utility <https://gdal.org/en/latest/programs/gdal_grid.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
-.. seealso:: `GDAL grid tutorial <https://gdal.org/tutorials/gdal_grid_tut.html>`_
+.. seealso:: `GDAL grid tutorial <https://gdal.org/en/latest/tutorials/gdal_grid_tut.html>`_
 
 
 Parameters
@@ -814,65 +798,65 @@ Basic parameters
      - Input point vector layer
    * - **Weighting power**
      - ``POWER``
-     - [number]
+     - [numeric: double]
 
        Default: 2.0
      - Weighting power
    * - **Smothing**
      - ``SMOOTHING``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Smoothing parameter
    * - **The first radius of search ellipse**
      - ``RADIUS_1``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The first radius (X axis if rotation angle is 0) of
        the search ellipse
    * - **The second radius of search ellipse**
      - ``RADIUS_2``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The second radius (Y axis if rotation angle is 0)
        of the search ellipse
    * - **Angle of search ellipse rotation in degrees (counter clockwise)**
      - ``ANGLE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Angle of ellipse rotation in degrees.
        Ellipse rotated counter clockwise.
    * - **Maximum number of data points to use**
      - ``MAX_POINTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 0
      - Do not search for more points than this number.
    * - **Minimum number of data points to use**
      - ``MIN_POINTS``
-     - [number]
+     - [numeric: integer]
 
        Default: 0
      - Minimum number of data points to average.
        If less amount of points found the grid node
        considered empty and will be filled with
-       NODATA marker.
-   * - **Nodata**
+       NoData marker.
+   * - **NoData**
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - No data marker to fill empty points
+     - NoData marker to fill empty points
    * - **Interpolated (IDW)**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -899,7 +883,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -909,7 +893,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -917,7 +901,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -927,17 +911,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -945,6 +921,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -974,10 +951,10 @@ triangulation of the point cloud, finding in which triangle of the
 triangulation the point is, and by doing linear interpolation from its
 barycentric coordinates within the triangle.
 If the point is not in any triangle, depending on the radius, the
-algorithm will use the value of the nearest point or the NODATA value.
+algorithm will use the value of the nearest point or the NoData value.
 
 This algorithm is derived from the
-`GDAL grid utility <https://gdal.org/programs/gdal_grid.html>`_.
+`GDAL grid utility <https://gdal.org/en/latest/programs/gdal_grid.html>`_.
 
 Parameters
 ..........
@@ -1000,28 +977,28 @@ Basic parameters
      - Input point vector layer
    * - **Search distance**
      - ``RADIUS``
-     - [number]
+     - [numeric: double]
 
        Default: -1.0
-     - In case the point to be interpolated does not fit into a 
+     - In case the point to be interpolated does not fit into a
        triangle of the Delaunay triangulation, use that maximum
-       distance to search a nearest neighbour, or use nodata
+       distance to search a nearest neighbour, or use NoData
        otherwise.
        If set to ``-1``, the search distance is infinite.
-       If set to ``0``, no data value will be used.
-   * - **Nodata**
+       If set to ``0``, NoData value will be used.
+   * - **NoData**
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - No data marker to fill empty points
+     - NoData marker to fill empty points
    * - **Interpolated (Linear)**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1048,7 +1025,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1058,7 +1035,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1066,7 +1043,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -1076,17 +1053,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -1094,6 +1063,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1125,14 +1095,14 @@ Search ellipse can be rotated by specified angle, the center of
 ellipse located at the grid node.
 Also the minimum number of data points to average can be set, if there
 are not enough points in window, the grid node considered empty and
-will be filled with specified NODATA value.
+will be filled with specified NoData value.
 
 This algorithm is derived from the
-`GDAL grid utility <https://gdal.org/programs/gdal_grid.html>`_.
+`GDAL grid utility <https://gdal.org/en/latest/programs/gdal_grid.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
-.. seealso:: `GDAL grid tutorial <https://gdal.org/tutorials/gdal_grid_tut.html>`_
+.. seealso:: `GDAL grid tutorial <https://gdal.org/en/latest/tutorials/gdal_grid_tut.html>`_
 
 Parameters
 ..........
@@ -1155,46 +1125,46 @@ Basic parameters
      - Input point vector layer
    * - **The first radius of search ellipse**
      - ``RADIUS_1``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The first radius (X axis if rotation angle is 0) of
        the search ellipse
    * - **The second radius of search ellipse**
      - ``RADIUS_2``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The second radius (Y axis if rotation angle is 0)
        of the search ellipse
    * - **Angle of search ellipse rotation in degrees (counter clockwise)**
      - ``ANGLE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Angle of ellipse rotation in degrees.
        Ellipse rotated counter clockwise.
    * - **Minimum number of data points to use**
      - ``MIN_POINTS``
-     - [number]
+     - [numeric: integer]
 
-       Default: 0.0
+       Default: 0
      - Minimum number of data points to average.
        If less amount of points found the grid node
        considered empty and will be filled with
-       NODATA marker.
-   * - **Nodata**
+       NoData marker.
+   * - **NoData**
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - No data marker to fill empty points
+     - NoData marker to fill empty points
    * - **Interpolated (moving average)**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1221,7 +1191,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1231,7 +1201,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1239,7 +1209,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -1249,17 +1219,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -1267,6 +1229,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1294,15 +1257,15 @@ Grid (Nearest neighbor)
 The Nearest Neighbor method doesn't perform any interpolation or
 smoothing, it just takes the value of nearest point found in grid node
 search ellipse and returns it as a result.
-If there are no points found, the specified NODATA value will be
+If there are no points found, the specified NoData value will be
 returned.
 
 This algorithm is derived from the
-`GDAL grid utility <https://gdal.org/programs/gdal_grid.html>`_.
+`GDAL grid utility <https://gdal.org/en/latest/programs/gdal_grid.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
-.. seealso:: `GDAL grid tutorial <https://gdal.org/tutorials/gdal_grid_tut.html>`_
+.. seealso:: `GDAL grid tutorial <https://gdal.org/en/latest/tutorials/gdal_grid_tut.html>`_
 
 Parameters
 ..........
@@ -1325,38 +1288,38 @@ Basic parameters
      - Input point vector layer
    * - **The first radius of search ellipse**
      - ``RADIUS_1``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The first radius (X axis if rotation angle is 0) of
        the search ellipse
    * - **The second radius of search ellipse**
      - ``RADIUS_2``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The second radius (Y axis if rotation angle is 0)
        of the search ellipse
    * - **Angle of search ellipse rotation in degrees (counter clockwise)**
      - ``ANGLE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Angle of ellipse rotation in degrees.
        Ellipse rotated counter clockwise.
-   * - **Nodata**
+   * - **NoData**
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - No data marker to fill empty points
+     - NoData marker to fill empty points
    * - **Interpolated (Nearest neighbour)**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1383,7 +1346,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1393,7 +1356,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1401,7 +1364,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -1411,17 +1374,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -1429,6 +1384,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1460,7 +1416,7 @@ source, a vertical exaggeration factor and a scaling factor to account
 for differences between vertical and horizontal units.
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`__ .
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`__ .
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -1491,20 +1447,20 @@ Basic parameters
      - Band containing the elevation information
    * - **Z factor (vertical exaggeration)**
      - ``Z_FACTOR``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - The factor exaggerates the height of the output elevation
        raster
-   * - **Scale (ratio of vert. units to horiz.)**
+   * - **Scale (ratio of vertical units to horizontal)**
      - ``SCALE``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - The ratio of vertical units to horizontal units
    * - **Azimuth of the light**
      - ``AZIMUTH``
-     - [number]
+     - [numeric: double]
 
        Default: 315.0
      - Defines the azimuth of the light shining on the elevation
@@ -1513,7 +1469,7 @@ Basic parameters
        comes from the east it is 90 a.s.o.
    * - **Altitude of the light**
      - ``ALTITUDE``
-     - [number]
+     - [numeric: double]
 
        Default: 45.0
      - Defines the altitude of the light, in degrees.
@@ -1536,20 +1492,20 @@ Basic parameters
      - [boolean]
 
        Default: False
-     - 
+     -
    * - **Multidirectional shading**
      - ``MULTIDIRECTIONAL``
      - [boolean]
 
        Default: False
-     - 
+     -
    * - **Hillshade**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specify the output raster layer with interpolated values.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1570,7 +1526,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1580,7 +1536,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1588,7 +1544,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -1597,6 +1553,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1630,7 +1587,7 @@ This is often used to "fix up" lossy compressed airphotos so that
 color pixels can be treated as transparent when mosaicking.
 
 This algorithm is derived from the
-`GDAL nearblack utility <https://gdal.org/programs/nearblack.html>`_.
+`GDAL nearblack utility <https://gdal.org/en/latest/programs/nearblack.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -1655,7 +1612,7 @@ Basic parameters
      - Input Elevation raster layer
    * - **How far from black (white)**
      - ``NEAR``
-     - [number]
+     - [numeric: integer]
 
        Default: 15
      - Select how far from black, white or custom colors the pixel
@@ -1673,7 +1630,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1694,7 +1651,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1704,7 +1661,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1712,7 +1669,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -1721,6 +1678,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1752,7 +1710,7 @@ Target pixels are those in the source raster for which the raster
 pixel value is in the set of target pixel values.
 
 This algorithm is derived from the
-`GDAL proximity utility <https://gdal.org/programs/gdal_proximity.html>`_.
+`GDAL proximity utility <https://gdal.org/en/latest/programs/gdal_proximity.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -1781,17 +1739,15 @@ Basic parameters
 
        Default: 1
      - Band containing the elevation information
-   * - **A list of pixel values in the source image to be considered target pixels**
+   * - **List of target pixels**
 
        Optional
      - ``VALUES``
      - [string]
 
        Default: ''
-     - A list of target pixel values in the source image
-       to be considered target pixels.
-       If not specified, all non-zero pixels will be
-       considered target pixels.
+     - Comma-separated list of pixel values in the source image to consider as target pixels.
+       If not specified, all non-zero pixels will be considered target pixels.
    * - **Distance units**
      - ``UNITS``
      - [enumeration]
@@ -1803,47 +1759,41 @@ Basic parameters
        * 0 --- Georeferenced coordinates
        * 1 --- Pixel coordinates
 
-   * - **The maximum distance to be generated**
+   * - **The maximum distance to generate**
 
        Optional
      - ``MAX_DISTANCE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - The maximum distance to be generated.
-       The nodata value will be used for pixels beyond
-       this distance.
-       If a nodata value is not provided, the output
-       band will be queried for its nodata value.
-       If the output band does not have a nodata value,
-       then the value 65535 will be used.
-       Distance is interpreted according to the value of
-       *Distance units*.
-   * - **Value to be applied to all pixels that are within the maxdist of target pixels**
+       The NoData value will be used for pixels beyond this distance.
+       Distance is interpreted according to the value of the *Distance units* parameter.
+   * - **Value to apply to pixels within the maximum distance**
 
        Optional
      - ``REPLACE``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - Specify a value to be applied to all pixels that
-       are closer than the maximum distance from target
-       pixels (including the target pixels) instead of
-       a distance value.
-   * - **Nodata value to use for the destination proximity raster**
+     - Specify a value to apply to all pixels that are within the maximum distance
+       from target pixels (including the target pixels) instead of a distance value.
+   * - **NoData value to use for the destination proximity raster**
 
        Optional
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - Specify the nodata value to use for the output raster
+     - Specify the NoData value to use for the pixels beyond the maximum distance.
+       If a NoData value is not provided, the output band will be queried for its NoData value.
+       If the output band does not have a NoData value, then the value ``65535`` will be used.
    * - **Proximity map**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -1864,7 +1814,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -1874,7 +1824,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -1882,7 +1832,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
    * - **Output data type**
      - ``DATA_TYPE``
@@ -1892,17 +1842,9 @@ Advanced parameters
      - Defines the data type of the output raster file.
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
 Outputs
 .......
@@ -1910,6 +1852,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -1943,7 +1886,7 @@ terrain elevation data, it's useful for calculations of the river
 morphology, in climatology and physical geography in general.
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`_.
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -1983,7 +1926,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2004,7 +1947,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -2014,7 +1957,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
 
 Outputs
@@ -2023,6 +1966,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2032,7 +1976,7 @@ Outputs
      - ``OUTPUT``
      - [raster]
      - Single-band output roughness raster.
-       The value -9999 is used as nodata value.
+       The value -9999 is used as NoData value.
 
 Python code
 ...........
@@ -2048,14 +1992,12 @@ Python code
 
 Sieve
 -----
-Removes raster polygons smaller than a provided threshold size (in
-pixels) and replaces them with the pixel value of the largest
-neighbour polygon.
-It is useful if you have a large amount of small areas on your raster
-map.
+Removes raster polygons smaller than a provided threshold size (in pixels)
+and replaces them with the pixel value of the largest neighbour polygon.
+It is useful if you have a large amount of small areas on your raster map.
 
 This algorithm is derived from the
-`GDAL sieve utility <https://gdal.org/programs/gdal_sieve.html>`_.
+`GDAL sieve utility <https://gdal.org/en/latest/programs/gdal_sieve.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -2080,7 +2022,7 @@ Basic parameters
      - Input elevation raster layer
    * - **Threshold**
      - ``THRESHOLD``
-     - [number]
+     - [numeric: integer]
 
        Default: 10
      - Only raster polygons smaller than this size
@@ -2090,13 +2032,14 @@ Basic parameters
      - [boolean]
 
        Default: False
-     - Use eight connectedness instead of four connectedness
+     - If False, consider as neighbours only the (4) pixels that connect the edges horizontally or vertically.
+       If True, every pixel that touches an edge or a corner is considered as neighbour.
    * - **Do not use the default validity mask for the input band**
      - ``NO_MASK``
      - [boolean]
 
        Default: False
-     - 
+     -
    * - **Validity mask**
 
        Optional
@@ -2108,7 +2051,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2132,7 +2075,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -2141,6 +2084,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2166,12 +2110,12 @@ Python code
 Slope
 -----
 Generates a slope map from any GDAL-supported elevation raster.
-Slope is the angle of inclination to the horizontal. 
+Slope is the angle of inclination to the horizontal.
 You have the option of specifying the type of slope value you want:
 degrees or percent slope.
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`_.
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -2202,11 +2146,11 @@ Basic parameters
      - Band containing the elevation information
    * - **Ratio of vertical units to horizontal**
      - ``SCALE``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - The ratio of vertical units to horizontal units
-   * - **Slope expressed as percent (instead of degrees)**
+   * - **Express slope as percent (instead of degrees)**
      - ``AS_PERCENT``
      - [boolean]
 
@@ -2229,7 +2173,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2250,7 +2194,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -2260,7 +2204,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Additional command-line parameters**
 
@@ -2268,7 +2212,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options
 
 Outputs
@@ -2277,6 +2221,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2308,7 +2253,7 @@ as the mean difference between a central pixel and its
 surrounding cells.
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`_.
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -2348,7 +2293,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2369,7 +2314,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -2379,7 +2324,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
 
 Outputs
@@ -2388,6 +2333,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -2397,7 +2343,7 @@ Outputs
      - ``OUTPUT``
      - [raster]
      - Output ruggedness raster.
-       The value -9999 is used as nodata value.
+       The value -9999 is used as NoData value.
 
 Python code
 ...........
@@ -2419,7 +2365,7 @@ difference between a central pixel and the mean of its surrounding
 cells.
 
 This algorithm is derived from the
-`GDAL DEM utility <https://gdal.org/programs/gdaldem.html>`_.
+`GDAL DEM utility <https://gdal.org/en/latest/programs/gdaldem.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Analysis`
 
@@ -2459,7 +2405,7 @@ Basic parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specify the output raster layer. One of:
+     - Specify the output raster layer. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -2480,7 +2426,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -2490,7 +2436,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
 
 Outputs
@@ -2499,6 +2445,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name

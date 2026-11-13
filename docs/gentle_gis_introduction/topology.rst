@@ -108,7 +108,7 @@ a polygon map so you only have to move the edge vertex of one polygon boundary
 and QGIS will ensure the updating of the other polygon boundaries as shown in
 :numref:`figure_topological_tools` (1).
 
-Another topological option allows you to prevent** polygon overlaps** during
+Another topological option allows you to prevent **polygon overlaps** during
 digitising (see :numref:`figure_topological_tools` (2)). If you already have one polygon,
 it is possible with this option to digitise a second adjacent polygon so that
 both polygons overlap and QGIS then clips the second polygon to the common
@@ -220,8 +220,7 @@ What's next?
 ============
 
 In the section that follows we will take a closer look at **Coordinate Reference
-Systems** to understand how we relate data from our spherical earth onto flat
-maps!
+Systems** to understand how we relate data from our spherical earth onto flat maps!
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
@@ -230,5 +229,5 @@ maps!
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |gentleLogo| image:: img/gentlelogo.png
+.. |gentleLogo| image:: /static/common/gentlelogo.png
    :width: 3em

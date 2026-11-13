@@ -1,4 +1,4 @@
-|LS| DEM from LiDAR Data
+Lesson: DEM from LiDAR Data
 ===============================================================================
 
 You can improve the look of your maps by using different background images.
@@ -12,11 +12,11 @@ hillshade raster to use in your map presentation later.
 data and a hillshade raster.
 
 
-|basic| |FA| Installing Lastools
+:abbr:`★☆☆ (Basic level)` Follow Along: Installing Lastools
 -------------------------------------------------------------------------------
 
 Managing LiDAR data within QGIS is possible using the Processing framework and
-the algorithms provided by `LAStools <https://rapidlasso.com/2013/09/29/how-to-install-lastools-toolbox-in-qgis>`_.
+the algorithms provided by `LAStools <https://rapidlasso.de/how-to-install-lastools-toolbox-in-qgis/>`_.
 
 You can obtain a digital elevation model (DEM) from a LiDAR point cloud and then
 create a hillshade raster that is visually more intuitive for presentation purposes.
@@ -26,17 +26,17 @@ properly work with LAStools:
 * Close QGIS, if you have already started it.
 * An old lidar plugin might be installed by default in your system in the folder
   :file:`C:/Program Files/QGIS Valmiera/apps/qgis/python/plugins/processing/`.
-* If you have a folder named :kbd:`lidar`, delete it. This is valid for some
+* If you have a folder named :file:`lidar`, delete it. This is valid for some
   installations of QGIS 2.2 and 2.4.
 
 .. figure:: img/remove_lidar_folder.png
    :align: center
 
 * Go to the :file:`exercise_data\\forestry\\lidar\\` folder, there you can find
-  the file :file:`QGIS_2_2_toolbox.zip`. Open it and extract the :kbd:`lidar`
+  the file :file:`QGIS_2_2_toolbox.zip`. Open it and extract the :file:`lidar`
   folder to replace the one you just deleted.
 * If you are using a different QGIS version, you can see more installation
-  instructions in `this tutorial <https://rapidlasso.com/2013/09/29/how-to-install-lastools-toolbox-in-qgis/>`_.
+  instructions in `this tutorial <https://rapidlasso.de/how-to-install-lastools-toolbox-in-qgis/>`_.
 
 Now you need to install the LAStools to your computer. Get the newest
 *lastools* version `here <https://lastools.github.io/download/LAStools.zip>`_
@@ -44,7 +44,7 @@ and extract the content of the :file:`lastools.zip` file into a folder in your
 system, for example, :file:`C:\\lastools\\`. The path to the :file:`lastools`
 folder cannot have spaces or special characters.
 
-.. note:: Read the :kbd:`LICENSE.txt` file inside the :kbd:`lastools` folder.
+.. note:: Read the :file:`LICENSE.txt` file inside the :file:`lastools` folder.
   Some of the LAStools are open source and other are closed source and require
   licensing for most commercial and governmental use.  For education and
   evaluation purposes you can use and test LAStools as much as you need to.
@@ -53,8 +53,8 @@ The plugin and the actual algorithms are now installed in your computer and
 almost ready to use, you just need to set up the Processing framework to start using them:
 
 * Open a new project in QGIS.
-* Set the project's CRS to :kbd:`ETRS89 / ETRS-TM35FIN`.
-* Save the project as :kbd:`forest_lidar.qgs`.
+* Set the project's CRS to :guilabel:`ETRS89 / ETRS-TM35FIN`.
+* Save the project as :file:`forest_lidar.qgs`.
 
 To setup the LAStools in QGIS:
 
@@ -62,13 +62,13 @@ To setup the LAStools in QGIS:
 * In the :guilabel:`Processing options` dialog, go to :guilabel:`Providers` and
   then to :guilabel:`Tools for LiDAR data`.
 * Check :guilabel:`Activate`.
-* For :guilabel:`LAStools folder` set :kbd:`c:\\lastools\\` (or the folder you
+* For :guilabel:`LAStools folder` set :file:`c:\\lastools\\` (or the folder you
   extracted LAStools to).
 
 .. figure:: img/processing_options.png
    :align: center
 
-|basic| |FA| Calculating a DEM with LAStools
+:abbr:`★☆☆ (Basic level)` Follow Along: Calculating a DEM with LAStools
 -------------------------------------------------------------------------------
 
 You have already used the :menuselection:`Processing` toolbox in :doc:`../vector_analysis/spatial_statistics`
@@ -102,16 +102,16 @@ click and drag on the viewer to pan the LiDAR point cloud to see what it looks l
 
 .. note:: If you want to know further details on how the LAStools work, you can
   read the :file:`README` text files about each of the tools, in the :file:`C:\\lastools\\bin\\`
-  folder. Tutorials and other materials are available at the `Rapidlasso webpage <https://rapidlasso.com/>`_.
+  folder. Tutorials and other materials are available at the `Rapidlasso webpage <https://rapidlasso.de/>`_.
 
 * Close the viewer when you are ready.
 
 Creating a DEM with LAStools can be done in two steps, first one to classify the
-point cloud into :kbd:`ground` and :kbd:`no ground` points and then calculating
-a DEM using only the :kbd:`ground` points.
+point cloud into :guilabel:`ground` and :guilabel:`no ground` points and then calculating
+a DEM using only the :guilabel:`ground` points.
 
 * Go back to the :guilabel:`Processing Toolbox`.
-* Note the :guilabel:`Search...` box, write :kbd:`lasground`.
+* Note the :guilabel:`Search...` box, write ``lasground``.
 * Double click to open the :guilabel:`lasground` tool and set it as shown in this image:
 
 .. figure:: img/lasground_dialog.png
@@ -130,24 +130,23 @@ you can click the letter :kbd:`g` to visualize only the ground points or the
 letter :kbd:`u` to see only the unclassified points. Click the letter :kbd:`a`
 to see all the points again. Check the :file:`lasview_README.txt` file for more
 commands. If you are interested, also this `tutorial
-<https://rapidlasso.com/2014/03/02/tutorial-manual-lidar-editing/>`_
-about editing LiDAR points manually will show you different operations within
-the viewer.
+<https://rapidlasso.de/tutorial-manual-lidar-editing/>`_
+about editing LiDAR points manually will show you different operations within the viewer.
 
 * Close the viewer again.
-* In the :guilabel:`Processing Toolbox`, search for :kbd:`las2dem`.
+* In the :guilabel:`Processing Toolbox`, search for ``las2dem``.
 * Open the :guilabel:`las2dem` tool and set it as shown in this image:
 
 .. figure:: img/las2dem_dialog.png
    :align: center
 
-The result DEM is added to your map with the generic name :kbd:`Output raster file`.
+The result DEM is added to your map with the generic name :guilabel:`Output raster file`.
 
 .. note:: The :guilabel:`lasground` and :guilabel:`las2dem` tools require licensing.
   You can use the unlicensed tool as indicated in the license file, but you get
   the diagonals you can appreciate in the image results.
 
-|basic| |FA| Creating a Terrain Hillshade
+:abbr:`★☆☆ (Basic level)` Follow Along: Creating a Terrain Hillshade
 -------------------------------------------------------------------------------
 
 For visualization purposes, a hillshade generated from a DEM gives a better
@@ -161,7 +160,7 @@ For visualization purposes, a hillshade generated from a DEM gives a better
 .. figure:: img/dem_hillshade.png
    :align: center
 
-* Select :kbd:`ETRS89 / ETRS-TM35FIN` as the CRS when prompted.
+* Select :guilabel:`ETRS89 / ETRS-TM35FIN` as the CRS when prompted.
 
 Despite the diagonal lines remaining in the hillshade raster result, you can
 clearly see an accurate relief of the area. You can even see the different
@@ -171,7 +170,7 @@ soil drains that have been dug in the forests.
    :align: center
 
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 Using LiDAR data to get a DEM, specially in forested areas, gives good results
@@ -180,21 +179,8 @@ sources like the `SRTM 9m resolution DEMs <https://srtm.csi.cgiar.org/srtmdata/>
 Either way, you can use them to create a hillshade raster to use in your map
 presentations.
 
-|WN|
+What's Next?
 -------------------------------------------------------------------------------
 
 In the next, and final step in this module, lesson you will use the hillshade
 raster and the forest inventory results to create a map presentation of the results.
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?
-.. |basic| image:: /static/common/basic.png

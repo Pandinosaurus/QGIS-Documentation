@@ -12,11 +12,10 @@ Vector conversion
 
 Convert format
 --------------
-Converts any OGR-supported vector layer into another OGR-supported
-format.
+Converts any OGR-supported vector layer into another OGR-supported format.
 
 This algorithm is derived from the
-`ogr2ogr utility <https://gdal.org/programs/ogr2ogr.html>`_.
+`ogr2ogr utility <https://gdal.org/en/latest/programs/ogr2ogr.html>`_.
 
 Parameters
 ..........
@@ -27,6 +26,7 @@ Basic parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -36,11 +36,18 @@ Basic parameters
      - ``INPUT``
      - [vector: any]
      - Input vector layer
+   * - **Convert all layers from dataset**
+     - ``CONVERT_ALL_LAYERS``
+     - [boolean]
+
+       Default: False
+     - Converts the whole dataset.
+       Supported output formats for this option are :file:`GPKG` and :file:`GML`.
    * - **Converted**
      - ``OUTPUT``
      - [same as input]
      - Specification of the output vector layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -57,6 +64,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -65,7 +73,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: '' (no additional options)
@@ -77,6 +85,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -106,7 +115,7 @@ New values are assigned based on the attribute value of
 the overlapping vector feature.
 
 This algorithm is derived from the
-`GDAL rasterize utility <https://gdal.org/programs/gdal_rasterize.html>`_.
+`GDAL rasterize utility <https://gdal.org/en/latest/programs/gdal_rasterize.html>`_.
 
 Parameters
 ..........
@@ -125,7 +134,7 @@ Basic parameters
       - Description
    *  - **Input layer**
       - ``INPUT``
-      - [vector: any]
+      - [vector: geometry]
       - Input vector layer
    *  - **Input raster layer**
       - ``INPUT_RASTER``
@@ -144,6 +153,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -172,6 +182,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    *  - Label
       - Name
@@ -201,7 +212,7 @@ The pixels to overwrite are chosen based on the supplied (overlapping)
 vector layer.
 
 This algorithm is derived from the
-`GDAL rasterize utility <https://gdal.org/programs/gdal_rasterize.html>`_.
+`GDAL rasterize utility <https://gdal.org/en/latest/programs/gdal_rasterize.html>`_.
 
 Parameters
 ..........
@@ -220,7 +231,7 @@ Basic parameters
       - Description
    *  - **Input layer**
       - ``INPUT``
-      - [vector: any]
+      - [vector: geometry]
       - Input vector layer
    *  - **Input raster layer**
       - ``INPUT_RASTER``
@@ -228,7 +239,7 @@ Basic parameters
       - Input raster layer
    *  - **A fixed value to burn**
       - ``BURN``
-      - [number]
+      - [numeric: double]
 
         Default: 0.0
       - The value to burn
@@ -239,6 +250,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -267,6 +279,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    *  - Label
       - Name
@@ -291,11 +304,10 @@ Python code
 
 Rasterize (vector to raster)
 ----------------------------
-Converts vector geometries (points, lines and polygons) into a raster
-image.
+Converts vector geometries (points, lines and polygons) into a raster image.
 
 This algorithm is derived from the
-`GDAL rasterize utility <https://gdal.org/programs/gdal_rasterize.html>`_.
+`GDAL rasterize utility <https://gdal.org/en/latest/programs/gdal_rasterize.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Conversion`
 
@@ -316,7 +328,7 @@ Basic parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Field to use for a burn-in value**
 
@@ -329,13 +341,11 @@ Basic parameters
 
        Optional
      - ``BURN``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - A fixed value to burn into a band for all features.
    * - **Burn value extracted from the "Z" values of the feature**
-
-       Optional
      - ``USE_Z``
      - [boolean]
 
@@ -356,7 +366,7 @@ Basic parameters
 
    * - **Width/Horizontal resolution**
      - ``WIDTH``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Sets the width (if size units is "Pixels") or horizontal
@@ -364,13 +374,15 @@ Basic parameters
        output raster. Minimum value: 0.0.
    * - **Height/Vertical resolution**
      - ``HEIGHT``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
      - Sets the height (if size units is "Pixels") or vertical
        resolution (if size units is "Georeferenced units") of the
        output raster.
    * - **Output extent**
+
+       Optional
      - ``EXTENT``
      - [extent]
      - Extent of the output raster layer.
@@ -381,21 +393,21 @@ Basic parameters
           :start-after: **extent_options**
           :end-before: **end_extent_options**
 
-   * - **Assign a specified nodata value to output bands**
+   * - **Assign a specified NoData value to output bands**
 
        Optional
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
        Default: 0.0
-     - Assigns a specified nodata value to output bands
+     - Assigns a specified NoData value to output bands
    * - **Rasterized**
      - ``OUTPUT``
      - [raster]
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -412,6 +424,7 @@ Advanced parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -420,7 +433,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -430,7 +443,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Output data type**
      - ``DATA_TYPE``
@@ -441,25 +454,17 @@ Advanced parameters
 
        Options:
 
-       * 0 --- Byte
-       * 1 --- Int16
-       * 2 --- UInt16
-       * 3 --- UInt32
-       * 4 --- Int32
-       * 5 --- Float32
-       * 6 --- Float64
-       * 7 --- CInt16
-       * 8 --- CInt32
-       * 9 --- CFloat32
-       * 10 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types**
+          :end-before: **end_raster_data_types**
 
    * - **Pre-initialize the output image with value**
 
        Optional
      - ``INIT``
-     - [number]
+     - [numeric: double]
      - Pre-initializes the output image bands with this value.
-       Not marked as the nodata value in the output file.
+       Not marked as the NoData value in the output file.
        The same value is used in all the bands.
    * - **Invert rasterization**
      - ``INVERT``
@@ -469,6 +474,14 @@ Advanced parameters
      - Burns the fixed burn value, or the burn value associated
        with the first feature into all parts of the image not
        inside the provided polygon.
+   *  - **Additional command-line parameters**
+
+        Optional
+      - ``EXTRA``
+      - [string]
+
+        Default: ''
+      - Add extra GDAL command line options
 
 Outputs
 .......
@@ -476,6 +489,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name

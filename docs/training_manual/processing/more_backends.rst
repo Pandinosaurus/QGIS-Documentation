@@ -1,7 +1,7 @@
 Other programs
 ===================
 
-Module contributed by Paolo Cavallini - `Faunalia <https://www.faunalia.eu>`_
+Module contributed by Paolo Cavallini - `Faunalia`_
 
 .. note:: This chapter shows how to use additional programs from inside Processing. To complete it, you must have installed, with the tools of your operating system, the relevant packages.
 
@@ -59,7 +59,7 @@ Now, raster buffers and distances:
 
 - first, load and rasterize the vector ``rivers.shp`` with :menuselection:`GRASS --> v.to.rast.value`; **beware:** cell size must be set to 100 m, otherwise the computation time will be enormous; resulting map will have 1 and NULLs
 - same, with :menuselection:`SAGA --> Shapes to Grid --> COUNT` (resulting map: 6 to 60)
-- then, :menuselection:`proximity` (value= 1 for GRASS, a list of rivers ID for SAGA), :menuselection:`r.buffer` with parameters 1000,2000,3000, :menuselection:`r.grow.distance` (the first of the two maps; the second will show the areas pertaining to each river, if done on the SAGA raster). 
+- then, :menuselection:`proximity` (value= 1 for GRASS, a list of rivers ID for SAGA), :menuselection:`r.buffer` with parameters 1000,2000,3000, :menuselection:`r.grow.distance` (the first of the two maps; the second will show the areas pertaining to each river, if done on the SAGA raster).
 
 Dissolve
 ..........
@@ -77,7 +77,8 @@ Dissolve features based on a common attribute:
 
 .. _GRASS: https://grass.osgeo.org/
 .. _R: https://www.r-project.org/
-.. _LASTools: https://rapidlasso.com/lastools/
+.. _LASTools: https://rapidlasso.de/220107_lastools/
 .. _LecoS: https://conservationecology.wordpress.com/qgis-plugins-and-scripts/lecos-land-cover-statistics/
 .. _lwgeom: https://plugins.qgis.org/plugins/processinglwgeomprovider/
-.. _Animove: https://www.faunalia.eu/en/dev/animove.html
+.. _Animove: https://www.faunalia.eu/en/dev/animove
+.. _Faunalia: https://www.faunalia.eu/en

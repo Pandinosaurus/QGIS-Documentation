@@ -6,6 +6,7 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
 .. _expression_function_Date_and_Time_age:
 
 age
@@ -14,8 +15,6 @@ age
 Returns the difference between two dates or datetimes.
 
 The difference is returned as an ``Interval`` and needs to be used with one of the following functions in order to extract useful information:
-
-
 
 * ``year``
 * ``month``
@@ -41,6 +40,28 @@ The difference is returned as an ``Interval`` and needs to be used with one of t
 
 
 .. end_age_section
+
+.. _expression_function_Date_and_Time_convert_timezone:
+
+convert_timezone
+................
+
+Converts a datetime object to a different timezone.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - convert_timezone(datetime, timezone)
+   * - Arguments
+     - * **datetime** - datetime value
+       * **timezone** - target timezone
+   * - Examples
+     - * ``convert_timezone(to_datetime('2012-05-04 12:50:00+3'), timezone_from_id('UTC+10'))`` → datetime 2012-05-04 19:50:00 (UTC+10)
+       * ``convert_timezone("DATE_FIELD", timezone_from_id('Australia/Darwin'))`` → Datetime from DATE_FIELD, converted to the 'Australia/Darwin' timezone
+
+
+.. end_convert_timezone_section
 
 .. _expression_function_Date_and_Time_datetime_from_epoch:
 
@@ -82,6 +103,7 @@ Extracts the day from a date or datetime.
      - * **date** - a date or datetime value
    * - Examples
      - * ``day('2012-05-12')`` → 12
+       * ``day(now())`` → the current day of the month
 
 
 **Interval variant**
@@ -148,7 +170,7 @@ Returns the interval in milliseconds between the unix epoch and a given date val
 format_date
 ...........
 
-Formats a date type or string into a custom string format. Uses Qt date/time format strings. See `QDateTime::toString <https://doc.qt.io/qt-5/qdatetime.html#toString>`_.
+Formats a date type or string into a custom string format. Uses Qt date/time format strings. See `QDateTime::toString <https://doc.qt.io/qt-6/qdatetime.html#toString>`_.
 
 .. list-table::
    :widths: 15 85
@@ -159,7 +181,7 @@ Formats a date type or string into a custom string format. Uses Qt date/time for
        [] marks optional arguments
    * - Arguments
      - * **datetime** - date, time or datetime value
-       * **format** - String template used to format the string. 
+       * **format** - String template used to format the string.
 
          .. csv-table::
             :header-rows: 1
@@ -179,7 +201,6 @@ Formats a date type or string into a custom string format. Uses Qt date/time for
 
 
          These expressions may be used for the time part of the format string:
-
 
          .. csv-table::
             :header-rows: 1
@@ -209,6 +230,27 @@ Formats a date type or string into a custom string format. Uses Qt date/time for
 
 
 .. end_format_date_section
+
+.. _expression_function_Date_and_Time_get_timezone:
+
+get_timezone
+............
+
+Returns the timezone object associated with a datetime value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - get_timezone(datetime)
+   * - Arguments
+     - * **datetime** - datetime with timezone
+   * - Examples
+     - * ``timezone_id(get_timezone(to_datetime('2012-05-04 12:50:00+3')))`` → 'UTC+03'
+       * ``timezone_id(get_timezone("DATE_FIELD"))`` → ID of timezone associated with the DATE_FIELD value
+
+
+.. end_get_timezone_section
 
 .. _expression_function_Date_and_Time_hour:
 
@@ -309,7 +351,7 @@ Creates an interval value from year, month, weeks, days, hours, minute and secon
    :widths: 15 85
 
    * - Syntax
-     - make_interval([years=0], [months=0], [weeks=0], [days=0], [hours=0], [minutes=0], [seconds=0])
+     - make_interval([years:=0], [months:=0], [weeks:=0], [days:=0], [hours:=0], [minutes:=0], [seconds:=0])
 
        [] marks optional arguments
    * - Arguments
@@ -411,6 +453,7 @@ Extracts the month part from a date or datetime.
      - * **date** - a date or datetime value
    * - Examples
      - * ``month('2012-05-12')`` → 05
+       * ``month(now())`` → the current month
 
 
 **Interval variant**
@@ -490,12 +533,76 @@ Calculates the length in seconds of an interval.
 
 .. end_second_section
 
+.. _expression_function_Date_and_Time_set_timezone:
+
+set_timezone
+............
+
+Sets the timezone object associated with a datetime value, without changing the date or time components. This function can be used to replace the timezone for a datetime.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - set_timezone(datetime, timezone)
+   * - Arguments
+     - * **datetime** - datetime value
+       * **timezone** - new timezone for datetime
+   * - Examples
+     - * ``set_timezone(to_datetime('2012-05-04 12:50:00+3'), timezone_from_id('UTC+10'))`` → datetime 2012-05-04 12:50:00 (UTC+10)
+       * ``set_timezone(make_datetime(2020,1,1,10,0,0), timezone_from_id('Australia/Darwin'))`` → Datetime of 2020-01-01 10:00:00 with associated timezone 'Australia/Darwin'
+
+
+.. end_set_timezone_section
+
+.. _expression_function_Date_and_Time_timezone_from_id:
+
+timezone_from_id
+................
+
+Creates a timezone object from a string ID (from the IANA timezone database). The ID must be one of the available system IDs or a valid UTC-with-offset ID.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - timezone_from_id(id)
+   * - Arguments
+     - * **id** - string containing the time zone ID
+   * - Examples
+     - * ``timezone_from_id('Australia/Brisbane')`` → AEST timezone object
+       * ``timezone_from_id('UTC+10:30')`` → UTC+10:30 timezone object
+       * ``timezone_from_id('UTC-3')`` → UTC-03 timezone object
+
+
+.. end_timezone_from_id_section
+
+.. _expression_function_Date_and_Time_timezone_id:
+
+timezone_id
+...........
+
+Returns the ID string for a timezone object, using IDs from the IANA timezone database.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - timezone_id(timezone)
+   * - Arguments
+     - * **timezone** - a valid timezone object
+   * - Examples
+     - * ``timezone_id(timezone_from_id('Australia/Brisbane'))`` → 'Australia/Brisbane'
+
+
+.. end_timezone_id_section
+
 .. _expression_function_Date_and_Time_to_date:
 
 to_date
 .......
 
-Converts a string into a date object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-5/qdate.html#fromString-2>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
+Converts a string into a date object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-6/qdate.html#fromString>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
 
 .. list-table::
    :widths: 15 85
@@ -521,7 +628,7 @@ Converts a string into a date object. An optional format string can be provided 
 to_datetime
 ...........
 
-Converts a string into a datetime object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-5/qdate.html#fromString-2>`_, `QTime::fromString <https://doc.qt.io/qt-5/qtime.html#fromString-1>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
+Converts a string into a datetime object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-6/qdate.html#fromString>`_, `QTime::fromString <https://doc.qt.io/qt-6/qtime.html#fromString>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
 
 .. list-table::
    :widths: 15 85
@@ -569,7 +676,7 @@ Converts a string to an interval type. Can be used to take days, hours, month, e
 to_time
 .......
 
-Converts a string into a time object. An optional format string can be provided to parse the string; see `QTime::fromString <https://doc.qt.io/qt-5/qtime.html#fromString-1>`_ for additional documentation on the format.
+Converts a string into a time object. An optional format string can be provided to parse the string; see `QTime::fromString <https://doc.qt.io/qt-6/qtime.html#fromString>`_ for additional documentation on the format.
 
 .. list-table::
    :widths: 15 85
@@ -610,6 +717,7 @@ Extracts the week number from a date or datetime.
      - * **date** - a date or datetime value
    * - Examples
      - * ``week('2012-05-12')`` → 19
+       * ``week(now())`` → the current week of the year
 
 
 **Interval variant**
@@ -650,6 +758,7 @@ Extracts the year part from a date or datetime.
      - * **date** - a date or datetime value
    * - Examples
      - * ``year('2012-05-12')`` → 2012
+       * ``year(now())`` → the current year
 
 
 **Interval variant**
@@ -669,4 +778,3 @@ Calculates the length in years of an interval.
 
 
 .. end_year_section
-

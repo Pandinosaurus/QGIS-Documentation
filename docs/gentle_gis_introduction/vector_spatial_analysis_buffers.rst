@@ -86,7 +86,7 @@ according to the Coordinate Reference System (CRS) used with the data. For examp
 the width of a buffer zone along the banks of a river can vary depending on the
 intensity of the adjacent land use. For intensive cultivation the buffer distance
 may be bigger than for organic farming (see Figure :numref:`figure_variable_buffer` and
-Table table_buffer_attributes_).
+:numref:`table_buffer_attributes`).
 
 .. _figure_variable_buffer:
 
@@ -98,25 +98,24 @@ Table table_buffer_attributes_).
 
 .. _table_buffer_attributes:
 
-+--------------+---------------------------------+--------------------------+
-| River        | Adjacent land use               | Buffer distance (meters) |
-+==============+=================================+==========================+
-| Breede River | Intensive vegetable cultivation | 100                      |
-+--------------+---------------------------------+--------------------------+
-| Komati       | Intensive cotton cultivation    | 150                      |
-+--------------+---------------------------------+--------------------------+
-| Oranje       | Organic farming                 | 50                       |
-+--------------+---------------------------------+--------------------------+
-| Telle river  | Organic farming                 | 50                       |
-+--------------+---------------------------------+--------------------------+
+.. table:: Different buffer distances to rivers based on adjacent land use.
 
-Table Buffer Attributes 1: Attribute table with different buffer distances to
-rivers based on information about the adjacent land use.
+   +--------------+---------------------------------+--------------------------+
+   | River        | Adjacent land use               | Buffer distance (meters) |
+   +==============+=================================+==========================+
+   | Breede River | Intensive vegetable cultivation | 100                      |
+   +--------------+---------------------------------+--------------------------+
+   | Komati       | Intensive cotton cultivation    | 150                      |
+   +--------------+---------------------------------+--------------------------+
+   | Oranje       | Organic farming                 | 50                       |
+   +--------------+---------------------------------+--------------------------+
+   | Telle river  | Organic farming                 | 50                       |
+   +--------------+---------------------------------+--------------------------+
 
 Buffers around polyline features, such as rivers or roads, do not have to be on
 both sides of the lines. They can be on either the left side or the right side
 of the line feature. In these cases the left or right side is determined by the
-direction from the starting point to the end point of line during digitising.
+direction from the starting point to the end point of the line during digitising.
 
 Multiple buffer zones
 ---------------------
@@ -158,7 +157,7 @@ Buffer zones around polygon features are usually extended outward from a polygon
 boundary but it is also possible to create a buffer zone inward from a polygon
 boundary. Say, for example, the Department of Tourism wants to plan a new road
 around Robben Island and environmental laws require that the road is at least
-200 meters inward from the coast line. They could use an inward buffer to find
+200 meters inward from the coastline. They could use an inward buffer to find
 the 200 m line inland and then plan their road not to go beyond that line.
 
 Common problems / things to be aware of
@@ -177,7 +176,7 @@ vector layer.
 More spatial analysis tools
 ===========================
 
-Buffering is a an important and often used spatial analysis tool but there are
+Buffering is an important and often used spatial analysis tool but there are
 many others that can be used in a GIS and explored by the user.
 
 **Spatial overlay** is a process that allows you to identify the relationships
@@ -192,7 +191,7 @@ vector layer is a combination of the input features information (see
    :width: 30em
 
    Spatial overlay with two input vector layers (a_input = rectangle, b_input =
-   circle). The resulting vector layer is displayed green.
+   circle). The resulting vector layer is displayed in green.
 
 Typical spatial overlay examples are:
 
@@ -254,7 +253,7 @@ Something to think about
 ========================
 
 If you don't have a computer available, you can use a toposheet and a compass to
-create buffer zones around buildings. Make small pencil marks at equal distance
+create buffer zones around buildings. Make small pencil marks at an equal distance
 all along your feature using the compass, then connect the marks using a ruler!
 
 Further reading
@@ -286,5 +285,5 @@ an example of spatial analysis you can do with raster data.
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |gentleLogo| image:: img/gentlelogo.png
+.. |gentleLogo| image:: /static/common/gentlelogo.png
    :width: 3em

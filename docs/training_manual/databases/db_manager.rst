@@ -1,4 +1,4 @@
-|LS| Using DB Manager to work with Spatial Databases in QGIS 
+Lesson: Using DB Manager to work with Spatial Databases in QGIS
 ===============================================================================
 
 We have already seen how to perform many database operations with
@@ -6,31 +6,29 @@ QGIS as well as with other tools, but now it's time to look at the DB
 Manager tool which provides much of this same functionality as well
 as more management oriented tools.
 
-**The goal for this lesson:** To learn how to interact with spatial
-databases using the QGIS DB Manager. 
 
-|basic| |FA| Managing PostGIS Databases with DB Manager
--------------------------------------------------------------------------------
+**The goal for this lesson:** To learn how to interact with spatial
+databases using the QGIS DB Manager.
+
+:abbr:`★☆☆ (Basic level)` Follow Along: Managing PostgreSQL Databases with DB Manager
+---------------------------------------------------------------------------------------
 
 You should first open the DB Manager interface by selecting
-:guilabel:`Database --> DB Manager --> DB Manager` on the menu or by
-selecting the DB Manager icon on the toolbar.
-
-    |dbManager|
+:menuselection:`Database --> DB Manager --> DB Manager` on the menu
+or by selecting the |dbManager| :sup:`DB Manager` icon on the toolbar.
 
 You should already see the previous connections we have configured
 and be able to expand the ``myPG`` section and its ``public`` schema
 to see the tables we have worked with in previous sections.
 
 The first thing you may notice is that you can now see some metadata
-about the Schemas contained in your database. 
+about the Schemas contained in your database.
 
 .. figure:: img/db_manager_dialog.png
    :align: center
 
 Schemas are a way of grouping data tables and other objects in a
-PostgreSQL database and a container for permissions and other
-constraints.
+PostgreSQL database and a container for permissions and other constraints.
 Managing PostgreSQL schemas is beyond the scope of this manual, but
 you can find more information about them in the
 `PostgreSQL documentation on Schemas
@@ -52,7 +50,7 @@ its name in tree and looking in the :guilabel:`Info` tab.
 
 In this panel you can see the :guilabel:`General Info` about the
 table as well the information that the PostGIS extension maintains
-about the geometry and spatial reference system. 
+about the geometry and spatial reference system.
 
 If you scroll down in the :guilabel:`Info` tab, you can see more
 information about the :guilabel:`Fields`, :guilabel:`Constraints`
@@ -78,7 +76,7 @@ Right-clicking on a layer in the tree and clicking
 So far we have only been viewing the database its schemas and tables
 and their metadata, but what if we wanted to alter the table to add
 an additional column perhaps?
-DB Manager allows you to do this directly. 
+DB Manager allows you to do this directly.
 
 #. Select the table you want to edit in the tree
 #. Select :menuselection:`Table --> Edit Table` from the menu, to open
@@ -101,8 +99,8 @@ spatial and normal indexes.
 
 .. figure:: img/indexes_panel.png
    :align: center
- 
-|basic| |FA| Creating a New Table
+
+:abbr:`★☆☆ (Basic level)` Follow Along: Creating a New Table
 -------------------------------------------------------------------------------
 
 Now that we have gone through the process of working with existing
@@ -125,7 +123,7 @@ tables in our database, let's use DB Manager to create a new table.
 
    .. figure:: img/create_table.png
       :align: center
- 
+
 #. Dismiss the dialog letting you know that the table was created and
    click :guilabel:`Close` to close the Create Table Dialog.
 
@@ -134,14 +132,14 @@ course find that there is no data in it.
 From here you can :guilabel:`Toggle Editing` on the layer menu and
 begin to add places to your table.
 
-|basic| |FA| Basic Database Administration
+:abbr:`★☆☆ (Basic level)` Follow Along: Basic Database Administration
 -------------------------------------------------------------------------------
 
 The DB Manager will also let you do some basic database
-administration tasks. 
+administration tasks.
 It is certainly not a substitute for a more complete database
 administration tool, but it does provide some functionality that you
-can use to maintain your database. 
+can use to maintain your database.
 
 Database tables can often become quite large and tables which are
 being modified frequently can end up leaving around remnants of
@@ -150,7 +148,7 @@ The *VACUUM* command takes care of doing a kind of garbage collection
 to compact and optional analyze your tables for better performance.
 
 Let us take a look at how we can perform a *VACUUM ANALYZE* command
-from within DB Manager. 
+from within DB Manager.
 
 #. Select one of your tables in the DB Manager Tree
 #. Select :menuselection:`Table --> Run Vacuum Analyze` from the menu
@@ -163,7 +161,7 @@ You can find more information about the VACUUM ANALYZE process in the
 `PostgreSQL Documentation on VACUUM ANALYZE
 <https://www.postgresql.org/docs/9.1/sql-vacuum.html>`_.
 
-|basic| |FA| Executing SQL Queries with DB Manager
+:abbr:`★☆☆ (Basic level)` Follow Along: Executing SQL Queries with DB Manager
 -------------------------------------------------------------------------------
 
 DB Manager also provides a way for you to write queries against your
@@ -197,7 +195,7 @@ Manager.
 #. Enter ``roads_primary`` as the :guilabel:`Layer name (prefix)`.
 #. Click :guilabel:`Load now!` to load the results as a new layer
    into your map.
- 
+
    .. figure:: img/sql_add_to_map.png
       :align: center
 
@@ -273,14 +271,14 @@ You can now inspect the shapefile you created with the Browser panel.
 .. figure:: img/inspect_vector_output.png
    :align: center
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 You have now seen how to use the DB Manager interface in QGIS to
 manage your spatial databases, to execute SQL queries against your
 data and how to import and export data.
 
-|WN|
+What's Next?
 -------------------------------------------------------------------------------
 
 Next, we will look at how to use many of these same techniques with
@@ -293,10 +291,5 @@ Next, we will look at how to use many of these same techniques with
    please add it also to the substitutions.txt file in the
    source folder.
 
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?
-.. |basic| image:: /static/common/basic.png
 .. |dbManager| image:: /static/common/dbmanager.png
    :width: 1.5em

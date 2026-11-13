@@ -42,13 +42,13 @@ with the following line:
     >>> from qgis import processing
 
 Now, there is basically just one (interesting) thing you can do with
-that from the console: execute an algorithm. That is done using the
-:meth:`run() <qgis.core.QgsProcessingAlgorithm.run>` method, which
-takes the name of the algorithm to execute
-as its first parameter, and then a variable number of additional
+that from the console: ute an algorithm. That is done using the
+:func:`run() <qgis.processing.run>` method,
+which takes the id of the algorithm to ute as its first parameter,
+and then a variable number of additional
 parameters depending on the requirements of the algorithm. So the
 first thing you need to know is the name of the algorithm to
-execute. That is not the name you see in the toolbox, but rather a
+ute. That is not the name you see in the toolbox, but rather a
 unique command–line name. To find the right name for your algorithm,
 you can use the :class:`processingRegistry <qgis.core.QgsProcessingRegistry>`.
 Type the following line in your console:
@@ -82,14 +82,15 @@ That's a list of all the available algorithm IDs, sorted by provider
 name and algorithm name, along with their corresponding names.
 
 Once you know the command-line name of the algorithm, the next thing
-to do is to determine the right syntax to execute it. That means
-knowing which parameters are needed when calling the ``run()`` method.
+to do is to determine the right syntax to ute it.
+That means knowing which parameters are needed
+when calling the :func:`run() <qgis.processing.run>` method.
 
 There is a method to describe an algorithm in detail, which can be
 used to get a list of the parameters that an algorithm requires and
 the outputs that it will generate. To get this information, you can
-use the ``algorithmHelp(id_of_the_algorithm)`` method. Use the ID of
-the algorithm, not the full descriptive name.
+use the :func:`algorithmHelp() <qgis.processing.algorithmHelp>` method.
+Pass as parameter the ID of the algorithm, not the full descriptive name.
 
 Calling the method with ``native:buffer`` as parameter
 (``qgis:buffer`` is an alias for ``native:buffer`` and will also
@@ -99,137 +100,137 @@ work), you get the following description:
 
      >>> processing.algorithmHelp("native:buffer")
      Buffer (native:buffer)
-     
+
      This algorithm computes a buffer area for all the features in an
      input layer, using a fixed or dynamic distance.
-     
+
      The segments parameter controls the number of line segments to
      use to approximate a quarter circle when creating rounded
      offsets.
-     
+
      The end cap style parameter controls how line endings are handled
      in the buffer.
-     
+
      The join style parameter specifies whether round, miter or
      beveled joins should be used when offsetting corners in a line.
-     
+
      The miter limit parameter is only applicable for miter join
      styles, and controls the maximum distance from the offset curve
      to use when creating a mitered join.
-     
-     
+
+
      ----------------
      Input parameters
      ----------------
-     
+
      INPUT: Input layer
-     
-     	Parameter type:	QgsProcessingParameterFeatureSource
-     
-     	Accepted data types:
-     		- str: layer ID
-     		- str: layer name
-     		- str: layer source
-     		- QgsProcessingFeatureSourceDefinition
-     		- QgsProperty
-     		- QgsVectorLayer
-     
+
+        Parameter type: QgsProcessingParameterFeatureSource
+
+        Accepted data types:
+           - str: layer ID
+           - str: layer name
+           - str: layer source
+           - QgsProcessingFeatureSourceDefinition
+           - QgsProperty
+           - QgsVectorLayer
+
      DISTANCE: Distance
-     
-     	Parameter type:	QgsProcessingParameterDistance
-     
-     	Accepted data types:
-     		- int
-     		- float
-     		- QgsProperty
-     
+
+        Parameter type: QgsProcessingParameterDistance
+
+        Accepted data types:
+           - int
+           - float
+           - QgsProperty
+
      SEGMENTS: Segments
-     
-     	Parameter type:	QgsProcessingParameterNumber
-     
-     	Accepted data types:
-     		- int
-     		- float
-     		- QgsProperty
-     
+
+        Parameter type: QgsProcessingParameterNumber
+
+        Accepted data types:
+           - int
+           - float
+           - QgsProperty
+
      END_CAP_STYLE: End cap style
-     
-     	Parameter type:	QgsProcessingParameterEnum
-     
-     	Available values:
-     		- 0: Round
-     		- 1: Flat
-     		- 2: Square
-     
-     	Accepted data types:
-     		- int
-     		- str: as string representation of int, e.g. '1'
-     		- QgsProperty
-     
+
+        Parameter type: QgsProcessingParameterEnum
+
+        Available values:
+           - 0: Round
+           - 1: Flat
+           - 2: Square
+
+        Accepted data types:
+           - int
+           - str: as string representation of int, e.g. '1'
+           - QgsProperty
+
      JOIN_STYLE: Join style
 
-	Parameter type:	QgsProcessingParameterEnum
+        Parameter type: QgsProcessingParameterEnum
 
-	Available values:
-		- 0: Round
-		- 1: Miter
-		- 2: Bevel
+        Available values:
+           - 0: Round
+           - 1: Miter
+           - 2: Bevel
 
-	Accepted data types:
-		- int
-		- str: as string representation of int, e.g. '1'
-		- QgsProperty
-     
+        Accepted data types:
+           - int
+           - str: as string representation of int, e.g. '1'
+           - QgsProperty
+
      MITER_LIMIT: Miter limit
-     
-     	Parameter type:	QgsProcessingParameterNumber
-     
-     	Accepted data types:
-     		- int
-     		- float
-     		- QgsProperty
-     
+
+        Parameter type: QgsProcessingParameterNumber
+
+        Accepted data types:
+           - int
+           - float
+           - QgsProperty
+
      DISSOLVE: Dissolve result
-     
-     	Parameter type:	QgsProcessingParameterBoolean
-     
-     	Accepted data types:
-		- bool
-		- int
-		- str
-		- QgsProperty
-          
+
+        Parameter type: QgsProcessingParameterBoolean
+
+        Accepted data types:
+           - bool
+           - int
+           - str
+           - QgsProperty
+
      OUTPUT: Buffered
-     
-     	Parameter type:	QgsProcessingParameterFeatureSink
-     
-     	Accepted data types:
-     		- str: destination vector file, e.g. 'd:/test.shp'
-     		- str: 'memory:' to store result in temporary memory layer
-     		- str: using vector provider ID prefix and destination URI,
-                       e.g. 'postgres:...' to store result in PostGIS table
-     		- QgsProcessingOutputLayerDefinition
-     		- QgsProperty
-     
+
+        Parameter type: QgsProcessingParameterFeatureSink
+
+        Accepted data types:
+           - str: destination vector file, e.g. 'd:/test.shp'
+           - str: 'memory:' to store result in temporary memory layer
+           - str: using vector provider ID prefix and destination URI,
+                  e.g. 'postgres:...' to store result in PostgreSQL table
+           - QgsProcessingOutputLayerDefinition
+           - QgsProperty
+
      ----------------
      Outputs
      ----------------
-     
+
      OUTPUT:  <QgsProcessingOutputVectorLayer>
-     	Buffered
-     
-     
+        Buffered
+
+
 Now you have everything you need to run any algorithm. As we have
-already mentioned, algorithms can be run using: ``run()``.
+already mentioned, algorithms can be run using: :func:`run() <qgis.processing.run>`.
 Its syntax is as follows:
 
-::
+.. code-block:: python
 
     >>> processing.run(name_of_the_algorithm, parameters)
 
 Where parameters is a dictionary of parameters that depend on the
 algorithm you want to run, and is exactly the list that the
-``algorithmHelp()`` method gives you.
+:func:`algorithmHelp() <qgis.processing.algorithmHelp>` method gives you.
 
 .. code-block:: python
    :linenos:
@@ -259,28 +260,28 @@ list gives a quick review of how to introduce values for each type of input para
   object representing the layer, you can also pass it as parameter.
 * Enumeration. If an algorithm has an enumeration parameter, the value of that
   parameter should be entered using an integer value. To know the available
-  options, you can use the ``algorithmHelp()`` command, as above.
+  options, you can use the :func:`algorithmHelp() <qgis.processing.algorithmHelp>` command, as above.
   For instance, the ``native:buffer`` algorithm has an enumeration called JOIN_STYLE:
 
-  ::
+  .. code-block:: text
 
      JOIN_STYLE: Join style
 
-	Parameter type:	QgsProcessingParameterEnum
+        Parameter type: QgsProcessingParameterEnum
 
-	Available values:
-		- 0: Round
-		- 1: Miter
-		- 2: Bevel
+        Available values:
+           - 0: Round
+           - 1: Miter
+           - 2: Bevel
 
-	Accepted data types:
-		- int
-		- str: as string representation of int, e.g. '1'
-		- QgsProperty
-     
+        Accepted data types:
+           - int
+           - str: as string representation of int, e.g. '1'
+           - QgsProperty
+
   In this case, the parameter has three options.
   Notice that ordering is zero-based.
-* Boolean.  Use ``True`` or ``False``.
+* Boolean.  Use :const:`True` or :const:`False`.
 * Multiple input. The value is a string with input descriptors separated by
   semicolons (``;``). As in the case of single layers or tables, each input
   descriptor can be the data object name, or its file path.
@@ -307,15 +308,12 @@ file extension not supported by the algorithm, the default
 file format for that output type will be used, and its corresponding extension
 appended to the given file path.
 
-Unlike when an algorithm is executed from the toolbox, outputs are not
-added to the map canvas if you execute that same algorithm from the
-Python console using :meth:`run() <qgis.core.QgsProcessingAlgorithm.run>`,
-but ``runAndLoadResults()`` will do that.
-
-The :meth:`run() <qgis.core.QgsProcessingAlgorithm.run>` method returns
-a dictionary with one or more output names (the
-ones shown in the algorithm description) as keys and the file paths of
-those outputs as values:
+Unlike when an algorithm is uted from the toolbox, outputs are not
+added to the map canvas if you ute that same algorithm from the
+Python console using the :func:`run() <qgis.processing.run>` method.
+That method returns a dictionary with one or more output names
+(the ones shown in the algorithm description) as keys
+and the file paths of those outputs as values:
 
 .. code-block:: python
    :linenos:
@@ -331,15 +329,28 @@ those outputs as values:
     >>> myresult['OUTPUT']
     /data/buffers.shp
 
-You can load feature output by passing the corresponding file paths to
-the ``load()`` method.
-Or you could use ``runAndLoadResults()`` instead of
-:meth:`run() <qgis.core.QgsProcessingAlgorithm.run>` to load
-them immediately.
+You can then load the output in the project as any common layer:
 
-If you want to open an algorithm dialog from the console you can use the 
-``createAlgorithmDialog`` method. The only mandatory parameter is the algorithm 
-name, but you can also define the dictionary of parameters so that the dialog 
+.. code-block:: python
+   :linenos:
+
+    >>> buffered_layer = myresult['OUTPUT']
+    >>> QgsProject.instance().addMapLayer(buffered_layer)
+
+To immediately load the processing outputs in the project,
+you can use the :func:`runAndLoadResults() <qgis.processing.runAndLoadResults>` method
+instead of :func:`run() <qgis.processing.run>`.
+
+.. code-block:: python
+   :linenos:
+
+    >>> processing.runAndLoadResults("native:buffer", {parameters:values})
+
+
+If you want to open an algorithm dialog from the console you can use the
+:func:`createAlgorithmDialog <qgis.processing.createAlgorithmDialog>` method.
+The only mandatory parameter is the algorithm id,
+but you can also define the dictionary of parameters so that the dialog
 will be filled automatically:
 
 .. code-block:: python
@@ -356,7 +367,7 @@ will be filled automatically:
                   'OUTPUT': '/data/buffers.shp'})
     >>> my_dialog.show()
 
-The ``execAlgorithmDialog`` method opens the dialog immediately:
+The :func:`execAlgorithmDialog <qgis.processing.execAlgorithmDialog>` method opens the dialog immediately:
 
 .. code-block:: python
    :linenos:
@@ -401,7 +412,7 @@ smoothing the layer.
 .. code-block:: python
   :linenos:
 
-  from qgis.core import (QgsProcessingAlgorithm, 
+  from qgis.core import (QgsProcessingAlgorithm,
          QgsProcessingParameterNumber,
          QgsProcessingParameterFeatureSource,
          QgsProcessingParameterFeatureSink)
@@ -429,7 +440,7 @@ smoothing the layer.
           self.addParameter(QgsProcessingParameterFeatureSource(
               self.INPUT_VECTOR, "Input vector"))
           self.addParameter(QgsProcessingParameterNumber(
-              self.INPUT_BUFFERDIST, "Buffer distance", 
+              self.INPUT_BUFFERDIST, "Buffer distance",
               QgsProcessingParameterNumber.Double,
               100.0))
           self.addParameter(QgsProcessingParameterFeatureSink(
@@ -485,68 +496,24 @@ functions are specified:
   You can see how input and output parameters are used as parameters
   to the ``smoothgeometry`` and ``buffer`` algorithms.
 
-There are a number of different parameter types available for
-input and output. Below is an alphabetically sorted list:
-
-.. list-table:: List of input and output algorithm parameter types
-   :class: longtable
-
-   * - :class:`QgsProcessingParameterAggregate <qgis.core.QgsProcessingParameterAggregate>`
-     - :class:`QgsProcessingParameterAuthConfig <qgis.core.QgsProcessingParameterAuthConfig>`
-     - :class:`QgsProcessingParameterBand <qgis.core.QgsProcessingParameterBand>`
-     - :class:`QgsProcessingParameterBoolean <qgis.core.QgsProcessingParameterBoolean>`
-   * - :class:`QgsProcessingParameterColor <qgis.core.QgsProcessingParameterColor>`
-     - :class:`QgsProcessingParameterCoordinateOperation <qgis.core.QgsProcessingParameterCoordinateOperation>`
-     - :class:`QgsProcessingParameterCrs <qgis.core.QgsProcessingParameterCrs>`
-     - :class:`QgsProcessingParameterDatabaseSchema <qgis.core.QgsProcessingParameterDatabaseSchema>`
-   * - :class:`QgsProcessingParameterDatabaseTable <qgis.core.QgsProcessingParameterDatabaseTable>`
-     - :class:`QgsProcessingParameterDateTime <qgis.core.QgsProcessingParameterDateTime>`
-     - :class:`QgsProcessingParameterDistance <qgis.core.QgsProcessingParameterDistance>`
-     - :class:`QgsProcessingParameterEnum <qgis.core.QgsProcessingParameterEnum>`
-   * - :class:`QgsProcessingParameterExpression <qgis.core.QgsProcessingParameterExpression>`
-     - :class:`QgsProcessingParameterExtent <qgis.core.QgsProcessingParameterExtent>`
-     - :class:`QgsProcessingParameterFeatureSink <qgis.core.QgsProcessingParameterFeatureSink>`
-     - :class:`QgsProcessingParameterFeatureSource <qgis.core.QgsProcessingParameterFeatureSource>`
-   * - :class:`QgsProcessingParameterField <qgis.core.QgsProcessingParameterField>`
-     - :class:`QgsProcessingParameterFieldMapping  <qgis.core.QgsProcessingParameterFieldMapping>`
-     - :class:`QgsProcessingParameterFile <qgis.core.QgsProcessingParameterFile>`
-     - :class:`QgsProcessingParameterFileDestination <qgis.core.QgsProcessingParameterFileDestination>`
-   * - :class:`QgsProcessingParameterFolderDestination <qgis.core.QgsProcessingParameterFolderDestination>`
-     - :class:`QgsProcessingParameterLayout <qgis.core.QgsProcessingParameterLayout>`
-     - :class:`QgsProcessingParameterLayoutItem <qgis.core.QgsProcessingParameterLayoutItem>`
-     - :class:`QgsProcessingParameterMapLayer <qgis.core.QgsProcessingParameterMapLayer>`
-   * - :class:`QgsProcessingParameterMapTheme <qgis.core.QgsProcessingParameterMapTheme>`
-     - :class:`QgsProcessingParameterMatrix <qgis.core.QgsProcessingParameterMatrix>`
-     - :class:`QgsProcessingParameterMeshLayer <qgis.core.QgsProcessingParameterMeshLayer>`
-     - :class:`QgsProcessingParameterMultipleLayers <qgis.core.QgsProcessingParameterMultipleLayers>`
-   * - :class:`QgsProcessingParameterNumber <qgis.core.QgsProcessingParameterNumber>`
-     - :class:`QgsProcessingParameterPoint <qgis.core.QgsProcessingParameterPoint>`
-     - :class:`QgsProcessingParameterProviderConnection <qgis.core.QgsProcessingParameterProviderConnection>`
-     - :class:`QgsProcessingParameterRange <qgis.core.QgsProcessingParameterRange>`
-   * - :class:`QgsProcessingParameterRasterDestination <qgis.core.QgsProcessingParameterRasterDestination>`
-     - :class:`QgsProcessingParameterRasterLayer <qgis.core.QgsProcessingParameterRasterLayer>`
-     - :class:`QgsProcessingParameterScale <qgis.core.QgsProcessingParameterScale>`
-     - :class:`QgsProcessingParameterString <qgis.core.QgsProcessingParameterString>`
-   * - :class:`QgsProcessingParameterVectorDestination <qgis.core.QgsProcessingParameterVectorDestination>`
-     - :class:`QgsProcessingParameterVectorLayer <qgis.core.QgsProcessingParameterVectorLayer>`
-     - :class:`QgsProcessingParameterVectorTileWriterLayers <qgis.core.QgsProcessingParameterVectorTileWriterLayers>`
-     -
+There are a number of different parameter types available for input and output.
+You can find the full list at :ref:`processing_algs_input_output`.
 
 The first parameter to the constructors is the name of the parameter,
 and the second is the description of the parameter (for the user
 interface).
 The rest of the constructor parameters are parameter type specific.
 
-The input can be turned into QGIS classes using the ``parameterAs`` functions
+The input can be turned into QGIS classes using the ``parameterAs…`` functions
 of :class:`QgsProcessingAlgorithm <qgis.core.QgsProcessingAlgorithm>`.
 For instance to get the number provided for the buffer distance as a double::
 
   self.parameterAsDouble(parameters, self.INPUT_BUFFERDIST, context)).
 
-The ``processAlgorithm`` function should return a dictionary
-containing values for every output defined by the algorithm. This
-allows access to these outputs from other algorithms, including other
-algorithms contained within the same model.
+The :meth:`processAlgorithm() <qgis.core.QgsProcessingAlgorithm.processAlgorithm>` function
+should return a dictionary containing values for every output defined by the algorithm.
+This allows access to these outputs from other algorithms,
+including other algorithms contained within the same model.
 
 Well behaved algorithms should define and return as many outputs as
 makes sense. Non-feature outputs, such as numbers and strings, are very
@@ -570,7 +537,7 @@ algorithm. This is very useful if your algorithm takes a long time to complete.
 
 The :class:`feedback <qgis.core.QgsProcessingFeedback>` object provides an
 :meth:`isCanceled() <qgis.core.QgsFeedback.isCanceled>` method that
-should be monitored to enable cancelation of the algorithm by the user.
+should be monitored to enable cancellation of the algorithm by the user.
 The :meth:`pushInfo() <qgis.core.QgsProcessingFeedback.pushInfo>` method of
 :class:`feedback <qgis.core.QgsProcessingFeedback>` can be used to send information
 to the user, and :meth:`reportError() <qgis.core.QgsProcessingFeedback.reportError>`
@@ -619,19 +586,3 @@ Specify / override these to provide more help to the user.
 
 :meth:`shortDescription() <qgis.core.QgsProcessingAlgorithm.shortDescription>`
 is used in the tooltip when hovering over the algorithm in the toolbox.
-
-Pre- and post-execution script hooks
-------------------------------------
-
-Scripts can also be used as pre- and post-execution hooks that are run before
-and after an algorithm is run, respectively. This can be used to automate tasks
-that should be performed whenever an algorithm is executed.
-
-The syntax is identical to the syntax explained above, but an additional global
-variable named ``alg`` is available, representing the algorithm that has just
-been (or is about to be) executed.
-
-In the :guilabel:`General` group of the processing options dialog, you will find two
-entries named :guilabel:`Pre-execution script` and :guilabel:`Post-execution
-script` where the filenames of the scripts to be run in each case can be
-entered.

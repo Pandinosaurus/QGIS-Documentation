@@ -1,4 +1,4 @@
-|LS| Map Presentation
+Lesson: Map Presentation
 ===============================================================================
 
 In the previous lessons you have imported an old forest inventor as a GIS project,
@@ -13,37 +13,37 @@ at the specific numbers.
 **The goal for this lesson:** Create a map to present the inventory results
 using a hillshade raster as background.
 
-|basic| |FA| Preparing the Map Data
+:abbr:`★☆☆ (Basic level)` Follow Along: Preparing the Map Data
 -------------------------------------------------------------------------------
 
-Open the QGIS project from the parameters calculations lesson, :kbd:`forest_inventory.qgs`.
+Open the QGIS project from the parameters calculations lesson, :file:`forest_inventory.qgs`.
 Keep at least the following layers:
 
-* :kbd:`forest_stands_2012_results`.
-* :kbd:`basic_map`.
-* :kbd:`rautjarvi_aerial`.
-* :kbd:`lakes` (if you don't have it, add it from the :kbd:`exercise_data\\forestry\\` folder).
+* ``forest_stands_2012_results``.
+* ``basic_map``.
+* ``rautjarvi_aerial``.
+* ``lakes`` (if you don't have it, add it from the :file:`exercise_data\\forestry\\` folder).
 
 You are going to present the average volumes of your forest stands in a map.
-If you open the :guilabel:`Attribute table` for the :kbd:`forest_stands_2012_results`
-layer, you can see the :kbd:`NULL` values for the stands without information.
+If you open the :guilabel:`Attribute table` for the ``forest_stands_2012_results``
+layer, you can see the ``NULL`` values for the stands without information.
 To be able to get also those stands into your symbology you should change the
-:kbd:`NULL` values to, for example, :kbd:`-999`, knowing that those negative
+``NULL`` values to, for example, ``-999``, knowing that those negative
 numbers mean there is no data for those polygons.
 
-For the :kbd:`forest_stands_2012_results` layer:
+For the ``forest_stands_2012_results`` layer:
 
 * Open the :guilabel:`Attribute table` and enable editing.
-* Select the polygons with :kbd:`NULL` values.
-* Use the calculator to update the values of the :kbd:`MEANVol` field to
-  :kbd:`-999` only for the selected features.
+* Select the polygons with ``NULL`` values.
+* Use the calculator to update the values of the ``MEANVol`` field to
+  ``-999`` only for the selected features.
 * Disable editing and save the changes.
 
 Now you can use a saved style for this layer:
 
 * Go to the :guilabel:`Symbology` tab.
 * Click on :menuselection:`Style --> Load Style...`.
-* Select the :kbd:`forest_stands_2012_results.qml` from the :kbd:`exercise_data\\forestry\\results\\` folder.
+* Select the :file:`forest_stands_2012_results.qml` from the :file:`exercise_data\\forestry\\results\\` folder.
 * Click :guilabel:`OK`.
 
 .. figure:: img/styling_forest_results.png
@@ -55,7 +55,7 @@ Your map will look something like this:
    :align: center
 
 
-|basic| |TY| Try Different Blending Modes
+:abbr:`★☆☆ (Basic level)` Try Yourself: Try Different Blending Modes
 -------------------------------------------------------------------------------
 
 The style you loaded:
@@ -63,7 +63,7 @@ The style you loaded:
 .. figure:: img/styling_forest_results.png
    :align: center
 
-is using the :kbd:`Hard light` mode for the :guilabel:`Layer blending mode`.
+is using the :guilabel:`Hard light` mode for the :guilabel:`Layer blending mode`.
 Note that the different modes apply different filters combining the underlying
 and overlying layers, in this case the hillshade raster and your forest stands
 are used. You can read about these modes in the :ref:`User Guide <blend-modes>`.
@@ -72,11 +72,11 @@ Try with different modes and see the differences in your map. Then choose the
 one you like better for your final map.
 
 
-|basic| |TY| Using a Layout Template to Create the Map result
--------------------------------------------------------------------------------
+:abbr:`★☆☆ (Basic level)` Try Yourself: Using a Layout Template to Create the Map result
+------------------------------------------------------------------------------------------
 
 Use a template prepared in advanced to present the results. The template
-:kbd:`forest_map.qpt` is located in the :kbd:`exercise_data\\forestry\\results\\`
+:file:`forest_map.qpt` is located in the :file:`exercise_data\\forestry\\results\\`
 folder. Load it using the :menuselection:`Project --> Layout Manager...` dialog.
 
 .. figure:: img/final_map_template.png
@@ -91,23 +91,10 @@ The map template you are using will give a map similar to this one:
 
 Save your QGIS project for future references.
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 Through this module you have seen how a basic forest inventory can be planned
 and presented with QGIS. Many more forest analysis are possible with the variety
 of tools that you can access, but hopefully this manual has given you a good
 starting point to explore how you could achieve the specific results you need.
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |FA| replace:: Follow Along:
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |TY| replace:: Try Yourself
-.. |basic| image:: /static/common/basic.png

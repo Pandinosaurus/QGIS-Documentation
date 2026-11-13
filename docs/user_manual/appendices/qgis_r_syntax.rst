@@ -7,7 +7,7 @@ Appendix D: QGIS R script syntax
 ********************************
 
 Contributed by Matteo Ghetta - funded by `Scuola Superiore Sant'Anna
-<https://www.santannapisa.it/en/istituto/scienze-della-vita/istituto-di-scienze-della-vita>`_
+<https://www.santannapisa.it/en/node/70078>`_
 
 Writing R scripts in Processing is a bit tricky because of the
 special syntax.
@@ -15,8 +15,7 @@ special syntax.
 A Processing R script starts with defining its **Inputs** and
 **Outputs**, each preceded with double hash characters (``##``).
 
-Before the inputs, the group to place the algoritm in can be
-specified.
+Before the inputs, the group to place the algorithm in can be specified.
 If the group already exists, the algorithm will be added to it,
 if not, the group will be created.
 In the example below, the name of the group is *My group*:
@@ -53,7 +52,7 @@ the script:
 * raster: ``##output= output raster``
 * table: ``##output= output table``
 * plots: ``##output_plots_to_html`` (##showplots in earlier versions)
-* To show R output in the *Result Viewer*, put ``>`` in 
+* To show R output in the *Result Viewer*, put ``>`` in
   front of the command whose output you would like to show.
 
 

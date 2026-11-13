@@ -10,6 +10,17 @@ Raster Properties Dialog
    .. contents::
       :local:
 
+Raster data is made up of pixels (or cells), and each pixel has a value.
+It is commonly used to store various types of data, including:
+
+* Imagery, such as satellite images, digital aerial photographs, scanned maps
+* Elevation data, such as digital elevation models (DEMs), digital terrain models (DTMs)
+* Other types of data, such as land cover, soil types, rainfall and many others.
+
+Raster data can be stored in several supported formats, including GeoTIFF,
+ERDAS Imagine, ArcInfo ASCII GRID, PostgreSQL Raster and others.
+See more at :ref:`opening_data`.
+
 To view and set the properties for a raster layer, double click on
 the layer name in the map legend, or right click on the layer name and
 choose :guilabel:`Properties` from the context menu. This will open the
@@ -21,21 +32,28 @@ There are several tabs in the dialog:
 
   * - |metadata| :ref:`Information <raster_information>`
     - |system| :ref:`Source <raster_sourcetab>`
-    - |symbology| :ref:`Symbology <raster_symbology>`:sup:`[1]`
-  * - |transparency| :ref:`Transparency <raster_transparency>`:sup:`[1]`
-    - |rasterHistogram| :ref:`Histogram <raster_histogram>`:sup:`[1]`
-    - |rendering| :ref:`Rendering <raster_rendering>`
-  * - |temporal| :guilabel:`Temporal`
+    - |symbology| :ref:`Symbology <raster_symbology>` ([1]_)
+  * - |transparency| :ref:`Transparency <raster_transparency>` ([1]_)
+    - |labelingSingle| :ref:`Labels <raster_labels>` ([1]_)
+    - |rasterHistogram| :ref:`Histogram <raster_histogram>` ([1]_)
+  * - |rendering| :ref:`Rendering <raster_rendering>`
+    - |temporal| :ref:`Temporal <raster_temporal>`
     - |pyramids| :ref:`Pyramids <raster_pyramids>`
+  * - |elevationscale| :ref:`Elevation <raster_elevation>`
     - |editMetadata| :ref:`Metadata <raster_metadata>`
-  * - |legend| :ref:`Legend <raster_server>`
+    - |legend| :ref:`Legend <raster_legend>`
+  * - |display| :ref:`Display <raster_display>`
+    - |openTable| :ref:`Attribute Tables <raster_attribute_tables>`
     - |overlay| :ref:`QGIS Server <raster_server>`
-    - :ref:`External plugins <plugins>`:sup:`[2]` tabs
+  * - :ref:`External plugins <plugins>` ([2]_) tabs
+    -
+    -
 
-:sup:`[1]` Also available in the :ref:`Layer styling panel <layer_styling_panel>`
 
-:sup:`[2]` :ref:`External plugins <plugins>` you install can optionally add tabs to this
-dialog. Those are not presented in this document. Refer to their documentation.
+.. [1] Also available in the :ref:`Layer styling panel <layer_styling_panel>`
+
+.. [2] :ref:`External plugins <plugins>` you install can optionally add tabs to this dialog.
+ Those are not presented in this document. Refer to their documentation.
 
 
 .. tip:: **Live update rendering**
@@ -65,6 +83,11 @@ Provided information are:
 
 * general such as name in the project, source path, list of auxiliary files,
   last save time and size, the used provider
+* custom properties, used to store in the active project additional information about the layer.
+  Default custom properties include :guilabel:`Identify/format`, which influences how the results from using
+  the |identify| :ref:`Identify features <raster_identify>` tool over a raster layer are formatted.
+  More properties can be created and managed using PyQGIS, specifically through
+  the :pyqgis:`setCustomProperty() <qgis.core.QgsMapLayer.setCustomProperty>` method.
 * based on the provider of the layer: extent, width and height, data type,
   GDAL driver, bands statistics
 * the Coordinate Reference System: name, units, method, accuracy, reference
@@ -94,11 +117,25 @@ the selected raster, including:
   If you wish to reproject your data, use a reprojection algorithm
   from Processing or
   :ref:`Save it as new dataset <general_saveas>`.
+* Depending on the data provider, a :guilabel:`Layer source` group indicates the path
+  to the source of the dataset and allows for replacing the loaded layer:
+
+  * When the layer is stored as file on disk, edit the path shown in the text box
+    or press :guilabel:`...` :sup:`Browse` to select another file on the disk
+  * When the layer is provided by an ArcGIS MapServer service,
+    it is possible to modify its :ref:`authentication settings <authentication>`,
+    while keeping unchanged the details for connecting to the service.
+  * For an XYZ remote layer, it is possible to modify at the layer level
+    any of its :ref:`connection details <xyz_tile>` (URL, authentication settings,
+    zoom levels, resolution, ...).
+    Modifications are applied to the layer without altering the original connection settings.
+
 
 .. _figure_raster_properties:
 
 .. figure:: img/rasterPropertiesDialog.png
    :align: center
+   :width: 70%
 
    Raster Layer Properties - Source Dialog
 
@@ -136,6 +173,8 @@ information you'd like to highlight.
 #. :ref:`Singleband pseudocolor <label_colormaptab>` - this renderer
    can be used for files with a continuous palette or color map
    (e.g. an elevation map).
+#. :ref:`Single color <singlecolor>` - the raster layer will be rendered
+   with a single color.
 #. :ref:`Hillshade <hillshade_renderer>` - Creates hillshade from a
    band.
 #. :ref:`Contours <raster_contours>` - Generates contours on the
@@ -281,6 +320,26 @@ Press :guilabel:`Legend settings...` if you wish to tweak the settings
 or instead use a legend with separated classes (and colors).
 More details at :ref:`raster_legend_settings`.
 
+.. _singlecolor:
+
+Single color
+............
+
+This renderer allows you to render a raster layer using :guilabel:`Single color`.
+This type of renderer is useful when you want to display a raster layer
+uniformly, without any variation in color based on pixel values.
+
+The single color renderer can be used with both single-band and multiband raster layers.
+When used with multiband rasters, you can select which band to apply the single color to,
+effectively displaying that specific band uniformly across the entire layer.
+
+.. _figure_raster_singlecolor:
+
+.. figure:: img/rasterSingleColor.png
+   :align: center
+
+   Raster Symbology - Single color rendering
+
 .. index:: Hillshade
 .. _hillshade_renderer:
 
@@ -423,8 +482,8 @@ The scalar dataset elements are then assigned their color based on their class.
    their color :
 
    * :guilabel:`Discrete` (a ``<=`` symbol appears in the header of the
-     :guilabel:`Value` column): The color is taken from the closest color mapl
-     entry with equa or higher value
+     :guilabel:`Value` column): The color is taken from the closest color map
+     entry with equal or higher value
    * :guilabel:`Linear`: The color is linearly interpolated from the color map
      entries above and below the pixel value, meaning that to each dataset
      value corresponds a unique color
@@ -451,10 +510,10 @@ The scalar dataset elements are then assigned their color based on their class.
      Not available with :ref:`mesh layers <mesh_symbology_contours>`.
 #. You can then :guilabel:`Classify` or tweak the classes:
 
-   * The button |signPlus| :sup:`Add values manually` adds a value to the table.
-   * The button |signMinus| :sup:`Remove selected row` deletes selected values
+   * The button |symbologyAdd| :sup:`Add values manually` adds a value to the table.
+   * The button |symbologyRemove| :sup:`Remove selected row` deletes selected values
      from the table.
-   * Double clicking in the :guilabel:`Value` lets you modify the class value.
+   * Double clicking in the :guilabel:`Value` column lets you modify the class value.
    * Double clicking in the :guilabel:`Color` column opens the dialog
      :guilabel:`Change color`, where you can select a color to apply for
      that value.
@@ -563,11 +622,16 @@ transformation.
 
 When applying the 'Nearest neighbour' method, the map can get a
 pixelated structure when zooming in.
-This appearance can be improved by using the 'Bilinear' or 'Cubic'
-method, which cause sharp edges to be blurred.
+This appearance can be improved by using the 'Bilinear (2x2 kernel)'
+or 'Cubic (4x4 kernel)' method, which cause sharp edges to be blurred.
 The effect is a smoother image.
-This method can be applied to for instance digital topographic
-raster maps.
+This method can be applied to for instance digital topographic raster maps.
+
+|checkbox| :guilabel:`Early resampling`: allows to calculate the raster
+rendering at the provider level where the resolution of the source is known,
+and ensures a better zoom in rendering with QGIS custom styling.
+Really convenient for tile rasters loaded using an :ref:`interpretation method
+<interpretation>`.
 
 
 .. index:: Transparency
@@ -576,14 +640,14 @@ raster maps.
 Transparency Properties
 =======================
 
-|transparency| QGIS provides capabilities to set the transparency level
+QGIS provides capabilities to set the |transparency| :guilabel:`Transparency` level
 of a raster layer.
 
 Use the :guilabel:`Global opacity` slider to set to what extent the
 underlying layers (if any) should be visible through the current
 raster layer.
 This is very useful if you overlay raster layers (e.g., a shaded
-relief map overlayed by a classified raster map).
+relief map overlaid by a classified raster map).
 This will make the look of the map more three dimensional.
 The opacity of the raster can be data-defined, and vary e.g. depending on
 the visibility of another layer, by temporal variables, on different pages
@@ -593,6 +657,7 @@ of an atlas, ...
 
 .. figure:: img/rasterTransparency.png
    :align: center
+   :width: 70%
 
    Raster Transparency
 
@@ -611,10 +676,15 @@ in the :guilabel:`Custom transparency options` section:
 * Provide a list of pixels to make transparent with corresponding
   levels of transparency:
 
-  #. Click the |signPlus| :sup:`Add values manually` button.
+  #. Click the |symbologyAdd| :sup:`Add values manually` button.
      A new row will appear in the pixel list.
-  #. Enter the **Red**, **Green** and **Blue** values of the pixel and
+  #. For single-band based symbology (e.g. DEMs), enter the **From** and **To** values and
      adjust the **Percent Transparent** to apply.
+  #. For multiband based symbology (e.g. RGB images) enter the **Red**, **Green** and **Blue** values of the pixel and
+     adjust the **Percent Transparent** to apply.
+     QGIS supports **Tolerance** for pixel values, when defining transparency.
+     This means that pixels with color close to the specified RGB values can also
+     be made transparent. Note that this feature applies only to multiband rasters.
   #. Alternatively, you can fetch the pixel values directly from the
      raster using the |contextHelp| :sup:`Add values from display`
      button.
@@ -629,6 +699,81 @@ in the :guilabel:`Custom transparency options` section:
   The button |fileOpen| :sup:`Import from file` loads your transparency
   settings and applies them to the current raster layer.
 
+  .. only:: html
+
+    .. figure:: img/tolerances_for_pixel_values.gif
+       :align: center
+       :width: 100%
+
+       Using tolerances for multiband rasters
+
+
+.. index:: Labels
+.. _raster_labels:
+
+Labels Properties
+==================
+
+The |labelingSingle| :guilabel:`Labels` properties provides you with all the needed
+and appropriate capabilities to configure smart labeling on raster layers.
+This dialog can also be accessed from the :guilabel:`Layer Styling` panel.
+
+At the top of the dialog, you have:
+
+* a combobox for selecting the appropriate labeling method for the active layer
+* the |labelingRules| :sup:`Configure project labeling rules` button:
+  helps you control interactions between labels and features across the layers in the project.
+  More details at :ref:`labeling_rules`.
+* the |autoPlacementSettings| :sup:`Automated placement settings (applies to all layers)` button:
+  configure general properties on label placement and conflicts resolution.
+  More details at :ref:`automated_placement`.
+
+
+The first step is to choose the labeling method from the drop-down list.
+Available methods are:
+
+* |labelingNone| :guilabel:`No labels`: the default value, showing no labels
+  from the layer
+* |labelingSingle| :guilabel:`Label with pixel values`: Show labels on the map using a band.
+
+Using the |labelingSingle| :guilabel:`Label with pixel values` option, the following dialog opens.
+
+
+.. _figure_raster_labels:
+
+.. figure:: img/rasterLabels.png
+   :align: center
+   :width: 70%
+
+   Raster layer labeling settings
+
+At the top of the dialog:
+
+* A :guilabel:`Value` drop-down list allows you to select the band to take the values from
+* Press :guilabel:`Customize` to configure a :ref:`proper number formatting <number_formatting>`
+* By default, the displayed value represents individual pixel band value.
+  With :guilabel:`Resample over`, you can compute the  value from the neighbouring pixels
+  (setting ``2`` means ``2*2=4`` pixels) using a statistical method
+  set in the :guilabel:`Resample using` widget.
+
+  .. _figure_raster_pixelslabeled:
+
+  .. figure:: img/pixels_labeled.png
+     :align: center
+
+     Pixels labeled using various resampling options
+
+Below are displayed options to customize the labels, under various tabs:
+
+* |text| :ref:`Text <labels_text>`
+* |labelformatting| :ref:`Formatting <labels_formatting>`
+* |labelbuffer| :ref:`Buffer <labels_buffer>`
+* |labelbackground| :ref:`Background <labels_background>`
+* |labelshadow| :ref:`Shadow <labels_shadow>`
+* |labelplacement| :ref:`Placement <labels_placement>`
+* |render| :ref:`Rendering <labels_rendering>`
+
+Description of how to set each property is exposed at :ref:`showlabels`.
 
 .. index:: Histogram
 .. _raster_histogram:
@@ -663,6 +808,7 @@ advanced options to customize the histogram:
 
 .. figure:: img/rasterHistogram.png
    :align: center
+   :width: 60%
 
    Raster Histogram
 
@@ -676,24 +822,119 @@ Rendering Properties
 In the |rendering| :guilabel:`Rendering` tab, it's possible to:
 
 * set :guilabel:`Scale dependent visibility` for the layer:
-  You can set the :guilabel:`Maximum (inclusive)` and
-  :guilabel:`Minimum (exclusive)` scale, defining a range of scales in
-  which the layer will be visible.
+  You can set the :guilabel:`Maximum (inclusive)` and :guilabel:`Minimum (exclusive)` scales,
+  defining a range of scales in which the layer will be visible.
   It will be hidden outside this range.
   The |mapIdentification| :sup:`Set to current canvas scale` button
   helps you use the current map canvas scale as a boundary.
   See :ref:`label_scaledepend` for more information.
-* :guilabel:`Refresh layer at interval (seconds)`: set a timer to
-  automatically refresh individual layers.
-  Canvas updates are deferred in order to avoid refreshing multiple
-  times if more than one layer has an auto update interval set.
+
+  .. note::
+
+   You can also activate scale dependent visibility on a layer from within
+   the :guilabel:`Layers` panel: right-click on the layer and in the contextual menu,
+   select :guilabel:`Set Layer Scale Visibility`.
+
+* |checkbox| :guilabel:`Refresh layer at interval`: controls whether and how regular a layer can be refreshed.
+  Available :guilabel:`Configuration` options are:
+
+  * :guilabel:`Reload data`: the layer will be completely refreshed.
+    Any cached data will be discarded and refetched from the provider.
+    This mode may result in slower map refreshes.
+  * :guilabel:`Redraw layer only`: this mode is useful for animation
+    or when the layer's style will be updated at regular intervals.
+    Canvas updates are deferred in order to avoid refreshing multiple times
+    if more than one layer has an auto update interval set.
+
+    .. todo: Add a link to animation styling when available
+
+  It is also possible to set the :guilabel:`Interval (seconds)` between consecutive refreshments.
 
 .. _figure_raster_rendering:
 
 .. figure:: img/rasterRendering.png
    :align: center
+   :width: 70%
 
-   Raster Rendering
+   Raster Rendering Properties
+
+
+.. index:: Temporal
+.. _raster_temporal:
+
+Temporal Properties
+===================
+
+The |temporal| :guilabel:`Temporal` tab provides options to control
+the rendering of the layer over time. Such dynamic rendering requires the
+:ref:`temporal navigation <maptimecontrol>` to be enabled over the map canvas.
+
+.. _figure_raster_temporal:
+
+.. figure:: img/rasterTemporal.png
+   :align: center
+   :width: 70%
+
+   Raster Temporal Properties
+
+Check the |checkbox| :guilabel:`Dynamic Temporal Control` option and
+set whether the layer redraw should be:
+
+* :guilabel:`Automatic`: the rendering is controlled by the underlying
+  data provider if it supports temporal data handling. E.g. this can be used
+  with WMS-T layers or PostgreSQL rasters.
+
+  .. A bit more info on this automatic option would be necessary.
+   I guess it has to do with wms-t that I don't use so precision welcome
+
+* :guilabel:`Fixed Date/Time`: only show the raster layer at a single, specific date/time.
+  This avoids having to enter the same value for both the start and end of the temporal range.
+* :guilabel:`Fixed time range`: only show the raster layer if the animation
+  time is within a :guilabel:`Start date` and :guilabel:`End date` range.
+* :guilabel:`Fixed Time Range Per Band`: only shows a band when the current animation time
+  is between its :guilabel:`Begin` and :guilabel:`End` date range. This option allows
+  you to either manually set these time ranges for each band or use the |expression| button
+  to automatically generate datetime values, enabling detailed temporal analysis and visualization.
+  This mode is particularly useful for working with raster layers where each band corresponds to a specific time
+  period, such as NetCDF files.
+
+  .. only:: html
+
+   .. figure:: img/temporal_time_range_per_band.gif
+      :align: center
+      :width: 100%
+
+      Example of using the Fixed Time Range Per Band mode
+
+* :guilabel:`Represents Temporal Values`: interprets each pixel in the raster layer as a datetime value.
+  When this temporal mode is active, pixels that do not fall within the temporal range specified in the
+  render context will be hidden, ensuring that only temporally relevant data is displayed.
+
+  Use |checkbox|:guilabel:`Accumulate pixels over time` to control how pixels are displayed during
+  temporal navigation. When **unchecked**, only pixels matching the current temporal
+  range are visible, pixels appear and disappear as you move through time. When
+  **checked**, all pixels from the start time through the current position remain
+  visible, creating a cumulative view.
+
+  :guilabel:`Represents Temporal Values` mode is effective for:
+
+  * Analyzing land use changes, like observing deforestation patterns.
+  * Studying flooding by comparing water coverage across different times.
+  * Evaluating movement costs in terrain analysis, for example,
+    using GRASS GIS's r.walk tool to calculate travel costs across a landscape.
+
+  .. only:: html
+
+   .. figure:: img/temporal_pixel_value.gif
+      :align: center
+      :width: 100%
+
+      Application of the Represents Temporal Values mode - analyzing GLAD deforestation alerts
+
+* :guilabel:`Redraw layer only`: the layer is redrawn at each new animation
+  frame. It's useful when the layer uses time-based expression values for
+  renderer settings (e.g. data-defined renderer opacity, to fade in/out
+  a raster layer).
 
 
 .. index:: Pyramids
@@ -746,8 +987,71 @@ Finally, click :guilabel:`Build Pyramids` to start the process.
 
 .. figure:: img/rasterPyramids.png
    :align: center
+   :width: 70%
 
    Raster Pyramids
+
+
+.. index:: Elevation, Terrain
+.. _raster_elevation:
+
+Elevation Properties
+====================
+
+The |elevationscale| :guilabel:`Elevation` tab provides options to control
+the layer elevation properties within a :ref:`3D map view <label_3dmapview>`
+and its appearance in the :ref:`profile tool charts <label_elevation_profile_view>`.
+Specifically, you can choose to :guilabel:`Disable` this configuration if the layer
+does not contain elevation data or you can set:
+
+.. _figure_raster_elevation:
+
+.. figure:: img/rasterElevation.png
+   :align: center
+   :width: 70%
+
+   Raster Elevation Properties
+
+* :guilabel:`Represents Elevation Surface`:
+  whether the raster layer represents a height surface (e.g DEM) and the pixel
+  values should be interpreted as elevations.
+  Choose this option if you want to display a raster in an :ref:`elevation profile view <label_elevation_profile_view>`.
+  You will also need to fill in the :guilabel:`Band` to pick values from
+  and can apply a :guilabel:`Scale` factor and an :guilabel:`Offset`.
+* :guilabel:`Fixed Elevation Range`: The raster layer (or selected raster band)
+  is associated with a fixed elevation range.
+  This mode can be used when a layer has a single fixed elevation or a range (slice) of elevation values.
+  If a range is specified, pixels will be extruded over this range.
+  You can set the :guilabel:`Lower` and :guilabel:`Upper`
+  elevation range values for the layer, and specify whether the lower or upper :guilabel:`Limits` are inclusive or exclusive.
+* :guilabel:`Fixed Elevation Range Per Band`: Each band in the raster can have a fixed elevation range
+  associated with it. This is designed for data sources that expose elevation-related data in bands, such as NetCDF files.
+  For example, a raster with temperature data at different ocean depths.
+  When rendering, the uppermost matching band will be selected and used for the layer's data.
+  This feature is exposed as a user-editable table for raster bands with lower and upper values.
+  Users can either populate the lower and upper values manually
+  or use an |expression| :guilabel:`Expression` to auto-fill all band values based on expression.
+  The expression-based fill allows you to design expressions that extract useful information from band names.
+  For example, extracting the depth value from a band name like "Band 001: depth=-5500 (meters)".
+* :guilabel:`Dynamic Elevation Range Per Band`: This mode calculates elevation ranges for raster bands
+  dynamically using QGIS expressions. It's ideal for datasets where elevation values follow a consistent
+  pattern across bands (like equally spaced vertical layers), eliminating the need to manually assign fixed elevations.
+  Instead of entering individual values for each band, you define expressions for the
+  :guilabel:`Lower` and :guilabel:`Upper` elevation bounds. These expressions can use variables like
+  ``@band``, ``@band_name``, or ``@band_description``
+  automatically computing the elevation range based on each band's properties.
+* :guilabel:`Profile Chart Appearance`: controls the rendering
+  of the raster elevation data in the profile chart.
+  The profile :guilabel:`Style` can be set as:
+
+  * a :guilabel:`Line` with a specific :ref:`Line style <vector_line_symbols>`
+  * an elevation surface rendered using a fill symbol either above (:guilabel:`Fill above`)
+    or below (:guilabel:`Fill below`) the elevation curve line.
+    The surface symbology is represented using:
+
+    * a :ref:`Fill style <vector_fill_symbols>`
+    * and a :guilabel:`Limit`: the maximum (respectively minimum) altitude
+      determining how high the fill surface will be
 
 
 .. index:: Metadata, Metadata editor, Keyword
@@ -764,6 +1068,7 @@ See :ref:`metadatamenu` for more information.
 
 .. figure:: img/rasterMetadata.png
    :align: center
+   :width: 70%
 
    Raster Metadata
 
@@ -778,11 +1083,15 @@ The |legend| :guilabel:`Legend` tab provides you with advanced
 settings for the :ref:`Layers panel <label_legend>` and/or the :ref:`print
 layout legend <layout_legend_item>`. These options include:
 
-* Depending on the symbology applied to the layer, you may end up with several
-  entries in the legend, not necessarily readable/useful to display.
-  The :guilabel:`Legend placeholder image` helps you :ref:`select an image
-  <embedded_file_selector>` for replacement, displayed both in the
-  :guilabel:`Layers` panel and the print layout legend.
+* Under :guilabel:`General settings`:
+
+  * |checkbox| :guilabel:`Include automatically in print layout legend items`:
+     uncheck this option if you want to hide by default the layer from the print layout legends.
+  * Depending on the symbology applied to the layer, you may end up with several
+    entries in the legend, not necessarily readable/useful to display.
+    The :guilabel:`Legend placeholder image` helps you :ref:`select an image
+    <embedded_file_selector>` for replacement, displayed both in the
+    :guilabel:`Layers` panel and the print layout legend.
 * The |legend| :guilabel:`Embedded widgets in Legend` provides you with a list
   of widgets you can embed within the layer tree in the Layers panel.
   The idea is to have a way to quickly access some actions that are
@@ -798,8 +1107,54 @@ layout legend <layout_legend_item>`. These options include:
 
 .. figure:: img/rasterLegend.png
    :align: center
+   :width: 70%
 
    Raster Legend
+
+
+.. index:: Map tips
+.. _raster_display:
+
+Display Properties
+==================
+
+The |display| :guilabel:`Display` tab helps you configure map tips to use for
+pixels identification.
+
+|checkbox| :guilabel:`Enable Map Tips` controls whether to display map tips for the layer.
+If enabled, provides a complex and full HTML text editor for map tips,
+mixing QGIS expressions and html styles and tags (multiline, fonts, images, hyperlink, tables, ...).
+You can check the result of your code sample in the :guilabel:`Maps Tips Preview` frame. You can also select and
+edit existing expressions using the :guilabel:`Insert/Edit Expression` button.
+
+You might look for expressions located in :guilabel:`Rasters` group or
+the ``@layer_cursor_point`` variable in the :guilabel:`Expressions` dialog.
+
+.. note:: **Understanding the** :guilabel:`Insert/Edit Expression` **button behavior**
+
+   If you select some text within an expression (between "[%" and "%]"),
+   or if no text is selected but the cursor is inside an expression,
+   the whole expression will be automatically selected for editing.
+   If the cursor or a selected text is outside an expression, the dialog opens with the selection.
+
+.. _figure_raster_display:
+
+.. figure:: img/rasterDisplay.png
+   :align: center
+
+   Map tips with raster layer
+
+
+To display map tips:
+
+#. Select the menu option :menuselection:`View --> Show Map Tips`
+   or click on the |mapTips| :sup:`Show Map Tips` icon of the :guilabel:`Attributes Toolbar`.
+#. Make sure that the layer you target is active
+   and has the |checkbox| :guilabel:`Enable Map Tips` property checked.
+#. Move over a pixel, and the corresponding information will be displayed over.
+
+Map tip is a cross-layer feature meaning that once activated,
+it stays on and applies to any map tip enabled layer in the project until it is toggled off.
 
 
 .. index:: QGIS Server
@@ -808,16 +1163,228 @@ layout legend <layout_legend_item>`. These options include:
 QGIS Server Properties
 ======================
 
-From the |overlay| :guilabel:`QGIS Server` tab, information can
-be provided for :guilabel:`Description`, :guilabel:`Attribution`,
-:guilabel:`Metadata URL` and :guilabel:`Legend URL`.
+The |overlay| :guilabel:`QGIS Server` tab helps you configure
+settings of the data when published by :ref:`QGIS Server <QGIS-Server-manual>`.
+The configuration concerns:
+
+* :guilabel:`Description`: provides information to describe the data,
+  such as :guilabel:`Short name`, :guilabel:`Title`, :guilabel:`Abstract`,
+  a :guilabel:`Keyword list`,  and a :guilabel:`Data URL`
+  whose :guilabel:`Format` can be in ``text/html``, ``text/plain`` or ``application/pdf``.
+* :guilabel:`Attribution`: a :guilabel:`Title` and :guilabel:`URL`
+  to identify who provides the data
+* :guilabel:`Metadata URL`: a list of :guilabel:`URL` for the metadata
+  that can be of ``FGDC`` or ``TC211`` :guilabel:`Type`,
+  and in ``text/plain`` or ``text/xml`` :guilabel:`Format`
+* :guilabel:`Legend URL`: a :guilabel:`URL` for the legend,
+  in either ``image/png`` or ``image/jpeg`` :guilabel:`Format`
+
+.. note::
+  When the raster layer you want to publish is already provided by a web service,
+  further :ref:`properties <wms_server_properties>` are available for setting.
 
 .. _figure_raster_server:
 
 .. figure:: img/rasterServer.png
    :align: center
+   :width: 70%
 
    QGIS Server in Raster Properties
+
+
+
+.. index:: Attribute Tables
+.. _raster_attribute_tables:
+
+Attribute Tables
+======================
+
+Similar to vector layers, raster layers in QGIS can have associated
+Raster Attribute Tables (RATs) that store additional information about
+raster pixel values.
+
+A Raster Attribute Table links raster values (or value ranges) to
+descriptive attributes such as class names, pixel counts, and colors.
+RATs are commonly used for classified rasters, color tables, and
+histogram information, helping QGIS interpret how raster values should
+be displayed and classified.
+
+The :guilabel:`Attribute Tables` tab allows you to view and edit raster attribute data.
+To access the attribute table of a raster layer, right-click the layer in the layers panel,
+open :guilabel:`Properties...` and select :guilabel:`Attribute Tables`.
+
+.. figure:: img/raster_attribute_table_menu.png
+   :align: center
+   :width: 70%
+
+   Accessing the raster attribute table
+
+When opening the :guilabel:`Attribute Tables` for a raster layer that does not have an
+associated Raster Attribute Table, QGIS displays a notice informing that no
+attribute table is currently linked to the data source. In this state, the
+interface provides two options to define and associate a new attribute table:
+
+* :guilabel:`New attribute table from current symbology`: will appear if your raster
+  layer has a classified symbology applied. Otherwise, this option is disabled. Applying classified
+  symbology also triggers an option in the layer context menu to |createTable|:guilabel:`Create Raster Attribute Table`.
+  Click this button and set the following options in the :guilabel:`New Raster Attribute Table` dialog.
+
+   * :guilabel:`Managed by the data provider`: the attribute table will be saved
+     and managed by the data provider (if supported), overwriting any existing table
+     for the raster band used by the current style. Depending on the data provider,
+     the attribute table will be embedded in the main raster file or saved
+     into a sidecar file managed by the data provider.
+   * :guilabel:`Sidecar VAT.DBF file`: saves the attribute table into
+     a sidecar VAT.DBF file. The resulting file will not be associated with
+     any particular band.
+
+   .. figure:: img/raster_attribute_table_symbology.png
+      :align: center
+      :width: 400px
+
+      Create new attribute table from current symbology
+
+* :guilabel:`Load attribute table from VAT.DBF file`: retrieves the attribute table
+  from an external DBF file.
+  :guilabel:`Load Raster Attribute Table` dialog will appear
+  to let you browse and select the DBF file and associate it with the raster band.
+  The action also can be done by right-clicking the raster layer
+  in the layers panel and selecting |addTable|:guilabel:`Load Raster Attribute Table from VAT.DBF`.
+  |checkbox| :guilabel:`Open the newly loaded attribute table` allows you to
+  directly open the attribute table editor after loading the table.
+
+  .. figure:: img/raster_attribute_table_load.png
+     :align: center
+     :width: 400px
+
+     Load attribute table from VAT.DBF file
+
+Editing raster attribute tables
+--------------------------------
+
+When set, a raster attribute table can be accessed from the :guilabel:`Attribute tables` tab
+of the layer properties dialog or by selecting :guilabel:`Open raster attribute table`
+from the layer contextual menu in :guilabel:`Layers` panel.
+This dialog shows a table whose rows correspond to the different pixel values
+or value ranges classified in a given band of the raster layer.
+Depending on the type of classification, a row is described by:
+
+* for an exact values classification (e.g., paletted/unique values):
+  the band name and the applied :guilabel:`Color`.
+  Additional fields of the :guilabel:`Red`, :guilabel:`Green`, :guilabel:`Blue` and :guilabel:`Opacity` of the color are displayed.
+* for range values classification (e.g., singleband pseudocolor): the range of values
+  defined by their :guilabel:`Min`,  :guilabel:`Max`, the associated label (:guilabel:`Class`)
+  and color ramp interpolated over the values (:guilabel:`Color`).
+  Additional fields of the minimum and maximum of  :guilabel:`Red`, :guilabel:`Green`, :guilabel:`Blue`
+  and :guilabel:`Opacity` of the color ramp are displayed.
+
+You can also customize the raster attribute table by adding new fields for classification
+and group different value ranges accordingly,
+modifying value ranges and their associated colors or labels,
+adding new rows, ...
+The new attribute table can be used to update the current layer symbology.
+
+.. figure:: img/raster_attribute_table.png
+   :align: center
+   :width: 70%
+
+   Raster Attribute Table
+
+At the top of the dialog, a set of tools allows to edit and save changes to the attribute table:
+
+* |editTable| :sup:`Edit Attribute Table` turns the table into edit mode.
+  If no specific row or field is selected, only the |newAttribute| :sup:`Add Column…` option is available.
+* |newAttribute| :sup:`Add Column...` opens the :guilabel:`Add Column` dialog to add a new
+  column to the raster attribute table. The dialog lets you define:
+
+  * :guilabel:`Column Type`, which can be:
+
+    * |radioButtonOff| :guilabel:`Standard column`
+    * |radioButtonOff| :guilabel:`Color RGBA`
+    * |radioButtonOff| :guilabel:`Color ramp (RGBA minimum and RGBA maximum)`
+
+  * :guilabel:`Column Definition`, including:
+
+    * :guilabel:`Name` of the column (mandatory)
+    * :guilabel:`Usage`, which can be:
+
+      * :guilabel:`Pixel Count`: stores the number of pixels belonging to a given value or value range.
+      * :guilabel:`Generic`: general-purpose column with no predefined meaning.
+      * :guilabel:`Name`: stores the class name or label associated with a raster value or range.
+
+    * :guilabel:`Data type`, which can be:
+
+      * :guilabel:`String`
+      * :guilabel:`Integer`
+      * :guilabel:`Long Integer`
+      * :guilabel:`Double`
+
+  * :guilabel:`Insertion point`, defining whether the new column is inserted
+    |radioButtonOff| :guilabel:`Before` or |radioButtonOff| :guilabel:`After`
+    a selected existing column.
+
+  .. figure:: img/raster_attribute_table_add_column.png
+     :align: center
+     :width: 400px
+
+     Add Column dialog
+
+* |newTableRow|:guilabel:`Add Row...` opens the :guilabel:`Add Row` dialog to add a new row
+  to the raster attribute table. Choose the :guilabel:`Insertion point` as |radioButtonOff|:guilabel:`Before current row`
+  or |radioButtonOff|:guilabel:`After current row`.
+
+* |removeSelectedFeature|:sup:`Remove Row` removes the selected row from the raster attribute table.
+* |deleteAttribute|:sup:`Remove Column` removes the selected column from the raster attribute table.
+* |saveAllEdits|:sup:`Save Changes` saves any modifications made to the raster attribute table.
+
+The next row provides options for controlling the displayed information in the table:
+
+* :guilabel:`Raster band`: allows selecting which raster band the attribute table applies to.
+  Raster layers may contain multiple bands (e.g., multispectral data).
+  Each band can have its own Raster Attribute Table.
+* :guilabel:`Classification`: allows selecting the fields used for classifying the raster layer.
+  Keep in mind that the existing symbology for the raster will be replaced by a new symbology from the attribute table
+  and any unsaved changes to the current symbology will be lost.
+  Make sure to save your symbology style if needed before applying a classification.
+
+.. _raster_identify:
+
+Identify raster cells
+=====================
+
+The |identify| :ref:`identify features <identify>` tool allows you to get information about
+specific points in a raster layer.
+
+To use the |identify|:guilabel:`Identify features` tool:
+
+#. Select the raster layer in the Layers panel.
+#. Click on the :guilabel:`Identify features` tool in the toolbar or press :kbd:`Ctrl+Shift+I`.
+#. Click on the point in the raster layer that you want to identify.
+   The pixel will get highlighted.
+
+The Identify Results panel will open in its default ``Tree`` view
+and display information about the clicked point.
+Formatting of the results vary depending on the provider of the layer. For example:
+
+* For a local raster layer: below the name of the layer,
+  you have on the left the band(s) of the clicked pixel,
+  and on the right their respective value.
+* For a remote layer such as WMS, a :guilabel:`Format` menu allows you to select
+  whether the information should be displayed as :guilabel:`HTML`, :guilabel:`Feature`
+  or :guilabel:`Text`.
+
+These values can also be rendered (from the :guilabel:`View` menu located at the bottom of the panel) in:
+
+* a ``Table`` view - organizes the information about the identified features
+  and their values in a table.
+* a ``Graph`` view - organizes the information about the identified features
+  and their values in a graph.
+
+Under the pixel attributes, you will find the :guilabel:`Derived` information,
+such as:
+
+* ``X`` and ``Y`` coordinate values of the point clicked
+* Column and row of the point clicked (pixel) when compatible.
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
@@ -828,23 +1395,65 @@ be provided for :guilabel:`Description`, :guilabel:`Attribution`,
 
 .. |actionRun| image:: /static/common/mAction.png
    :width: 1.5em
+.. |addTable| image:: /static/common/mActionAddTable.png
+   :width: 1.5em
+.. |autoPlacementSettings| image:: /static/common/mIconAutoPlacementSettings.png
+   :width: 1.5em
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
 .. |contextHelp| image:: /static/common/mActionContextHelp.png
    :width: 1.5em
+.. |createTable| image:: /static/common/mActionCreateTable.png
+   :width: 1.5em
+.. |deleteAttribute| image:: /static/common/mActionDeleteAttribute.png
+   :width: 1.5em
+.. |display| image:: /static/common/display.png
+   :width: 1.5em
 .. |editMetadata| image:: /static/common/editmetadata.png
    :width: 1.2em
+.. |editTable| image:: /static/common/mActionEditTable.png
+   :width: 1.5em
+.. |elevationscale| image:: /static/common/elevationscale.png
+   :width: 1.5em
+.. |expression| image:: /static/common/mIconExpression.png
+   :width: 1.5em
 .. |fileOpen| image:: /static/common/mActionFileOpen.png
    :width: 1.5em
 .. |fileSave| image:: /static/common/mActionFileSave.png
    :width: 1.5em
 .. |fileSaveAs| image:: /static/common/mActionFileSaveAs.png
    :width: 1.5em
+.. |identify| image:: /static/common/mActionIdentify.png
+   :width: 1.5em
+.. |labelbackground| image:: /static/common/labelbackground.png
+   :width: 1.5em
+.. |labelbuffer| image:: /static/common/labelbuffer.png
+   :width: 1.5em
+.. |labelformatting| image:: /static/common/labelformatting.png
+   :width: 1.5em
+.. |labelingNone| image:: /static/common/labelingNone.png
+   :width: 1.5em
+.. |labelingRules| image:: /static/common/mIconLabelingRules.png
+   :width: 1.5em
+.. |labelingSingle| image:: /static/common/labelingSingle.png
+   :width: 1.5em
+.. |labelplacement| image:: /static/common/labelplacement.png
+   :width: 1.5em
+.. |labelshadow| image:: /static/common/labelshadow.png
+   :width: 1.5em
 .. |legend| image:: /static/common/legend.png
    :width: 1.2em
 .. |mapIdentification| image:: /static/common/mActionMapIdentification.png
    :width: 1.5em
+.. |mapTips| image:: /static/common/mActionMapTips.png
+   :width: 1.5em
 .. |metadata| image:: /static/common/metadata.png
+   :width: 1.5em
+.. |newAttribute| image:: /static/common/mActionNewAttribute.png
+   :width: 1.5em
+.. |newTableRow| image:: /static/common/mActionNewTableRow.png
+   :width: 1.5em
+.. |openTable| image:: /static/common/mActionOpenTable.png
    :width: 1.5em
 .. |overlay| image:: /static/common/overlay.png
    :width: 1.5em
@@ -856,24 +1465,27 @@ be provided for :guilabel:`Description`, :guilabel:`Attribution`,
    :width: 1.5em
 .. |rasterHistogram| image:: /static/common/rasterHistogram.png
    :width: 1.5em
+.. |removeSelectedFeature| image:: /static/common/mActionRemoveSelectedFeature.png
+   :width: 1.5em
+.. |render| image:: /static/common/render.png
+   :width: 1.5em
 .. |rendering| image:: /static/common/rendering.png
    :width: 1.5em
-.. |selectNumber| image:: /static/common/selectnumber.png
-   :width: 2.8em
-.. |selectString| image:: /static/common/selectstring.png
-   :width: 2.5em
+.. |saveAllEdits| image:: /static/common/mActionSaveAllEdits.png
+   :width: 1.5em
 .. |setProjection| image:: /static/common/mActionSetProjection.png
    :width: 1.5em
-.. |signMinus| image:: /static/common/symbologyRemove.png
-   :width: 1.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
-   :width: 1.5em
-.. |slider| image:: /static/common/slider.png
 .. |symbology| image:: /static/common/symbology.png
    :width: 2em
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
+   :width: 1.5em
+.. |symbologyRemove| image:: /static/common/symbologyRemove.png
+   :width: 1.5em
 .. |system| image:: /static/common/system.png
    :width: 1.5em
 .. |temporal| image:: /static/common/temporal.png
+   :width: 1.5em
+.. |text| image:: /static/common/text.png
    :width: 1.5em
 .. |transparency| image:: /static/common/transparency.png
    :width: 1.5em

@@ -32,6 +32,7 @@ Cheat sheet for PyQGIS
     )
 
     from qgis.core import (
+        Qgis,
         QgsProject,
         QgsLayerTreeModel,
     )
@@ -93,7 +94,7 @@ Settings
 .. testoutput:: cheat_sheet
   :hide:
 
-  qgis/symbolsListGroupsIndex
+  ...
 
 Toolbars
 ========
@@ -149,7 +150,7 @@ Canvas
 
     from qgis.PyQt.QtCore import Qt
 
-    iface.mapCanvas().setCanvasColor(Qt.black)
+    iface.mapCanvas().setCanvasColor(Qt.GlobalColor.black)
     iface.mapCanvas().refresh()
 
 **Map Update interval**
@@ -167,7 +168,7 @@ Layers
 
 .. testcode:: cheat_sheet
 
-    layer = iface.addVectorLayer("testdata/airports.shp", "layer name you like", "ogr")
+    layer = iface.addVectorLayer("testdata/data/data.gpkg|layername=airports", "Airports layer", "ogr")
     if not layer or not layer.isValid():
         print("Layer failed to load!")
 
@@ -214,6 +215,17 @@ Otherwise
 
    layers TOC = ['layer name you like']
 
+**Obtain layers type**
+
+.. testcode:: cheat_sheet
+
+    for layer in QgsProject.instance().mapLayers().values():
+        print(f"{layer.name()} of type {layer.type().name}")
+
+.. testoutput:: cheat_sheet
+
+    layer name you like of type Vector
+
 **Find layer by name**
 
 .. testcode:: cheat_sheet
@@ -245,8 +257,8 @@ Otherwise
     layer = QgsProject.instance().mapLayersByName("layer name you like")[0]
     # Set seconds (5 seconds)
     layer.setAutoRefreshInterval(5000)
-    # Enable auto refresh
-    layer.setAutoRefreshEnabled(True)
+    # Enable data reloading
+    layer.setAutoRefreshMode(Qgis.AutoRefreshMode.ReloadData)
 
 **Show methods**
 
@@ -390,7 +402,7 @@ Otherwise
     layer = QgsVectorLayer('Polygon?crs=epsg:4326', 'Mississippi', 'memory')
     pr = layer.dataProvider()
     poly = QgsFeature()
-    geom = QgsGeometry.fromWkt("POLYGON ((-88.82 34.99,-88.0934.89,-88.39 30.34,-89.57 30.18,-89.73 31,-91.63 30.99,-90.8732.37,-91.23 33.44,-90.93 34.23,-90.30 34.99,-88.82 34.99))")
+    geom = QgsGeometry.fromWkt("POLYGON ((-88.82 34.99,-88.09 34.89,-88.39 30.34,-89.57 30.18,-89.73 31,-91.63 30.99,-90.87 32.37,-91.23 33.44,-90.93 34.23,-90.30 34.99,-88.82 34.99))")
     poly.setGeometry(geom)
     pr.addFeatures([poly])
     layer.updateExtents()
@@ -614,7 +626,7 @@ Advanced TOC
 
   root = QgsProject.instance().layerTreeRoot()
   node = root.findLayer(layer.id())
-  new_state = Qt.Checked if node.isVisible() == Qt.Unchecked else Qt.Unchecked
+  new_state = True if node.isVisible() == Qt.CheckState.Unchecked else False
   node.setItemVisibilityChecked(new_state)
 
 
@@ -802,8 +814,7 @@ Decorators
 
 .. testcode:: cheat_sheet
 
-    from qgis.PyQt.Qt import QTextDocument
-    from qgis.PyQt.QtGui import QFont
+    from qgis.PyQt.QtGui import QFont, QTextDocument
 
     mQFont = "Sans Serif"
     mQFontsize = 9

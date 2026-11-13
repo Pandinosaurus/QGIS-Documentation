@@ -17,10 +17,14 @@ Here are only some of the reasons:
 - *It's free, as in lunch.* Installing and using the QGIS program costs you a
   grand total of zero money. No initial fee, no recurring fee, nothing.
 
+- *It's backed by OSGeo.* QGIS is an official project of the Open Source
+  Geospatial Foundation (OSGeo), ensuring long-term support and alignment
+  with open geospatial standards.
+
 - *It's free, as in liberty.* If you need extra functionality in QGIS, you
   can do more than just hope it will be included in the next release. You can
   sponsor the development of a feature, or add it yourself if you are
-  familiar with programming. 
+  familiar with programming.
 
 - *It's constantly developing.* Because anyone can add new features and improve
   on existing ones, QGIS never stagnates. The development of a new tool can
@@ -30,7 +34,7 @@ Here are only some of the reasons:
   anything, you can turn to the extensive documentation, your fellow QGIS
   users, or even the developers.
 
-- *Cross-platform.* QGIS can be installed on MacOS, Windows and Linux.
+- *Cross-platform.* QGIS can be installed on macOS, Windows and Linux.
 
 Now that you know why you want to use QGIS, these exercises will make you
 know how.
@@ -117,14 +121,13 @@ of the core content and be published under the same license.
 
 Authors
 -------
-* Rüdiger Thiede (rudi@linfiniti.com) - Rudi has written the QGIS instructional
+* Rüdiger Thiede - Rudi has written the QGIS instructional
   materials and parts of the PostGIS materials.
-* Tim Sutton (tim@linfiniti.com) - Tim has overseen and guided the project and
-  co-authored the PostgreSQL and PostGIS parts. Tim also authored the custom
-  sphinx theme used for this manual.
+* Tim Sutton (tim@kartoza.com) - Tim has overseen and guided the project and
+  co-authored the PostgreSQL and PostGIS parts.
 * Horst Düster (horst.duester@kappasys.ch ) - Horst co-authored the PostgreSQL
   and PostGIS parts
-* Marcelle Sutton (marcelle@linfiniti.com) - Marcelle provided proof-reading
+* Marcelle Sutton - Marcelle provided proof-reading
   and editorial advice during the creation of this work.
 
 Individual Contributors
@@ -150,7 +153,7 @@ Please report them at https://github.com/qgis/QGIS-Documentation/issues.
 Latest Version
 --------------
 You can always obtain the latest version of this document by visiting the online
-version which is part of the QGIS documentation website (https://docs.qgis.org).
+version which is part of the QGIS documentation website (https://www.qgis.org/resources/hub/#documentation).
 
 .. note::
    The documentation website contains links to both online and PDF versions of

@@ -6,6 +6,96 @@
    in the resources/function_help/json/ folder in the
    qgis/QGIS repository.
 
+
+.. _expression_function_Conversions_convert_timezone:
+
+convert_timezone
+................
+
+Converts a datetime object to a different timezone.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - convert_timezone(datetime, timezone)
+   * - Arguments
+     - * **datetime** - datetime value
+       * **timezone** - target timezone
+   * - Examples
+     - * ``convert_timezone(to_datetime('2012-05-04 12:50:00+3'), timezone_from_id('UTC+10'))`` → datetime 2012-05-04 19:50:00 (UTC+10)
+       * ``convert_timezone("DATE_FIELD", timezone_from_id('Australia/Darwin'))`` → Datetime from DATE_FIELD, converted to the 'Australia/Darwin' timezone
+
+
+.. end_convert_timezone_section
+
+.. _expression_function_Conversions_extract_degrees:
+
+extract_degrees
+...............
+
+Extracts the integer number of degrees from a decimal degrees value. The minutes and seconds components are ignored. The extracted degrees values will be truncated towards zero (not rounded).
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - extract_degrees(value)
+   * - Arguments
+     - * **value** - A decimal degrees value.
+   * - Examples
+     - * ``extract_degrees(135.334)`` → 135
+       * ``extract_degrees(135.998)`` → 135
+       * ``extract_degrees(-135.334)`` → -135
+       * ``extract_degrees(-135.998)`` → -135
+
+
+.. end_extract_degrees_section
+
+.. _expression_function_Conversions_extract_minutes:
+
+extract_minutes
+...............
+
+Extracts the integer number of minutes from a decimal degrees value. The degrees and seconds components are ignored. The extracted minutes values will be truncated towards zero (not rounded), and will always be a positive value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - extract_minutes(value)
+   * - Arguments
+     - * **value** - A decimal degrees value.
+   * - Examples
+     - * ``extract_minutes(135.75)`` → 45
+       * ``extract_minutes(-135.75)`` → 45
+       * ``extract_minutes(-135.7568)`` → 45
+       * ``extract_minutes(-135.7568)`` → 45
+
+
+.. end_extract_minutes_section
+
+.. _expression_function_Conversions_extract_seconds:
+
+extract_seconds
+...............
+
+Extracts the decimal number of seconds from a decimal degrees value. The degrees and minutes components are ignored. The extracted seconds value will always be a positive value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - extract_seconds(value)
+   * - Arguments
+     - * **value** - A decimal degrees value.
+   * - Examples
+     - * ``extract_seconds(135.7568)`` → 24.4799
+       * ``extract_seconds(-135.7568)`` → 24.4799
+
+
+.. end_extract_seconds_section
+
 .. _expression_function_Conversions_from_base64:
 
 from_base64
@@ -25,6 +115,27 @@ Decodes a string in the Base64 encoding into a binary value.
 
 
 .. end_from_base64_section
+
+.. _expression_function_Conversions_get_timezone:
+
+get_timezone
+............
+
+Returns the timezone object associated with a datetime value.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - get_timezone(datetime)
+   * - Arguments
+     - * **datetime** - datetime with timezone
+   * - Examples
+     - * ``timezone_id(get_timezone(to_datetime('2012-05-04 12:50:00+3')))`` → 'UTC+03'
+       * ``timezone_id(get_timezone("DATE_FIELD"))`` → ID of timezone associated with the DATE_FIELD value
+
+
+.. end_get_timezone_section
 
 .. _expression_function_Conversions_hash:
 
@@ -80,6 +191,28 @@ Creates a md5 hash from a string.
 
 .. end_md5_section
 
+.. _expression_function_Conversions_set_timezone:
+
+set_timezone
+............
+
+Sets the timezone object associated with a datetime value, without changing the date or time components. This function can be used to replace the timezone for a datetime.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - set_timezone(datetime, timezone)
+   * - Arguments
+     - * **datetime** - datetime value
+       * **timezone** - new timezone for datetime
+   * - Examples
+     - * ``set_timezone(to_datetime('2012-05-04 12:50:00+3'), timezone_from_id('UTC+10'))`` → datetime 2012-05-04 12:50:00 (UTC+10)
+       * ``set_timezone(make_datetime(2020,1,1,10,0,0), timezone_from_id('Australia/Darwin'))`` → Datetime of 2020-01-01 10:00:00 with associated timezone 'Australia/Darwin'
+
+
+.. end_set_timezone_section
+
 .. _expression_function_Conversions_sha256:
 
 sha256
@@ -99,6 +232,48 @@ Creates a sha256 hash from a string.
 
 
 .. end_sha256_section
+
+.. _expression_function_Conversions_timezone_from_id:
+
+timezone_from_id
+................
+
+Creates a timezone object from a string ID (from the IANA timezone database). The ID must be one of the available system IDs or a valid UTC-with-offset ID.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - timezone_from_id(id)
+   * - Arguments
+     - * **id** - string containing the time zone ID
+   * - Examples
+     - * ``timezone_from_id('Australia/Brisbane')`` → AEST timezone object
+       * ``timezone_from_id('UTC+10:30')`` → UTC+10:30 timezone object
+       * ``timezone_from_id('UTC-3')`` → UTC-03 timezone object
+
+
+.. end_timezone_from_id_section
+
+.. _expression_function_Conversions_timezone_id:
+
+timezone_id
+...........
+
+Returns the ID string for a timezone object, using IDs from the IANA timezone database.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - timezone_id(timezone)
+   * - Arguments
+     - * **timezone** - a valid timezone object
+   * - Examples
+     - * ``timezone_id(timezone_from_id('Australia/Brisbane'))`` → 'Australia/Brisbane'
+
+
+.. end_timezone_id_section
 
 .. _expression_function_Conversions_to_base64:
 
@@ -120,12 +295,37 @@ Encodes a binary value into a string, using the Base64 encoding.
 
 .. end_to_base64_section
 
+.. _expression_function_Conversions_to_bool:
+
+to_bool
+.......
+
+Converts a given value to a boolean. The function will return false if the value is NULL, an empty string, an empty list, or 0.
+
+.. list-table::
+   :widths: 15 85
+
+   * - Syntax
+     - to_bool(value)
+   * - Arguments
+     - * **value** - value to convert to boolean
+   * - Examples
+     - * ``to_bool('')`` → false
+       * ``to_bool('123')`` → true
+       * ``to_bool('false')`` → true
+       * ``to_bool(0)`` → false
+       * ``to_bool(1)`` → true
+       * ``to_bool(null)`` → false
+
+
+.. end_to_bool_section
+
 .. _expression_function_Conversions_to_date:
 
 to_date
 .......
 
-Converts a string into a date object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-5/qdate.html#fromString-2>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
+Converts a string into a date object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-6/qdate.html#fromString>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
 
 .. list-table::
    :widths: 15 85
@@ -151,7 +351,7 @@ Converts a string into a date object. An optional format string can be provided 
 to_datetime
 ...........
 
-Converts a string into a datetime object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-5/qdate.html#fromString-2>`_, `QTime::fromString <https://doc.qt.io/qt-5/qtime.html#fromString-1>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
+Converts a string into a datetime object. An optional format string can be provided to parse the string; see `QDate::fromString <https://doc.qt.io/qt-6/qdate.html#fromString>`_, `QTime::fromString <https://doc.qt.io/qt-6/qtime.html#fromString>`_ or the documentation of the format_date function for additional documentation on the format. By default the current QGIS user locale is used.
 
 .. list-table::
    :widths: 15 85
@@ -203,7 +403,7 @@ Converts a coordinate to degree, minute.
    :widths: 15 85
 
    * - Syntax
-     - to_dm(coordinate, axis, precision, [formatting=])
+     - to_dm(coordinate, axis, precision, [formatting:=NULL])
 
        [] marks optional arguments
    * - Arguments
@@ -230,7 +430,7 @@ Converts a coordinate to degree, minute, second.
    :widths: 15 85
 
    * - Syntax
-     - to_dms(coordinate, axis, precision, [formatting=])
+     - to_dms(coordinate, axis, precision, [formatting:=NULL])
 
        [] marks optional arguments
    * - Arguments
@@ -251,7 +451,7 @@ Converts a coordinate to degree, minute, second.
 to_int
 ......
 
-Converts a string to integer number. Nothing is returned if a value cannot be converted to integer (e.g '123asd' is invalid).
+Converts a string to integer number. If a value cannot be converted to integer the expression is invalid (e.g '123asd' is invalid).
 
 .. list-table::
    :widths: 15 85
@@ -293,7 +493,7 @@ Converts a string to an interval type. Can be used to take days, hours, month, e
 to_real
 .......
 
-Converts a string to a real number. Nothing is returned if a value cannot be converted to real (e.g '123.56asd' is invalid).  Numbers are rounded after saving changes if the precision is smaller than the result of the conversion.
+Converts a string to a real number. If a value cannot be converted to real the expression is invalid (e.g '123.56asd' is invalid).  Numbers are rounded after saving changes if the precision is smaller than the result of the conversion.
 
 .. list-table::
    :widths: 15 85
@@ -313,7 +513,7 @@ Converts a string to a real number. Nothing is returned if a value cannot be con
 to_string
 .........
 
-Converts a number to string.
+Converts a number to string. The conversion is not locale-aware, see 'format_number' for a locale-aware alternative.
 
 .. list-table::
    :widths: 15 85
@@ -323,7 +523,7 @@ Converts a number to string.
    * - Arguments
      - * **number** - Integer or real value. The number to convert to string.
    * - Examples
-     - * ``to_string(123)`` → '123'
+     - * ``to_string(1.23)`` → '1.23'
 
 
 .. end_to_string_section
@@ -333,7 +533,7 @@ Converts a number to string.
 to_time
 .......
 
-Converts a string into a time object. An optional format string can be provided to parse the string; see `QTime::fromString <https://doc.qt.io/qt-5/qtime.html#fromString-1>`_ for additional documentation on the format.
+Converts a string into a time object. An optional format string can be provided to parse the string; see `QTime::fromString <https://doc.qt.io/qt-6/qtime.html#fromString>`_ for additional documentation on the format.
 
 .. list-table::
    :widths: 15 85
@@ -353,4 +553,3 @@ Converts a string into a time object. An optional format string can be provided 
 
 
 .. end_to_time_section
-

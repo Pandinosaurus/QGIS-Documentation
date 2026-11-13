@@ -1,4 +1,4 @@
-|LS| Views
+Lesson: Views
 ===============================================================================
 
 When you write a query, you need to spend a lot of time and effort formulating
@@ -20,7 +20,7 @@ Let's make a simple view based on the above:
     from people, streets where people.street_id=streets.id
     group by people.street_id, streets.name;
 
-As you can see the only change is the :kbd:`create view roads_count_v as` part
+As you can see the only change is the ``create view roads_count_v as`` part
 at the beginning. We can now select data from that view:
 
 .. code-block:: sql
@@ -55,7 +55,7 @@ change it without impacting on any data in your database:
 (This example also shows the best practice convention of using UPPER CASE for
 all SQL keywords.)
 
-You will see that we have added an :kbd:`ORDER BY` clause so that our view rows
+You will see that we have added an ``ORDER BY`` clause so that our view rows
 are nicely sorted:
 
 .. code-block:: sql
@@ -78,24 +78,13 @@ If you no longer need a view, you can delete it like this:
 
   drop view roads_count_v;
 
-|IC|
+In Conclusion
 -------------------------------------------------------------------------------
 
 Using views, you can save a query and access its results as if it were a table.
 
-|WN|
+What's Next?
 -------------------------------------------------------------------------------
 
 Sometimes, when changing data, you want your changes to have effects elsewhere
 in the database. The next lesson will show you how to do this.
-
-
-.. Substitutions definitions - AVOID EDITING PAST THIS LINE
-   This will be automatically updated by the find_set_subst.py script.
-   If you need to create a new substitution manually,
-   please add it also to the substitutions.txt file in the
-   source folder.
-
-.. |IC| replace:: In Conclusion
-.. |LS| replace:: Lesson:
-.. |WN| replace:: What's Next?

@@ -14,6 +14,10 @@ Bar plot
 --------
 Creates a bar plot from a category and a layer field.
 
+.. figure:: img/bar_plot.png
+   :align: center
+
+   Bar plot example
 
 Parameters
 ..........
@@ -21,6 +25,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -28,7 +33,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Category field name**
      - ``NAME_FIELD``
@@ -36,14 +41,46 @@ Parameters
      - Categorical field to use for grouping the bars (X axis)
    * - **Value field**
      - ``VALUE_FIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Value to use for the plot (Y axis).
+   * - **Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``TITLE``
+     - [string]
+
+       Default: ""
+     - Title of the plot
+   * - **X-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``XAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the name of the category field is used.
+       With a single space, the axis title is hidden.
+   * - **Y-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``YAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the name of the value field is used.
+       With a single space, the axis title is hidden.
    * - **Bar plot**
      - ``OUTPUT``
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -55,6 +92,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -82,6 +120,11 @@ Box plot
 --------
 Creates a box plot from a category field and a numerical layer field.
 
+.. figure:: img/box_plot_example.png
+   :align: center
+
+   Example of box plot
+
 Parameters
 ..........
 
@@ -96,7 +139,7 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **Category name field**
      - ``NAME_FIELD``
@@ -104,7 +147,7 @@ Parameters
      - Categorical field to use for grouping the boxes (X axis)
    * - **Value field**
      - ``VALUE_FIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Value to use for the plot (Y axis).
    * - **Additional statistic lines**
      - ``MSD``
@@ -117,13 +160,44 @@ Parameters
        * 0 --- Show Mean
        * 1 --- Show Standard Deviation
        * 2 --- Don't show mean and standard deviation
+   * - **Title**
 
+       Optional
+
+       ``Added in 3.42``
+     - ``TITLE``
+     - [string]
+
+       Default: ""
+     - Title of the plot
+   * - **X-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``XAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the name of the category field is used.
+       With a single space, the axis title is not shown.
+   * - **Y-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``YAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the name of the value field is used.
+       With a single space, the axis title is not shown.
    * - **Box plot**
      - ``OUTPUT``
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -135,6 +209,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -156,42 +231,144 @@ Python code
   :end-before: **end_algorithm_code_section**
 
 
-.. _qgismeanandstandarddeviationplot:
+.. _qgisgenerateelevationprofileimage:
 
-Mean and standard deviation plot
+Generate elevation profile image
 --------------------------------
-Creates a box plot with mean and standard deviation values.
+``Added in 3.42``
 
+Creates an elevation profile image from a list of map layers and an optional terrain layer.
+
+.. figure:: img/elevation_profile_example.png
+   :align: center
+   :width: 60%
+
+   Example of elevation profile
 
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Input table**
-     - ``INPUT``
-     - [vector: any]
-     - Input vector layer
-   * - **Category name field**
-     - ``NAME_FIELD``
-     - [tablefield: any]
-     - Categorical field to use for grouping the boxes (X axis)
-   * - **Value field**
-     - ``VALUE_FIELD``
-     - [tablefield: any]
-     - Value to use for the plot (Y axis).
-   * - **Plot**
+   * - **Profile curve**
+     - ``CURVE``
+     - [geometry: line]
+     - The LineString geometry (WKT or GeoJSON) representing the profile curve along which the elevation profile will be generated
+   * - **Map layers**
+     - ``MAP_LAYERS``
+     - [layer] [list]
+     - The list of map layers to include in the elevation profile
+   * - **Chart width (in pixels)**
+     - ``WIDTH``
+     - [numeric: integer]
+
+       Default: 400
+
+       Minimum value: 0
+     - The width of the output chart in pixels.
+   * - **Chart height (in pixels)**
+     - ``HEIGHT``
+     - [numeric: integer]
+
+       Default: 300
+
+       Minimum value: 0
+     - The height of the output chart in pixels.
+   * - **Terrain layer**
+
+       Optional
+     - ``TERRAIN_LAYER``
+     - [raster]
+     - A terrain layer (e.g., DEM) to use for elevation data. If not provided, elevation data will be derived from the map layers.
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Chart minimum distance (X axis)**
+
+       Optional
+     - ``MINIMUM_DISTANCE``
+     - [numeric: double]
+     - The minimum distance (X axis) to display on the chart. If not specified, the chart will auto-scale.
+   * - **Chart maximum distance (X axis)**
+
+       Optional
+     - ``MAXIMUM_DISTANCE``
+     - [numeric: double]
+     - The maximum distance (X axis) to display on the chart. If not specified, the chart will auto-scale.
+   * - **Chart minimum elevation (Y axis)**
+
+       Optional
+     - ``MINIMUM_ELEVATION``
+     - [numeric: double]
+     - The minimum elevation (Y axis) to display on the chart. If not specified, the chart will auto-scale.
+   * - **Chart maximum elevation (Y axis)**
+
+       Optional
+     - ``MAXIMUM_ELEVATION``
+     - [numeric: double]
+     - The maximum elevation (Y axis) to display on the chart. If not specified, the chart will auto-scale.
+   * - **Chart text color**
+
+       Optional
+     - ``TEXT_COLOR``
+     - [color]
+     - The color of the text in the chart (e.g., axis labels, titles).
+   * - **Chart background color**
+
+       Optional
+     - ``BACKGROUND_COLOR``
+     - [color]
+     - The background color of the chart.
+   * - **Chart border color**
+
+       Optional
+     - ``BORDER_COLOR``
+     - [color]
+     - The color of the chart border.
+   * - **Profile tolerance**
+     - ``TOLERANCE``
+     - [numeric: double]
+
+       Default: 5.0
+
+       Minimum value: 0
+     - Defines how far a feature (vector point, line, polygon, or point cloud)
+       can be from the profile line to be included in the results. It uses map units
+       and does not affect other layer types.
+   * - **Chart DPI**
+     - ``DPI``
+     - [numeric: integer]
+
+       Default: 96
+
+       Minimum value: 0
+     - The resolution of the output image in dots per inch (DPI).
+   * - **Output image**
      - ``OUTPUT``
-     - [html]
+     - [file]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the image file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -203,6 +380,81 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output image**
+     - ``OUTPUT``
+     - [file]
+     - The generated elevation profile image in the specified format.
+
+
+Python code
+...........
+
+**Algorithm ID**: ``native:generateelevationprofileimage``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+.. _qgismeanandstandarddeviationplot:
+
+Mean and standard deviation plot
+--------------------------------
+
+Creates a box plot with mean and standard deviation values.
+
+.. figure:: img/mean_stddev_plot_example.png
+   :align: center
+
+   Example of mean and standard deviation plot
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input table**
+     - ``INPUT``
+     - [vector: geometry]
+     - Input vector layer
+   * - **Category name field**
+     - ``NAME_FIELD``
+     - [tablefield: any]
+     - Categorical field to use for grouping the boxes (X axis)
+   * - **Value field**
+     - ``VALUE_FIELD``
+     - [tablefield: numeric]
+     - Value to use for the plot (Y axis).
+   * - **Plot**
+     - ``OUTPUT``
+     - [html]
+
+       Default: ``[Save to temporary file]``
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -228,11 +480,12 @@ Python code
 
 Polar plot
 ----------
-Generates a polar plot based on the value of an input vector layer.
+Generates a polar bar plot based on the value of an input vector layer.
 
-Two fields must be entered as parameters: one that defines the category each feature
-(to group features) and another one with the variable to plot (this has to be
-a numeric one).
+.. figure:: img/polar_plot_example.png
+   :align: center
+
+   Example of polar (bar) plot
 
 Parameters
 ..........
@@ -240,6 +493,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -247,22 +501,18 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
-   * - **Category name field**
-     - ``NAME_FIELD``
-     - [tablefield: any]
-     - Categorical field to use for grouping the features (X axis)
    * - **Value field**
      - ``VALUE_FIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Value to use for the plot (Y axis).
    * - **Polar plot**
      - ``OUTPUT``
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -274,6 +524,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -301,12 +552,18 @@ Raster layer histogram
 ----------------------
 Generates a histogram with the values of a raster layer.
 
+.. figure:: img/raster_layer_histogram.png
+   :align: center
+
+   Raster layer histogram example
+
 Parameters
 ..........
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -322,7 +579,7 @@ Parameters
      - Raster band to use for the histogram
    * - **number of bins**
      - ``BINS``
-     - [number]
+     - [numeric: integer]
 
        Default: 10
      - The number of bins to use in the histogram (X axis).
@@ -332,7 +589,7 @@ Parameters
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -344,6 +601,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -373,12 +631,18 @@ Generates a histogram with the values of the attribute of a vector layer.
 
 The attribute to use for computing the histogram must be numeric.
 
+.. figure:: img/vector_layer_histogram.png
+   :align: center
+
+   Example of vector layer histogram
+
 Parameters
 ..........
 
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -390,11 +654,11 @@ Parameters
      - Input vector layer
    * - **Attribute**
      - ``FIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Value to use for the plot (Y axis).
    * - **number of bins**
      - ``BINS``
-     - [number]
+     - [numeric: integer]
 
        Default: 10
      - The number of bins to use in the histogram (X axis).
@@ -404,7 +668,7 @@ Parameters
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -416,6 +680,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -443,6 +708,10 @@ Vector layer scatterplot
 ------------------------
 Creates a simple ``X`` - ``Y`` scatter plot for a vector layer.
 
+.. figure:: img/vector_scatter_plot_example.png
+   :align: center
+
+   Example of vector layer scatterplot
 
 Parameters
 ..........
@@ -450,6 +719,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -457,22 +727,82 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **X attribute**
      - ``XFIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Field to use for the X axis
    * - **Y attribute**
      - ``YFIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Field to use for the Y axis
+   * - **Hover text**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``HOVERTEXT``
+     - [expression]
+
+       Default: ""
+     - Text to be shown when hovering with the mouse over data points.
+       It can be picked from a field or based on an expression.
+   * - **Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``TITLE``
+     - [string]
+
+       Default: ""
+     - Title of the plot
+   * - **X-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``XAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the field name of the x attribute is used.
+       With a single space, the axis title is not shown.
+   * - **Y-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``YAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the field name of the y attribute is used.
+       With a single space, the axis title is not shown.
+   * - **Use logarithmic scale for x-axis**
+
+       ``Added in 3.42``
+
+     - ``XAXIS_LOG``
+     - [boolean]
+
+       Default: False
+     - When enabled, uses logarithmic scale for the x-axis
+   * - **Use logarithmic scale for y-axis**
+
+       ``Added in 3.42``
+     - ``YAXIS_LOG``
+     - [boolean]
+
+       Default: False
+     - When enabled, uses logarithmic scale for the y-axis
    * - **Scatterplot**
      - ``OUTPUT``
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -484,6 +814,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -511,6 +842,10 @@ Vector layer scatterplot 3D
 ---------------------------
 Creates a 3D scatter plot for a vector layer.
 
+.. figure:: img/scatter3d_plot_example.png
+   :align: center
+
+   Example of 3D scatter plot
 
 Parameters
 ..........
@@ -518,6 +853,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -525,26 +861,66 @@ Parameters
      - Description
    * - **Input layer**
      - ``INPUT``
-     - [vector: any]
+     - [vector: geometry]
      - Input vector layer
    * - **X attribute**
      - ``XFIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Field to use for the X axis
    * - **Y attribute**
      - ``YFIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Field to use for the Y axis
    * - **Z attribute**
      - ``ZFIELD``
-     - [tablefield: any]
+     - [tablefield: numeric]
      - Field to use for the Z axis
-   * - **Histogram**
+   * - **Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``TITLE``
+     - [string]
+
+       Default: ""
+     - Title of the plot
+   * - **X-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``XAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the field name of the X attribute is used.
+   * - **Y-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``YAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the field name of the Y attribute is used.
+   * - **Z-axis Title**
+
+       Optional
+
+       ``Added in 3.42``
+     - ``ZAXIS_TITLE``
+     - [string]
+
+       Default: ""
+     - If empty, the field name of the Z attribute is used.
+   * - **Scatterplot 3D**
      - ``OUTPUT``
      - [html]
 
        Default: ``[Save to temporary file]``
-     - Specify the HTML file for the plot. One of:
+     - Specify the HTML file for the plot. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -556,12 +932,13 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Histogram**
+   * - **Scatterplot 3D**
      - ``OUTPUT``
      - [html]
      - HTML file with the plot.

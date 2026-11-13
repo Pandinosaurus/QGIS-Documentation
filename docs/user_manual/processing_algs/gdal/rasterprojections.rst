@@ -15,7 +15,7 @@ Assign projection
 Applies a coordinate system to a raster dataset.
 
 This algorithm is derived from the
-`GDAL edit utility <https://gdal.org/programs/gdal_edit.html>`_.
+`GDAL edit utility <https://gdal.org/en/latest/programs/gdal_edit.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Projections`
 
@@ -25,6 +25,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -45,6 +46,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -73,7 +75,7 @@ Extracts the projection of a raster file and writes it into a *world*
 file with extension :file:`.wld`.
 
 This algorithm is derived from the
-`GDAL srsinfo utility <https://gdal.org/programs/gdalsrsinfo.html>`_.
+`GDAL srsinfo utility <https://gdal.org/en/latest/programs/gdalsrsinfo.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Projections`
 
@@ -83,6 +85,7 @@ Parameters
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -110,6 +113,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    *  - Label
       - Name
@@ -119,13 +123,12 @@ Outputs
       - ``WORLD_FILE``
       - [file]
       - Text file with extension :file:`.wld` containing
-	transformation parameters for the raster file.
+        transformation parameters for the raster file.
    *  - **ESRI Shapefile prj file**
       - ``PRJ_FILE``
       - [file]
       - Text file with :file:`.prj` extension that describes the CRS.
-        Will be ``None`` if :guilabel:`Create also .prj file` is
-	False.
+        Will be ``None`` if :guilabel:`Create also .prj file` is False.
 
 Python code
 ...........
@@ -146,7 +149,7 @@ Reprojects a raster layer into another Coordinate Reference System
 The output file resolution and the resampling method can be chosen.
 
 This algorithm is derived from the
-`GDAL warp utility <https://gdal.org/programs/gdalwarp.html>`_.
+`GDAL warp utility <https://gdal.org/en/latest/programs/gdalwarp.html>`_.
 
 **Default menu**: :menuselection:`Raster --> Projections`
 
@@ -191,35 +194,27 @@ Basic parameters
      - Pixel value resampling method to use.
        Options:
 
-       * 0 --- Nearest neighbour
-       * 1 --- Bilinear
-       * 2 --- Cubic
-       * 3 --- Cubic spline
-       * 4 --- Lanczos windowed sinc
-       * 5 --- Average
-       * 6 --- Mode
-       * 7 --- Maximum
-       * 8 --- Minimum
-       * 9 --- Median
-       * 10 --- First quartile
-       * 11 --- Third quartile
-   * - **Nodata value for output bands**
+       .. include:: ../algs_include.rst
+          :start-after: **raster_resampling_methods**
+          :end-before: **end_raster_resampling_methods**
+
+   * - **NoData value for output bands**
 
        Optional
      - ``NODATA``
-     - [number]
+     - [numeric: double]
 
-       Default: None
-     - Sets nodata value for output bands.
-       If not provided, then nodata values will be copied from
+       Default: Not set
+     - Sets NoData value for output bands.
+       If not provided, then NoData values will be copied from
        the source dataset.
    * - **Output file resolution in target georeferenced units**
 
        Optional
      - ``TARGET_RESOLUTION``
-     - [number]
+     - [numeric: double]
 
-       Default: None
+       Default: Not set
      - Defines the output file resolution of reprojection result
    * - **Reprojected**
      - ``OUTPUT``
@@ -227,7 +222,7 @@ Basic parameters
 
        Default: ``[Save to temporary file]``
      - Specification of the output raster layer.
-       One of:
+       :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -248,7 +243,7 @@ Advanced parameters
    * - **Additional creation options**
 
        Optional
-     - ``OPTIONS``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``OPTIONS``)
      - [string]
 
        Default: ''
@@ -258,7 +253,7 @@ Advanced parameters
        For convenience, you can rely on predefined profiles (see
        :ref:`GDAL driver options section <gdal_createoptions>`).
 
-       For Batch Process: separate multiple options with a pipe
+       Batch Process and Model Designer: separate multiple options with a pipe
        character (``|``).
    * - **Output data type**
      - ``DATA_TYPE``
@@ -268,18 +263,10 @@ Advanced parameters
      - Defines the format of the output raster file.
        Options:
 
-       * 0 --- Use input layer data type
-       * 1 --- Byte
-       * 2 --- Int16
-       * 3 --- UInt16
-       * 4 --- UInt32
-       * 5 --- Int32
-       * 6 --- Float32
-       * 7 --- Float64
-       * 8 --- CInt16
-       * 9 --- CInt32
-       * 10 --- CFloat32
-       * 11 --- CFloat64
+       .. include:: ../algs_include.rst
+          :start-after: **raster_data_types_extended**
+          :end-before: **end_raster_data_types_extended**
+
    * - **Georeferenced extents of output file to be created**
 
        Optional
@@ -320,7 +307,7 @@ Advanced parameters
      - ``EXTRA``
      - [string]
 
-       Default: None
+       Default: Not set
      - Add extra GDAL command line options.
 
 Outputs
@@ -329,6 +316,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name

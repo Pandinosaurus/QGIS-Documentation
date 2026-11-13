@@ -34,31 +34,32 @@ is available from many parts in QGIS and, can particularly be accessed when:
   :sup:`Select By Expression...` tool;
 * :ref:`editing attributes <calculate_fields_values>` with e.g. the
   |calculateField| :sup:`Field calculator` tool;
-* manipulating symbology, label or layout item parameters with the |dataDefined|
+* manipulating symbology, label or layout item parameters with the |dataDefine|
   :sup:`Data defined override` tool (see :ref:`data_defined`);
 * building a :ref:`geometry generator <geometry_generator_symbol>` symbol layer;
 * doing some :ref:`geoprocessing <label_processing>`.
 
 The Expression builder dialog offers access to the:
 
-* :ref:`Expression tab <functions_list>` which, thanks to a list of predefined
-  functions, helps to write and check the expression to use;
+* :guilabel:`Expression` tab which, thanks to a list of :ref:`predefined functions <functions_list>`,
+  helps to write and check the expression to use;
 * :ref:`Function Editor tab <function_editor>` which helps to extend the list of
   functions by creating custom ones.
 
 The Interface
 -------------
 
-The :guilabel:`Expression` tab provides the main interface to write expressions
-using functions, layer fields and values. It contains the following widgets:
-
 .. _figure_expression_tab:
 
-.. figure:: img/function_list.png
+.. figure:: img/expression_tab.png
    :align: center
    :width: 100%
 
    The Expression tab
+
+
+The :guilabel:`Expression` tab provides the main interface to write expressions
+using functions, layer fields and values. It contains the following widgets:
 
 * An expression editor area for typing or pasting expressions. Autocompletion is
   available to speed expression writing:
@@ -75,12 +76,23 @@ using functions, layer fields and values. It contains the following widgets:
   * *Marker*: for every other error (eg, missing parenthesis, unexpected
     character) at a single location.
 
-  .. tip:: **Document your expression with comments**
+* Above the expression editor, a set of tools helps you:
 
-    When using complex expression, it is good practice to add
-    text either as a multiline comment or inline comments to help you remember.
+  * |fileNew|:sup:`Clear the expression editor`
+  * Create and manage :ref:`user expressions <user_expressions_functions>`
+  * Turn active line(s) in the expression editor into comments by pressing the |toggleComment| :sup:`Toggle Comment on Selected Lines` button.
+    Pressing again will deactivate the comment.
 
-    ::
+    .. tip:: **Document your expression with comments**
+
+     When using complex expression, it is good practice to add text
+     either as multiline or inline comments to help you remember:
+
+     * Use ``--`` to mark any text that follows on the same line as comment
+     * Use ``/*`` to mark any text that follows as comment, until ``*/`` is reached.
+       The comment can span multiple lines.
+
+     ::
 
       /*
       Labels each region with its highest (in altitude) airport(s)
@@ -93,31 +105,31 @@ using functions, layer fields and values. It contains the following widgets:
           'max',
           "ELEV", -- the field containing the altitude
           -- and limit the airports to the region they are within
-          filter := within( $geometry, geometry( @parent ) )
+          filter := within( @geometry, geometry( @parent ) )
         ),
           aggregate( -- finds airports at the same altitude in the region
             'airports',
             'concatenate',
             "NAME",
-            filter := within( $geometry, geometry( @parent ) )
+            filter := within( @geometry, geometry( @parent ) )
               and "ELEV" = @airport_alti
           )
           || ' : ' || @airport_alti || 'm'
           -- using || allows regions without airports to be skipped
       )
 
-* Above the expression editor, a set of tools helps you:
-
-  * |fileNew|:sup:`Clear the expression editor`
-  * create and manage :ref:`user expressions <user_expressions_functions>`
-
 * Under the expression editor, you find:
 
-  * a set of basic operators to help you build the expression
-  * an indication of the expected format of output when you are data-defining
+  * A set of basic operators to help you build the expression
+  * An indication of the expected format of output when you are data-defining
     feature properties
-  * a live :guilabel:`Output preview` of the expression, evaluated
-    on the first feature of the Layer by default.
+  * A live :guilabel:`Output preview` of the expression (up to 60 characters),
+    evaluated on the first feature of the Layer by default. To view output preview
+    text exceeding 60 characters, you can hover your cursor over the text to display
+    a tooltip pop-up containing the entire output preview. To copy the output preview
+    text onto your clipboard, right-click on the output preview text and select
+    |editCopy| :guilabel:`Copy Expression Value`.
+
     You can browse and evaluate other features of the layer using the
     :guilabel:`Feature` combobox (the values are taken from the
     :ref:`display name <maptips>` property of the layer).
@@ -245,9 +257,17 @@ Some use cases of expressions
   The previous expression could also be used to define which features
   to label or show on the map.
 
+* Select features that overlap a natural zone from the "lands" layer::
+
+   overlay_intersects( layer:='lands', filter:="zone_type"='Natural' )
+
+* Count for each feature the number of buildings they contain::
+
+   array_length( overlay_contains( layer:='buildings', expression:=@id ) )
+
 * Create a different symbol (type) for the layer, using the geometry generator::
 
-    point_on_surface( $geometry )
+    point_on_surface( @geometry )
 
 * Given a point feature, generate a closed line (using ``make_line``) around its
   geometry::
@@ -258,7 +278,7 @@ Some use cases of expressions
         -- list of angles for placing the projected points (every 90°)
         array:=generate_series( 0, 360, 90 ),
         -- translate the point 20 units in the given direction (angle)
-        expression:=project( $geometry, distance:=20, azimuth:=radians( @element ) )
+        expression:=project( @geometry, distance:=20, azimuth:=radians( @element ) )
       )
     )
 
@@ -268,7 +288,7 @@ Some use cases of expressions
    with_variable( 'extent',
                   map_get( item_variables( 'Map 1' ), 'map_extent' ),
                   aggregate( 'airports', 'concatenate', "NAME",
-                             intersects( $geometry, @extent ), ' ,'
+                             intersects( @geometry, @extent ), ' ,'
                            )
                 )
 
@@ -283,7 +303,7 @@ Using the |fileSave| :sup:`Add current expression to user expressions` button
 above the expression editor frame, you can save important expressions you want
 to have quick access to. These are available from the **User expressions** group
 in the middle panel. They are saved under the :ref:`user profile <user_profiles>`
-(:file:`<userprofile>/QGIS/QGIS3.ini` file) and available in all expression
+(:file:`<userprofile>/QGIS/QGIS4.ini` file) and available in all expression
 dialogs inside all projects of the current user profile.
 
 A set of tools available above the expression editor frame helps you manage
@@ -298,7 +318,7 @@ the user expressions:
 * |sharingImport| :sup:`Import user expressions` from a ``.json`` file
   into the active user profile folder
 * |sharingExport| :sup:`Export user expressions` as a ``.json`` file;
-  all the user expressions in the user profile :file:`QGIS3.ini` file are
+  all the user expressions in the user profile :file:`QGIS4.ini` file are
   shared
 
 
@@ -310,7 +330,8 @@ Function Editor
 
 With the :guilabel:`Function Editor` tab, you are able to write your own functions
 in Python language. This provides a handy and comfortable way to address
-particular needs that would not be covered by the predefined functions.
+particular needs that would not be covered by the predefined functions. This also
+allows you to create and manage custom expressions for use in QGIS projects.
 
 .. _figure_expression_function:
 
@@ -319,40 +340,65 @@ particular needs that would not be covered by the predefined functions.
 
    The Function Editor tab
 
-To create a new function:
+.. note::
+ File scripts are autosaved by default, however, project functions are stored within the project and
+ require the project to be saved in order for changes to be preserved.
 
-#. Press the |signPlus| :sup:`New File` button.
-#. Enter a name to use in the form that pops up and press :guilabel:`OK`.
+ To create a new function:
 
-   A new item of the name you provide is added in the left panel of the
-   :guilabel:`Function Editor` tab; this is a Python :file:`.py` file based on
-   QGIS template file and stored in the :file:`/python/expressions` folder
-   under the active :ref:`user profile <user_profiles>` directory.
+#. Press the |symbologyAdd| :sup:`New File` button.
+#. Select where to store the new function. You can choose to save it either in a
+   :guilabel:`Function file` or in :guilabel:`Project functions`.
+
+   * If you select :guilabel:`Function file`, you need to enter a name for the Python :file:`.py` file,
+     which is based on a QGIS template file and is stored in the :file:`/python/expressions` folder
+     under the active :ref:`user profile <user_profiles>` directory,
+     thus available for all projects you may open with that profile.
+
+     Custom Python functions stored as Function files are auto loaded
+     whenever you start a new project under the user profile.
+     Be aware that for sharing such Python functions,
+     you need to share the :file:`.py` file in the :file:`/python/expressions` folder.
+
+   * If you select :guilabel:`Project functions`, the new function is stored in the project file
+     and only available for that project.
+
+     Custom Python functions stored as Project functions can be easily shared
+     by sharing the project file where they were saved.
+     When opening a project with project functions, QGIS can load or ignore them
+     depending on whether :ref:`embedded Python code is enabled <project_trust>`.
+
+   A new item is added in the left panel of the :guilabel:`Function Editor` tab.
+
 #. The right panel displays the content of the file: a python script template.
-   Update the code and its help according to your needs.
-#. Press the |start| :guilabel:`Save and Load Functions` button.
-   The function you wrote is added to the functions tree in the :guilabel:`Expression`
-   tab, by default under the ``Custom`` group.
-#. Enjoy your new function.
-#. If the function requires improvements, enable the :guilabel:`Function Editor`
-   tab, do the changes and press again the |start| :guilabel:`Save and Load
-   Functions` button to make them available in the file, hence in any expression
-   tab.
+#. Uncomment the code block and start editing it according to your needs.
+   You can rely on code autocompletion, code formatting and typing helpers,
+   as defined in :ref:`console_options`.
+   Online API documentation for Qt_ and :pyqgis:`PyQGIS <>` objects is also accessible
+   pressing the :kbd:`F1` key.
 
-Custom Python functions are stored under the user profile directory, meaning that at
-each QGIS startup, it will auto load all the functions defined with the current user
-profile. Be aware that new functions are only saved in the :file:`/python/expressions`
-folder and not in the project file.
-If you share a project that uses one of your custom functions you will need to also
-share the :file:`.py` file in the :file:`/python/expressions` folder.
+   You will find in the :guilabel:`Help` widget general information
+   for setting the @qgsfunction decorator.
+#. Press the |start| :guilabel:`Load or update functions` button.
+   The function you wrote is added to the functions tree in the :guilabel:`Expression` tab,
+   by default under the ``Custom`` group.
+#. Enjoy your new function.
+#. If the function requires improvements, enable the :guilabel:`Function Editor` tab,
+   do the changes and press again the |start| :guilabel:`Load or update functions` button
+   to make them available in the file, hence in any expression tab.
 
 To delete a custom function:
 
 #. Enable the :guilabel:`Function Editor` tab
 #. Select the function in the list
-#. Press the |signMinus| :sup:`Remove selected function`. The function is
-   removed from the list and the corresponding ``.py`` file deleted from
-   the user profile folder.
+#. Press the |symbologyRemove| :sup:`Remove selected function`. The function is
+   removed from the list and, depending on the storage, the corresponding ``.py``
+   file is deleted from the user profile folder, or the Python functions are removed
+   from the project file.
+
+.. note::
+ When a project file with Project functions is closed, the corresponding Project
+ functions are unloaded and are no longer available in the QGIS session.
 
 **Example**
 
@@ -364,8 +410,8 @@ will operate with two values.
    from qgis.core import *
    from qgis.gui import *
 
-   @qgsfunction(args='auto', group='Custom')
-   def my_sum(value1, value2, feature, parent):
+   @qgsfunction(group='Custom', referenced_columns=[])
+   def my_sum(value1, value2):
        """
        Calculates the sum of the two parameters value1 and value2.
        <h2>Example usage:</h2>
@@ -377,21 +423,32 @@ will operate with two values.
        return value1 + value2
 
 
-When using the ``args='auto'`` function argument the number of function
-arguments required will be calculated by the number of arguments the function
-has been defined with in Python (minus 2 - ``feature``, and ``parent``).
-The ``group='Custom'`` argument indicates the group in which the function
-should be listed in the Expression dialog.
+The ``@qgsfunction`` decorator accepts the following arguments:
 
-It is also possible to add keywords arguments like:
-
-* ``usesgeometry=True`` if the expression requires access to the features geometry.
+* The ``group`` argument indicates the group in which the function
+  should be listed in the Expression dialog.
+* ``usesgeometry``: Set this to :const:`True` if the expression requires access to the features geometry.
   By default :const:`False`.
-* ``handlesnull=True`` if the expression has custom handling for NULL values.
-  If :const:`False` (default), the result will always be NULL as soon as
-  any parameter is NULL.
-* ``referenced_columns=[list]``: An array of attribute names that are required to
-  the function. Defaults to ``[QgsFeatureRequest.ALL_ATTRIBUTES]``.
+* ``handlesnull``: Set this to :const:`True` if the expression has custom handling for NULL values.
+  If :const:`False` (default), the result will always be NULL as soon as any parameter is NULL.
+* ``referenced_columns``: An array of attribute names that are required to run the function.
+  Defaults to ``[QgsFeatureRequest.ALL_ATTRIBUTES]``.
+  Specifying a subset of fields or an empty list will result in a faster execution.
+* ``params_as_list``: Set this to :const:`True` to pass the function parameters as a list.
+  If :const:`False` (default), the function will receive the parameters as individual arguments.
+
+The function itself takes any number and type of parameters you want to pass to your function.
+These should be set before the following optional arguments:
+
+* ``feature``: the current feature
+* ``parent``: the :class:`QgsExpression <qgis.core.QgsExpression>` object
+* ``context``: If there is an argument called ``context`` found at the last position,
+  this variable will contain a :class:`QgsExpressionContext <qgis.core.QgsExpressionContext>`
+  object, that gives access to various additional information like expression variables.
+  E.g. ``context.variable( 'layer_id' )``
+
+If those arguments are present in the function signature,
+they will be automatically passed to the function, without the need to specify them in the expression.
 
 The previous example function can then be used in expressions:
 
@@ -403,8 +460,11 @@ The previous example function can then be used in expressions:
    Custom Function added to the Expression tab
 
 
+Find more examples and additional arguments for custom functions at :mod:`qgsfunction`.
 Further information about creating Python code can be found in the
 :ref:`PyQGIS-Developer-Cookbook`.
+
+.. _Qt: https://doc.qt.io/qt-6.8/
 
 
 .. Substitutions definitions - AVOID EDITING PAST THIS LINE
@@ -417,9 +477,11 @@ Further information about creating Python code can be found in the
    :width: 1.5em
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
-.. |dataDefined| image:: /static/common/mIconDataDefine.png
+.. |dataDefine| image:: /static/common/mIconDataDefine.png
    :width: 1.5em
 .. |deleteSelected| image:: /static/common/mActionDeleteSelected.png
+   :width: 1.5em
+.. |editCopy| image:: /static/common/mActionEditCopy.png
    :width: 1.5em
 .. |expression| image:: /static/common/mIconExpression.png
    :width: 1.5em
@@ -433,11 +495,13 @@ Further information about creating Python code can be found in the
    :width: 1.5em
 .. |sharingImport| image:: /static/common/mActionSharingImport.png
    :width: 1.5em
-.. |signMinus| image:: /static/common/symbologyRemove.png
-   :width: 1.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
-   :width: 1.5em
 .. |start| image:: /static/common/mActionStart.png
    :width: 1.5em
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
+   :width: 1.5em
 .. |symbologyEdit| image:: /static/common/symbologyEdit.png
+   :width: 1.5em
+.. |symbologyRemove| image:: /static/common/symbologyRemove.png
+   :width: 1.5em
+.. |toggleComment| image:: /static/common/toggle_comment.png
    :width: 1.5em

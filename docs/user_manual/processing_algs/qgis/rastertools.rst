@@ -8,6 +8,252 @@ Raster tools
       :depth: 1
 
 
+.. _qgisalignsingleraster:
+
+Align raster
+------------
+
+Aligns raster by resampling it to the same cell size
+and reprojecting to the same CRS as a reference raster.
+
+.. warning:: **This algorithm is ONLY available in the** :ref:`Model Designer <processing.modeler>` context.
+ For other contexts, use instead :ref:`qgisalignrasters`.
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layer**
+     - ``INPUT``
+     - [raster]
+     - Input raster layer to align
+   * - **Resampling method**
+     - ``RESAMPLING_METHOD``
+     - [enumeration]
+
+       Default: 0
+     - Method to use for input layer resampling.
+       :class:`Available options <qgis.core.Qgis.GdalResampleAlgorithm>` are:
+
+       .. include:: ../algs_include.rst
+          :start-after: **raster_resampling_methods**
+          :end-before: **end_raster_resampling_methods**
+
+   * - **Rescale values according to the cell size**
+     - ``RESCALE``
+     - [boolean]
+
+       Default: No
+     -
+   * - **Reference layer**
+     - ``REFERENCE_LAYER``
+     - [raster]
+     - A raster layer that will be used to fetch extent, cell size and CRS
+       that will be applied to input layers.
+   * - **Override reference CRS**
+
+       Optional
+     - ``CRS``
+     - [crs]
+     - CRS to be used instead of the reference layer's
+   * - **Override reference cell size X**
+
+       Optional
+     - ``CELL_SIZE_X``
+     - [numeric: double]
+     - Cell size in X direction to be used instead of the reference layer's
+   * - **Override reference cell size Y**
+
+       Optional
+     - ``CELL_SIZE_Y``
+     - [numeric: double]
+     -  Cell size in Y direction to be used instead of the reference layer's
+   * - **Override reference grid offset X**
+
+       Optional
+     - ``GRID_OFFSET_X``
+     - [numeric: double]
+     -  Offset in X direction to apply to cells grid
+   * - **Override reference grid offset Y**
+
+       Optional
+     - ``GRID_OFFSET_Y``
+     - [numeric: double]
+     - Offset in Y direction to apply to cells grid
+   * - **Clip to extent**
+
+       Optional
+     - ``EXTENT``
+     - [extent]
+     - Specify the extent of the output raster layer.
+       It will internally be extended to a multiple of the tile size.
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+   * - **Aligned raster**
+     - ``OUTPUT``
+     - [raster]
+     - output raster with pixels resampled
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Aligned raster**
+     - ``OUTPUT``
+     - [raster]
+     - output raster with pixels resampled
+
+Python code
+...........
+
+**Algorithm ID**: ``native:alignsingleraster``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgisalignrasters:
+
+Align rasters
+-------------
+
+Aligns rasters by resampling them to the same cell size
+and reprojecting to the same CRS as a reference raster.
+
+.. warning:: **This algorithm is NOT available in the** :ref:`Model Designer <processing.modeler>` context.
+ Use instead :ref:`qgisalignsingleraster`.
+
+Parameters
+..........
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Input layers**
+     - ``INPUT``
+     - [raster] [list]
+     - List of input raster layers with resampling options associated
+       (filled as a :class:`QgsProcessingParameterAlignRasterLayers
+       <qgis.core.QgsProcessingParameterAlignRasterLayers>` item ---
+       done in GUI by pressing :guilabel:`Configure Raster...` button
+       for each selected layer):
+
+
+       **Input layer** [string] (``inputFile``)
+         Full path of the input layer to align
+
+       **Output file** [string] (``outputFile``)
+         Full path of the corresponding aligned output layer
+
+       **Resampling method** [enumeration] (``resampleMethod``)
+         Method to use for input layer resampling.
+         :class:`Available options <qgis.core.Qgis.GdalResampleAlgorithm>` are:
+
+         .. include:: ../algs_include.rst
+            :start-after: **raster_resampling_methods**
+            :end-before: **end_raster_resampling_methods**
+
+       **Rescale values according to the cell size** [boolean] (``rescale``)
+
+   * - **Reference layer**
+     - ``REFERENCE_LAYER``
+     - [raster]
+     - A raster layer that will be used to fetch extent, cell size and CRS
+       that will be applied to input layers.
+   * - **Override reference CRS**
+
+       Optional
+     - ``CRS``
+     - [crs]
+     - CRS to be used instead of the reference layer's
+   * - **Override reference cell size X**
+
+       Optional
+     - ``CELL_SIZE_X``
+     - [numeric: double]
+     - Cell size in X direction to be used instead of the reference layer's
+   * - **Override reference cell size Y**
+
+       Optional
+     - ``CELL_SIZE_Y``
+     - [numeric: double]
+     -  Cell size in Y direction to be used instead of the reference layer's
+   * - **Override reference grid offset X**
+
+       Optional
+     - ``GRID_OFFSET_X``
+     - [numeric: double]
+     -  Offset in X direction to apply to cells grid
+   * - **Override reference grid offset Y**
+
+       Optional
+     - ``GRID_OFFSET_Y``
+     - [numeric: double]
+     - Offset in Y direction to apply to cells grid
+   * - **Clip to extent**
+
+       Optional
+     - ``EXTENT``
+     - [extent]
+     - Specify the extent of the output raster layer.
+       It will internally be extended to a multiple of the tile size.
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Aligned rasters**
+     - ``OUTPUT_LAYERS``
+     - [raster] [list]
+     - output rasters with pixels resampled
+
+Python code
+...........
+
+**Algorithm ID**: ``native:alignrasters``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
 .. _qgisrasterize:
 
 Convert map to raster
@@ -48,32 +294,32 @@ Parameters
 
    * - **Tile size**
      - ``TILE_SIZE``
-     - [number]
-       
+     - [numeric: integer]
+
        Default: 1024
      - Size of the tile of the output raster layer. Minimum value: 64.
    * - **Map units per pixel**
      - ``MAP_UNITS_PER_PIXEL``
-     - [number]
-       
+     - [numeric: double]
+
        Default: 100.0
      - Pixel size (in map units). Minimum value: 0.0
    * - **Make background transparent**
      - ``MAKE_BACKGROUND_TRANSPARENT``
      - [boolean]
-        
+
        Default: False
      - Allows exporting the map with a transparent background.
        Outputs an RGBA (instead of RGB) image if set to ``True``.
    * - **Map theme to render**
-       
+
        Optional
      - ``MAP_THEME``
      - [enumeration]
      - Use an existing :ref:`map theme <map_themes>` for the
        rendering.
    * - **Single layer to render**
-       
+
        Optional
      - ``LAYER``
      - [enumeration]
@@ -83,7 +329,7 @@ Parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
@@ -95,6 +341,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -104,11 +351,11 @@ Outputs
      - ``OUTPUT``
      - [raster]
      - Output raster layer
-  
+
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:rasterize``
+**Algorithm ID**: ``native:rasterize``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
@@ -134,9 +381,13 @@ fill value will be truncated when applied to an integer raster.
 Parameters
 ..........
 
+Basic parameters
+^^^^^^^^^^^^^^^^
+
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -148,13 +399,13 @@ Parameters
      - The raster to process.
    * - **Band number**
      - ``BAND``
-     - [number]
+     - [raster band]
 
        Default: 1
      - The band of the raster
    * - **Fill value**
      - ``FILL_VALUE``
-     - [number]
+     - [numeric: double]
 
        Default: 1.0
      - Set the value to use for the NoData pixels
@@ -163,11 +414,41 @@ Parameters
      - [raster]
 
        Default: ``[Save to temporary file]``
-     - Specification of the output raster. One of:
+     - Specification of the output raster. :ref:`One of <output_parameter_widget>`:
 
        .. include:: ../algs_include.rst
           :start-after: **file_output_types**
           :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Creation options**
+
+       Optional
+
+       ``Added in 3.40``
+     - ``CREATION_OPTIONS`` (for QGIS <= 3.42, this was ``CREATE_OPTIONS``)
+     - [string]
+
+       Default: ''
+     - For adding one or more creation options that control the
+       raster to be created (colors, block size, file
+       compression...).
+       For convenience, you can rely on predefined profiles (see
+       :ref:`GDAL driver options section <gdal_createoptions>`).
+
+       Batch Process and Model Designer: separate multiple options with a pipe
+       character (``|``).
 
 Outputs
 .......
@@ -175,6 +456,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -199,12 +481,19 @@ Python code
 
 Generate XYZ tiles (Directory)
 -----------------------------------
+Generates XYZ raster tiles from the current project and saves them as individual image files
+in a structured directory hierarchy ({z}/{x}/{y}.png or .jpg).
+All visible map layers from the project will be rendered into tiles
+across the specified extent and zoom range.
 
-Generates raster “XYZ” tiles using the current QGIS project
-as individual images to a directory structure.
+Optionally, a standalone Leaflet HTML file can be generated
+for instant web previewing of the tiles.
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -218,7 +507,7 @@ Parameters
    * - **Extent (xmin, xmax, ymin, ymax)**
      - ``EXTENT``
      - [extent]
-     - Specify the extent of the tiles.
+     - Specify the spatial extent of the area for tile generation.
        It will internally be extended to a multiple of the tile size.
 
        .. include:: ../algs_include.rst
@@ -227,22 +516,23 @@ Parameters
 
    * - **Minimum zoom**
      - ``ZOOM_MIN``
-     - [number]
+     - [numeric: integer]
 
        Default: 12
-     - Minimum 0, maximum 25.
+     - Minimum zoom level for generated tiles.
+       Lower zoom levels cover broader geographic areas at lower spatial resolution.
+       Must be less than or equal to the maximum zoom level.
+       Minimum 0, maximum 25.
    * - **Maximum zoom**
      - ``ZOOM_MAX``
-     - [number]
+     - [numeric: integer]
 
        Default: 12
-     - Minimum 0, maximum 25.
-   * - **DPI**
-     - ``DPI``
-     - [number]
-
-       Default: 96
-     - Minimum 48, maximum 600.
+     - Maximum zoom level for generated tiles.
+       Higher zoom levels capture finer map details and higher resolution,
+       but exponentially increase total tile count, storage requirements, and rendering time.
+       Must be greater than or equal to the minimum zoom level.
+       Minimum 0, maximum 25.
    * - **Background color**
 
        Optional
@@ -256,24 +546,98 @@ Parameters
      - [enumeration]
 
        Default: 0
-     - One of:
+     - Output image format for the rendered tiles. One of:
 
        * 0 --- PNG
        * 1 --- JPG
+       * 2 --- WEBP
+   * - **Tile width**
 
+       Optional
+     - ``TILE_WIDTH``
+     - [numeric: integer]
+
+       Default: 256
+     - Width of each tile image in pixels.
+       Minimum 1, maximum 4096.
+   * - **Tile height**
+
+       Optional
+     - ``TILE_HEIGHT``
+     - [numeric: integer]
+
+       Default: 256
+     - Height of each tile image in pixels.
+       Minimum 1, maximum 4096.
+   * - **Use inverted tile Y axis (TMS convention)**
+     - ``TMS_CONVENTION``
+     - [boolean]
+
+       Default: False
+     - Inverts the Y tile coordinate naming convention to follow Tile Map Service format.
+   * - **Output directory**
+     - ``OUTPUT_DIRECTORY``
+     - [folder]
+
+       Default: ``[Save to temporary folder]``
+     - Specification of the output directory (for the tiles). :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **directory_output_types**
+          :end-before: **end_directory_output_types**
+
+   * - **Output html (Leaflet)**
+
+       Optional
+     - ``OUTPUT_HTML``
+     - [html]
+
+       Default: ``[Save to temporary file]``
+     - Specification of the output HTML file. :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types_skip**
+          :end-before: **end_file_output_types_skip**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **DPI**
+     - ``DPI``
+     - [numeric: integer]
+
+       Default: 96
+     - Output resolution in DPI for rendered map content.
+       Minimum 48, maximum 600.
+   * - **Enable antialiasing**
+     - ``ANTIALIAS``
+     - [boolean]
+
+       Default: True
+     - Determines if antialiasing should be applied during tile rendering.
    * - **Quality (JPG only)**
 
        Optional
      - ``QUALITY``
-     - [number]
+     - [numeric: integer]
 
        Default: 75
-     - Minimum 1, maximum 100.
+     - Image quality percentage used when tile format is set to JPG.
+       Minimum 1, maximum 100.
    * - **Metatile size**
 
        Optional
      - ``METATILESIZE``
-     - [number]
+     - [numeric: integer]
 
        Default: 4
      - Specify a custom metatile size when generating XYZ tiles.
@@ -281,51 +645,90 @@ Parameters
        better labelling (fewer gaps without labels) at the expense of
        using more memory.
        Minimum 1, maximum 20.
-   * - **Tile width**
+   * - **Skip empty tiles**
 
-       Optional
-     - ``TILE_WIDTH``
-     - [number]
-
-       Default: 256
-     - Minimum 1, maximum 4096.
-   * - **Tile height**
-
-       Optional
-     - ``TILE_HEIGHT``
-     - [number]
-
-       Default: 256
-     - Minimum 1, maximum 4096.
-   * - **Use inverted tile Y axis (TMS conventions)**
-
-       Optional
-     - ``TMS_CONVENTION``
+       ``Added in 4.4``
+     - ``SKIP_EMPTY_TILES``
      - [boolean]
 
        Default: False
-     - 
-   * - **Output directory**
-     - ``OUTPUT_DIRECTORY``
-     - [folder]
+     - If true, completely empty tiles will be skipped in the output.
+   * - **Maximum zoom extents**
 
-       Default: ``[Save to temporary folder]``
-     - Specification of the output raster. One of:
+       Optional
 
-       .. include:: ../algs_include.rst
-          :start-after: **directory_output_types_skip**
-          :end-before: **end_directory_output_types_skip**
+       ``Added in 4.4``
+     - ``TILE_MAX_ZOOM_EXTENTS``
+     - [matrix]
+     - Allows overriding the maximum zoom level for specific geographic regions,
+       so that more detailed tiles can be created for important areas.
+       This is provided as a list of spatial regions (extent) paired with a custom maximum zoom level (integer).
+   * - **Target CRS**
 
-   * - **Output html (Leaflet)**
-     - ``OUTPUT_HTML``
-     - [html]
+       ``Added in 4.4``
+     - ``TARGET_CRS``
+     - [crs]
 
-       Default: ``[Save to temporary file]``
-     - Specification of the output HTML file. One of:
+       Default: ``EPSG:3857``
+     - Specify the Coordinate Reference System used for the output tile matrix set.
+   * - **Zoom 0 extent**
 
-       .. include:: ../algs_include.rst
-          :start-after: **file_output_types_skip**
-          :end-before: **end_file_output_types_skip**
+       Optional
+
+       ``Added in 4.4``
+     - ``Z0_EXTENT``
+     - [extent]
+     - Spatial extent of zoom level 0 in target CRS coordinates.
+       Required when target CRS is not ``EPSG:3857``.
+       If the target CRS is ``EPSG:3857`` then this parameter will be ignored
+       and a standard Web Mercator tile matrix will be used instead.
+   * - **Zoom 0 matrix width**
+
+       ``Added in 4.4``
+     - ``Z0_MATRIX_WIDTH``
+     - [numeric: integer]
+
+       Default: 1
+     - Number of tile columns at zoom level 0 (matrix width).
+   * - **Zoom 0 matrix height**
+
+       ``Added in 4.4``
+     - ``Z0_MATRIX_HEIGHT``
+     - [numeric: integer]
+
+       Default: 1
+     - Number of tile rows at zoom level 0 (matrix height).
+   * - **Leaflet HTML output title**
+
+       Optional
+
+       ``Added in 3.30``
+     - ``HTML_TITLE``
+     - [string]
+
+       Default: Not set
+     - HTML <title>-tag used for the Leaflet HTML output file.
+   * - **Leaflet HTML output attribution**
+
+       Optional
+
+       ``Added in 3.30``
+     - ``HTML_ATTRIBUTION``
+     - [string]
+
+       Default: Not set
+     - Custom map attribution used for the Leaflet HTML output file.
+       HTML links are possible.
+   * - **Include OpenStreetMap basemap in Leaflet HTML output**
+
+       ``Added in 3.30``
+     - ``HTML_OSM``
+     - [boolean]
+
+       Default: False
+     - An OpenStreetMap basemap layer (source: https://tile.openstreetmap.org)
+       is included in the Leaflet HTML output file.
+       Proper map attribution is added automatically.
 
 Outputs
 .......
@@ -333,6 +736,7 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
@@ -346,27 +750,37 @@ Outputs
      - ``OUTPUT_HTML``
      - [html]
      - The output HTML (Leaflet) file
+   * - **Output tiles as raster layer**
+     - ``OUTPUT_LAYER``
+     - [raster]
+     - The output raster layer containing the tiles.
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:tilesxyzdirectory``
+**Algorithm ID**: ``native:tilesxyzdirectory``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**
   :end-before: **end_algorithm_code_section**
 
 
-.. _qgistilesxyzmbtiles:
+.. _qgistilesxyzgpkg:
 
-Generate XYZ tiles (MBTiles)
+Generate XYZ tiles (GeoPackage)
 ---------------------------------
+``Added in 4.4```
 
-Generates raster “XYZ” tiles using the current QGIS project
-as a single file in the “MBTiles” format.
+Generates XYZ raster tiles from the current project
+and saves them into an OGC GeoPackage file.
+All visible map layers from the project will be rendered
+into tiles across the specified extent and zoom range.
 
 Parameters
 ..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
 
 .. list-table::
    :header-rows: 1
@@ -380,7 +794,7 @@ Parameters
    * - **Extent (xmin, xmax, ymin, ymax)**
      - ``EXTENT``
      - [extent]
-     - Specify the extent of the tiles.
+     - Specify the spatial extent of the area for tile generation.
        It will internally be extended to a multiple of the tile size.
 
        .. include:: ../algs_include.rst
@@ -389,22 +803,23 @@ Parameters
 
    * - **Minimum zoom**
      - ``ZOOM_MIN``
-     - [number]
+     - [numeric: integer]
 
        Default: 12
-     - Minimum 0, maximum 25.
+     - Minimum zoom level for generated tiles.
+       Lower zoom levels cover broader geographic areas at lower spatial resolution.
+       Must be less than or equal to the maximum zoom level.
+       Minimum 0, maximum 25.
    * - **Maximum zoom**
      - ``ZOOM_MAX``
-     - [number]
+     - [numeric: integer]
 
        Default: 12
-     - Minimum 0, maximum 25.
-   * - **DPI**
-     - ``DPI``
-     - [number]
-
-       Default: 96
-     - Minimum 48, maximum 600.
+     - Maximum zoom level for generated tiles.
+       Higher zoom levels capture finer map details and higher resolution,
+       but exponentially increase total tile count, storage requirements, and rendering time.
+       Must be greater than or equal to the minimum zoom level.
+       Minimum 0, maximum 25.
    * - **Background color**
 
        Optional
@@ -412,30 +827,82 @@ Parameters
      - [color]
 
        Default: QColor(0, 0, 0, 0)
-     - Choose the background color for the tiles
+     - Choose the background color for the tiles.
    * - **Tile format**
      - ``TILE_FORMAT``
      - [enumeration]
 
        Default: 0
-     - One of:
+     - Output image format for the rendered tiles. One of:
 
        * 0 --- PNG
        * 1 --- JPG
+       * 2 --- WEBP
+   * - **Tile width**
+     - ``TILE_WIDTH``
+     - [numeric: integer]
 
+       Default: 256
+     - Width of each tile image in pixels.
+       Minimum 1, maximum 4096.
+   * - **Tile height**
+     - ``TILE_HEIGHT``
+     - [numeric: integer]
+
+       Default: 256
+     - Height of each tile image in pixels.
+       Minimum 1, maximum 4096.
+   * - **Output file**
+     - ``OUTPUT_FILE``
+     - [file]
+
+       Default: ``[Save to temporary file]``
+     - Specification of the output :file:`.gpkg` file.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **DPI**
+     - ``DPI``
+     - [numeric: integer]
+
+       Default: 96
+     - Output resolution in DPI for rendered map content.
+       Minimum 48, maximum 600.
+   * - **Enable antialiasing**
+     - ``ANTIALIAS``
+     - [boolean]
+
+       Default: True
+     - Determines if antialiasing should be applied during tile rendering.
    * - **Quality (JPG only)**
 
        Optional
      - ``QUALITY``
-     - [number]
+     - [numeric: integer]
 
        Default: 75
-     - Minimum 1, maximum 100.
+     - Image quality percentage used when tile format is set to JPG.
+       Minimum 1, maximum 100.
    * - **Metatile size**
 
        Optional
      - ``METATILESIZE``
-     - [number]
+     - [numeric: integer]
 
        Default: 4
      - Specify a custom metatile size when generating XYZ tiles.
@@ -443,17 +910,47 @@ Parameters
        better labelling (fewer gaps without labels) at the expense of
        using more memory.
        Minimum 1, maximum 20.
-   * - **Output file (for MBTiles)**
-     - ``OUTPUT_FILE``
-     - [file]
+   * - **Skip empty tiles**
+     - ``SKIP_EMPTY_TILES``
+     - [boolean]
 
-       Default: ``[Save to temporary file]``
-     - Specification of the output file. One of:
+       Default: False
+     - If true, completely empty tiles will be skipped in the output.
+   * - **Maximum zoom extents**
 
-       .. include:: ../algs_include.rst
-          :start-after: **file_output_types_skip**
-          :end-before: **end_file_output_types_skip**
+       Optional
+     - ``TILE_MAX_ZOOM_EXTENTS``
+     - [matrix]
+     - Allows overriding the maximum zoom level for specific geographic regions,
+       so that more detailed tiles can be created for important areas.
+       This is provided as a list of spatial regions (extent) paired with a custom maximum zoom level (integer).
+   * - **Target CRS**
+     - ``TARGET_CRS``
+     - [crs]
 
+       Default: ``EPSG:3857``
+     - Specify the Coordinate Reference System used for the output tile matrix set.
+   * - **Zoom 0 extent**
+
+       Optional
+     - ``Z0_EXTENT``
+     - [extent]
+     - Spatial extent of zoom level 0 in target CRS coordinates.
+       Required when target CRS is not ``EPSG:3857``.
+       If the target CRS is ``EPSG:3857`` then this parameter will be ignored
+       and a standard Web Mercator tile matrix will be used instead.
+   * - **Zoom 0 matrix width**
+     - ``Z0_MATRIX_WIDTH``
+     - [numeric: integer]
+
+       Default: 1
+     - Number of tile columns at zoom level 0 (matrix width).
+   * - **Zoom 0 matrix height**
+     - ``Z0_MATRIX_HEIGHT``
+     - [numeric: integer]
+
+       Default: 1
+     - Number of tile rows at zoom level 0 (matrix height).
 
 Outputs
 .......
@@ -461,20 +958,205 @@ Outputs
 .. list-table::
    :header-rows: 1
    :widths: 20 20 20 40
+   :class: longtable
 
    * - Label
      - Name
      - Type
      - Description
-   * - **Output file (for MBTiles)**
+   * - **Output file**
      - ``OUTPUT_FILE``
      - [file]
-     - The output file.
+     - The output :file:`.gpkg` file containing the tiles.
+   * - **Output tiles as raster layer**
+     - ``OUTPUT_LAYER``
+     - [raster]
+     - The output raster layer containing the tiles.
 
 Python code
 ...........
 
-**Algorithm ID**: ``qgis:tilesxyzmbtiles``
+**Algorithm ID**: ``native:tilesxyzgpkg``
+
+.. include:: ../algs_include.rst
+  :start-after: **algorithm_code_section**
+  :end-before: **end_algorithm_code_section**
+
+
+.. _qgistilesxyzmbtiles:
+
+Generate XYZ tiles (MBTiles)
+---------------------------------
+
+Generates XYZ raster tiles from the current project
+and packages them into a single, portable MBTiles (SQLite) database file.
+All visible map layers from the project will be rendered
+into tiles across the specified extent and zoom range.
+
+Parameters
+..........
+
+Basic parameters
+^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Extent (xmin, xmax, ymin, ymax)**
+     - ``EXTENT``
+     - [extent]
+     - Specify the spatial extent of the area for tile generation.
+       It will internally be extended to a multiple of the tile size.
+
+       .. include:: ../algs_include.rst
+          :start-after: **extent_options**
+          :end-before: **end_extent_options**
+
+   * - **Minimum zoom**
+     - ``ZOOM_MIN``
+     - [numeric: integer]
+
+       Default: 12
+     - Minimum zoom level for generated tiles.
+       Lower zoom levels cover broader geographic areas at lower spatial resolution.
+       Must be less than or equal to the maximum zoom level.
+       Minimum 0, maximum 25.
+   * - **Maximum zoom**
+     - ``ZOOM_MAX``
+     - [numeric: integer]
+
+       Default: 12
+     - Maximum zoom level for generated tiles.
+       Higher zoom levels capture finer map details and higher resolution,
+       but exponentially increase total tile count, storage requirements, and rendering time.
+       Must be greater than or equal to the minimum zoom level.
+       Minimum 0, maximum 25.
+   * - **Background color**
+
+       Optional
+     - ``BACKGROUND_COLOR``
+     - [color]
+
+       Default: QColor(0, 0, 0, 0)
+     - Choose the background color for the tiles.
+   * - **Tile format**
+     - ``TILE_FORMAT``
+     - [enumeration]
+
+       Default: 0
+     - Output image format for the rendered tiles. One of:
+
+       * 0 --- PNG
+       * 1 --- JPG
+       * 2 --- WEBP
+   * - **Output**
+     - ``OUTPUT_FILE``
+     - [file]
+
+       Default: ``[Save to temporary file]``
+     - Specification of the output :file:`mbtiles` file.
+       :ref:`One of <output_parameter_widget>`:
+
+       .. include:: ../algs_include.rst
+          :start-after: **file_output_types**
+          :end-before: **end_file_output_types**
+
+Advanced parameters
+^^^^^^^^^^^^^^^^^^^
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **DPI**
+     - ``DPI``
+     - [numeric: integer]
+
+       Default: 96
+     - Output resolution in DPI for rendered map content.
+       Minimum 48, maximum 600.
+   * - **Enable antialiasing**
+     - ``ANTIALIAS``
+     - [boolean]
+
+       Default: True
+     - Determines if antialiasing should be applied during tile rendering.
+   * - **Quality (JPG only)**
+
+       Optional
+     - ``QUALITY``
+     - [numeric: integer]
+
+       Default: 75
+     - Image quality percentage used when tile format is set to JPG.
+       Minimum 1, maximum 100.
+   * - **Metatile size**
+
+       Optional
+     - ``METATILESIZE``
+     - [numeric: integer]
+
+       Default: 4
+     - Specify a custom metatile size when generating XYZ tiles.
+       Larger values may speed up the rendering of tiles and provide
+       better labelling (fewer gaps without labels) at the expense of
+       using more memory.
+       Minimum 1, maximum 20.
+   * - **Skip empty tiles**
+
+       ``Added in 4.4``
+     - ``SKIP_EMPTY_TILES``
+     - [boolean]
+
+       Default: False
+     - If true, completely empty tiles will be skipped in the output.
+   * - **Maximum zoom extents**
+
+       Optional
+
+       ``Added in 4.4``
+     - ``TILE_MAX_ZOOM_EXTENTS``
+     - [matrix]
+     - Allows overriding the maximum zoom level for specific geographic regions,
+       so that more detailed tiles can be created for important areas.
+       This is provided as a list of spatial regions (extent) paired with a custom maximum zoom level (integer).
+
+Outputs
+.......
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 20 40
+   :class: longtable
+
+   * - Label
+     - Name
+     - Type
+     - Description
+   * - **Output**
+     - ``OUTPUT_FILE``
+     - [file]
+     - The output :file:`.mbtiles` file containing the tiles.
+   * - **Output MBtiles raster layer**
+     - ``OUTPUT_LAYER``
+     - [raster]
+     - The output MBTiles raster layer containing the tiles.
+
+Python code
+...........
+
+**Algorithm ID**: ``native:tilesxyzmbtiles``
 
 .. include:: ../algs_include.rst
   :start-after: **algorithm_code_section**

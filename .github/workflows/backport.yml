@@ -5,13 +5,29 @@ on:
       - closed
       - labeled
 
+permissions:
+  contents: read
+
 jobs:
   backport:
+    env:
+      BACKPORT_TOKEN: ${{ secrets.BACKPORT_TOKEN }}
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     name: Backport
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        with:
+          disable-sudo-and-containers: true
+          egress-policy: block
+          allowed-endpoints: >
+            api.github.com:443
+            github.com:443
+
       - name: Backport Bot
         id: backport
-        uses: m-kuhn/backport@v1.2.3
+        uses: m-kuhn/backport@b136a03dc85314c06e342394a581d30b65018916  #v1.2.8
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ env.BACKPORT_TOKEN }}

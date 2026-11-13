@@ -3,7 +3,7 @@ Iterative execution of algorithms
 
 .. note:: This lesson shows a different way of executing algorithms that use vector layers, by running them repeatedly, iterating over the features in an input vector layer
 
-We already know the graphical modeler, which is one way of automating processing tasks. However, in some situations, the modeler might not be what we need to automate a given task. Let's see one of those situations and how to easily solve it using a different functionality: the iterative execution of algorithms.
+We already know the model designer, which is one way of automating processing tasks. However, in some situations, the modeler might not be what we need to automate a given task. Let's see one of those situations and how to easily solve it using a different functionality: the iterative execution of algorithms.
 
 Open the data corresponding to this chapter. It should look like this.
 
@@ -13,7 +13,7 @@ You will recognize our well-known DEM from previous chapters and a set of waters
 
 This can be a lengthy and tedious task, especially if the number of watersheds is large. However, it is a task that can be easily automated, as we will see.
 
-The algorithm to use for clipping a raster layer with a polygon layer is called *Clip raster with polygons*, and has the following parameters dialog.
+The algorithm to use for clipping a raster layer with a polygon layer is called :guilabel:`Clip raster with polygons`, and has the following parameters dialog.
 
 .. figure:: img/iterative/clip.png
 
@@ -23,7 +23,7 @@ You can run it using the watersheds layer and the DEM as input, and you will get
 
 As you can see, the area covered by all the watershed polygons is used.
 
-You can have the DEM clipped with just a single watershed by selecting the desired watershed and then running the algorithm as we did before. 
+You can have the DEM clipped with just a single watershed by selecting the desired watershed and then running the algorithm as we did before.
 
 .. figure:: img/iterative/selection.png
 
@@ -33,7 +33,7 @@ Since only selected features are used, only the selected polygon will be used to
 
 Doing this for all the watersheds will produce the result we are looking for, but it doesn't look like a very practical way of doing it. Instead, let's see how to automate that *select and crop* routine.
 
-First of all, remove the previous selection, so all polygons will be used again. Now open the *Clip raster with polygon* algorithm and select the same inputs as before, but this time click on the button that you will find in the right--hand side of the vector layer input where you have selected the watersheds layer.
+First of all, remove the previous selection, so all polygons will be used again. Now open the :guilabel:`Clip raster with polygon` algorithm and select the same inputs as before, but this time click on the button that you will find in the right-hand side of the vector layer input where you have selected the watersheds layer.
 
 .. figure:: img/iterative/iterate_button.png
 

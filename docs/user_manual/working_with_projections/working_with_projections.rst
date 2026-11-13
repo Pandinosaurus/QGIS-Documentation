@@ -38,6 +38,7 @@ Custom, user-created CRSs are stored in a user CRS database. See
 section :ref:`sec_custom_projections` for information on managing your custom
 coordinate reference systems.
 
+.. index:: WKT
 .. _layer_crs:
 
 Layer Coordinate Reference Systems
@@ -45,11 +46,11 @@ Layer Coordinate Reference Systems
 
 In order to correctly project data into a specific target CRS, either your data
 must contain information about its coordinate reference system or you will need
-to manually assign the correct CRS to the layer. For PostGIS layers, QGIS uses
-the spatial reference identifier that was specified when that PostGIS layer was
-created. For data supported by OGR or GDAL, QGIS relies on the presence of a
+to manually assign the correct CRS to the layer. For PostgreSQL layers, QGIS uses
+the spatial reference identifier that was specified when that PostgreSQL layer was
+created. For data supported by GDAL, QGIS relies on the presence of a
 recognized means of specifying the CRS. For instance, for the Shapefile format
-this is a file containing an ESRI Well-Known Text (:index:`WKT`)
+this is a file containing an ESRI Well-Known Text (WKT)
 representation of the layer's CRS. This projection file has the same base name
 as the :file:`.shp` file and a :file:`.prj` extension. For example,
 :file:`alaska.shp` would have a corresponding projection file named
@@ -76,7 +77,7 @@ layer:
 
    * |radioButtonOn| :guilabel:`Leave as unknown CRS (take no action)`:
      there will be no prompt to select a CRS when a layer without CRS is loaded,
-     defering CRS choice to a later time. Convenient when loading a lot of
+     deferring CRS choice to a later time. Convenient when loading a lot of
      layers at once. Such layers will be identifiable in the :guilabel:`Layers`
      panel by the |indicatorNoCRS| icon next to them.
      They'll also be un-referenced, with coordinates from the layer treated as
@@ -161,13 +162,13 @@ It will also be shown in the lower-right of the QGIS status bar.
 
 Available options are:
 
-* |unchecked| :guilabel:`No CRS (or unknown/non-Earth projection)`:
-  Checking this setting will disable ALL projection handling within the QGIS
+* :guilabel:`No CRS (or unknown)`:
+  selecting this setting will disable ALL projection handling within the QGIS
   project, causing all layers and map coordinates to be treated as simple 2D
   Cartesian coordinates, with no relation to positions on the Earth's surface.
   It can be used to guess a layer CRS (based on its raw coordinates or when
   using QGIS for non earth uses like role-playing game maps, building mapping
-  or microscopic stuff. In this case:
+  or microscopic stuff). In this case:
 
   * No reprojection is done while rendering the layers: features are just drawn
     using their raw coordinates.
@@ -176,19 +177,28 @@ Available options are:
     forced to "unknown units"; all measurements are done in unknown map units,
     and no conversion is possible.
 
-* or an existing coordinate reference system that can be *geographic*, *projected*
-  or *user-defined*. A preview of the CRS extent on earth is displayed to
-  help you select the appropriate one.
-  Layers added to the project are translated on-the-fly to this CRS in order
-  to overlay them regardless their original CRS. Use of units and ellipsoid setting
-  are available and make sense and you can perform calculations accordingly.
+* :guilabel:`Predefined CRS`: select an existing coordinate reference system.
+  Available CRSs are grouped into the following types: Compound, Engineering,
+  Geocentric, Geodetic, Geographic (2D), Geographic (3D), and Projected.
+  A preview of the CRS extent on earth is displayed to help you select
+  the appropriate one.
 
-Whenever you select a new CRS for your QGIS project, the measurement units will automatically be
-changed in the :guilabel:`General` tab of the :guilabel:`Project properties` dialog
-(:menuselection:`Project --> Properties...`) to match the selected CRS. For instance,
-some CRSs define their coordinates in feet instead of meters, so setting your QGIS
-project to one of these CRSs will also set your project to measure using feet by
-default.
+* :guilabel:`Custom CRS`: defines your own CRS that must conform to
+  a WKT or Proj string format. See :ref:`Custom CRS <sec_custom_projections>`.
+
+* :guilabel:`Topocentric CRS`: defines coordinates relative to a specific point
+  on the Earth's surface, called the origin. Specify the :guilabel:`Base CRS`
+  as reference and set the :guilabel:`Origin latitude`
+  and :guilabel:`Origin longitude` to define the origin point.
+
+When a CRS is selected for the project, layers added to the project are translated on-the-fly to this CRS in order
+to overlay them regardless of their original CRS. Use of units and ellipsoid setting
+are available and make sense and you can perform calculations accordingly.
+
+If you change your project's CRS and want the units (for distance and area)
+to match the units defined by the CRS, make sure you have selected :guilabel:`Map units` in the relevant settings,
+in the :guilabel:`General` tab of the :menuselection:`Project --> Properties…` dialog.
+
 
 .. tip:: **Setting the project CRS from a layer**
 
@@ -209,6 +219,13 @@ default.
 Coordinate Reference System Selector
 =====================================
 
+.. _figure_crs_selector:
+
+.. figure:: img/crs_selector.png
+   :align: center
+
+   CRS Selector
+
 This dialog helps you assign a Coordinate Reference System to a project or a
 layer, provided a set of projection databases. Items in the dialog are:
 
@@ -224,6 +241,19 @@ layer, provided a set of projection databases. Items in the dialog are:
   the appropriate node and selecting the CRS. The active CRS is preselected.
 * **PROJ text**: This is the CRS string used by the PROJ projection
   engine. This text is read-only and provided for informational purposes.
+
+
+If you want to remove a recently used CRS from the list that can be done in
+several ways:
+
+* Press |clearItem| :sup:`Remove from recently used CRS` button on the right
+  side.
+* Press :kbd:`Del` after selecting CRS that you want to remove.
+* Right-click on used CRS and choose
+  |clearItem| :guilabel:`Remove selected CRS from recently used CRS` to remove
+  selected CRS
+  or |clearConsole| :guilabel:`Clear all recently used CRS` to remove all used
+  CRS.
 
 The CRS selector also shows a rough preview of the geographic
 area for which a selected CRS is valid for use. Many CRSs are designed only
@@ -264,7 +294,7 @@ only two parameters to define a user CRS:
 
 To create a new CRS:
 
-#. Click the |signPlus| :sup:`Add new CRS` button
+#. Click the |symbologyAdd| :sup:`Add new CRS` button
 #. Enter a descriptive name
 #. Select the format: it can be :guilabel:`Proj String` or :guilabel:`WKT`
 #. Add the CRS :guilabel:`Parameters`.
@@ -351,7 +381,7 @@ This customization is done in the :menuselection:`Settings -->` |options|
 * or defining a list of appropriate datum transformations to use as defaults
   when loading a layer to a project or reprojecting a layer.
 
-  Use the |signPlus| button to open the :guilabel:`Select Datum Transformations`
+  Use the |symbologyAdd| button to open the :guilabel:`Select Datum Transformations`
   dialog. Then:
 
   #. Choose the :guilabel:`Source CRS` of the layer, using the drop-down menu
@@ -388,7 +418,7 @@ This customization is done in the :menuselection:`Settings -->` |options|
 
   From now, QGIS automatically uses the selected datum transformations for
   further transformation between these two CRSs until you remove
-  it (|signMinus|) from the list or change the entry (|toggleEditing|) in
+  it (|symbologyRemove|) from the list or change the entry (|toggleEditing|) in
   the list.
 
 Datum transformations set in the :menuselection:`Settings -->` |options|
@@ -408,6 +438,10 @@ to the current project only.
 
 .. |checkbox| image:: /static/common/checkbox.png
    :width: 1.3em
+.. |clearConsole| image:: /static/common/iconClearConsole.png
+   :width: 1.5em
+.. |clearItem| image:: /static/common/mIconClearItem.png
+   :width: 1.5em
 .. |customProjection| image:: /static/common/mActionCustomProjection.png
    :width: 1.5em
 .. |indicatorNoCRS| image:: /static/common/mIndicatorNoCRS.png
@@ -420,11 +454,9 @@ to the current project only.
    :width: 1.5em
 .. |setProjection| image:: /static/common/mActionSetProjection.png
    :width: 1.5em
-.. |signMinus| image:: /static/common/symbologyRemove.png
+.. |symbologyAdd| image:: /static/common/symbologyAdd.png
    :width: 1.5em
-.. |signPlus| image:: /static/common/symbologyAdd.png
+.. |symbologyRemove| image:: /static/common/symbologyRemove.png
    :width: 1.5em
 .. |toggleEditing| image:: /static/common/mActionToggleEditing.png
    :width: 1.5em
-.. |unchecked| image:: /static/common/checkbox_unchecked.png
-   :width: 1.3em

@@ -5,7 +5,9 @@
 Writing code in the PyQGIS Cookbook
 ***********************************
 
-.. contents::
+.. only:: html
+
+ .. contents::
    :local:
 
 If you are planning to add or update some chapters of the
@@ -100,7 +102,7 @@ To hide it from the HTML use the `:hide:` option::
 Grouping tests
 ----------------------------
 
-For each rst document, the code snippets are tested sequentially, which means
+For each reST document, the code snippets are tested sequentially, which means
 you can use one ``.. testsetup::`` for all the following code snippets and that
 later snippets will have access to variables declared in earlier ones in the document.
 
@@ -126,7 +128,7 @@ The ``doctest`` will pick each group snippets and run them independently.
 
 If you don't declare any group, the code snippet will be added to a group named
 ``default``. If instead, you use ``*`` as a group name, the snippet will be used
-in all testing groups, something normally usefull to use in the test setup::
+in all testing groups, something normally useful to use in the test setup::
 
   .. testsetup:: *
 
